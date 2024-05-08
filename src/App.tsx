@@ -1,25 +1,21 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { Breadcrumb, Layout, theme } from "antd";
+import { Sidebar } from "./features/sidebar/sidebar";
+import { Body } from "./features/body/body";
+import { Header } from "./features/header/header";
+
+const { Footer } = Layout;
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Layout className="min-h-screen">
+      <Sidebar />
+      <Layout>
+        <Header />
+        <Body />
+        <Footer />
+      </Layout>
+    </Layout>
   );
 }
 
