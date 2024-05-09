@@ -1,7 +1,7 @@
 import { Breadcrumb, theme } from "antd";
 import { Content } from "antd/es/layout/layout";
 
-export const Body = () => {
+export const Placeholder = () => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();

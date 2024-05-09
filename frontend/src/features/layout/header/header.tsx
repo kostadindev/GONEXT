@@ -1,6 +1,6 @@
 import { Layout, theme } from "antd";
 
-import GlobalSearch from "../global-search/global-search";
+import GlobalSearch from "../../global-search/global-search";
 
 export const Header = () => {
   const {

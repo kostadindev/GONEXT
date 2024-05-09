@@ -1,8 +1,7 @@
-import React, { useState } from "react";
-import { Breadcrumb, Layout, theme } from "antd";
-import { Sidebar } from "./features/sidebar/sidebar";
-import { Body } from "./features/body/body";
-import { Header } from "./features/header/header";
+import { Layout } from "antd";
+import { Sidebar } from "./features/layout/sidebar/sidebar";
+import { Body } from "./features/layout/body/body";
+import { Header } from "./features/layout/header/header";
 
 const { Footer } = Layout;
 
