@@ -17,7 +17,7 @@ export const InGameSummoner = ({ summoner }: { summoner: Summoner }) => {
       <Card
         style={{
           height: 55,
-          width: 250,
+          width: 300,
           background: colorGradient,
         }}
         hoverable
@@ -33,7 +33,7 @@ export const InGameSummoner = ({ summoner }: { summoner: Summoner }) => {
             className="rounded-full overflow-hidden"
           />
           <div className="flex flex-col gap-1">
-            {/* <img
+            <img
               src={getSummonerSpellIconSrc(summoner?.summonerSpell1Name)}
               width={15}
               height={15}
@@ -46,7 +46,7 @@ export const InGameSummoner = ({ summoner }: { summoner: Summoner }) => {
               height={15}
               alt={summoner?.summonerSpell2Name}
               className="rounded-md overflow-hidden"
-            /> */}
+            />
           </div>
           <div className="flex flex-col">
             <span className="text-md flex">{summoner?.summonerName}</span>

@@ -3,11 +3,13 @@ import dotenv from "dotenv";
 import path from "path";
 import fs from 'fs';
 import cors from 'cors';
+import { LeagueService } from "./services/league.service";
 
 dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT || 8000;
+const leagueService = new LeagueService();
 
 app.use(cors());
 
@@ -18,6 +20,8 @@ app.get("/", (req: Request, res: Response) => {
 
 app.get('/api/active-game', (req, res) => {
   const filePath = path.join(__dirname, '..', 'mocks', 'active_game.json');
+
+
   fs.readFile(filePath, 'utf8', (err: any, data: any) => {
     if (err) {
       console.error('Error reading the file:', err);
@@ -25,13 +29,15 @@ app.get('/api/active-game', (req, res) => {
     }
 
     try {
-      const jsonData = JSON.parse(data);
+      const jsonData = leagueService.getEnrichedGame(JSON.parse(data));
       res.json(jsonData);
     } catch (error) {
       console.error('Error parsing JSON:', error);
       res.status(500).send('Error parsing JSON data');
     }
   });
+
+
 });
 
 

@@ -7,6 +7,7 @@ export const getChampionIconSrc = (championName: string) => {
 }
 
 export const getSummonerSpellIconSrc = (summonerSpellName: string) => {
+  console.log(summonerSpellName);
   return `https://ddragon.leagueoflegends.com/cdn/14.4.1/img/spell/${summonerSpellName}.png`
 }
 
