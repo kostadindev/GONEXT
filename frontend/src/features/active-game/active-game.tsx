@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Game, Summoner } from "../../libs/league/league-types";
 import { InGameSummoner } from "../summoner-cards/in-game-summoner";
 import { theme } from "antd";
+import { ActiveGameTabs } from "./active-game-tabs/active-game-tabs";
 
 export const ActiveGame = () => {
   const {
@@ -33,14 +34,19 @@ export const ActiveGame = () => {
           minHeight: 360,
           background: colorBgContainer,
           borderRadius: borderRadiusLG,
+          display: "flex",
         }}
       >
-        {game?.participants?.map((summoner: Summoner) => (
-          <InGameSummoner
-            key={summoner.puuid}
-            summoner={summoner}
-          ></InGameSummoner>
-        ))}
+        <div>
+          {game?.participants?.map((summoner: Summoner) => (
+            <InGameSummoner
+              key={summoner.puuid}
+              summoner={summoner}
+              game={game}
+            ></InGameSummoner>
+          ))}
+        </div>
+        <ActiveGameTabs game={game} />
       </div>
     </Content>
   );

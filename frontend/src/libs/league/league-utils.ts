@@ -7,11 +7,11 @@ export const getChampionIconSrc = (championName: string) => {
 }
 
 export const getSummonerSpellIconSrc = (summonerSpellName: string) => {
-  console.log(summonerSpellName);
   return `https://ddragon.leagueoflegends.com/cdn/14.4.1/img/spell/${summonerSpellName}.png`
 }
 
-export const getTeams = (game: Game) => {
+export const getTeams = (game: Game | null) => {
+  if (!game) return { allies: null, enemies: null }
   const searchedSummonerPuuid = game.searchedSummoner.puuid;
   const searchedSummoner = game.participants.find(p => p.puuid === searchedSummonerPuuid) as Summoner;
   const allies = [searchedSummoner, ...game.participants.filter(p => p.teamId === searchedSummoner?.teamId && p.puuid !== searchedSummonerPuuid)] || [];

@@ -71,7 +71,6 @@ export class LeagueService {
    * @returns The enriched game object.
    */
   getEnrichedGame(game: any): any {
-    console.log(game);
     game.participants = game.participants.map((participant: any) => {
       participant.championName = this.getChampionName(participant.championId);
       participant.summonerSpell1Name = this.getSummonerSpellName(participant.spell1Id);
