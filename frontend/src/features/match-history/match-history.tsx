@@ -1,21 +1,27 @@
+import { Card, Typography } from "antd";
 import { Game, Summoner, Tips } from "../../libs/league/league-types";
+import Meta from "antd/es/card/Meta";
 
 export const HistoryBlock = ({ game }: { game?: Game }) => {
   const summoner = game?.participants[0] as Summoner;
   return (
-    <div className="flex border border-black-700 text-xs">
-      <div className="w-1/4 p-4">
-        <div className="text-sm font-bold">Ranked Solo</div>
-        <div className="mb-1">A day ago</div>
-        <div className="italic">Victory</div>
-        <div>25m 25s</div>
+    <Card>
+      <div className="flex text-xs">
+        <div className="w-1/4">
+          <Typography.Title level={5} style={{ margin: 0 }}>
+            Ranked Solo
+          </Typography.Title>
+          <div className="mb-3">A day ago</div>
+          <div className="italic">Victory</div>
+          <div>25m 25s</div>
+        </div>
+        <div className="w-1/2"></div>
+        <div className="w-1/4">
+          <div className="mb-4">Section 3</div>
+          <div>Section 3</div>
+        </div>
       </div>
-      <div className="w-1/2 p-4"></div>
-      <div className="w-1/4 p-4">
-        <div className="mb-4">Section 3</div>
-        <div>Section 3</div>
-      </div>
-    </div>
+    </Card>
   );
 };
 
