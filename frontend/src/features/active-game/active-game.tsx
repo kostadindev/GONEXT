@@ -25,14 +25,14 @@ export const ActiveGame = () => {
   return (
     <Content
       style={{
-        margin: "16px",
+        margin: "0 16px",
       }}
     >
       <div
         style={{
           padding: 24,
           minHeight: 360,
-          background: colorBgContainer,
+          // background: colorBgContainer,
           borderRadius: borderRadiusLG,
           display: "flex",
         }}

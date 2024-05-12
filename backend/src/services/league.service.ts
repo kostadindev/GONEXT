@@ -1,11 +1,16 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
+import { GameResponse } from '../models/league.models';
 
 export class LeagueService {
   private championsDict: Record<string, string> = {};
-  private summonerSpellsDict: Record<string, string> = {};
+  private summonerSpellsDict: Record<string, string | undefined> = {};
+  private headers: Record<string, any> = {};
 
   constructor() {
     this.initializeDictionaries();
+    this.headers = {
+      'X-Riot-Token': process.env.LEAGUE_API_KEY
+    };
   }
 
   /**
@@ -79,5 +84,85 @@ export class LeagueService {
     });
     return game;
   }
-}
 
+  public async getSummonerIdByPuuid(puuid: string): Promise<string | undefined> {
+    const url = `https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/${puuid}`;
+    try {
+      const response = await axios.get(url, {
+        headers: this.headers
+      });
+      return response.data.id as string;
+    } catch (error) {
+      const axiosError = error as AxiosError;
+      if (axiosError.response) {
+        console.error(`HTTP error occurred: ${axiosError.response.status} - ${axiosError.response.statusText}`);
+      } else if (axiosError.request) {
+        console.error('No response was received');
+      } else {
+        console.error(`An error occurred: ${axiosError.message}`);
+      }
+      return undefined;
+    }
+  }
+
+  public async getSummonerStats(puuid: string): Promise<{ ranked: any; flex: any } | undefined> {
+    try {
+      const summonerId = await this.getSummonerIdByPuuid(puuid);
+      if (!summonerId) {
+        console.error('Summoner ID could not be retrieved.');
+        return undefined;
+      }
+      const url = `https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/${summonerId}`;
+      const response = await axios.get(url, {
+        headers: this.headers
+      });
+
+      let ranked = null;
+      let flex = null;
+      response.data.forEach((item: any) => {
+        if (item.queueType === 'RANKED_SOLO_5x5') {
+          ranked = item;
+        } else if (item.queueType === 'RANKED_FLEX_SR') {
+          flex = item;
+        }
+      });
+      return { ranked, flex };
+    } catch (error) {
+      const axiosError = error as AxiosError;
+      if (axiosError.response) {
+        console.error(`HTTP error occurred: ${axiosError.response.status} - ${axiosError.response.statusText}`);
+      } else if (axiosError.request) {
+        console.error('No response was received');
+      } else {
+        console.error(`An error occurred: ${axiosError.message}`);
+      }
+      return undefined;
+    }
+  }
+
+  public async getMatchesIds(puuid: string, count: number = 5): Promise<string[] | null> {
+    try {
+      const url = `https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=0&count=${count}`;
+      const response = await axios.get(url, {
+        headers: this.headers
+      });
+      return response.data;
+    } catch (error) {
+      return null;
+    }
+  }
+
+
+  public async getMatchById(matchId: string): Promise<GameResponse | null> {
+    try {
+      const url = `https://americas.api.riotgames.com/lol/match/v5/matches/${matchId}`;
+      const response = await axios.get(url, {
+        headers: this.headers
+      });
+
+      return response.data;
+    } catch (error) {
+      return null;
+    }
+  }
+}

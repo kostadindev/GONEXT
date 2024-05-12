@@ -1,9 +1,22 @@
+import { useState, useEffect } from "react";
 import { Card, Typography } from "antd";
-import { Game, Summoner, Tips } from "../../libs/league/league-types";
-import Meta from "antd/es/card/Meta";
+import { Game, Summoner } from "../../libs/league/league-types";
+import { getMatchHistory } from "../../libs/league/league-apis";
+import { formatDistanceToNow } from "date-fns";
+import { formatGameDurationFromMs } from "../../libs/general/utilities";
 
-export const HistoryBlock = ({ game }: { game?: Game }) => {
-  const summoner = game?.participants[0] as Summoner;
+interface HistoryBlockProps {
+  game: any | null;
+}
+
+const HistoryBlock: React.FC<HistoryBlockProps> = ({ game }) => {
+  const timeAgo = game
+    ? formatDistanceToNow(game.gameCreation, { addSuffix: true })
+    : "";
+  const gameDurationString = game
+    ? formatGameDurationFromMs(game.gameDuration)
+    : "N/A";
+
   return (
     <Card>
       <div className="flex text-xs">
@@ -11,42 +24,56 @@ export const HistoryBlock = ({ game }: { game?: Game }) => {
           <Typography.Title level={5} style={{ margin: 0 }}>
             Ranked Solo
           </Typography.Title>
-          <div className="mb-3">A day ago</div>
-          <div className="italic">Victory</div>
-          <div>25m 25s</div>
-        </div>
-        <div className="w-1/2"></div>
-        <div className="w-1/4">
-          <div className="mb-4">Section 3</div>
-          <div>Section 3</div>
+          <div className="mb-3">{timeAgo}</div>
+          <div>{game?.win ? "Victory" : "Defeat"}</div>
+          <div>{gameDurationString}</div>
         </div>
       </div>
     </Card>
   );
 };
 
-export const MatchHistory = ({ summoner }: { summoner: Summoner }) => {
-  const matchupInfo: Tips[] = [
-    {
-      label: "Pre-6 Farming",
-      text: "In the early levels, focus on farming safely and avoiding unnecessary trades with Kayn. Ahri's early game is relatively weak compared to Kayn's, especially before she gets access to her ultimate.",
-    },
-    {
-      label: "Warding",
-      text: "Place wards strategically to track Kayn's movements. Kayn is highly mobile with his E (Shadow Step), so vision control is crucial to avoid surprise ganks. Place wards in river entrances and the enemy jungle to spot him early.",
-    },
-  ];
+interface MatchHistoryProps {
+  summoner: Summoner;
+}
+
+export const MatchHistory: React.FC<MatchHistoryProps> = ({ summoner }) => {
+  const [games, setGames] = useState<Game[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchGames = async () => {
+      const history = await getMatchHistory("na1", summoner.puuid);
+      if (isMounted) {
+        setGames(history || []);
+        setIsLoading(false);
+      }
+    };
+
+    fetchGames();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [summoner]);
 
   return (
     <div className="p-4 rounded-lg flex flex-col">
-      <div className="text-lg font-bold mb-2">{`${summoner?.championName}'s Match History`}</div>
-      <div className="flex-1 overflow-y-auto">
-        <div className="grid grid-cols-1 gap-2">
-          {matchupInfo.map((tip, index) => (
-            <HistoryBlock key={index}></HistoryBlock>
+      <div className="text-lg font-bold mb-2">{`${summoner.championName}'s Match History`}</div>
+      {isLoading ? (
+        <div>Loading...</div>
+      ) : (
+        <div className="flex-1 overflow-y-auto grid grid-cols-1 gap-2 max-h-[calc(60vh)]">
+          {games.map((game, index) => (
+            <HistoryBlock
+              key={`${summoner?.championId}-${index}`}
+              game={game}
+            />
           ))}
         </div>
-      </div>
+      )}
     </div>
   );
 };

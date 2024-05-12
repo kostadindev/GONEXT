@@ -28,12 +28,12 @@ export const Enemies = ({
       {enemy && <SummonerOverview summoner={enemy}></SummonerOverview>}
       <div className="flex w-full">
         <div className="w-1/2 mx-0">
+          {searchedSummoner && enemy && <MatchHistory summoner={enemy} />}
+        </div>
+        <div className="w-1/2 mx-0">
           {searchedSummoner && enemy && (
             <Matchup searchedSummoner={searchedSummoner} enemy={enemy} />
           )}
-        </div>
-        <div className="w-1/2 mx-0">
-          {searchedSummoner && enemy && <MatchHistory summoner={enemy} />}
         </div>
       </div>
     </>

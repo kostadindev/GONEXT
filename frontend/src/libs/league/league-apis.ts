@@ -13,11 +13,22 @@ export const getActiveGame = async (): Promise<Game | null> => {
 }
 
 export const getSummonerStats = async (region: string, puuid: string) => {
-  // const start = new Date();
-  // console.log("getSUmmonerStats, ", puuid);
-  // const apiUrl = BASE_URL + `/api/${region}/summoner/stats/${puuid}`;
-  // const summonerStats = await fetch(apiUrl, { cache: "no-store" });
-  // const end = new Date();
-  // return await summonerStats.json();
-  return {};
-};
+  try {
+    const response = await axios.get(`http://localhost:8000/api/summoner-stats`, { params: { region, puuid } });
+    return response.data;
+  } catch (error) {
+    console.error('There was an error fetching the summoner stats:', error);
+    return null;
+  }
+}
+
+
+export const getMatchHistory = async (region: string, puuid: string) => {
+  try {
+    const response = await axios.get(`http://localhost:8000/api/match-history`, { params: { region, puuid } });
+    return response.data;
+  } catch (error) {
+    console.error('There was an error fetching the match history:', error);
+    return null;
+  }
+}

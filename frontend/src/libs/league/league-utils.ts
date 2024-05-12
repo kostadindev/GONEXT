@@ -19,3 +19,8 @@ export const getTeams = (game: Game | null) => {
 
   return { allies, enemies };
 };
+
+export const getWinRateString = (wins: number, losses: number) => {
+  const total = wins + losses;
+  return `${Math.round((wins / total) * 100)}%  (${total} Total)`
+}

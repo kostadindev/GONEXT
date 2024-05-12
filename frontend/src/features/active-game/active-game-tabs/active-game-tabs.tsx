@@ -36,16 +36,6 @@ export const ActiveGameTabs = ({ game }: { game: Game | null }) => {
       key: "overview",
     },
     {
-      label: "Ally Team",
-      key: "allies",
-      children: allies?.map((ally: Summoner) => {
-        return {
-          label: ally.championName,
-          key: `${ally.puuid}`, // Ensure keys are unique
-        };
-      }),
-    },
-    {
       label: "Enemy Team",
       key: "enemies",
       children: enemies?.map((enemy: Summoner) => {
@@ -54,6 +44,17 @@ export const ActiveGameTabs = ({ game }: { game: Game | null }) => {
           key: `${enemy.puuid}`, // Ensure keys are unique
         };
       }),
+    },
+    {
+      label: "Ally Team",
+      key: "allies",
+      children: allies?.map((ally: Summoner) => {
+        return {
+          label: ally.championName,
+          key: `${ally.puuid}`, // Ensure keys are unique
+        };
+      }),
+      disabled: true,
     },
     {
       label: "Infernal AI",
