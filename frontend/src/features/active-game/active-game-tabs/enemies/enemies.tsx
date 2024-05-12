@@ -1,4 +1,7 @@
 import { Summoner } from "../../../../libs/league/league-types";
+import { MatchHistory } from "../../../match-history/match-history";
+import { Matchup } from "../../../matchup/matchup";
+import { SummonerOverview } from "../../../summoner-cards/sumoner-overview";
 
 interface EnemyTeamTabProps {
   summoners: Summoner[] | undefined;
@@ -22,20 +25,15 @@ export const Enemies = ({
 
   return (
     <>
-      {enemy &&
-        // <Suspense fallback={<>Loading...</>}>
-        //   <SummonerInfo summoner={enemy}></SummonerInfo>
-        // </Suspense>
-        "dsdasdadad"}
+      {enemy && <SummonerOverview summoner={enemy}></SummonerOverview>}
       <div className="flex w-full">
         <div className="w-1/2 mx-0">
-          {searchedSummoner &&
-            enemy &&
-            // <MatchupInfo searchedSummoner={searchedSummoner} enemy={enemy} />
-            "sdd"}
+          {searchedSummoner && enemy && (
+            <Matchup searchedSummoner={searchedSummoner} enemy={enemy} />
+          )}
         </div>
         <div className="w-1/2 mx-0">
-          {/* {searchedSummoner && enemy && <MatchHistory summoner={enemy} />} */}
+          {searchedSummoner && enemy && <MatchHistory summoner={enemy} />}
         </div>
       </div>
     </>

@@ -5,9 +5,10 @@ export const Footer = () => {
     <Layout.Footer
       style={{
         textAlign: "center",
+        padding: "10px 50px",
       }}
     >
-      Ant Design ©{new Date().getFullYear()} Created by Ant UED
+      GoNext ©{new Date().getFullYear()}
     </Layout.Footer>
   );
 };

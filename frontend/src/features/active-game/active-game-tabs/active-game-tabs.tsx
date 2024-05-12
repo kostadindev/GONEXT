@@ -72,7 +72,7 @@ export const ActiveGameTabs = ({ game }: { game: Game | null }) => {
         items={items}
         style={{ backgroundColor: "transparent" }}
       />
-      <div className="flex flex-col gap-5 p-5">
+      <div className="flex flex-col p-5">
         {selectedView === "overview" && <GameOverview />}
         {allies?.map((ally) => ally.puuid).includes(selectedView) && (
           <Allies

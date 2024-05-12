@@ -11,3 +11,13 @@ export const getActiveGame = async (): Promise<Game | null> => {
     return null;
   }
 }
+
+export const getSummonerStats = async (region: string, puuid: string) => {
+  // const start = new Date();
+  // console.log("getSUmmonerStats, ", puuid);
+  // const apiUrl = BASE_URL + `/api/${region}/summoner/stats/${puuid}`;
+  // const summonerStats = await fetch(apiUrl, { cache: "no-store" });
+  // const end = new Date();
+  // return await summonerStats.json();
+  return {};
+};
