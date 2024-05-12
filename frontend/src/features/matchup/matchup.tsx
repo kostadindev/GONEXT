@@ -1,4 +1,11 @@
+import { Avatar, Card } from "antd";
 import { Summoner, Tip } from "../../libs/league/league-types";
+import {
+  DislikeOutlined,
+  EllipsisOutlined,
+  LikeOutlined,
+} from "@ant-design/icons";
+import Meta from "antd/es/card/Meta";
 
 export const Matchup = ({
   searchedSummoner,
@@ -43,18 +50,26 @@ export const Matchup = ({
   ];
 
   return (
-    <div className="p-4 rounded-lg flex flex-col">
+    <div className="p-4 flex flex-col">
       <div className="text-lg font-bold mb-2">{`${searchedSummoner.championName} vs ${enemy.championName} Matchup`}</div>
       <div className="flex-1 overflow-y-auto">
-        <div className="grid grid-cols-1 gap-2 max-h-[calc(50vh)]">
+        <div className="grid grid-cols-1 gap-2 max-h-[calc(55vh)]">
           {matchupInfo.map((tip, index) => (
-            <div
-              key={index}
-              className="p-4 border-2 border-black-600 rounded-md"
+            <Card
+              actions={[
+                <LikeOutlined key="like" />,
+                <DislikeOutlined key="dislike" />,
+                <EllipsisOutlined key="ellipsis" />,
+              ]}
             >
-              <div className="text-sm font-bold mb-1">{tip.label}</div>
-              <div className="text-sm">{tip.text}</div>
-            </div>
+              <Meta
+                // avatar={
+                //   <Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=8" />
+                // }
+                title={tip.label}
+                description={tip.text}
+              />
+            </Card>
           ))}
         </div>
       </div>
