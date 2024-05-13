@@ -52,8 +52,13 @@ export const SummonerOverview: React.FC<SummonerOverviewProps> = ({
 
   const backgroundColor = summoner.teamId === 100 ? "#99ccff" : "var(--red100)";
   return (
-    <div className="flex gap-5 px-4">
-      <Card style={{ width: "15vw", backgroundColor: colorBgContainer }}>
+    <div className="flex gap-5 px-4 h-[90px]">
+      <Card
+        style={{
+          width: "15vw",
+          backgroundColor: colorBgContainer,
+        }}
+      >
         <div className="flex gap-1">
           <Badge>
             <Avatar
@@ -83,9 +88,16 @@ export const SummonerOverview: React.FC<SummonerOverviewProps> = ({
           </div>
         </div>
       </Card>
-      <Card className="flex-1" style={{ backgroundColor: colorBgContainer }}>
+      <Card
+        className="flex-1"
+        style={{
+          backgroundColor: colorBgContainer,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         {summonerStats && (
-          <div className="flex flex-row">
+          <div className="flex flex-row justify-center w-full">
             {summonerStats?.ranked && (
               <SummonerStatBlock
                 label={"Ranked"}

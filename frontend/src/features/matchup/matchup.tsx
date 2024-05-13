@@ -53,7 +53,10 @@ export const Matchup = ({
     <div className="p-4 flex flex-col">
       <div className="text-lg font-bold mb-2">{`${searchedSummoner.championName} vs ${enemy.championName} Matchup`}</div>
       <div className="flex-1 overflow-y-auto">
-        <div className="grid grid-cols-1 gap-2 max-h-[calc(60vh)]">
+        <div
+          className="grid grid-cols-1 gap-2"
+          style={{ maxHeight: "calc(72vh - 79px)" }}
+        >
           {matchupInfo.map((tip, index) => (
             <Card
               key={index}
