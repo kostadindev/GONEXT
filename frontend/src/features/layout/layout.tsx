@@ -11,7 +11,7 @@ function AppLayout() {
       <Layout>
         <Header />
         <Body />
-        <Footer />
+        {/* <Footer /> */}
       </Layout>
     </Layout>
   );

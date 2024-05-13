@@ -1,4 +1,4 @@
-import { Card } from "antd";
+import { Avatar, Card, Typography } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Summoner } from "../../libs/league/league-types";
 import {
@@ -28,7 +28,7 @@ export const InGameSummoner = ({
   return (
     <Card
       style={{
-        height: 55,
+        height: "7.2vh",
         width: 300,
         background: colorGradient,
       }}
@@ -36,33 +36,29 @@ export const InGameSummoner = ({
       className="flex items-center"
       onClick={handleCardClick}
     >
-      <div className="h-full flex items-center pl-3 pr-3 gap-2">
-        <img
+      <div className="h-full flex items-center gap-2">
+        <Avatar
           src={getChampionIconSrc(summoner.championName)}
-          width={40}
-          height={40}
+          size="large"
           alt={summoner.championName}
-          className="rounded-full overflow-hidden"
         />
         <div className="flex flex-col gap-1">
-          <img
+          <Avatar
             src={getSummonerSpellIconSrc(summoner.summonerSpell1Name)}
-            width={15}
-            height={15}
+            size={20}
             alt={summoner.summonerSpell1Name}
-            className="rounded-md overflow-hidden"
           />
-          <img
+          <Avatar
             src={getSummonerSpellIconSrc(summoner.summonerSpell2Name)}
-            width={15}
-            height={15}
+            size={20}
             alt={summoner.summonerSpell2Name}
-            className="rounded-md overflow-hidden"
           />
         </div>
         <div className="flex flex-col">
-          <span className="text-md flex">{summoner.summonerName}</span>
-          <span className="text-gray-500 text-xs">{summoner.championName}</span>
+          <Typography.Title level={5} style={{ margin: 0 }}>
+            {summoner.summonerName}
+          </Typography.Title>
+          <Typography.Text>{summoner.championName}</Typography.Text>
         </div>
       </div>
     </Card>

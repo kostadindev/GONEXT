@@ -9,16 +9,21 @@ interface HistoryBlockProps {
   game: any | null;
 }
 
-const HistoryBlock: React.FC<HistoryBlockProps> = ({ game }) => {
+const HistoryBlock: React.FC<{ game: any }> = ({ game }) => {
   const timeAgo = game
-    ? formatDistanceToNow(game.gameCreation, { addSuffix: true })
+    ? formatDistanceToNow(new Date(game.gameCreation), { addSuffix: true })
     : "";
   const gameDurationString = game
     ? formatGameDurationFromMs(game.gameDuration)
     : "N/A";
 
+  // Set the border color based on the game result
+  const borderColorClass = game?.win
+    ? "border-l-8 border-l-[#99ccff]"
+    : "border-l-8 border-l-[#ff9999]";
+
   return (
-    <Card>
+    <Card className={`${borderColorClass}`}>
       <div className="flex text-xs">
         <div className="w-1/4">
           <Typography.Title level={5} style={{ margin: 0 }}>
