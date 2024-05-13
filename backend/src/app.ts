@@ -74,7 +74,8 @@ app.get('/api/match-history', async (req: Request, res: Response) => {
         gameCreation: match?.info?.gameCreation,
         gameDuration: match?.info?.gameDuration,
         gameMode: match?.info?.gameMode,
-        matchId: match?.metadata?.matchId
+        matchId: match?.metadata?.matchId,
+        queueName: match?.info?.queueName
       }
       return result;
     }));

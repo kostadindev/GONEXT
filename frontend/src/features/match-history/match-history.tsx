@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Card, Typography } from "antd";
+import { Card, Spin, Typography } from "antd";
 import { Game, Summoner } from "../../libs/league/league-types";
 import { getMatchHistory } from "../../libs/league/league-apis";
 import { formatDistanceToNow } from "date-fns";
@@ -27,7 +27,7 @@ const HistoryBlock: React.FC<{ game: any }> = ({ game }) => {
       <div className="flex text-xs">
         <div className="w-1/4">
           <Typography.Title level={5} style={{ margin: 0 }}>
-            Ranked Solo
+            {game?.queueName}
           </Typography.Title>
           <div className="mb-3">{timeAgo}</div>
           <div>{game?.win ? "Victory" : "Defeat"}</div>
@@ -50,6 +50,7 @@ export const MatchHistory: React.FC<MatchHistoryProps> = ({ summoner }) => {
     let isMounted = true;
 
     const fetchGames = async () => {
+      setIsLoading(true);
       const history = await getMatchHistory("na1", summoner.puuid);
       if (isMounted) {
         setGames(history || []);
@@ -67,12 +68,10 @@ export const MatchHistory: React.FC<MatchHistoryProps> = ({ summoner }) => {
   return (
     <div className="p-4 rounded-lg flex flex-col">
       <div className="text-lg font-bold mb-2">{`${summoner.championName}'s Match History`}</div>
-      {isLoading ? (
-        <div>Loading...</div>
-      ) : (
+      <Spin spinning={isLoading}>
         <div
           className="flex-1 overflow-y-auto grid grid-cols-1 gap-2"
-          style={{ maxHeight: "calc(72vh - 79px)" }}
+          style={{ height: "calc(72vh - 79px)" }}
         >
           {games.map((game, index) => (
             <HistoryBlock
@@ -81,7 +80,7 @@ export const MatchHistory: React.FC<MatchHistoryProps> = ({ summoner }) => {
             />
           ))}
         </div>
-      )}
+      </Spin>
     </div>
   );
 };

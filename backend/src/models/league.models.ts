@@ -24,6 +24,7 @@ export interface Info {
   participants: Participant[];
   platformId: string;
   queueId: number;
+  queueName?: string;
   teams: Team[];
   tournamentCode: string;
 }

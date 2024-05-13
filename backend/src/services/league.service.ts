@@ -4,6 +4,7 @@ import { GameResponse } from '../models/league.models';
 export class LeagueService {
   private championsDict: Record<string, string> = {};
   private summonerSpellsDict: Record<string, string | undefined> = {};
+  private queuesDict: Record<string, string> = {};
   private headers: Record<string, any> = {};
 
   constructor() {
@@ -17,7 +18,7 @@ export class LeagueService {
    * Initializes the champions and summoner spells dictionaries from the Riot Games API.
    */
   private async initializeDictionaries() {
-    await Promise.all([this.fetchChampionsDict(), this.fetchSummonerSpellDict()]);
+    await Promise.all([this.fetchChampionsDict(), this.fetchSummonerSpellDict(), this.fetchQueueTypes()]);
   }
 
   /**
@@ -33,6 +34,20 @@ export class LeagueService {
       });
     } catch (error) {
       console.error('Failed to fetch champions', error);
+    }
+  }
+
+  private async fetchQueueTypes() {
+    const url = 'https://static.developer.riotgames.com/docs/lol/queues.json';
+    try {
+      const response = await axios.get(url);
+      const queues = response.data;
+      console.log(queues);
+      Object.keys(queues).forEach(key => {
+        this.queuesDict[queues[key].queueId] = queues[key].description?.replace(' games', '');
+      });
+    } catch (error) {
+      console.error('Failed to fetch', error);
     }
   }
 
@@ -158,8 +173,9 @@ export class LeagueService {
       const url = `https://americas.api.riotgames.com/lol/match/v5/matches/${matchId}`;
       const response = await axios.get(url, {
         headers: this.headers
-      });
+      }) as { data: GameResponse };
 
+      response.data.info.queueName = this.queuesDict[response.data.info.queueId]
       return response.data;
     } catch (error) {
       return null;
