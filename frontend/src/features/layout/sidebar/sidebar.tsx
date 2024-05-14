@@ -19,18 +19,18 @@ function getItem(label: any, key: any, icon?: any, children?: any) {
 }
 
 const items = [
-  getItem("Option 1", "1", <PieChartOutlined />),
-  getItem("Option 2", "2", <DesktopOutlined />),
-  getItem("User", "sub1", <UserOutlined />, [
-    getItem("Tom", "3"),
-    getItem("Bill", "4"),
-    getItem("Alex", "5"),
-  ]),
-  getItem("Team", "sub2", <TeamOutlined />, [
-    getItem("Team 1", "6"),
-    getItem("Team 2", "8"),
-  ]),
-  getItem("Files", "9", <FileOutlined />),
+  getItem("Game Analytics", "1", <PieChartOutlined />),
+  // getItem("Option 2", "2", <DesktopOutlined />),
+  // getItem("Game Analytics", "sub1", <PieChartOutlined />, [
+  //   getItem("Game Overview", "3"),
+  //   getItem("Infernal AI", "4"),
+  // getItem("Alex", "5"),
+  // ]),
+  // getItem("Team", "sub2", <TeamOutlined />, [
+  //   getItem("Team 1", "6"),
+  //   getItem("Team 2", "8"),
+  // ]),
+  // getItem("Files", "9", <FileOutlined />),
 ];
 
 export const Sidebar = () => {

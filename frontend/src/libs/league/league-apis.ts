@@ -32,3 +32,13 @@ export const getMatchHistory = async (region: string, puuid: string) => {
     return null;
   }
 }
+
+export const getMatchupTips = async (summonerChampion: string, enemyChampion: string) => {
+  try {
+    const response = await axios.get(`http://localhost:8000/api/matchup`, { params: { summonerChampion, enemyChampion } });
+    return response.data;
+  } catch (error) {
+    console.error('There was an error fetching the match history:', error);
+    return null;
+  }
+}

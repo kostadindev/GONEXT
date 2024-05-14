@@ -4,12 +4,14 @@ import path from "path";
 import fs from 'fs';
 import cors from 'cors';
 import { LeagueService } from "./services/league.service";
+import { AIService } from "./services/ai.service";
 
 dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT || 8000;
 const leagueService = new LeagueService();
+const aiService = new AIService();
 
 app.use(cors());
 
@@ -79,11 +81,25 @@ app.get('/api/match-history', async (req: Request, res: Response) => {
       }
       return result;
     }));
-    console.log(matches);
     res.json(matches);
   } catch (error) {
     res.status(500).send("Unknown error");
   }
+})
+
+app.get('/api/matchup', async (req: Request, res: Response) => {
+  const { summonerChampion, enemyChampion } = req.query;
+  if (typeof summonerChampion !== 'string' || typeof enemyChampion !== 'string') {
+    return res.status(400).send('Both summonerChampion and enemyChampion must be provided.');
+  }
+  try {
+    const tips = await aiService.getMatchupTips(summonerChampion, enemyChampion);
+    res.json(tips);
+
+  } catch (error) {
+    res.status(500).send("Unknown error");
+  }
+
 })
 
 

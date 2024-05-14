@@ -42,7 +42,6 @@ export class LeagueService {
     try {
       const response = await axios.get(url);
       const queues = response.data;
-      console.log(queues);
       Object.keys(queues).forEach(key => {
         this.queuesDict[queues[key].queueId] = queues[key].description?.replace(' games', '');
       });
