@@ -55,7 +55,7 @@ export const Tips: React.FC<TipsProps> = ({
   }, [searchedSummoner.championName, otherSummoner.championName]);
 
   return (
-    <div className="p-4 flex flex-col">
+    <div className="pt-4 pl-2 flex flex-col">
       <div className="text-lg font-bold mb-2">{`${
         searchedSummoner.championName
       } ${type === TipsType.Matchup ? "vs" : "and"} ${
@@ -65,7 +65,7 @@ export const Tips: React.FC<TipsProps> = ({
         <Spin spinning={isLoading}>
           <div
             className="grid grid-cols-1 gap-2"
-            style={{ height: "calc(72vh - 79px)" }}
+            style={{ height: "calc(70vh - 79px)" }}
           >
             {tipsInfo.map((tip, index) => (
               <Card

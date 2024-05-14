@@ -28,7 +28,7 @@ export const InGameSummoner = ({
   return (
     <Card
       style={{
-        height: "7.2vh",
+        height: "7vh",
         width: 300,
         background: colorGradient,
       }}

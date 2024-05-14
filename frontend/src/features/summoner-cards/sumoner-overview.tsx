@@ -71,7 +71,7 @@ export const SummonerOverview: React.FC<SummonerOverviewProps> = ({
   }, [summoner]);
 
   return (
-    <div className="flex gap-5 px-4 h-[90px]">
+    <div className="flex gap-5 h-[90px]">
       <Card
         style={{
           width: "15vw",
