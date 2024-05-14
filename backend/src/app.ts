@@ -5,6 +5,7 @@ import fs from 'fs';
 import cors from 'cors';
 import { LeagueService } from "./services/league.service";
 import { AIService } from "./services/ai.service";
+const morgan = require('morgan');
 
 dotenv.config();
 
@@ -14,6 +15,13 @@ const leagueService = new LeagueService();
 const aiService = new AIService();
 
 app.use(cors());
+
+// const accessLogStream = fs.createWriteStream(path.join(__dirname, '..', 'logs.log'), { flags: 'a' });
+
+app.use(
+  morgan('dev',
+    //{ stream: accessLogStream }
+  ));
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Express + TypeScewqeqeript Server");
