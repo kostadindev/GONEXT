@@ -1,44 +1,36 @@
 import axios from "axios";
 import { Game } from "./league-types";
 
+// Base URL for the API
+const BASE_URL = 'http://localhost:8000/api';
 
+// Helper function to handle API requests
+const fetchData = async (endpoint: string, params: Record<string, any> = {}) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/${endpoint}`, { params });
+    return response.data;
+  } catch (error) {
+    console.error(`There was an error fetching data from ${endpoint}:`, error);
+    return null;
+  }
+};
+
+// Function to get the active game
 export const getActiveGame = async (): Promise<Game | null> => {
-  try {
-    const response = await axios.get('http://localhost:8000/api/active-game');
-    return response.data;
-  } catch (error) {
-    console.error('There was an error fetching the active game:', error);
-    return null;
-  }
-}
+  return await fetchData('active-game');
+};
 
+// Function to get summoner stats
 export const getSummonerStats = async (region: string, puuid: string) => {
-  try {
-    const response = await axios.get(`http://localhost:8000/api/summoner-stats`, { params: { region, puuid } });
-    return response.data;
-  } catch (error) {
-    console.error('There was an error fetching the summoner stats:', error);
-    return null;
-  }
-}
+  return await fetchData('summoner-stats', { region, puuid });
+};
 
-
+// Function to get match history
 export const getMatchHistory = async (region: string, puuid: string) => {
-  try {
-    const response = await axios.get(`http://localhost:8000/api/match-history`, { params: { region, puuid } });
-    return response.data;
-  } catch (error) {
-    console.error('There was an error fetching the match history:', error);
-    return null;
-  }
-}
+  return await fetchData('match-history', { region, puuid });
+};
 
+// Function to get matchup tips
 export const getMatchupTips = async (summonerChampion: string, enemyChampion: string) => {
-  try {
-    const response = await axios.get(`http://localhost:8000/api/matchup`, { params: { summonerChampion, enemyChampion } });
-    return response.data;
-  } catch (error) {
-    console.error('There was an error fetching the match history:', error);
-    return null;
-  }
-}
+  return await fetchData('matchup', { summonerChampion, enemyChampion });
+};
