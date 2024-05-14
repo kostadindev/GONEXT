@@ -54,7 +54,6 @@ export const ActiveGameTabs = ({ game }: { game: Game | null }) => {
           key: `${ally.puuid}`, // Ensure keys are unique
         };
       }),
-      disabled: true,
     },
     {
       label: "Infernal AI",
@@ -78,7 +77,8 @@ export const ActiveGameTabs = ({ game }: { game: Game | null }) => {
         {allies?.map((ally) => ally.puuid).includes(selectedView) && (
           <Allies
             summoners={game?.participants}
-            summonerPuuid={selectedView?.split(":")[1]}
+            allyPuuid={selectedView}
+            searchedSummonerPuuid={game?.searchedSummoner?.puuid}
           />
         )}
         {enemies?.map((enemy) => enemy.puuid).includes(selectedView) && (

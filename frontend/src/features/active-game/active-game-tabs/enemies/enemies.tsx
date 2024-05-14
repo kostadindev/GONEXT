@@ -1,38 +1,35 @@
+import React from "react";
 import { Summoner } from "../../../../libs/league/league-types";
 import { MatchHistory } from "../../../match-history/match-history";
-import { Matchup } from "../../../matchup/matchup";
+import { Tips } from "../../../tips/tips";
 import { SummonerOverview } from "../../../summoner-cards/sumoner-overview";
 
 interface EnemyTeamTabProps {
-  summoners: Summoner[] | undefined;
-  enemyPuuid: string | undefined;
-  searchedSummonerPuuid: string | undefined;
+  summoners?: Summoner[];
+  enemyPuuid?: string;
+  searchedSummonerPuuid?: string;
 }
 
-export const Enemies = ({
+export const Enemies: React.FC<EnemyTeamTabProps> = ({
   summoners,
   enemyPuuid,
   searchedSummonerPuuid,
-}: EnemyTeamTabProps) => {
-  // Access the selected player using the selectedIndex
-  const enemy = summoners?.find(
-    (summoner) => summoner.puuid === enemyPuuid
-  ) as Summoner;
-
+}) => {
+  const enemy = summoners?.find((summoner) => summoner.puuid === enemyPuuid);
   const searchedSummoner = summoners?.find(
     (summoner) => summoner.puuid === searchedSummonerPuuid
-  ) as Summoner;
+  );
 
   return (
     <>
-      {enemy && <SummonerOverview summoner={enemy}></SummonerOverview>}
+      {enemy && <SummonerOverview summoner={enemy} />}
       <div className="flex w-full">
         <div className="w-1/2 mx-0">
           {searchedSummoner && enemy && <MatchHistory summoner={enemy} />}
         </div>
         <div className="w-1/2 mx-0">
           {searchedSummoner && enemy && (
-            <Matchup searchedSummoner={searchedSummoner} enemy={enemy} />
+            <Tips searchedSummoner={searchedSummoner} otherSummoner={enemy} />
           )}
         </div>
       </div>

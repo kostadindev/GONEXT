@@ -1,63 +1,73 @@
-import { Avatar, Card, Spin } from "antd";
-import { Summoner, Tip } from "../../libs/league/league-types";
+import React, { useEffect, useState } from "react";
+import { Card, Spin } from "antd";
+import { Summoner, Tip, TipsType } from "../../libs/league/league-types";
 import {
   DislikeOutlined,
   EllipsisOutlined,
   LikeOutlined,
 } from "@ant-design/icons";
 import Meta from "antd/es/card/Meta";
-import { useEffect, useState } from "react";
 import { getMatchupTips } from "../../libs/league/league-apis";
 
-export const Matchup = ({
-  searchedSummoner,
-  enemy,
-}: {
+interface TipsProps {
   searchedSummoner: Summoner;
-  enemy: Summoner;
+  otherSummoner: Summoner;
+}
+
+export const Tips: React.FC<TipsProps> = ({
+  searchedSummoner,
+  otherSummoner,
 }) => {
-  const [matchupInfo, setMatchupInfo] = useState<Tip[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false); // State to track loading status
+  const [tipsInfo, setTipsInfo] = useState<Tip[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const type =
+    searchedSummoner?.teamId === otherSummoner?.teamId
+      ? TipsType.Synergy
+      : TipsType.Matchup;
 
   useEffect(() => {
     let isMounted = true;
-    setIsLoading(true); // Set loading to true when the fetch starts
-
-    const fetchMatchupTips = async () => {
+    const fetchTips = async () => {
+      setIsLoading(true);
       try {
         const tips = await getMatchupTips(
           searchedSummoner.championName,
-          enemy.championName
+          otherSummoner.championName
         );
         if (isMounted && tips) {
-          setMatchupInfo(tips);
+          setTipsInfo(tips);
         }
       } catch (error) {
-        console.error("Failed to fetch matchup tips:", error);
+        console.error("Failed to fetch tips:", error);
       } finally {
         if (isMounted) {
-          setIsLoading(false); // Set loading to false when the fetch completes or fails
+          setIsLoading(false);
         }
       }
     };
 
-    fetchMatchupTips();
+    fetchTips();
 
     return () => {
       isMounted = false;
     };
-  }, [searchedSummoner.championName, enemy.championName]);
+  }, [searchedSummoner.championName, otherSummoner.championName]);
 
   return (
     <div className="p-4 flex flex-col">
-      <div className="text-lg font-bold mb-2">{`${searchedSummoner.championName} vs ${enemy.championName} Matchup`}</div>
+      <div className="text-lg font-bold mb-2">{`${
+        searchedSummoner.championName
+      } ${type === TipsType.Matchup ? "vs" : "and"} ${
+        otherSummoner.championName
+      } ${type === TipsType.Matchup ? "Matchup" : "Synergy"}`}</div>
       <div className="flex-1 overflow-y-auto">
         <Spin spinning={isLoading}>
           <div
             className="grid grid-cols-1 gap-2"
             style={{ height: "calc(72vh - 79px)" }}
           >
-            {matchupInfo?.map((tip, index) => (
+            {tipsInfo.map((tip, index) => (
               <Card
                 key={index}
                 actions={[

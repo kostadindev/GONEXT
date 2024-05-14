@@ -26,3 +26,8 @@ export interface Tip {
   label: string,
   text: string
 }
+
+export enum TipsType {
+  Matchup = 'matchup',
+  Synergy = 'synergy'
+}
