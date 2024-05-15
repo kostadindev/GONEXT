@@ -19,8 +19,8 @@ function getItem(label: any, key: any, icon?: any, children?: any) {
 }
 
 const items = [
-  getItem("Game Analytics", "1", <PieChartOutlined />),
-  // getItem("Option 2", "2", <DesktopOutlined />),
+  getItem("In Game Analytics", "1", <PieChartOutlined />),
+  getItem("Champion Select", "2", <DesktopOutlined />),
   // getItem("Game Analytics", "sub1", <PieChartOutlined />, [
   //   getItem("Game Overview", "3"),
   //   getItem("Infernal AI", "4"),

@@ -23,7 +23,7 @@ const HistoryBlock: React.FC<{ game: any }> = ({ game }) => {
     : "border-l-8 border-l-[#ff9999]";
 
   return (
-    <Card className={`${borderColorClass}`}>
+    <Card className={`${borderColorClass}`} styles={{ body: { padding: 12 } }}>
       <div className="flex text-xs">
         <div className="w-1/4">
           <Typography.Title level={5} style={{ margin: 0 }}>
@@ -66,7 +66,7 @@ export const MatchHistory: React.FC<MatchHistoryProps> = ({ summoner }) => {
   }, [summoner]);
 
   return (
-    <div className="pt-4 pr-2 rounded-lg flex flex-col">
+    <div className="pt-3 pr-3 rounded-lg flex flex-col">
       <div className="text-lg font-bold mb-2">{`${summoner.championName}'s Match History`}</div>
       <Spin spinning={isLoading}>
         <div

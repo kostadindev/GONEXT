@@ -55,7 +55,7 @@ export const Tips: React.FC<TipsProps> = ({
   }, [searchedSummoner.championName, otherSummoner.championName]);
 
   return (
-    <div className="pt-4 pl-2 flex flex-col">
+    <div className="pt-3 pl-3 flex flex-col">
       <div className="text-lg font-bold mb-2">{`${
         searchedSummoner.championName
       } ${type === TipsType.Matchup ? "vs" : "and"} ${
@@ -75,6 +75,7 @@ export const Tips: React.FC<TipsProps> = ({
                   <DislikeOutlined key="dislike" />,
                   <EllipsisOutlined key="ellipsis" />,
                 ]}
+                styles={{ body: { padding: 12 } }}
               >
                 <Meta title={tip.label} description={tip.text} />
               </Card>
