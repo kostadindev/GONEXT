@@ -1,69 +1,22 @@
-import { Dropdown, MenuProps, Modal } from "antd";
-import { useState } from "react";
-import GlobalSearch from "../global-search/global-search";
-
-const editOptions = [
-  {
-    key: "1",
-    label: "Set Summoner",
-  },
-  {
-    key: "2",
-    label: "Set to Doublelift",
-  },
-];
+import { Button } from "antd";
+import { useNavigate } from "react-router-dom";
 
 export const QuickSearch = () => {
-  const [open, setOpen] = useState(false);
-  const [confirmLoading, setConfirmLoading] = useState(false);
-
-  const showModal = () => {
-    setOpen(true);
-  };
-
-  const onClickEditOption: MenuProps["onClick"] = (e) => {
-    console.log("click", e);
-    if (e.key === "1") {
-      showModal();
+  const mostFrequentSearch = "Doublelift #NA1";
+  const navigate = useNavigate();
+  const handleQuickSearch = () => {
+    const [summoner, tagline] = mostFrequentSearch
+      .split("#")
+      .map((str) => str.trim());
+    if (summoner && tagline) {
+      navigate(`/${"NA"}/${summoner}/${tagline}/in-game`);
     }
   };
-
-  const handleOk = () => {
-    setConfirmLoading(true);
-    setTimeout(() => {
-      setOpen(false);
-      setConfirmLoading(false);
-    }, 2000);
-  };
-
-  const handleCancel = () => {
-    console.log("Clicked cancel button");
-    setOpen(false);
-  };
-
   return (
     <>
-      <Dropdown.Button
-        menu={{ items: editOptions, onClick: onClickEditOption }}
-        type="primary"
-        size="large"
-      >
-        Doublelift #NA1
-      </Dropdown.Button>
-      <Modal
-        centered
-        title="Set Default Summoner"
-        open={open}
-        // footer={null}
-        onOk={handleOk}
-        confirmLoading={confirmLoading}
-        width={800}
-        onCancel={handleCancel}
-      >
-        <div className="flex  justify-center pt-10 pb-5">
-          <GlobalSearch></GlobalSearch>
-        </div>
-      </Modal>
+      <Button type="primary" size="large" onClick={handleQuickSearch}>
+        {mostFrequentSearch}
+      </Button>
     </>
   );
 };
