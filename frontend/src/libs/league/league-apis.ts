@@ -26,7 +26,7 @@ export const getSummonerStats = async (region: string, puuid: string) => {
 };
 
 // Function to get match history
-export const getMatchHistory = async (region: string, puuid: string) => {
+export const getMatchHistory = async (region: string, puuid: string): Promise<any> => {
   return await fetchData('match-history', { region, puuid });
 };
 

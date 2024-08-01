@@ -1,9 +1,13 @@
 import { useState, useEffect } from "react";
-import { Card, Spin, Typography } from "antd";
-import { Game, Summoner } from "../../libs/league/league-types";
+import { Avatar, Card, Spin, Typography } from "antd";
+import { Game, GameHistory, Summoner } from "../../libs/league/league-types";
 import { getMatchHistory } from "../../libs/league/league-apis";
 import { formatDistanceToNow } from "date-fns";
 import { formatGameDurationFromMs } from "../../libs/general/utilities";
+import {
+  getChampionIconSrc,
+  getSummonerSpellIconSrc,
+} from "../../libs/league/league-utils";
 
 interface HistoryBlockProps {
   game: any | null;
@@ -17,21 +21,49 @@ const HistoryBlock: React.FC<{ game: any }> = ({ game }) => {
     ? formatGameDurationFromMs(game.gameDuration)
     : "N/A";
 
-  // Set the border color based on the game result
   const borderColorClass = game?.win
     ? "border-l-8 border-l-[#99ccff]"
     : "border-l-8 border-l-[#ff9999]";
 
+  const blueTeam = game?.participants?.filter(
+    (participants) => participants.teamId === 100
+  );
+
+  const redTeam = game?.participants?.filter(
+    (participant) => participant.teamId === 200
+  );
+
   return (
     <Card className={`${borderColorClass}`} styles={{ body: { padding: 12 } }}>
-      <div className="flex text-xs">
-        <div className="w-1/4">
+      <div className="flex flex-col md:flex-row text-xs">
+        <div className="md:w-2/6 mb-3 md:mb-0">
           <Typography.Title level={5} style={{ margin: 0 }}>
             {game?.queueName}
           </Typography.Title>
           <div className="mb-3">{timeAgo}</div>
           <div>{game?.win ? "Victory" : "Defeat"}</div>
           <div>{gameDurationString}</div>
+        </div>
+        <div className="md:w-2/6"></div>
+        <div className="md:w-2/6 flex flex-col">
+          <div className="flex flex-wrap">
+            <div className="w-full md:w-1/2">
+              {redTeam.map((summoner) => (
+                <MiniSummonerDisplay
+                  key={summoner.summonerName}
+                  summoner={summoner}
+                />
+              ))}
+            </div>
+            <div className="w-full md:w-1/2">
+              {blueTeam.map((summoner) => (
+                <MiniSummonerDisplay
+                  key={summoner.summonerName}
+                  summoner={summoner}
+                />
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </Card>
@@ -43,7 +75,7 @@ interface MatchHistoryProps {
 }
 
 export const MatchHistory: React.FC<MatchHistoryProps> = ({ summoner }) => {
-  const [games, setGames] = useState<Game[]>([]);
+  const [games, setGames] = useState<GameHistory[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -67,7 +99,9 @@ export const MatchHistory: React.FC<MatchHistoryProps> = ({ summoner }) => {
 
   return (
     <div className="pt-3 pr-3 rounded-lg flex flex-col">
-      <div className="text-lg font-bold mb-2">{`${summoner.championName}'s Match History`}</div>
+      <div className="text-lg font-bold mb-2">
+        {`${summoner.championName}'s Match History`}
+      </div>
       <Spin spinning={isLoading}>
         <div
           className="flex-1 overflow-y-auto grid grid-cols-1 gap-2"

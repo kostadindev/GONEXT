@@ -180,4 +180,12 @@ export class LeagueService {
       return null;
     }
   }
+
+  public getParticipantsFromMatch(match: GameResponse | null) {
+    return match?.info.participants.map(participant => ({
+      summonerName: participant?.summonerName,
+      teamId: participant?.teamId,
+      championName: participant?.championName
+    }))
+  }
 }

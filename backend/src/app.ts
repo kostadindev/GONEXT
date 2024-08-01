@@ -77,7 +77,8 @@ app.get('/api/match-history', async (req: Request, res: Response) => {
   try {
     const matchIds = await leagueService.getMatchesIds(puuid) || [];
     const matches = await Promise.all(matchIds.map(async (matchId) => {
-      const match = await leagueService.getMatchById(matchId);;
+      const match = await leagueService.getMatchById(matchId);
+      const participants = leagueService.getParticipantsFromMatch(match);
       const participant = match?.info?.participants.find(participant => participant?.puuid === puuid);
       const result = {
         win: participant?.win,
@@ -85,7 +86,8 @@ app.get('/api/match-history', async (req: Request, res: Response) => {
         gameDuration: match?.info?.gameDuration,
         gameMode: match?.info?.gameMode,
         matchId: match?.metadata?.matchId,
-        queueName: match?.info?.queueName
+        queueName: match?.info?.queueName,
+        participants
       }
       return result;
     }));

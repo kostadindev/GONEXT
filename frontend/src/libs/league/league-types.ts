@@ -31,3 +31,14 @@ export enum TipsType {
   Matchup = 'matchup',
   Synergy = 'synergy'
 }
+
+
+export interface GameHistory {
+  win: boolean;
+  gameCreation: number;
+  gameDuration: number;
+  gameMode: string;
+  matchId: string;
+  queueName: string;
+  participants: Summoner[];
+};
