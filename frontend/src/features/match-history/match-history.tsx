@@ -1,19 +1,38 @@
 import { useState, useEffect } from "react";
 import { Avatar, Card, Spin, Typography } from "antd";
-import { Game, GameHistory, Summoner } from "../../libs/league/league-types";
+import { GameHistory, Summoner } from "../../libs/league/league-types";
 import { getMatchHistory } from "../../libs/league/league-apis";
 import { formatDistanceToNow } from "date-fns";
 import { formatGameDurationFromMs } from "../../libs/general/utilities";
-import {
-  getChampionIconSrc,
-  getSummonerSpellIconSrc,
-} from "../../libs/league/league-utils";
+import { getChampionIconSrc } from "../../libs/league/league-utils";
 
-interface HistoryBlockProps {
-  game: any | null;
-}
+const MiniSummonerDisplay: React.FC<{ summoner: Summoner }> = ({
+  summoner,
+}) => {
+  return (
+    <div key={summoner?.summonerName} className="flex items-center w-full">
+      <Avatar
+        src={getChampionIconSrc(summoner?.championName)}
+        alt={summoner?.summonerSpell1Name}
+        size={20}
+      />
+      <div className="ml-2 flex-1 min-w-0">
+        <span
+          className="block truncate"
+          style={{
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+          }}
+        >
+          {summoner.summonerName}
+        </span>
+      </div>
+    </div>
+  );
+};
 
-const HistoryBlock: React.FC<{ game: any }> = ({ game }) => {
+const HistoryBlock: React.FC<{ game: GameHistory }> = ({ game }) => {
   const timeAgo = game
     ? formatDistanceToNow(new Date(game.gameCreation), { addSuffix: true })
     : "";
