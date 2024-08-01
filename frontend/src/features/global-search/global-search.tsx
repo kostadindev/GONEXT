@@ -1,7 +1,13 @@
 import { Input, Select, Space } from "antd";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useNotification } from "../notifications/notification-context";
+
+interface Params extends Record<string, string | undefined> {
+  region?: string;
+  summoner?: string;
+  tagline?: string;
+}
 
 const options = [
   {
@@ -18,8 +24,25 @@ const { Search } = Input;
 
 export default function GlobalSearch() {
   const { setError } = useNotification();
-  const [region, setRegion] = useState("na"); // Default region
   const navigate = useNavigate();
+  const {
+    region: regionParam,
+    summoner: summonerParam,
+    tagline: taglineParam,
+  } = useParams<Params>();
+
+  const [region, setRegion] = useState<string>(regionParam || "na"); // Default region
+  const [searchedUser, setSearchedUser] = useState<string>(
+    summonerParam
+      ? `${summonerParam}${taglineParam ? `#${taglineParam}` : ""}`
+      : ""
+  );
+
+  useEffect(() => {
+    if (regionParam) setRegion(regionParam);
+    if (summonerParam && taglineParam)
+      setSearchedUser(`${summonerParam}#${taglineParam}`);
+  }, [regionParam, summonerParam, taglineParam]);
 
   const onSearch = (searchedUser: string) => {
     const [summoner, tagline] = searchedUser.split("#");
@@ -41,17 +64,17 @@ export default function GlobalSearch() {
     <Space>
       <Space.Compact size="large" style={{ width: "600px" }}>
         <Select
-          defaultValue="na"
+          value={region}
           options={options}
           size="large"
-          variant="filled"
           onChange={onRegionChange}
           style={{ width: "100px" }}
         />
         <Search
-          variant="filled"
+          value={searchedUser}
           placeholder="Doublelift#NA1"
           onSearch={onSearch}
+          onChange={(e) => setSearchedUser(e.target.value)}
           enterButton
           style={{ flex: 1 }}
         />
