@@ -3,15 +3,11 @@ import { Game, Summoner } from "./league-types";
 
 
 export const getChampionIconSrc = (championName: string) => {
-  return `https://ddragon.leagueoflegends.com/cdn/14.9.1/img/champion/${championName}.png`;
+  return `https://ddragon.leagueoflegends.com/cdn/14.4.1/img/champion/${championName}.png`;
 }
 
 export const getSummonerSpellIconSrc = (summonerSpellName: string) => {
-  return `https://ddragon.leagueoflegends.com/cdn/14.9.1/img/spell/${summonerSpellName}.png`
-}
-
-export const getItemIconSrc = (itemId: string) => {
-  return `https://ddragon.leagueoflegends.com/cdn/14.15.1/img/item/${itemId}.png`
+  return `https://ddragon.leagueoflegends.com/cdn/14.4.1/img/spell/${summonerSpellName}.png`
 }
 
 export const getTeams = (game: Game | null) => {

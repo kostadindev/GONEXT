@@ -79,11 +79,7 @@ app.get('/api/match-history', async (req: Request, res: Response) => {
     const matches = await Promise.all(matchIds.map(async (matchId) => {
       const match = await leagueService.getMatchById(matchId);
       const participants = leagueService.getParticipantsFromMatch(match);
-      let participant: any = match?.info?.participants.find(participant => participant?.puuid === puuid);
-      participant = {
-        ...participant, summonerSpell1Name: leagueService.getSummonerSpellName(participant.summoner1Id?.toString()),
-        summonerSpell2Name: leagueService.getSummonerSpellName(participant.summoner2Id?.toString())
-      }
+      const participant = match?.info?.participants.find(participant => participant?.puuid === puuid);
       const result = {
         win: participant?.win,
         gameCreation: match?.info?.gameCreation,
@@ -91,7 +87,6 @@ app.get('/api/match-history', async (req: Request, res: Response) => {
         gameMode: match?.info?.gameMode,
         matchId: match?.metadata?.matchId,
         queueName: match?.info?.queueName,
-        participant,
         participants
       }
       return result;
