@@ -9,7 +9,12 @@ export interface Summoner {
   summonerSpell1Name: string,
   summonerSpell2Name: string,
   teamId: Number,
-  puuid: string
+  puuid: string,
+  kills: number,
+  assists: number,
+  deaths: number,
+  summoner1Id: number,
+  summoner2Id: number
 }
 
 export interface Game {
@@ -40,5 +45,6 @@ export interface GameHistory {
   gameMode: string;
   matchId: string;
   queueName: string;
+  participant: Summoner;
   participants: Summoner[];
 };

@@ -70,11 +70,11 @@ export const Tips: React.FC<TipsProps> = ({
             {tipsInfo.map((tip, index) => (
               <Card
                 key={index}
-                actions={[
-                  <LikeOutlined key="like" />,
-                  <DislikeOutlined key="dislike" />,
-                  <EllipsisOutlined key="ellipsis" />,
-                ]}
+                // actions={[
+                //   <LikeOutlined key="like" />,
+                //   <DislikeOutlined key="dislike" />,
+                //   <EllipsisOutlined key="ellipsis" />,
+                // ]}
                 styles={{ body: { padding: 12 } }}
               >
                 <Meta title={tip.label} description={tip.text} />
