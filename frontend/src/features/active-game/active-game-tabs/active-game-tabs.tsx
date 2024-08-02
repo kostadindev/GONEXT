@@ -7,6 +7,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { GameOverview } from "./game-overview.tsx/game-overview";
 import { Allies } from "./allies/allies";
 import { Enemies } from "./enemies/enemies";
+import ChatComponent from "../../chat/chat";
 
 export const ActiveGameTabs = ({ game }: { game: Game | null }) => {
   const navigate = useNavigate();
@@ -32,8 +33,10 @@ export const ActiveGameTabs = ({ game }: { game: Game | null }) => {
 
   const items: MenuProps["items"] = [
     {
-      label: "Game Overview",
-      key: "overview",
+      label: "Infernal AI",
+      key: "chat",
+      icon: <OpenAIOutlined />,
+      // disabled: true,
     },
     {
       label: "Enemy Team",
@@ -56,10 +59,8 @@ export const ActiveGameTabs = ({ game }: { game: Game | null }) => {
       }),
     },
     {
-      label: "Infernal AI",
-      key: "app",
-      icon: <OpenAIOutlined />,
-      disabled: true,
+      label: "Game Overview",
+      key: "overview",
     },
   ];
 
@@ -74,6 +75,7 @@ export const ActiveGameTabs = ({ game }: { game: Game | null }) => {
       />
       <div className="flex flex-col p-5">
         {selectedView === "overview" && <GameOverview />}
+        {selectedView === "chat" && <ChatComponent />}
         {allies?.map((ally) => ally.puuid).includes(selectedView) && (
           <Allies
             summoners={game?.participants}
