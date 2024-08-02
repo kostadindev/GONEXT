@@ -16,11 +16,11 @@ const GamePhaseCard = ({
   description: string;
 }) => (
   <Card
-    actions={[
-      <LikeOutlined key="like" />,
-      <DislikeOutlined key="dislike" />,
-      <EllipsisOutlined key="ellipsis" />,
-    ]}
+  // actions={[
+  //   <LikeOutlined key="like" />,
+  //   <DislikeOutlined key="dislike" />,
+  //   <EllipsisOutlined key="ellipsis" />,
+  // ]}
   >
     <Meta title={title} description={description} />
   </Card>
@@ -48,12 +48,17 @@ export const GameOverview = () => {
 
   return (
     <div
-      className="w-1/2 mx-0 flex flex-col gap-2 overflow-y-auto"
+      className="w-full mx-0 flex flex-row gap-2 overflow-y-auto"
       style={{ height: "calc(77vh)" }}
     >
-      <GamePhaseCard title="Early Game" description={earlyGameDescription} />
-      <GamePhaseCard title="Mid Game" description={midGameDescription} />
-      <GamePhaseCard title="Late Game" description={lateGameDescription} />
+      <div className="w-1/2 flex flex-col gap-2">
+        <div className="bg-white p-4 rounded-lg">Hello World</div>
+      </div>
+      <div className="w-1/2 flex flex-col gap-2">
+        <GamePhaseCard title="Early Game" description={earlyGameDescription} />
+        <GamePhaseCard title="Mid Game" description={midGameDescription} />
+        <GamePhaseCard title="Late Game" description={lateGameDescription} />
+      </div>
     </div>
   );
 };

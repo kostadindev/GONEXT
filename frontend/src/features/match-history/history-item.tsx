@@ -8,7 +8,7 @@ import {
   getItemIconSrc,
 } from "../../libs/league/league-utils";
 
-const ITEM_ICON_SIZE = 25;
+const SMALL_ICON_SIZE = 25;
 
 const MiniSummonerDisplay: React.FC<{ summoner: Summoner }> = ({
   summoner,
@@ -17,7 +17,8 @@ const MiniSummonerDisplay: React.FC<{ summoner: Summoner }> = ({
     <Avatar
       src={getChampionIconSrc(summoner?.championName)}
       alt={summoner?.summonerSpell1Name}
-      size={20}
+      size={18}
+      shape="square"
     />
     <div className="ml-2 flex-1 min-w-0">
       <span
@@ -26,6 +27,7 @@ const MiniSummonerDisplay: React.FC<{ summoner: Summoner }> = ({
           whiteSpace: "nowrap",
           overflow: "hidden",
           textOverflow: "ellipsis",
+          color: "gray",
         }}
       >
         {summoner.summonerName}
@@ -39,13 +41,15 @@ const GameInfo: React.FC<{
   timeAgo: string;
   gameDurationString: string;
 }> = ({ game, timeAgo, gameDurationString }) => (
-  <div className="w-[100px] mb-3 md:mb-0">
-    <Typography.Title level={5} style={{ margin: 0 }}>
-      {game?.queueName}
-    </Typography.Title>
-    <div className="mb-3">{timeAgo}</div>
-    <div>{game?.win ? "Victory" : "Defeat"}</div>
-    <div>{gameDurationString}</div>
+  <div className="w-[120px] mb-3 md:mb-0">
+    <div>
+      <span className="font-medium">{game?.queueName}</span>
+      <div className="mb-3">{timeAgo}</div>
+    </div>
+    <div>
+      <div className="font-medium">{game?.win ? "Victory" : "Defeat"}</div>
+      <div>{gameDurationString}</div>
+    </div>
   </div>
 );
 
@@ -54,24 +58,26 @@ const ParticipantInfo: React.FC<{ game: GameHistory; kda: string }> = ({
   kda,
 }) => (
   <div className="w-[200px] flex items-left justify-center flex-col">
-    <div className="flex gap-1">
-      <Badge>
-        <Avatar
-          src={getChampionIconSrc(game?.participant?.championName)}
-          size="large"
-        />
-      </Badge>
-      <div className="flex flex-col">
-        <Avatar
-          src={getSummonerSpellIconSrc(game?.participant?.summonerSpell1Name)}
-          alt={game?.participant?.summonerSpell1Name}
-          size={20}
-        />
-        <Avatar
-          src={getSummonerSpellIconSrc(game?.participant?.summonerSpell2Name)}
-          alt={game?.participant?.summonerSpell2Name}
-          size={20}
-        />
+    <div className="w-[200px] flex gap-4">
+      <div className="flex gap-1">
+        <Badge>
+          <Avatar
+            src={getChampionIconSrc(game?.participant?.championName)}
+            size={50}
+          />
+        </Badge>
+        <div className="flex flex-col">
+          <Avatar
+            src={getSummonerSpellIconSrc(game?.participant?.summonerSpell1Name)}
+            alt={game?.participant?.summonerSpell1Name}
+            size={SMALL_ICON_SIZE}
+          />
+          <Avatar
+            src={getSummonerSpellIconSrc(game?.participant?.summonerSpell2Name)}
+            alt={game?.participant?.summonerSpell2Name}
+            size={SMALL_ICON_SIZE}
+          />
+        </div>
       </div>
       <div className="min-w-[80]">
         <div className="text-base flex justify-center items-center">
@@ -89,7 +95,7 @@ const ParticipantInfo: React.FC<{ game: GameHistory; kda: string }> = ({
           key={item}
           src={getItemIconSrc((game?.participant as any)[`item${item}`])}
           alt={(game?.participant as any)[`item${item}`]}
-          size={ITEM_ICON_SIZE}
+          size={SMALL_ICON_SIZE}
           shape="square"
         />
       ))}
@@ -127,7 +133,17 @@ export const HistoryItem: React.FC<{ game: GameHistory }> = ({ game }) => {
   ).toFixed(2)}:1 KDA`;
 
   return (
-    <Card className={`${borderColorClass}`} styles={{ body: { padding: 12 } }}>
+    <Card
+      className={`${borderColorClass}`}
+      styles={{
+        body: {
+          paddingLeft: 12,
+          paddingRight: 12,
+          paddingTop: 6,
+          paddingBottom: 6,
+        },
+      }}
+    >
       <div className="flex flex-col md:flex-row text-xs justify-between">
         <GameInfo
           game={game}
