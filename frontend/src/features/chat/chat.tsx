@@ -1,4 +1,4 @@
-import { Button } from "antd";
+import { Button, Avatar } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import React, {
   useState,
@@ -6,8 +6,11 @@ import React, {
   KeyboardEvent,
   useEffect,
   useRef,
+  useCallback,
 } from "react";
 import { SendOutlined } from "@ant-design/icons";
+import { OpenAIFilled, SmileOutlined } from "@ant-design/icons";
+import DefaultPrompts from "./default-prompts/default-prompts";
 
 interface Message {
   text: string;
@@ -20,6 +23,12 @@ const ChatComponent: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  const scrollToBottom = useCallback(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, []);
+
   const handleSendMessage = () => {
     setLoading(true);
     if (input.trim()) {
@@ -31,9 +40,10 @@ const ChatComponent: React.FC = () => {
       setTimeout(() => {
         setMessages((prevMessages) => [
           ...prevMessages,
-          { text: "This is a bot response", sender: "bot" },
+          { text: input, sender: "bot" },
         ]);
         setLoading(false);
+        scrollToBottom();
       }, 800);
     } else {
       setLoading(false);
@@ -48,33 +58,37 @@ const ChatComponent: React.FC = () => {
     if (e.key === "Enter") {
       e.preventDefault();
       handleSendMessage();
+      scrollToBottom();
     }
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      if (messagesEndRef.current) {
-        messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
-      }
-    }, 100);
-  }, [messages]);
+    scrollToBottom();
+  }, [messages, scrollToBottom]);
 
   return (
     <div className="flex justify-center">
       <div className="flex flex-col w-[800px]" style={{ height: "calc(77vh)" }}>
-        <div className="flex-1 overflow-auto p-4 bg-gray-100">
+        <DefaultPrompts></DefaultPrompts>
+        <div className="flex-1 overflow-auto p-4 h-full">
           {messages.map((msg, index) => (
             <div
               key={index}
-              className={`my-2 ${
-                msg.sender === "user" ? "text-right" : "text-left"
+              className={`my-2 flex ${
+                msg.sender === "user" ? "justify-start" : "justify-start"
               }`}
             >
+              {msg.sender === "bot" && (
+                <Avatar style={{ marginRight: 8 }} icon={<OpenAIFilled />} />
+              )}
+              {msg.sender === "user" && (
+                <Avatar style={{ marginRight: 8 }} icon={<SmileOutlined />} />
+              )}
               <div
                 className={`inline-block p-2 rounded-lg break-words ${
                   msg.sender === "user"
-                    ? "bg-blue-500 text-white max-w-[75%]"
-                    : "bg-gray-300 text-black max-w-full"
+                    ? "text-white bg-blue-500 max-w-[calc(100%-40px)]"
+                    : "text-black max-w-[calc(100%-40px)]"
                 }`}
               >
                 {msg.text}
@@ -83,7 +97,7 @@ const ChatComponent: React.FC = () => {
           ))}
           <div ref={messagesEndRef} />
         </div>
-        <div className="p-4 border-gray-200 flex gap-3">
+        <div className="p-1 border-gray-200 flex gap-3">
           <TextArea
             autoSize
             value={input}
@@ -99,6 +113,10 @@ const ChatComponent: React.FC = () => {
             onClick={handleSendMessage}
           />
         </div>
+        <span className="flex justify-center text-gray-500">
+          Infernal AI may display inaccurate info, including about statistics,
+          so double-check its responses.
+        </span>
       </div>
     </div>
   );

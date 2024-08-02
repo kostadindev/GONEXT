@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Menu, type MenuProps } from "antd";
-import { OpenAIOutlined } from "@ant-design/icons";
+import { OpenAIFilled } from "@ant-design/icons";
 import { Game, Summoner } from "../../../libs/league/league-types";
 import { getTeams } from "../../../libs/league/league-utils";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -35,7 +35,7 @@ export const ActiveGameTabs = ({ game }: { game: Game | null }) => {
     {
       label: "Infernal AI",
       key: "chat",
-      icon: <OpenAIOutlined />,
+      icon: <OpenAIFilled />,
       // disabled: true,
     },
     {
