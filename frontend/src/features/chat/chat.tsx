@@ -29,18 +29,20 @@ const ChatComponent: React.FC = () => {
     }
   }, []);
 
-  const handleSendMessage = () => {
+  const handleSendMessage = (message?: string) => {
     setLoading(true);
-    if (input.trim()) {
+    const textToSend = message || input;
+
+    if (textToSend.trim()) {
       setMessages((prevMessages) => [
         ...prevMessages,
-        { text: input, sender: "user" },
+        { text: textToSend, sender: "user" },
       ]);
       setInput("");
       setTimeout(() => {
         setMessages((prevMessages) => [
           ...prevMessages,
-          { text: input, sender: "bot" },
+          { text: textToSend, sender: "bot" },
         ]);
         setLoading(false);
         scrollToBottom();
@@ -69,7 +71,9 @@ const ChatComponent: React.FC = () => {
   return (
     <div className="flex justify-center">
       <div className="flex flex-col w-[800px]" style={{ height: "calc(77vh)" }}>
-        <DefaultPrompts></DefaultPrompts>
+        {messages?.length === 0 && (
+          <DefaultPrompts handleSendMessage={handleSendMessage} />
+        )}
         <div className="flex-1 overflow-auto p-4 h-full">
           {messages.map((msg, index) => (
             <div
@@ -110,7 +114,9 @@ const ChatComponent: React.FC = () => {
           <Button
             icon={<SendOutlined />}
             loading={loading}
-            onClick={handleSendMessage}
+            onClick={() => {
+              handleSendMessage();
+            }}
           />
         </div>
         <span className="flex justify-center text-gray-500">
