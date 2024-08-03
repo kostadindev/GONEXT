@@ -2,11 +2,12 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node src/server.ts",
     "dev": "nodemon --exec ts-node src/server.ts",
+    "cluster": "pm2 start src/server.ts -i max",
     "prestart": "tsc"
   },
   "keywords": [],
@@ -20,6 +21,7 @@
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "morgan": "^1.10.0",
+    "pm2": "^5.4.2",
     "tsoa": "^6.2.1"
   },
   "devDependencies": {
