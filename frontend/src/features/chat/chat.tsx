@@ -76,18 +76,13 @@ const ChatComponent: React.FC = () => {
         )}
         <div className="flex-1 overflow-auto p-4 h-full">
           {messages.map((msg, index) => (
-            <div
-              key={index}
-              className={`my-2 flex ${
-                msg.sender === "user" ? "justify-start" : "justify-start"
-              }`}
-            >
-              {msg.sender === "bot" && (
-                <Avatar style={{ marginRight: 8 }} icon={<OpenAIFilled />} />
-              )}
-              {msg.sender === "user" && (
-                <Avatar style={{ marginRight: 8 }} icon={<SmileOutlined />} />
-              )}
+            <div key={index} className={"my-2 flex pb-4"}>
+              <Avatar
+                style={{ marginRight: 8 }}
+                icon={
+                  msg.sender === "bot" ? <OpenAIFilled /> : <SmileOutlined />
+                }
+              />
               <div
                 className={`inline-block p-2 rounded-lg break-words ${
                   msg.sender === "user"

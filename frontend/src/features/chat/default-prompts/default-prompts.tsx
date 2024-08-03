@@ -12,18 +12,18 @@ interface PromptCardProps {
 
 const PromptCard: React.FC<PromptCardProps> = ({ description, onClick }) => (
   <div
-    className="border rounded-2xl bg-white p-4 shadow-md hover:bg-gray-100 hover:shadow-lg transition-all duration-300 cursor-pointer"
+    className="border rounded-2xl bg-white p-4 shadow-md hover:bg-gray-100 hover:shadow-lg transition-all duration-300 cursor-pointer flex items-center justify-center h-full"
     onClick={onClick}
   >
-    <span className="text-center block mb-4 text-gray-500">{description}</span>
+    <span className="text-center text-gray-500">{description}</span>
   </div>
 );
 
 const DEFAULT_PROMPTS = [
-  "Get a detailed schedule to start your day productively.",
-  "Steps and tips to create a personal website from scratch.",
-  "Improve and streamline your daily work processes.",
-  "Guidelines and tips for writing better React code.",
+  "Give me game plan for early, mid, and late game.",
+  "What items should I build?",
+  "What are Leona's most played champions?",
+  "Who is on a lose streak from their team?",
 ];
 
 interface DefaultPromptsProps {
