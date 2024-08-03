@@ -6,4 +6,4 @@ const matchesRouter = express.Router();
 matchesRouter.get('/api/matches/active', getActiveMatch);
 matchesRouter.get('/api/matches/history', getMatchHistory);
 
-module.exports = matchesRouter;
+export { matchesRouter };

@@ -1,11 +1,10 @@
 
 
 import express from 'express';
-const { getSummonerStats } = require('./summoners.controller');
+import { getSummonerStats } from './summoners.controller';
 
 const summonersRouter = express.Router();
 
-
 summonersRouter.get('/api/summoners/stats', getSummonerStats);
 
-module.exports = summonersRouter;
+export { summonersRouter };

@@ -7,4 +7,4 @@ const championsRouter = express.Router();
 
 championsRouter.get('/api/champions/matchup', getMatchupTips);
 
-module.exports = championsRouter;
+export { championsRouter };
