@@ -9,21 +9,25 @@ import React, {
   useCallback,
 } from "react";
 import { SendOutlined } from "@ant-design/icons";
-import { OpenAIFilled, SmileOutlined } from "@ant-design/icons";
+import { OpenAIFilled } from "@ant-design/icons";
 import DefaultPrompts from "./default-prompts/default-prompts";
-import Cookies from "js-cookie";
-import { jwtDecode } from "jwt-decode";
+import {
+  createSession,
+  addMessageToSession,
+} from "../../libs/apis/sessions-api";
 
 interface Message {
-  text: string;
-  sender: "user" | "bot";
+  content: string;
+  role: "user" | "system";
 }
 
 const ChatComponent: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const [sessionId, setSessionId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const hasInitialized = useRef(false);
 
   const scrollToBottom = useCallback(() => {
     if (messagesEndRef.current) {
@@ -31,23 +35,52 @@ const ChatComponent: React.FC = () => {
     }
   }, []);
 
-  const handleSendMessage = (message?: string) => {
+  useEffect(() => {
+    const initializeSession = async () => {
+      if (!hasInitialized.current) {
+        hasInitialized.current = true;
+        const newSession = await createSession({ name: "New Session" });
+        if (newSession) {
+          setSessionId(newSession._id);
+        }
+      }
+    };
+    initializeSession();
+  }, []);
+
+  const handleSendMessage = async (message?: string) => {
     setLoading(true);
     const textToSend = message || input;
 
     if (textToSend.trim()) {
       setMessages((prevMessages) => [
         ...prevMessages,
-        { text: textToSend, sender: "user" },
+        { content: textToSend, role: "user" },
       ]);
       setInput("");
-      setTimeout(() => {
+
+      if (sessionId) {
+        await addMessageToSession(sessionId, {
+          content: textToSend,
+          role: "user",
+        });
+      }
+
+      setTimeout(async () => {
+        const botResponse = "This is a bot response"; // Replace this with actual bot logic
         setMessages((prevMessages) => [
           ...prevMessages,
-          { text: textToSend, sender: "bot" },
+          { content: botResponse, role: "system" },
         ]);
         setLoading(false);
         scrollToBottom();
+
+        if (sessionId) {
+          await addMessageToSession(sessionId, {
+            content: botResponse,
+            role: "system",
+          });
+        }
       }, 800);
     } else {
       setLoading(false);
@@ -79,25 +112,20 @@ const ChatComponent: React.FC = () => {
         <div className="flex-1 overflow-auto p-4 h-full">
           {messages.map((msg, index) => (
             <div key={index} className={"my-2 flex pb-4"}>
-              {msg.sender === "bot" ? (
-                <Avatar
-                  style={{ marginRight: 8 }}
-                  icon={
-                    msg.sender === "bot" ? <OpenAIFilled /> : <SmileOutlined />
-                  }
-                />
+              {msg.role === "system" ? (
+                <Avatar style={{ marginRight: 8 }} icon={<OpenAIFilled />} />
               ) : (
                 <Avatar style={{ marginRight: 8 }} src={""} />
               )}
 
               <div
                 className={`inline-block p-2 rounded-lg break-words ${
-                  msg.sender === "user"
+                  msg.role === "user"
                     ? "text-white bg-blue-500 max-w-[calc(100%-40px)]"
                     : "text-black max-w-[calc(100%-40px)]"
                 }`}
               >
-                {msg.text}
+                {msg.content}
               </div>
             </div>
           ))}

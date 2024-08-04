@@ -48,7 +48,8 @@ class AuthController {
           name: user.name,
           picture: user.picture,
           givenName: user.givenName,
-          familyName: user.familyName
+          familyName: user.familyName,
+          _id: user._id
         },
         JWT_SECRET,
         { expiresIn: '1d' }
