@@ -1,10 +1,8 @@
-
-
 import express from 'express';
-import { getSummonerStats } from './summoners.controller';
+import SummonersController from './summoners.controller';
 
 const summonersRouter = express.Router();
 
-summonersRouter.get('/api/summoners/stats', getSummonerStats);
+summonersRouter.get('/api/summoners/stats', SummonersController.getSummonerStats);
 
-export { summonersRouter };
+export default summonersRouter;

@@ -4,7 +4,7 @@ import cors from "cors";
 import morgan from "morgan";
 
 import { matchesRouter } from "./routes/matches/matches.router";
-import { summonersRouter } from "./routes/summoners/summoners.router";
+import summonersRouter from "./routes/summoners/summoners.router";
 import championsRouter from "./routes/champions/champions.router";
 import sessionRouter from "./routes/sessions/sessions.routes";
 
