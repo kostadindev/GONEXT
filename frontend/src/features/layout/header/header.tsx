@@ -4,7 +4,6 @@ import GlobalSearch from "../../global-search/global-search";
 import { QuickSearch } from "../../quick-search/quick-search";
 import { GoogleLogin } from "@react-oauth/google";
 import {
-  fetchProtectedData,
   fetchUser,
   handleLoginSuccess,
   handleLogout,
@@ -49,13 +48,6 @@ export const Header: React.FC = () => {
         <GlobalSearch />
         <span>or</span>
         <QuickSearch />
-        <div
-          key="fetchData"
-          onClick={fetchProtectedData}
-          style={{ cursor: "pointer" }}
-        >
-          Fetch Protected Data
-        </div>
       </div>
       <div className="flex items-center gap-3">
         {user ? (

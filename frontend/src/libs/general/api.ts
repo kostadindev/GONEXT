@@ -69,14 +69,3 @@ export const handleLogout = async (): Promise<void> => {
     console.error("Error during logout:", error);
   }
 };
-
-// Function to fetch protected data
-export const fetchProtectedData = async (): Promise<any> => {
-  try {
-    const response = await axios.get(`${BASE_URL}/protected/data`, { withCredentials: true });
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching protected data:", error);
-    return null;
-  }
-};
