@@ -1,6 +1,6 @@
 import leagueRepository from "../repositories/league/league.repository";
 
-export class LeagueService {
+class LeagueService {
   private championsDict: Record<string, string> = {};
   private summonerSpellsDict: Record<string, string | undefined> = {};
   private queuesDict: Record<string, string> = {};

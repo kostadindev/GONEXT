@@ -1,5 +1,4 @@
-import { AIService } from '../../services/ai.service';
-const aiService = new AIService();
+import aiService from "../../services/ai.service";
 
 class ChampionsRepository {
   async getMatchupTips(summonerChampion: string, enemyChampion: string): Promise<any> {

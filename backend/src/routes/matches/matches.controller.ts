@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { LeagueService } from '../../services/league.service';
+import leagueService from '../../services/league.service';
 import path from 'path';
 import fs from 'fs';
 import dotenv from 'dotenv';
@@ -7,7 +7,6 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const filePath = path.join(__dirname, '..', '..', '..', 'mocks', 'active_game.json');
-const leagueService = new LeagueService();
 
 function getActiveMatch(req: Request, res: Response): void {
   fs.readFile(filePath, 'utf8', (err, data) => {
@@ -34,8 +33,8 @@ async function getMatchHistory(req: Request, res: Response) {
   }
 
   try {
-    const matchIds = await leagueService.getMatchesIds(puuid) || [];
-    const matches = await Promise.all(matchIds.map(async (matchId) => {
+    const matchIds = await leagueService.getMatchesIds(puuid) || [] as string[];
+    const matches = await Promise.all(matchIds.map(async (matchId: any) => {
       const match = await leagueService.getMatchById(matchId);
       const participants = leagueService.getParticipantsFromMatch(match);
       let participant = match?.info?.participants.find((p: any) => p?.puuid === puuid);
