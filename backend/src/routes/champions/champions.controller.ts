@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import championsService from '../../services/champions.service';
+import aiService from '../../services/ai.service';
 
 class ChampionsController {
   async getMatchupTips(req: Request, res: Response) {
@@ -8,7 +8,7 @@ class ChampionsController {
       return res.status(400).send('Both summonerChampion and enemyChampion must be provided.');
     }
     try {
-      const tips = await championsService.getMatchupTips(summonerChampion, enemyChampion);
+      const tips = await aiService.getMatchupTips(summonerChampion, enemyChampion);
       res.json(tips);
     } catch (error) {
       res.status(500).send("Unknown error");
