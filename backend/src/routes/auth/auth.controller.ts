@@ -39,9 +39,17 @@ class AuthController {
         payload.family_name!
       );
 
-      // Create a JWT for your application
+      // Create a JWT for your application with the entire user object
       const appToken = jwt.sign(
-        { sub: googleId, name: user.name, picture: user.picture },
+        {
+          sub: user.googleId,
+          email: user.email,
+          emailVerified: user.emailVerified,
+          name: user.name,
+          picture: user.picture,
+          givenName: user.givenName,
+          familyName: user.familyName
+        },
         JWT_SECRET,
         { expiresIn: '1d' }
       );
@@ -70,7 +78,7 @@ class AuthController {
 
     try {
       const decoded = jwt.verify(token, JWT_SECRET);
-      res.status(200).json({ token: decoded });
+      res.status(200).json({ user: decoded });
     } catch (error) {
       res.status(401).send('Invalid token');
     }

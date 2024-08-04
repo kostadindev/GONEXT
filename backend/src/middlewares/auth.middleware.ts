@@ -13,9 +13,7 @@ export const authenticateToken = (req: any, res: Response, next: NextFunction) =
     if (err) {
       return res.status(403).send('Invalid token');
     }
-
     req.user = user;
-    console.log(user);
     next();
   });
 };
