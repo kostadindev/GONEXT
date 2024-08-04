@@ -1,9 +1,8 @@
-// controllers/auth.controller.ts
-
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { OAuth2Client } from 'google-auth-library';
 import dotenv from "dotenv";
+import authService from '../../services/auth.service';
 
 dotenv.config();
 
@@ -23,11 +22,26 @@ class AuthController {
       });
 
       const payload = ticket.getPayload();
-      const userid = payload?.sub;
+      const googleId = payload?.sub;
+
+      if (!googleId) {
+        throw new Error('Invalid Google ID');
+      }
+
+      // Find or create the user
+      const user = await authService.findOrCreateUser(
+        googleId,
+        payload.email!,
+        payload.email_verified!,
+        payload.name!,
+        payload.picture!,
+        payload.given_name!,
+        payload.family_name!
+      );
 
       // Create a JWT for your application
       const appToken = jwt.sign(
-        { sub: userid, name: payload?.name, picture: payload?.picture },
+        { sub: googleId, name: user.name, picture: user.picture },
         JWT_SECRET,
         { expiresIn: '1d' }
       );
@@ -51,11 +65,12 @@ class AuthController {
 
     if (!token) {
       res.status(401).send('No token provided');
+      return;
     }
 
     try {
-      jwt.verify(token, JWT_SECRET);
-      res.status(200).json({ token });
+      const decoded = jwt.verify(token, JWT_SECRET);
+      res.status(200).json({ token: decoded });
     } catch (error) {
       res.status(401).send('Invalid token');
     }
