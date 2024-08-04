@@ -11,6 +11,8 @@ import React, {
 import { SendOutlined } from "@ant-design/icons";
 import { OpenAIFilled, SmileOutlined } from "@ant-design/icons";
 import DefaultPrompts from "./default-prompts/default-prompts";
+import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
 
 interface Message {
   text: string;
@@ -22,6 +24,7 @@ const ChatComponent: React.FC = () => {
   const [input, setInput] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const token: any = jwtDecode(Cookies.get("token") || "");
 
   const scrollToBottom = useCallback(() => {
     if (messagesEndRef.current) {
@@ -77,12 +80,17 @@ const ChatComponent: React.FC = () => {
         <div className="flex-1 overflow-auto p-4 h-full">
           {messages.map((msg, index) => (
             <div key={index} className={"my-2 flex pb-4"}>
-              <Avatar
-                style={{ marginRight: 8 }}
-                icon={
-                  msg.sender === "bot" ? <OpenAIFilled /> : <SmileOutlined />
-                }
-              />
+              {msg.sender === "bot" ? (
+                <Avatar
+                  style={{ marginRight: 8 }}
+                  icon={
+                    msg.sender === "bot" ? <OpenAIFilled /> : <SmileOutlined />
+                  }
+                />
+              ) : (
+                <Avatar style={{ marginRight: 8 }} src={token?.picture} />
+              )}
+
               <div
                 className={`inline-block p-2 rounded-lg break-words ${
                   msg.sender === "user"
