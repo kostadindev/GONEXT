@@ -39,8 +39,9 @@ const DefaultPrompts: React.FC<DefaultPromptsProps> = ({
         <Avatar style={{ marginRight: 8 }} size={60} icon={<OpenAIFilled />} />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {DEFAULT_PROMPTS.map((prompt) => (
+        {DEFAULT_PROMPTS.map((prompt, index) => (
           <PromptCard
+            key={index}
             description={prompt}
             onClick={() => handleSendMessage(prompt)}
           />

@@ -20,6 +20,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "google-auth-library": "^9.13.0",
     "mongodb": "^6.8.0",
     "mongoose": "^8.5.2",
     "morgan": "^1.10.0",

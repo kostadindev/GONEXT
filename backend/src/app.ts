@@ -6,8 +6,8 @@ import morgan from "morgan";
 import { matchesRouter } from "./routes/matches/matches.router";
 import summonersRouter from "./routes/summoners/summoners.router";
 import championsRouter from "./routes/champions/champions.router";
-import sessionRouter from "./routes/sessions/sessions.routes";
-
+import sessionRouter from "./routes/sessions/sessions.routes";// Import the protected router
+import protectedRouter from "./routes/protected/protected.routes";
 
 // Initialize environment variables
 dotenv.config();
@@ -24,5 +24,6 @@ app.use(matchesRouter);
 app.use(summonersRouter);
 app.use(championsRouter);
 app.use(sessionRouter);
+app.use(protectedRouter); // Use the protected router
 
 export default app;
