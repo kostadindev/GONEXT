@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Layout } from "antd";
+import { Avatar, Button, Layout } from "antd";
 import GlobalSearch from "../../global-search/global-search";
 import { QuickSearch } from "../../quick-search/quick-search";
 import { GoogleLogin } from "@react-oauth/google";
@@ -92,7 +92,10 @@ export const Header: React.FC = () => {
               shape="round"
               onClick={handleLogout}
             >
-              <div className="flex gap-3 items-center h-full">Logout</div>
+              <div className="flex gap-3 items-center h-full">
+                {user.picture && <Avatar src={user.picture} size={30} />}
+                <span>Log out</span>
+              </div>
             </Button>
           </>
         ) : (
