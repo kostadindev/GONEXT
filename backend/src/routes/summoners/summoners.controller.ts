@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import SummonersService from '../../services/summoners.service';
+import leagueService from '../../services/league.service';
 
 class SummonersController {
   async getSummonerStats(req: Request, res: Response) {
@@ -11,7 +11,7 @@ class SummonersController {
     }
 
     try {
-      const stats = await SummonersService.getSummonerStats(puuid);
+      const stats = await leagueService.getSummonerStats(puuid);
       if (stats) {
         res.json(stats);
       } else {

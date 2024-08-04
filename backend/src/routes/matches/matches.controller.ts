@@ -38,7 +38,7 @@ async function getMatchHistory(req: Request, res: Response) {
     const matches = await Promise.all(matchIds.map(async (matchId) => {
       const match = await leagueService.getMatchById(matchId);
       const participants = leagueService.getParticipantsFromMatch(match);
-      let participant = match?.info?.participants.find(p => p?.puuid === puuid);
+      let participant = match?.info?.participants.find((p: any) => p?.puuid === puuid);
 
       if (participant) {
         participant = {
