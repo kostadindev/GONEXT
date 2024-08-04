@@ -7,7 +7,7 @@ import {
   LikeOutlined,
 } from "@ant-design/icons";
 import Meta from "antd/es/card/Meta";
-import { getMatchupTips } from "../../libs/league/league-apis";
+import { getMatchupTips } from "../../libs/general/api";
 
 interface TipsProps {
   searchedSummoner: Summoner;

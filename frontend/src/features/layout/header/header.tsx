@@ -3,9 +3,12 @@ import { Avatar, Button, Layout } from "antd";
 import GlobalSearch from "../../global-search/global-search";
 import { QuickSearch } from "../../quick-search/quick-search";
 import { GoogleLogin } from "@react-oauth/google";
-import { jwtDecode } from "jwt-decode";
-import axios from "axios";
-import Cookies from "js-cookie";
+import {
+  fetchProtectedData,
+  fetchUser,
+  handleLoginSuccess,
+  handleLogout,
+} from "../../../libs/general/api";
 
 interface DecodedToken {
   name: string;
@@ -15,58 +18,29 @@ interface DecodedToken {
 
 export const Header: React.FC = () => {
   const [user, setUser] = useState<DecodedToken | null>(null);
-  const [token, setToken] = useState<string | null>(
-    Cookies.get("token") || null
-  );
 
   useEffect(() => {
-    if (token) {
-      try {
-        const decoded: DecodedToken = jwtDecode(token);
-        setUser(decoded);
-      } catch (error) {
-        console.error("Error decoding token:", error);
-      }
-    }
-  }, [token]);
+    const getUser = async () => {
+      const userData = await fetchUser();
+      setUser(userData);
+    };
 
-  const handleLoginSuccess = (credentialResponse: any) => {
+    getUser();
+  }, []);
+
+  const onLoginSuccess = async (credentialResponse: any) => {
     const token = credentialResponse.credential;
-    setToken(token);
-    Cookies.set("token", token, { expires: 1 }); // Expires in 1 day
-
-    try {
-      const decoded: DecodedToken = jwtDecode(token);
-      setUser(decoded);
-      console.log("Login Success:", credentialResponse);
-      console.log("Decoded Token:", decoded);
-    } catch (error) {
-      console.error("Error decoding token:", error);
-    }
+    const decoded = await handleLoginSuccess(token);
+    setUser(decoded);
   };
 
-  const handleLoginError = () => {
+  const onLoginError = () => {
     console.log("Login Failed");
   };
 
-  const handleLogout = () => {
+  const onLogout = async () => {
+    await handleLogout();
     setUser(null);
-    setToken(null);
-    Cookies.remove("token");
-    console.log("Logged out");
-  };
-
-  const fetchProtectedData = async () => {
-    try {
-      const response = await axios.get("http://localhost:8000/protected", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      console.log("Protected data:", response.data);
-    } catch (error) {
-      console.error("Error fetching protected data:", error);
-    }
   };
 
   return (
@@ -75,13 +49,13 @@ export const Header: React.FC = () => {
         <GlobalSearch />
         <span>or</span>
         <QuickSearch />
-        {/* <div
+        <div
           key="fetchData"
           onClick={fetchProtectedData}
           style={{ cursor: "pointer" }}
         >
           Fetch Protected Data
-        </div> */}
+        </div>
       </div>
       <div className="flex items-center gap-3">
         {user ? (
@@ -90,7 +64,7 @@ export const Header: React.FC = () => {
               type="primary"
               size="large"
               shape="round"
-              onClick={handleLogout}
+              onClick={onLogout}
             >
               <div className="flex gap-3 items-center h-full">
                 {user.picture && <Avatar src={user.picture} size={30} />}
@@ -100,12 +74,12 @@ export const Header: React.FC = () => {
           </>
         ) : (
           <GoogleLogin
-            onSuccess={handleLoginSuccess}
+            onSuccess={onLoginSuccess}
             theme="filled_blue"
             text={undefined}
             useOneTap
             shape="circle"
-            onError={handleLoginError}
+            onError={onLoginError}
           />
         )}
       </div>

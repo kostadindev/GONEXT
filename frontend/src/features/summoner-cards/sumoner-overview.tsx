@@ -5,7 +5,7 @@ import {
   getSummonerSpellIconSrc,
   getWinRateString,
 } from "../../libs/league/league-utils";
-import { getSummonerStats } from "../../libs/league/league-apis";
+import { getSummonerStats } from "../../libs/general/api";
 import { Card, Avatar, Badge, Typography, theme, Spin } from "antd";
 
 interface SummonerOverviewProps {

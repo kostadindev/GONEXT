@@ -24,7 +24,6 @@ const ChatComponent: React.FC = () => {
   const [input, setInput] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const token: any = jwtDecode(Cookies.get("token") || "");
 
   const scrollToBottom = useCallback(() => {
     if (messagesEndRef.current) {
@@ -88,7 +87,7 @@ const ChatComponent: React.FC = () => {
                   }
                 />
               ) : (
-                <Avatar style={{ marginRight: 8 }} src={token?.picture} />
+                <Avatar style={{ marginRight: 8 }} src={""} />
               )}
 
               <div

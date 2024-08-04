@@ -1,5 +1,5 @@
 import { Content } from "antd/es/layout/layout";
-import { getActiveGame } from "../../libs/league/league-apis";
+import { getActiveGame } from "../../libs/general/api";
 import { useEffect, useState } from "react";
 import { Game, Summoner } from "../../libs/league/league-types";
 import { InGameSummoner } from "../summoner-cards/in-game-summoner";

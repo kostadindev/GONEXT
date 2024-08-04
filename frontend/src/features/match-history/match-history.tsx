@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Spin } from "antd";
 import { GameHistory, Summoner } from "../../libs/league/league-types";
-import { getMatchHistory } from "../../libs/league/league-apis";
+import { getMatchHistory } from "../../libs/general/api";
 import { HistoryItem } from "./history-item";
 
 interface MatchHistoryProps {

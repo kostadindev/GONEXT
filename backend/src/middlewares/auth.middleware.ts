@@ -1,37 +1,21 @@
 import { Request, Response, NextFunction } from 'express';
-import { OAuth2Client } from 'google-auth-library';
-import dotenv from 'dotenv';
+import jwt from 'jsonwebtoken';
+const JWT_SECRET = process.env.JWT_SECRET;
 
-// Load environment variables from .env file
-dotenv.config();
-
-// Initialize OAuth2 client with Google client ID
-const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID || '');
-
-// Extend the Express Request interface to include user information
-interface CustomRequest extends Request {
-  user?: any;
-}
-
-// Middleware to authenticate the token
-export const authenticateToken = async (req: CustomRequest, res: Response, next: NextFunction) => {
-  const authHeader = req.headers.authorization;
-  const token = authHeader?.split(' ')[1];
+export const authenticateToken = (req: any, res: Response, next: NextFunction) => {
+  const token = req.cookies.token;
 
   if (!token) {
-    return res.status(401).json({ error: 'Access token required' });
+    return res.status(401).send('No token provided');
   }
 
-  try {
-    const ticket = await client.verifyIdToken({
-      idToken: token,
-      audience: process.env.GOOGLE_CLIENT_ID,
-    });
+  jwt.verify(token, JWT_SECRET, (err, user) => {
+    if (err) {
+      return res.status(403).send('Invalid token');
+    }
 
-    req.user = ticket.getPayload(); // Attach user info to request object
+    req.user = user;
+    console.log(user);
     next();
-  } catch (error) {
-    console.error('Token verification failed:', error);
-    res.status(403).json({ error: 'Invalid or expired token' });
-  }
+  });
 };
