@@ -1,10 +1,8 @@
-
-
 import express from 'express';
-import { getMatchupTips } from './champions.controller';
+import championsController from './champions.controller';
 
 const championsRouter = express.Router();
 
-championsRouter.get('/api/champions/matchup', getMatchupTips);
+championsRouter.get('/api/champions/matchup', championsController.getMatchupTips);
 
-export { championsRouter };
+export default championsRouter;
