@@ -1,25 +1,33 @@
-import { ISession } from "../repositories/sessions/sessions.mongo";
-import sessionRepository from "../repositories/sessions/sessions.repository";
+import sessionRepository from '../repositories/sessions/sessions.repository';
+import { ISession, IMessage } from '../types/sessions.types';
 
 class SessionService {
   async fetchAllSessions(): Promise<ISession[]> {
-    return sessionRepository.getAllSessions();
+    return await sessionRepository.getAllSessions();
   }
 
   async fetchSessionById(id: string): Promise<ISession | null> {
-    return sessionRepository.getSessionById(id);
+    return await sessionRepository.getSessionById(id);
   }
 
   async addSession(name: string): Promise<ISession> {
-    return sessionRepository.createSession(name);
+    return await sessionRepository.createSession(name);
   }
 
   async updateSession(id: string, name: string): Promise<ISession | null> {
-    return sessionRepository.updateSession(id, name);
+    return await sessionRepository.updateSession(id, name);
   }
 
   async deleteSession(id: string): Promise<ISession | null> {
-    return sessionRepository.deleteSession(id);
+    return await sessionRepository.deleteSession(id);
+  }
+
+  async addMessage(sessionId: string, message: IMessage): Promise<ISession | null> {
+    return await sessionRepository.addMessage(sessionId, message);
+  }
+
+  async updateMessage(sessionId: string, messageId: string, updatedContent: string): Promise<ISession | null> {
+    return await sessionRepository.updateMessage(sessionId, messageId, updatedContent);
   }
 }
 

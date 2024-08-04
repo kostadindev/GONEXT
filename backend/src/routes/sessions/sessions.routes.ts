@@ -18,4 +18,10 @@ sessionRouter.put('/api/sessions/:id', sessionsController.updateSession);
 // Route to delete a session by ID
 sessionRouter.delete('/api/sessions/:id', sessionsController.deleteSession);
 
+// Route to add a message to a session
+sessionRouter.post('/api/sessions/:sessionId/messages', sessionsController.addMessage);
+
+// Route to update a message in a session
+sessionRouter.put('/api/sessions/:sessionId/messages/:messageId', sessionsController.updateMessage)
+
 export default sessionRouter;
