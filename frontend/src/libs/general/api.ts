@@ -40,9 +40,7 @@ export const getMatchupTips = async (summonerChampion: string, enemyChampion: st
 export const fetchUser = async (): Promise<any> => {
   try {
     const response = await axios.get(`${BASE_URL}/auth/user`, { withCredentials: true });
-    const { token } = response.data;
-    const decoded = jwtDecode(token);
-    return decoded;
+    return response?.data?.user;
   } catch (error) {
     console.error("Error fetching user:", error);
     return null;

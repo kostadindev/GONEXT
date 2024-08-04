@@ -29,8 +29,8 @@ export const Header: React.FC = () => {
 
   const onLoginSuccess = async (credentialResponse: any) => {
     const token = credentialResponse.credential;
-    const decoded = await handleLoginSuccess(token);
-    setUser(decoded);
+    const user = await handleLoginSuccess(token);
+    setUser(user);
   };
 
   const onLoginError = () => {
