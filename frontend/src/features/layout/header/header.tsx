@@ -7,7 +7,7 @@ import {
   fetchUser,
   handleLoginSuccess,
   handleLogout,
-} from "../../../libs/general/api";
+} from "../../../libs/apis/auth-api";
 
 interface DecodedToken {
   name: string;

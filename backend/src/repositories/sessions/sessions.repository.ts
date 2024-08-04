@@ -3,41 +3,42 @@ import Session from './sessions.mongo';
 import { IMessage, ISession } from '../../types/sessions.types';
 
 class SessionRepository {
-  async getAllSessions() {
+  async getAllSessions(userId: string) {
     try {
-      return await Session.find({}).exec();
+      return await Session.find({ userId }).exec();
     } catch (error) {
       throw new Error(`Error fetching sessions: ${error}`);
     }
   }
 
-  async getSessionById(id: string) {
+  async getSessionById(id: string, userId: string) {
     try {
-      return await Session.findById(id).exec();
+      return await Session.findOne({ _id: id, userId }).exec();
     } catch (error) {
       throw new Error(`Error fetching session by ID: ${error}`);
     }
   }
 
-  async createSession(name: string) {
+  async createSession(name: string, userId: string) {
     try {
       const creationTimestamp = new Date();
       return await Session.create({
-        name: name,
+        name,
         createdAt: creationTimestamp,
         modifiedAt: creationTimestamp,
-        messages: []
+        messages: [],
+        userId
       });
     } catch (error) {
       throw new Error(`Error creating session: ${error}`);
     }
   }
 
-  async updateSession(id: string, name: string) {
+  async updateSession(id: string, name: string, userId: string) {
     try {
-      return await Session.findByIdAndUpdate(
-        id,
-        { name: name, modifiedAt: new Date() },
+      return await Session.findOneAndUpdate(
+        { _id: id, userId },
+        { name, modifiedAt: new Date() },
         { new: true } // Return the updated document
       ).exec();
     } catch (error) {
@@ -45,17 +46,17 @@ class SessionRepository {
     }
   }
 
-  async deleteSession(id: string) {
+  async deleteSession(id: string, userId: string) {
     try {
-      return await Session.findByIdAndDelete(id).exec();
+      return await Session.findOneAndDelete({ _id: id, userId }).exec();
     } catch (error) {
       throw new Error(`Error deleting session: ${error}`);
     }
   }
 
-  async addMessage(sessionId: string, message: IMessage) {
+  async addMessage(sessionId: string, message: IMessage, userId: string) {
     try {
-      const session = await Session.findById(sessionId);
+      const session = await Session.findOne({ _id: sessionId, userId });
       if (!session) {
         throw new Error(`Session not found with ID: ${sessionId}`);
       }
@@ -67,9 +68,9 @@ class SessionRepository {
     }
   }
 
-  async updateMessage(sessionId: string, messageId: string, updatedContent: string): Promise<ISession | null> {
+  async updateMessage(sessionId: string, messageId: string, updatedContent: string, userId: string): Promise<ISession | null> {
     try {
-      const session = await Session.findById(sessionId);
+      const session = await Session.findOne({ _id: sessionId, userId });
       if (!session) {
         throw new Error(`Session not found with ID: ${sessionId}`);
       }

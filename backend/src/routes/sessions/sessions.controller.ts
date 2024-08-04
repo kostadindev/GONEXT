@@ -1,21 +1,30 @@
 import { Request, Response } from 'express';
-import SessionService from '../../services/sessions.service';
+import sessionService from '../../services/sessions.service';
 import { IMessage } from '../../types/sessions.types';
+import { AuthenticatedRequest } from '../../types/misc.types';
 
 class SessionController {
-  async getAllSessions(req: Request, res: Response) {
+  async getAllSessions(req: AuthenticatedRequest, res: Response) {
     try {
-      const sessions = await SessionService.fetchAllSessions();
+      const userId = req.user?.id; // Extract userId from request
+      if (!userId) {
+        return res.status(401).json({ message: 'User not authenticated' });
+      }
+      const sessions = await sessionService.fetchAllSessions(userId);
       res.status(200).json(sessions);
     } catch (error) {
       res.status(500).json({ error: error });
     }
   }
 
-  async getSessionById(req: Request, res: Response) {
+  async getSessionById(req: AuthenticatedRequest, res: Response) {
     const { id } = req.params;
     try {
-      const session = await SessionService.fetchSessionById(id);
+      const userId = req.user?.id; // Extract userId from request
+      if (!userId) {
+        return res.status(401).json({ message: 'User not authenticated' });
+      }
+      const session = await sessionService.fetchSessionById(id, userId);
       if (session) {
         res.status(200).json(session);
       } else {
@@ -26,24 +35,32 @@ class SessionController {
     }
   }
 
-  async createSession(req: Request, res: Response) {
+  async createSession(req: AuthenticatedRequest, res: Response) {
     try {
       const { name } = req.body;
+      const userId = req.user?.id; // Extract userId from request
+      if (!userId) {
+        return res.status(401).json({ message: 'User not authenticated' });
+      }
       if (!name) {
         return res.status(400).json({ message: 'Name is required' });
       }
-      const newSession = await SessionService.addSession(name);
+      const newSession = await sessionService.addSession(name, userId);
       res.status(201).json(newSession);
     } catch (error) {
       res.status(500).json({ error: error });
     }
   }
 
-  async updateSession(req: Request, res: Response) {
+  async updateSession(req: AuthenticatedRequest, res: Response) {
     const { id } = req.params;
     const { name } = req.body;
     try {
-      const updatedSession = await SessionService.updateSession(id, name);
+      const userId = req.user?.id; // Extract userId from request
+      if (!userId) {
+        return res.status(401).json({ message: 'User not authenticated' });
+      }
+      const updatedSession = await sessionService.updateSession(id, name, userId);
       if (updatedSession) {
         res.status(200).json(updatedSession);
       } else {
@@ -54,10 +71,14 @@ class SessionController {
     }
   }
 
-  async deleteSession(req: Request, res: Response) {
+  async deleteSession(req: AuthenticatedRequest, res: Response) {
     const { id } = req.params;
     try {
-      const deletedSession = await SessionService.deleteSession(id);
+      const userId = req.user?.id; // Extract userId from request
+      if (!userId) {
+        return res.status(401).json({ message: 'User not authenticated' });
+      }
+      const deletedSession = await sessionService.deleteSession(id, userId);
       if (deletedSession) {
         res.status(200).json({ message: 'Session deleted successfully' });
       } else {
@@ -68,12 +89,17 @@ class SessionController {
     }
   }
 
-  async addMessage(req: Request, res: Response) {
+  async addMessage(req: AuthenticatedRequest, res: Response) {
     const { sessionId } = req.params;
     const { role, content } = req.body;
 
     if (!role || !content) {
       return res.status(400).json({ message: 'Role and content are required' });
+    }
+
+    const userId = req.user?.id; // Extract userId from request
+    if (!userId) {
+      return res.status(401).json({ message: 'User not authenticated' });
     }
 
     const message: IMessage = {
@@ -82,7 +108,7 @@ class SessionController {
     } as IMessage; // Type assertion for simplicity
 
     try {
-      const updatedSession = await SessionService.addMessage(sessionId, message);
+      const updatedSession = await sessionService.addMessage(sessionId, message, userId);
       if (updatedSession) {
         res.status(200).json(updatedSession);
       } else {
@@ -93,7 +119,7 @@ class SessionController {
     }
   }
 
-  async updateMessage(req: Request, res: Response) {
+  async updateMessage(req: AuthenticatedRequest, res: Response) {
     const { sessionId, messageId } = req.params;
     const { content } = req.body;
 
@@ -101,8 +127,13 @@ class SessionController {
       return res.status(400).json({ message: 'Content is required' });
     }
 
+    const userId = req.user?.id; // Extract userId from request
+    if (!userId) {
+      return res.status(401).json({ message: 'User not authenticated' });
+    }
+
     try {
-      const updatedSession = await SessionService.updateMessage(sessionId, messageId, content);
+      const updatedSession = await sessionService.updateMessage(sessionId, messageId, content, userId);
       if (updatedSession) {
         res.status(200).json(updatedSession);
       } else {

@@ -1,20 +1,7 @@
 import axios from "axios";
 import { Game } from "../league/league-types";
 import { jwtDecode } from "jwt-decode";
-
-// Base URL for the API
-const BASE_URL = 'http://localhost:8000/api';
-
-// Helper function to handle API requests
-const fetchData = async (endpoint: string, params: Record<string, any> = {}) => {
-  try {
-    const response = await axios.get(`${BASE_URL}/${endpoint}`, { params, withCredentials: true });
-    return response.data;
-  } catch (error) {
-    console.error(`There was an error fetching data from ${endpoint}:`, error);
-    return null;
-  }
-};
+import { BASE_URL, fetchData } from "./reusable-api";
 
 // Function to get the active game
 export const getActiveGame = async (): Promise<Game | null> => {
@@ -44,26 +31,5 @@ export const fetchUser = async (): Promise<any> => {
   } catch (error) {
     console.error("Error fetching user:", error);
     return null;
-  }
-};
-
-// Function to handle login success
-export const handleLoginSuccess = async (token: string): Promise<any> => {
-  try {
-    await axios.post(`${BASE_URL}/auth/google`, { token }, { withCredentials: true });
-    const decoded = jwtDecode(token);
-    return decoded;
-  } catch (error) {
-    console.error("Error during login:", error);
-    return null;
-  }
-};
-
-// Function to handle logout
-export const handleLogout = async (): Promise<void> => {
-  try {
-    await axios.post(`${BASE_URL}/auth/logout`, {}, { withCredentials: true });
-  } catch (error) {
-    console.error("Error during logout:", error);
   }
 };
