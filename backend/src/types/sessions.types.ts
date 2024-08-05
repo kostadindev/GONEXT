@@ -17,6 +17,6 @@ export interface ISession extends Document {
   modifiedAt: Date;
   messages: IMessage[];
   userId: Types.ObjectId;
-  matchId?: string;  // Optional matchId, assumed to be a string
+  gameId?: string;  // Optional matchId, assumed to be a string
   _id: Types.ObjectId;  // Updated to use ObjectId type
 }

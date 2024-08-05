@@ -25,6 +25,9 @@ sessionRouter.delete('/api/sessions/:id', sessionsController.deleteSession);
 sessionRouter.post('/api/sessions/:sessionId/messages', sessionsController.addMessage);
 
 // Route to update a message in a session
-sessionRouter.put('/api/sessions/:sessionId/messages/:messageId', sessionsController.updateMessage)
+sessionRouter.put('/api/sessions/:sessionId/messages/:messageId', sessionsController.updateMessage);
+
+// Route to get a session by game ID
+sessionRouter.get('/api/sessions/game/:gameId', sessionsController.getSessionByGameId);
 
 export default sessionRouter;

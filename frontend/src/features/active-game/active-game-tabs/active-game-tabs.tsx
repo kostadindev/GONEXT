@@ -63,7 +63,6 @@ export const ActiveGameTabs = ({ game }: { game: Game | null }) => {
       key: "overview",
     },
   ];
-
   return (
     <div className="flex flex-col flex-1">
       <Menu
@@ -75,7 +74,9 @@ export const ActiveGameTabs = ({ game }: { game: Game | null }) => {
       />
       <div className="flex flex-col p-5">
         {selectedView === "overview" && <GameOverview />}
-        {selectedView === "chat" && <ChatComponent />}
+        {selectedView === "chat" && (
+          <ChatComponent gameId={game?.gameId as number} />
+        )}
         {allies?.map((ally) => ally.puuid).includes(selectedView) && (
           <Allies
             summoners={game?.participants}

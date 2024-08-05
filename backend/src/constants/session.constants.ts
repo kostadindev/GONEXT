@@ -1,0 +1,1 @@
+export const NEW_SESSION_NAME = 'New Session';

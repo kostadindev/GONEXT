@@ -34,3 +34,8 @@ export const addMessageToSession = async (sessionId: string, messageData: Record
 export const updateMessageInSession = async (sessionId: string, messageId: string, messageData: Record<string, any>) => {
   return await putData(`sessions/${sessionId}/messages/${messageId}`, messageData);
 };
+
+// Function to get a session by game ID
+export const getSessionByGameId = async (gameId: number) => {
+  return await fetchData(`sessions/game/${gameId}`);
+};

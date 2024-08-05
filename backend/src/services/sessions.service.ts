@@ -10,8 +10,8 @@ class SessionService {
     return await sessionRepository.getSessionById(id, userId);
   }
 
-  async addSession(name: string, userId: string): Promise<ISession> {
-    return await sessionRepository.createSession(name, userId);
+  async addSession(name: string, userId: string, gameId?: string): Promise<ISession> {
+    return await sessionRepository.createSession(name, userId, gameId);
   }
 
   async updateSession(id: string, name: string, userId: string): Promise<ISession | null> {
@@ -28,6 +28,10 @@ class SessionService {
 
   async updateMessage(sessionId: string, messageId: string, updatedContent: string, userId: string): Promise<ISession | null> {
     return await sessionRepository.updateMessage(sessionId, messageId, updatedContent, userId);
+  }
+
+  async fetchSessionByGameId(gameId: string, userId: string): Promise<ISession | null> {
+    return await sessionRepository.getSessionByGameId(gameId, userId);
   }
 }
 

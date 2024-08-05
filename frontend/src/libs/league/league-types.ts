@@ -20,6 +20,7 @@ export interface Summoner {
 export interface Game {
   participants: Summoner[]
   searchedSummoner: Summoner
+  gameId: number;
 };
 
 export interface Tips {

@@ -19,7 +19,7 @@ class SessionRepository {
     }
   }
 
-  async createSession(name: string, userId: string) {
+  async createSession(name: string, userId: string, gameId?: string) {
     try {
       const creationTimestamp = new Date();
       return await Session.create({
@@ -27,7 +27,8 @@ class SessionRepository {
         createdAt: creationTimestamp,
         modifiedAt: creationTimestamp,
         messages: [],
-        userId
+        userId,
+        gameId
       });
     } catch (error) {
       throw new Error(`Error creating session: ${error}`);
@@ -85,6 +86,15 @@ class SessionRepository {
       return await session.save();
     } catch (error) {
       throw new Error(`Error updating message: ${error}`);
+    }
+  }
+
+  async getSessionByGameId(gameId: string, userId: string): Promise<ISession | null> {
+    console.log("game", gameId, userId);
+    try {
+      return await Session.findOne({ gameId, userId }).exec();
+    } catch (error) {
+      throw new Error(`Error fetching session by game ID: ${error}`);
     }
   }
 }

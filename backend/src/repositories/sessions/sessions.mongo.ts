@@ -11,8 +11,8 @@ const sessionSchema = new Schema<ISession>({
   createdAt: { type: Date, default: Date.now },
   modifiedAt: { type: Date, default: Date.now },
   messages: { type: [messageSchema], default: [] },
-  userId: { type: Schema.Types.ObjectId, required: true, ref: 'User' }, // Ensure correct reference if needed
-  matchId: { type: String } // Assuming matchId is a string; adjust as needed
+  userId: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
+  gameId: { type: String, required: false }
 });
 
 const Session: Model<ISession> = mongoose.model<ISession>('Session', sessionSchema);

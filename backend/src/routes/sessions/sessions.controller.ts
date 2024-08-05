@@ -1,7 +1,8 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import sessionService from '../../services/sessions.service';
 import { IMessage } from '../../types/sessions.types';
 import { AuthenticatedRequest } from '../../types/misc.types';
+import { NEW_SESSION_NAME } from '../../constants/session.constants';
 
 class SessionController {
   async getAllSessions(req: AuthenticatedRequest, res: Response) {
@@ -37,7 +38,7 @@ class SessionController {
 
   async createSession(req: AuthenticatedRequest, res: Response) {
     try {
-      const { name } = req.body;
+      const { name, gameId } = req.body;
       const userId = req.user?._id; // Extract userId from request
       if (!userId) {
         return res.status(401).json({ message: 'User not authenticated' });
@@ -45,7 +46,7 @@ class SessionController {
       if (!name) {
         return res.status(400).json({ message: 'Name is required' });
       }
-      const newSession = await sessionService.addSession(name, userId);
+      const newSession = await sessionService.addSession(name, userId, gameId);
       res.status(201).json(newSession);
     } catch (error) {
       res.status(500).json({ error: error });
@@ -140,6 +141,29 @@ class SessionController {
         res.status(404).json({ message: 'Session or message not found' });
       }
     } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  }
+
+  /**
+   * Finds the existing session by id or creates a new one if no such exists.
+   */
+  async getSessionByGameId(req: AuthenticatedRequest, res: Response) {
+    const { gameId } = req.params;
+    try {
+      const userId = req.user?._id;
+      if (!userId) {
+        return res.status(401).json({ message: 'User not authenticated' });
+      }
+      const session = await sessionService.fetchSessionByGameId(gameId, userId);
+
+      if (session) {
+        res.status(200).json(session);
+      } else {
+        const newSession = await sessionService.addSession(NEW_SESSION_NAME, userId, gameId);
+        res.status(201).json(newSession);
+      }
+    } catch (error) {
       res.status(500).json({ error: error.message });
     }
   }

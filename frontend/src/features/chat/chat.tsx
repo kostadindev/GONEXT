@@ -1,19 +1,12 @@
-import React, {
-  useState,
-  ChangeEvent,
-  KeyboardEvent,
-  useEffect,
-  useRef,
-  useCallback,
-} from "react";
+import React, { useState, useEffect, useCallback, ChangeEvent } from "react";
 import { Button, Avatar } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { SendOutlined } from "@ant-design/icons";
 import { OpenAIFilled } from "@ant-design/icons";
 import DefaultPrompts from "./default-prompts/default-prompts";
 import {
-  createSession,
   addMessageToSession,
+  getSessionByGameId,
 } from "../../libs/apis/sessions-api";
 import { useUser } from "../../context/user.context";
 
@@ -22,14 +15,13 @@ interface Message {
   role: "user" | "system";
 }
 
-const ChatComponent: React.FC = () => {
+const ChatComponent: React.FC<{ gameId: number }> = ({ gameId }) => {
   const { user } = useUser();
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [sessionId, setSessionId] = useState<string | null>(null);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  const hasInitialized = useRef(false);
+  const messagesEndRef = React.useRef<HTMLDivElement>(null);
 
   const scrollToBottom = useCallback(() => {
     if (messagesEndRef.current) {
@@ -38,17 +30,28 @@ const ChatComponent: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    let isMounted = true; // To track component mount status
+
     const initializeSession = async () => {
-      if (!hasInitialized.current) {
-        hasInitialized.current = true;
-        const newSession = await createSession({ name: "New Session" });
-        if (newSession) {
-          setSessionId(newSession._id);
+      if (gameId) {
+        try {
+          const session = await getSessionByGameId(gameId);
+          if (session && isMounted) {
+            setSessionId(session._id);
+            setMessages(session.messages || []);
+          }
+        } catch (error) {
+          console.error("Failed to fetch session:", error);
         }
       }
     };
+
     initializeSession();
-  }, []);
+
+    return () => {
+      isMounted = false; // Clean up effect by marking the component as unmounted
+    };
+  }, [gameId]);
 
   const handleSendMessage = async (message?: string) => {
     setLoading(true);
@@ -93,7 +96,7 @@ const ChatComponent: React.FC = () => {
     setInput(e.target.value);
   };
 
-  const handleKeyPress = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleKeyPress = (e: any) => {
     if (e.key === "Enter") {
       e.preventDefault();
       handleSendMessage();
