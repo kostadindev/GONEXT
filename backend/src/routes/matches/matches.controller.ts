@@ -43,7 +43,8 @@ async function getMatchHistory(req: Request, res: Response) {
         participant = {
           ...participant,
           summonerSpell1Name: leagueService.getSummonerSpellName(participant.summoner1Id?.toString()),
-          summonerSpell2Name: leagueService.getSummonerSpellName(participant.summoner2Id?.toString())
+          summonerSpell2Name: leagueService.getSummonerSpellName(participant.summoner2Id?.toString()),
+          championImageId: leagueService.getChampionImageId(participant?.championId)
         } as any;
       }
 

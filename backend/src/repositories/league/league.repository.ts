@@ -37,6 +37,31 @@ class LeagueRepository {
     }
   }
 
+  async fetchData(url: string): Promise<any> {
+    try {
+      const response = await axios.get(url);
+      return response.data;
+    } catch (error) {
+      console.error('Failed to fetch data', error);
+      throw new Error('Failed to fetch data');
+    }
+  }
+
+  async fetchLatestVersion(): Promise<string | undefined> {
+    const url = 'https://ddragon.leagueoflegends.com/api/versions.json';
+    try {
+      const versions = await this.fetchData(url);
+      if (Array.isArray(versions) && versions.length > 0) {
+        return versions[0]; // Assuming the latest version is the first item
+      } else {
+        throw new Error('No versions found');
+      }
+    } catch (error) {
+      console.error('Failed to fetch the latest version', error);
+      throw new Error('Failed to fetch the latest version');
+    }
+  }
+
   async getSummonerIdByPuuid(puuid: string): Promise<string | undefined> {
     const url = `https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/${puuid}`;
     try {
@@ -108,7 +133,6 @@ class LeagueRepository {
       const response = await axios.get(url, {
         headers: this.headers,
       });
-
       return response.data;
     } catch (error) {
       this.handleAxiosError(error as AxiosError);

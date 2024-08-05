@@ -4,17 +4,34 @@ class LeagueService {
   private championsDict: Record<string, { name: string, imageId: string }> = {};
   private summonerSpellsDict: Record<string, string | undefined> = {};
   private queuesDict: Record<string, string> = {};
+  private latestVersion: string = '';
 
   constructor() {
     this.initializeDictionaries();
   }
 
   private async initializeDictionaries() {
-    await Promise.all([this.fetchChampionsDict(), this.fetchSummonerSpellDict(), this.fetchQueueTypes()]);
+    await this.fetchLatestVersion();
+    await Promise.all([
+      this.fetchChampionsDict(),
+      this.fetchSummonerSpellDict(),
+      this.fetchQueueTypes()
+    ]);
+  }
+
+  private async fetchLatestVersion() {
+    const url = 'https://ddragon.leagueoflegends.com/api/versions.json';
+    const versions = await leagueRepository.fetchData(url);
+    if (Array.isArray(versions) && versions.length > 0) {
+      this.latestVersion = versions[0]; // Assuming the latest version is the first item
+    } else {
+      throw new Error('Unable to fetch the latest version.');
+    }
   }
 
   private async fetchChampionsDict() {
-    const url = 'https://ddragon.leagueoflegends.com/cdn/14.4.1/data/en_US/champion.json';
+    if (!this.latestVersion) await this.fetchLatestVersion();
+    const url = `https://ddragon.leagueoflegends.com/cdn/${this.latestVersion}/data/en_US/champion.json`;
     const champions = await leagueRepository.fetchChampionsDict(url);
     Object.keys(champions).forEach((key) => {
       this.championsDict[champions[key].key] = { name: champions[key].name, imageId: champions[key]?.id };
@@ -30,7 +47,8 @@ class LeagueService {
   }
 
   private async fetchSummonerSpellDict() {
-    const url = 'https://ddragon.leagueoflegends.com/cdn/14.4.1/data/en_US/summoner.json';
+    if (!this.latestVersion) await this.fetchLatestVersion();
+    const url = `https://ddragon.leagueoflegends.com/cdn/${this.latestVersion}/data/en_US/summoner.json`;
     const spells = await leagueRepository.fetchSummonerSpellDict(url);
     Object.keys(spells).forEach((key) => {
       this.summonerSpellsDict[spells[key].key] = spells[key].id;
@@ -109,6 +127,7 @@ class LeagueService {
       summonerName: participant?.summonerName,
       teamId: participant?.teamId,
       championName: participant?.championName,
+      championImageId: this.getChampionImageId(participant.championId)
     }));
   }
 
