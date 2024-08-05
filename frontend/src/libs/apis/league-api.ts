@@ -3,6 +3,9 @@ import { fetchData } from "./reusable-api";
 
 // Function to get the active game
 export const getActiveGame = async (gameName: string, tagLine: string): Promise<Game | null> => {
+  if (gameName === 'Doublelift') { //use mock data
+    return await fetchData('matches/active');
+  }
   return await fetchData(`summoners/active-game?gameName=${gameName}&tagLine=${tagLine}`);
 };
 

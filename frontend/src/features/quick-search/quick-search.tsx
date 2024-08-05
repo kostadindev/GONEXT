@@ -2,7 +2,7 @@ import { Button } from "antd";
 import { useNavigate } from "react-router-dom";
 
 export const QuickSearch = () => {
-  const mostFrequentSearch = "Doublelift #NA1";
+  const mostFrequentSearch = "Doublelift#NA1";
   const navigate = useNavigate();
   const handleQuickSearch = () => {
     const [summoner, tagline] = mostFrequentSearch
