@@ -55,10 +55,10 @@ export const InGameSummoner = ({
           />
         </div>
         <div className="flex flex-col">
-          <Typography.Title level={5} style={{ margin: 0 }}>
-            {summoner.summonerName}
-          </Typography.Title>
-          <Typography.Text>{summoner.championName}</Typography.Text>
+          <span className="font-medium ">
+            {summoner.summonerName || summoner?.riotId}
+          </span>
+          <span className="text-gray-500"> {summoner.championName}</span>
         </div>
       </div>
     </Card>

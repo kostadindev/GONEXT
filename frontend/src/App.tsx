@@ -21,7 +21,7 @@ const router = createBrowserRouter(
       />
       <Route path="/placeholder" element={<Placeholder />} />
       <Route
-        path="/:region/:summoner/:tagline/in-game"
+        path="/:region/:gameName/:tagLine/in-game"
         element={<ActiveGame />}
       />
     </Route>

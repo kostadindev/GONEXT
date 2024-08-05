@@ -14,7 +14,8 @@ export interface Summoner {
   assists: number,
   deaths: number,
   summoner1Id: number,
-  summoner2Id: number
+  summoner2Id: number,
+  riotId: string
 }
 
 export interface Game {

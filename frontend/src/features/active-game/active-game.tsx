@@ -6,6 +6,7 @@ import { InGameSummoner } from "../summoner-cards/in-game-summoner";
 import { Divider, theme } from "antd";
 import { ActiveGameTabs } from "./active-game-tabs/active-game-tabs";
 import { getTeams } from "../../libs/league/league-utils";
+import { useParams } from "react-router-dom";
 
 export const ActiveGame = () => {
   const {
@@ -13,16 +14,17 @@ export const ActiveGame = () => {
   } = theme.useToken();
   const [game, setGame] = useState<Game | null>(null);
   const { allies, enemies } = getTeams(game);
+  const { tagLine, gameName } = useParams();
 
   useEffect(() => {
     let ignore = false;
-    getActiveGame().then((game) => {
-      !ignore && setGame(game);
+    getActiveGame(gameName as string, tagLine as string).then((game) => {
+      !ignore && game && setGame(game);
     });
     return () => {
       ignore = true;
     };
-  }, []);
+  }, [gameName, tagLine]);
 
   return (
     <Content

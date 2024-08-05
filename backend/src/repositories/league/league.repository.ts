@@ -39,7 +39,6 @@ class LeagueRepository {
 
   async getSummonerIdByPuuid(puuid: string): Promise<string | undefined> {
     const url = `https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/${puuid}`;
-    console.log(puuid, this.headers);
     try {
       const response = await axios.get(url, {
         headers: this.headers,
@@ -86,6 +85,33 @@ class LeagueRepository {
       return response.data;
     } catch (error) {
       console.error('Failed to fetch match by ID', error);
+      return null;
+    }
+  }
+
+  async getSummonerByRiotId(gameName: string, tagLine: string): Promise<any | null> {
+    const url = `https://americas.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${gameName}/${tagLine}`;
+    try {
+      const response = await axios.get(url, {
+        headers: this.headers,
+      });
+      return response.data;
+    } catch (error) {
+      this.handleAxiosError(error as AxiosError);
+      return null;
+    }
+  }
+
+  async getActiveGameByPuuid(puuid: string): Promise<any | null> {
+    const url = `https://na1.api.riotgames.com/lol/spectator/v5/active-games/by-summoner/${puuid}`;
+    try {
+      const response = await axios.get(url, {
+        headers: this.headers,
+      });
+
+      return response.data;
+    } catch (error) {
+      this.handleAxiosError(error as AxiosError);
       return null;
     }
   }

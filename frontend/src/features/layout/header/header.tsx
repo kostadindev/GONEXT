@@ -16,7 +16,7 @@ export const Header: React.FC = () => {
   };
 
   const onLoginError = () => {
-    console.log("Login Failed");
+    console.error("Login Failed");
   };
 
   const onLogout = async () => {

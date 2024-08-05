@@ -90,7 +90,6 @@ class SessionRepository {
   }
 
   async getSessionByGameId(gameId: string, userId: string): Promise<ISession | null> {
-    console.log("game", gameId, userId);
     try {
       return await Session.findOne({ gameId, userId }).exec();
     } catch (error) {

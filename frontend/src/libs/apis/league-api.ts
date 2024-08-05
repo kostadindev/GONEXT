@@ -2,8 +2,8 @@ import { Game } from "../league/league-types";
 import { fetchData } from "./reusable-api";
 
 // Function to get the active game
-export const getActiveGame = async (): Promise<Game | null> => {
-  return await fetchData('matches/active');
+export const getActiveGame = async (gameName: string, tagLine: string): Promise<Game | null> => {
+  return await fetchData(`summoners/active-game?gameName=${gameName}&tagLine=${tagLine}`);
 };
 
 // Function to get match history

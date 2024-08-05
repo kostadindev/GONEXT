@@ -46,6 +46,8 @@ const ChatComponent: React.FC<{ gameId: number }> = ({ gameId }) => {
         } finally {
           setLoadingSession(false);
         }
+      } else {
+        setLoadingSession(false);
       }
     };
 
