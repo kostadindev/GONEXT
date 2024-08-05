@@ -4,29 +4,43 @@ import { useEffect, useState } from "react";
 import { getFeaturedSummoner } from "../../libs/apis/league-api";
 
 export const QuickSearch = () => {
-  const [featuredSummoner, setFeaturedSumoner] = useState<string>("");
+  const [featuredSummoner, setFeaturedSummoner] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
+    let isMounted = true;
+
     const fetchFeaturedSummoner = async () => {
       try {
         const summoner = await getFeaturedSummoner();
         if (summoner) {
           const [summonerName, tagLine] = summoner?.riotId.split("#");
-          setFeaturedSumoner(`${summonerName}#${tagLine}`);
+          if (isMounted) {
+            setFeaturedSummoner(`${summonerName}#${tagLine}`);
+          }
         } else {
-          setError("No featured summoner available.");
+          if (isMounted) {
+            setError("No featured summoner available.");
+          }
         }
       } catch (error) {
-        setError("Failed to fetch featured summoner.");
+        if (isMounted) {
+          setError("Failed to fetch featured summoner.");
+        }
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
 
     fetchFeaturedSummoner();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const handleQuickSearch = () => {
@@ -38,7 +52,12 @@ export const QuickSearch = () => {
     }
   };
 
-  if (loading) return <></>;
+  if (loading)
+    return (
+      <div className="w-[80px] flex justify-center items-center">
+        <Spin />
+      </div>
+    );
   if (error) return <div>{error}</div>;
 
   return (

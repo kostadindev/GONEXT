@@ -64,17 +64,9 @@ class SummonersController {
 
   async getFeaturedSummoner(req: Request, res: Response) {
     try {
-      const featuredGames = await leagueService.getFeaturedGames();
-      if (!featuredGames || featuredGames.gameList.length === 0) {
-        return res.status(204).send('No featured games available.');
-      }
-
-      // Select a random game and then a random participant from that game
-      const randomGame = featuredGames.gameList[Math.floor(Math.random() * featuredGames.gameList.length)];
-      const randomParticipant = randomGame.participants[Math.floor(Math.random() * randomGame.participants.length)];
-
-      if (randomParticipant) {
-        res.json(randomParticipant);
+      const featuredSummoner = await leagueService.getFeaturedSummoner();
+      if (featuredSummoner) {
+        res.json(featuredSummoner);
       } else {
         res.status(404).send('Featured summoner not found.');
       }

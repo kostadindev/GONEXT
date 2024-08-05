@@ -118,6 +118,18 @@ class LeagueService {
   async getFeaturedGames(): Promise<any | null> {
     return leagueRepository.getFeaturedGames();
   }
+
+  async getFeaturedSummoner(): Promise<any | null> {
+    const featuredGames = await this.getFeaturedGames();
+    if (!featuredGames || featuredGames.gameList.length === 0) {
+      return null;
+    }
+    const classics = featuredGames.gameList.filter(game => game.gameMode === 'CLASSIC' || game?.gameMode === "RANKED_SOLO_5x5" || game?.gameMode === 'RANKED_FLEX_SR')
+    const games = classics?.length ? classics : featuredGames.gameList;
+    const randomGame = games[Math.floor(Math.random() * games.length)];
+    const randomParticipant = randomGame.participants[Math.floor(Math.random() * randomGame.participants.length)];
+    return randomParticipant;
+  }
 }
 
 export default new LeagueService();
