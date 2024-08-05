@@ -3,7 +3,7 @@ import { fetchData } from "./reusable-api";
 
 // Function to get the active game
 export const getActiveGame = async (gameName: string, tagLine: string): Promise<Game | null> => {
-  if (gameName === 'Doublelift') { //use mock data
+  if (gameName === 'Doublelift') { // use mock data
     return await fetchData('matches/active');
   }
   return await fetchData(`summoners/active-game?gameName=${gameName}&tagLine=${tagLine}`);
@@ -22,4 +22,9 @@ export const getSummonerStats = async (region: string, puuid: string) => {
 // Function to get matchup tips
 export const getMatchupTips = async (summonerChampion: string, enemyChampion: string) => {
   return await fetchData('champions/matchup', { summonerChampion, enemyChampion });
+};
+
+// Function to get a featured summoner
+export const getFeaturedSummoner = async () => {
+  return await fetchData('summoners/featured-summoner');
 };

@@ -114,6 +114,10 @@ class LeagueService {
   async getActiveGameByPuuid(puuid: string): Promise<any | null> {
     return leagueRepository.getActiveGameByPuuid(puuid);
   }
+
+  async getFeaturedGames(): Promise<any | null> {
+    return leagueRepository.getFeaturedGames();
+  }
 }
 
 export default new LeagueService();

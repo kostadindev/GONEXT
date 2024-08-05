@@ -116,6 +116,19 @@ class LeagueRepository {
     }
   }
 
+  async getFeaturedGames(): Promise<any | null> {
+    const url = 'https://na1.api.riotgames.com/lol/spectator/v5/featured-games';
+    try {
+      const response = await axios.get(url, {
+        headers: this.headers,
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Failed to fetch featured games', error);
+      return null;
+    }
+  }
+
   private handleAxiosError(error: AxiosError): void {
     if (error.response) {
       console.error(`HTTP error occurred: ${error.response.status} - ${error.response.statusText}`);

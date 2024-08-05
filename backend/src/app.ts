@@ -6,7 +6,7 @@ import cookieParser from "cookie-parser";
 import { matchesRouter } from "./routes/matches/matches.router";
 import summonersRouter from "./routes/summoners/summoners.router";
 import championsRouter from "./routes/champions/champions.router";
-import sessionRouter from "./routes/sessions/sessions.routes";
+import sessionRouter from "./routes/sessions/sessions.router";
 import authRouter from "./routes/auth/auth.routes";
 
 // Initialize environment variables
