@@ -1,7 +1,7 @@
 import leagueRepository from "../repositories/league/league.repository";
 
 class LeagueService {
-  private championsDict: Record<string, string> = {};
+  private championsDict: Record<string, { name: string, imageId: string }> = {};
   private summonerSpellsDict: Record<string, string | undefined> = {};
   private queuesDict: Record<string, string> = {};
 
@@ -17,7 +17,7 @@ class LeagueService {
     const url = 'https://ddragon.leagueoflegends.com/cdn/14.4.1/data/en_US/champion.json';
     const champions = await leagueRepository.fetchChampionsDict(url);
     Object.keys(champions).forEach((key) => {
-      this.championsDict[champions[key].key] = champions[key].name;
+      this.championsDict[champions[key].key] = { name: champions[key].name, imageId: champions[key]?.id };
     });
   }
 
@@ -38,7 +38,11 @@ class LeagueService {
   }
 
   getChampionName(championId: string): string {
-    return this.championsDict[championId] || 'Unknown Champion';
+    return this.championsDict[championId]?.name || 'Unknown Champion';
+  }
+
+  getChampionImageId(championId: string): string {
+    return this.championsDict[championId]?.imageId || 'Unknown Champion';
   }
 
   getSummonerSpellName(spellId: string): string {
@@ -55,6 +59,7 @@ class LeagueService {
     }
     game.participants = game.participants.map((participant: any) => {
       participant.championName = this.getChampionName(participant.championId);
+      participant.championImageId = this.getChampionImageId(participant.championId);
       participant.summonerSpell1Name = this.getSummonerSpellName(participant.spell1Id);
       participant.summonerSpell2Name = this.getSummonerSpellName(participant.spell2Id);
       return participant;

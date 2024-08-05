@@ -15,7 +15,7 @@ const MiniSummonerDisplay: React.FC<{ summoner: Summoner }> = ({
 }) => (
   <div key={summoner?.summonerName} className="flex items-center w-full">
     <Avatar
-      src={getChampionIconSrc(summoner?.championName)}
+      src={getChampionIconSrc(summoner?.championImageId)}
       alt={summoner?.summonerSpell1Name}
       size={18}
       shape="square"
@@ -62,7 +62,7 @@ const ParticipantInfo: React.FC<{ game: GameHistory; kda: string }> = ({
       <div className="flex gap-1">
         <Badge>
           <Avatar
-            src={getChampionIconSrc(game?.participant?.championName)}
+            src={getChampionIconSrc(game?.participant?.championImageId)}
             size={50}
           />
         </Badge>

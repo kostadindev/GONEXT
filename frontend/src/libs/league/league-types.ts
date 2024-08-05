@@ -3,7 +3,7 @@
 export interface Summoner {
   summonerName: string,
   championName: string,
-  championId: Number,
+  championId: number,
   spell1Id: Number,
   spell2Id: Number,
   summonerSpell1Name: string,
@@ -15,7 +15,8 @@ export interface Summoner {
   deaths: number,
   summoner1Id: number,
   summoner2Id: number,
-  riotId: string
+  riotId: string,
+  championImageId: string
 }
 
 export interface Game {

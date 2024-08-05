@@ -83,7 +83,7 @@ export const SummonerOverview: React.FC<SummonerOverviewProps> = ({
         <div className="flex gap-1">
           <Badge>
             <Avatar
-              src={getChampionIconSrc(summoner?.championName)}
+              src={getChampionIconSrc(summoner?.championImageId)}
               size="large"
             />
           </Badge>

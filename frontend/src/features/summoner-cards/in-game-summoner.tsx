@@ -38,7 +38,7 @@ export const InGameSummoner = ({
     >
       <div className="h-full flex items-center gap-2">
         <Avatar
-          src={getChampionIconSrc(summoner.championName)}
+          src={getChampionIconSrc(summoner.championImageId)}
           size="large"
           alt={summoner.championName}
         />
