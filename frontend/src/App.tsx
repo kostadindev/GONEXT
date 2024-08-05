@@ -9,6 +9,7 @@ import ErrorPage from "./features/layout/error-page";
 import { ActiveGame } from "./features/active-game/active-game";
 import { Placeholder } from "./features/filler-content";
 import { NotificationProvider } from "./features/notifications/notification-context";
+import { UserProvider } from "./context/user.context";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -30,7 +31,9 @@ const router = createBrowserRouter(
 function App() {
   return (
     <NotificationProvider>
-      <RouterProvider router={router} />
+      <UserProvider>
+        <RouterProvider router={router} />
+      </UserProvider>
     </NotificationProvider>
   );
 }

@@ -1,31 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Avatar, Button, Layout } from "antd";
 import GlobalSearch from "../../global-search/global-search";
 import { QuickSearch } from "../../quick-search/quick-search";
 import { GoogleLogin } from "@react-oauth/google";
-import {
-  fetchUser,
-  handleLoginSuccess,
-  handleLogout,
-} from "../../../libs/apis/auth-api";
-
-interface DecodedToken {
-  name: string;
-  picture: string;
-  [key: string]: any;
-}
+import { handleLoginSuccess, handleLogout } from "../../../libs/apis/auth-api";
+import { useUser } from "../../../context/user.context";
 
 export const Header: React.FC = () => {
-  const [user, setUser] = useState<DecodedToken | null>(null);
-
-  useEffect(() => {
-    const getUser = async () => {
-      const userData = await fetchUser();
-      setUser(userData);
-    };
-
-    getUser();
-  }, []);
+  const { user, setUser } = useUser();
 
   const onLoginSuccess = async (credentialResponse: any) => {
     const token = credentialResponse.credential;

@@ -1,5 +1,3 @@
-import { Button, Avatar } from "antd";
-import TextArea from "antd/es/input/TextArea";
 import React, {
   useState,
   ChangeEvent,
@@ -8,6 +6,8 @@ import React, {
   useRef,
   useCallback,
 } from "react";
+import { Button, Avatar } from "antd";
+import TextArea from "antd/es/input/TextArea";
 import { SendOutlined } from "@ant-design/icons";
 import { OpenAIFilled } from "@ant-design/icons";
 import DefaultPrompts from "./default-prompts/default-prompts";
@@ -15,6 +15,7 @@ import {
   createSession,
   addMessageToSession,
 } from "../../libs/apis/sessions-api";
+import { useUser } from "../../context/user.context";
 
 interface Message {
   content: string;
@@ -22,6 +23,7 @@ interface Message {
 }
 
 const ChatComponent: React.FC = () => {
+  const { user } = useUser();
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -115,7 +117,10 @@ const ChatComponent: React.FC = () => {
               {msg.role === "system" ? (
                 <Avatar style={{ marginRight: 8 }} icon={<OpenAIFilled />} />
               ) : (
-                <Avatar style={{ marginRight: 8 }} src={""} />
+                <Avatar
+                  style={{ marginRight: 8 }}
+                  src={user?.picture} // Use user's picture
+                />
               )}
 
               <div
