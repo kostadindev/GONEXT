@@ -13,7 +13,7 @@ export const ActiveGameTabs = ({ game }: { game: Game | null }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { allies, enemies } = getTeams(game);
-  const [selectedView, setSelectedView] = useState<string>("overview");
+  const [selectedView, setSelectedView] = useState<string>("chat");
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -58,10 +58,6 @@ export const ActiveGameTabs = ({ game }: { game: Game | null }) => {
         };
       }),
     },
-    {
-      label: "Game Overview",
-      key: "overview",
-    },
   ];
   return (
     <div className="flex flex-col flex-1">
@@ -73,7 +69,6 @@ export const ActiveGameTabs = ({ game }: { game: Game | null }) => {
         style={{ backgroundColor: "transparent" }}
       />
       <div className="flex flex-col p-5">
-        {selectedView === "overview" && <GameOverview />}
         {selectedView === "chat" && (
           <ChatComponent gameId={game?.gameId as number} />
         )}
