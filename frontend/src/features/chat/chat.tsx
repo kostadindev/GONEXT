@@ -10,6 +10,7 @@ import {
 } from "../../libs/apis/sessions-api";
 import { useUser } from "../../context/user.context";
 import { sendChatMessage } from "../../libs/apis/chatbot-api";
+import ReactMarkdown from "react-markdown";
 
 interface Message {
   content: string;
@@ -124,8 +125,8 @@ const ChatComponent: React.FC<{ gameId: number }> = ({ gameId }) => {
     <div className="flex justify-center">
       <Spin spinning={loadingSession} size="large">
         <div
-          className="flex flex-col w-[800px]"
-          style={{ height: "calc(77vh)" }}
+          className="flex flex-col"
+          style={{ width: "50vw", height: "calc(77vh)" }}
         >
           {messages?.length === 0 && gameId && !loadingSession && (
             <DefaultPrompts handleSendMessage={handleSendMessage} />
@@ -141,7 +142,6 @@ const ChatComponent: React.FC<{ gameId: number }> = ({ gameId }) => {
                     src={user?.picture} // Use user's picture
                   />
                 )}
-
                 <div
                   className={`inline-block p-2 rounded-lg break-words ${
                     msg.role === "user"
@@ -149,7 +149,7 @@ const ChatComponent: React.FC<{ gameId: number }> = ({ gameId }) => {
                       : "text-black max-w-[calc(100%-40px)]"
                   }`}
                 >
-                  {msg.content}
+                  <ReactMarkdown>{msg.content}</ReactMarkdown>
                 </div>
               </div>
             ))}
