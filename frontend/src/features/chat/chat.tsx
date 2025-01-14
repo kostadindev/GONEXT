@@ -9,6 +9,7 @@ import {
   getSessionByGameId,
 } from "../../libs/apis/sessions-api";
 import { useUser } from "../../context/user.context";
+import { sendChatMessage } from "../../libs/apis/chatbot-api";
 
 interface Message {
   content: string;
@@ -68,28 +69,38 @@ const ChatComponent: React.FC<{ gameId: number }> = ({ gameId }) => {
       ]);
       setInput("");
 
-      if (sessionId) {
-        await addMessageToSession(sessionId, {
-          content: textToSend,
-          role: "user",
-        });
-      }
-
-      setTimeout(async () => {
-        const botResponse = "This is a bot response"; // Replace this with actual bot logic
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          { content: botResponse, role: "system" },
-        ]);
-        scrollToBottom();
-
+      try {
         if (sessionId) {
+          // Send the user's message to the chatbot API
+          await addMessageToSession(sessionId, {
+            content: textToSend,
+            role: "user",
+          });
+          const botResponse = await sendChatMessage(sessionId, {
+            query: textToSend,
+          });
           await addMessageToSession(sessionId, {
             content: botResponse,
             role: "system",
           });
+
+          // Add the bot's response to the local state
+          if (botResponse && botResponse.response) {
+            setMessages((prevMessages) => [
+              ...prevMessages,
+              { content: botResponse.response, role: "system" },
+            ]);
+          } else {
+            console.error("Invalid response from chatbot API");
+          }
+        } else {
+          console.error("Session ID is missing");
         }
-      }, 800);
+      } catch (error) {
+        console.error("Error interacting with chatbot API:", error);
+      } finally {
+        scrollToBottom(); // Scroll to the bottom after updating messages
+      }
     }
   };
 

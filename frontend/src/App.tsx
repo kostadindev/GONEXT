@@ -14,11 +14,7 @@ import { UserProvider } from "./context/user.context";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route element={<AppLayout />}>
-      <Route
-        path="/"
-        element={<div>Hello world!</div>}
-        errorElement={<ErrorPage />}
-      />
+      <Route path="/" element={<div></div>} errorElement={<ErrorPage />} />
       <Route path="/placeholder" element={<Placeholder />} />
       <Route
         path="/:region/:gameName/:tagLine/in-game"
