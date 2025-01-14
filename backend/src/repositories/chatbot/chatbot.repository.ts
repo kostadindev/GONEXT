@@ -17,11 +17,13 @@ class ChatBotRepository {
    * @returns {Promise<string>} - The chatbot's response.
    * @throws {Error} - If the request fails or the response is invalid.
    */
-  async sendMessage(threadId: string, query: string): Promise<string> {
+  async sendMessage(threadId: string, query: string, match?: Record<string, any>): Promise<string> {
     try {
+
       const response = await axios.post(`${this.baseURL}/`, {
         thread_id: threadId,
-        query: query,
+        query,
+        match
       });
 
       const chatbotResponse = response.data?.response;

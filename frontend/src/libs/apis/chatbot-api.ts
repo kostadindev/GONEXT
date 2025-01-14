@@ -7,5 +7,5 @@ import { postData } from "./reusable-api";
  * @returns {Promise<any>} - The chatbot's response.
  */
 export const sendChatMessage = async (sessionId: string, messageData: Record<string, any>) => {
-  return await postData(`chatbot/${sessionId}/messages`, messageData);
+  return await postData(`chatbot/${sessionId}/chat`, messageData);
 };

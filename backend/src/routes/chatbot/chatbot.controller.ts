@@ -8,7 +8,7 @@ class ChatbotController {
    */
   async sendMessage(req: AuthenticatedRequest, res: Response) {
     const { sessionId } = req.params;
-    const { query } = req.body;
+    const { query, match } = req.body;
 
     if (!query) {
       return res.status(400).json({ message: 'Query is required' });
@@ -20,7 +20,7 @@ class ChatbotController {
     }
 
     try {
-      const response = await chatbotService.sendMessage(sessionId, query);
+      const response = await chatbotService.sendMessage(sessionId, query, match);
       if (response) {
         res.status(200).json({ response });
       } else {

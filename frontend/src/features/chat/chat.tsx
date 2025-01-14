@@ -11,13 +11,14 @@ import {
 import { useUser } from "../../context/user.context";
 import { sendChatMessage } from "../../libs/apis/chatbot-api";
 import ReactMarkdown from "react-markdown";
+import { Game } from "../../libs/league/league-types";
 
 interface Message {
   content: string;
   role: "user" | "system";
 }
 
-const ChatComponent: React.FC<{ gameId: number }> = ({ gameId }) => {
+const ChatComponent: React.FC<{ game: Game | null }> = ({ game }) => {
   const { user } = useUser();
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState<string>("");
@@ -34,11 +35,11 @@ const ChatComponent: React.FC<{ gameId: number }> = ({ gameId }) => {
     let isMounted = true; // To track component mount status
 
     const initializeSession = async () => {
-      if (gameId) {
+      if (game?.gameId) {
         // Start loading spinner for session fetch
         try {
           setLoadingSession(true);
-          const session = await getSessionByGameId(gameId);
+          const session = await getSessionByGameId(game?.gameId);
           if (session && isMounted) {
             setSessionId(session._id);
             setMessages(session.messages || []);
@@ -58,7 +59,7 @@ const ChatComponent: React.FC<{ gameId: number }> = ({ gameId }) => {
     return () => {
       isMounted = false; // Clean up effect by marking the component as unmounted
     };
-  }, [gameId]);
+  }, [game]);
 
   const handleSendMessage = async (message?: string) => {
     const textToSend = message || input;
@@ -79,6 +80,7 @@ const ChatComponent: React.FC<{ gameId: number }> = ({ gameId }) => {
           });
           const botResponse = await sendChatMessage(sessionId, {
             query: textToSend,
+            match: game,
           });
           await addMessageToSession(sessionId, {
             content: botResponse?.response,
@@ -128,7 +130,7 @@ const ChatComponent: React.FC<{ gameId: number }> = ({ gameId }) => {
           className="flex flex-col"
           style={{ width: "50vw", height: "calc(77vh)" }}
         >
-          {messages?.length === 0 && gameId && !loadingSession && (
+          {messages?.length === 0 && game?.gameId && !loadingSession && (
             <DefaultPrompts handleSendMessage={handleSendMessage} />
           )}
           <div className="flex-1 overflow-auto p-4 h-full">
