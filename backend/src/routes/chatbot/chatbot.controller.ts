@@ -20,7 +20,7 @@ class ChatbotController {
     }
 
     try {
-      const response = await chatbotService.sendMessage(userId, query);
+      const response = await chatbotService.sendMessage(sessionId, query);
       if (response) {
         res.status(200).json({ response });
       } else {
