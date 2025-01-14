@@ -1,5 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import dotenv from "dotenv";
+import { handleAxiosError } from '../../utils/axiosErrorHandler';
 dotenv.config();
 
 class LeagueRepository {
@@ -70,7 +71,7 @@ class LeagueRepository {
       });
       return response.data.id as string;
     } catch (error) {
-      this.handleAxiosError(error as AxiosError);
+      handleAxiosError(error as AxiosError);
       return undefined;
     }
   }
@@ -83,7 +84,7 @@ class LeagueRepository {
       });
       return response.data;
     } catch (error) {
-      this.handleAxiosError(error as AxiosError);
+      handleAxiosError(error as AxiosError);
       return undefined;
     }
   }
@@ -122,7 +123,7 @@ class LeagueRepository {
       });
       return response.data;
     } catch (error) {
-      this.handleAxiosError(error as AxiosError);
+      handleAxiosError(error as AxiosError);
       return null;
     }
   }
@@ -135,7 +136,7 @@ class LeagueRepository {
       });
       return response.data;
     } catch (error) {
-      this.handleAxiosError(error as AxiosError);
+      handleAxiosError(error as AxiosError);
       return null;
     }
   }
@@ -150,16 +151,6 @@ class LeagueRepository {
     } catch (error) {
       console.error('Failed to fetch featured games', error);
       return null;
-    }
-  }
-
-  private handleAxiosError(error: AxiosError): void {
-    if (error.response) {
-      console.error(`HTTP error occurred: ${error.response.status} - ${error.response.statusText}`);
-    } else if (error.request) {
-      console.error('No response was received');
-    } else {
-      console.error(`An error occurred: ${error.message}`);
     }
   }
 }
