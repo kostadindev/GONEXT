@@ -5,7 +5,7 @@ import { Summoner, GameHistory } from "../../libs/league/league-types";
 import {
   getChampionIconSrc,
   getSummonerSpellIconSrc,
-  getItemIconSrc,
+  getItemIconSrcById,
 } from "../../libs/league/league-utils";
 
 const SMALL_ICON_SIZE = 25;
@@ -93,7 +93,7 @@ const ParticipantInfo: React.FC<{ game: GameHistory; kda: string }> = ({
       {[0, 1, 2, 3, 4, 5].map((item) => (
         <Avatar
           key={item}
-          src={getItemIconSrc((game?.participant as any)[`item${item}`])}
+          src={getItemIconSrcById((game?.participant as any)[`item${item}`])}
           alt={(game?.participant as any)[`item${item}`]}
           size={SMALL_ICON_SIZE}
           shape="square"
