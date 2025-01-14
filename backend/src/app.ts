@@ -8,6 +8,7 @@ import summonersRouter from "./routes/summoners/summoners.router";
 import championsRouter from "./routes/champions/champions.router";
 import sessionRouter from "./routes/sessions/sessions.router";
 import authRouter from "./routes/auth/auth.routes";
+import chatbotRouter from "./routes/chatbot/chatbot.router";
 
 // Initialize environment variables
 dotenv.config();
@@ -25,5 +26,6 @@ app.use(matchesRouter);
 app.use(summonersRouter);
 app.use(championsRouter);
 app.use(sessionRouter);
+app.use(chatbotRouter);
 
 export default app;
