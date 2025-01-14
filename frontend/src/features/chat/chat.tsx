@@ -80,7 +80,7 @@ const ChatComponent: React.FC<{ gameId: number }> = ({ gameId }) => {
             query: textToSend,
           });
           await addMessageToSession(sessionId, {
-            content: botResponse,
+            content: botResponse?.response,
             role: "system",
           });
 
