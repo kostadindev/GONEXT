@@ -25,14 +25,10 @@ export interface Game {
   gameId: number;
 };
 
-export interface Tips {
-  label: string
-  text: string
-}
 
 export interface Tip {
-  label: string,
-  text: string
+  title: string,
+  description: string
 }
 
 export enum TipsType {

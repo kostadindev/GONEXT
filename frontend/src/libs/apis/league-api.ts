@@ -20,8 +20,8 @@ export const getSummonerStats = async (region: string, puuid: string) => {
 };
 
 // Function to get matchup tips
-export const getMatchupTips = async (summonerChampion: string, enemyChampion: string) => {
-  return await fetchData('champions/matchup', { summonerChampion, enemyChampion });
+export const getTips = async (tipsType: string, myChampion: string, otherChampion: string) => {
+  return await fetchData('tips', { myChampion, otherChampion, tipsType });
 };
 
 // Function to get a featured summoner

@@ -7,7 +7,7 @@ import {
   LikeOutlined,
 } from "@ant-design/icons";
 import Meta from "antd/es/card/Meta";
-import { getMatchupTips } from "../../libs/apis/league-api";
+import { getTips } from "../../libs/apis/league-api";
 
 interface TipsProps {
   searchedSummoner: Summoner;
@@ -31,12 +31,13 @@ export const Tips: React.FC<TipsProps> = ({
     const fetchTips = async () => {
       setIsLoading(true);
       try {
-        const tips = await getMatchupTips(
+        const res = await getTips(
+          type,
           searchedSummoner.championName,
           otherSummoner.championName
         );
-        if (isMounted && tips) {
-          setTipsInfo(tips);
+        if (isMounted && res) {
+          setTipsInfo(res?.tips);
         }
       } catch (error) {
         console.error("Failed to fetch tips:", error);
@@ -67,7 +68,7 @@ export const Tips: React.FC<TipsProps> = ({
             className="grid grid-cols-1 gap-2"
             style={{ height: "calc(70vh - 79px)" }}
           >
-            {tipsInfo.map((tip, index) => (
+            {tipsInfo?.map((tip, index) => (
               <Card
                 key={index}
                 // actions={[
@@ -77,7 +78,7 @@ export const Tips: React.FC<TipsProps> = ({
                 // ]}
                 styles={{ body: { padding: 12 } }}
               >
-                <Meta title={tip.label} description={tip.text} />
+                <Meta title={tip.title} description={tip.description} />
               </Card>
             ))}
           </div>
