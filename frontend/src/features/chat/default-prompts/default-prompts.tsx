@@ -20,10 +20,10 @@ const PromptCard: React.FC<PromptCardProps> = ({ description, onClick }) => (
 );
 
 const DEFAULT_PROMPTS = [
-  "Give me game plan for early, mid, and late game.",
+  "Give me a game plan",
   "What items should I build?",
-  "What are Leona's most played champions?",
-  "Who is on a lose streak from their team?",
+  "How do I play my matchup?",
+  "Who is their best and weakest player?",
 ];
 
 interface DefaultPromptsProps {
