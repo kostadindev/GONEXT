@@ -9,7 +9,7 @@ export const handleAxiosError = (error: AxiosError): void => {
 
   if (response) {
     console.error(`HTTP error: ${response.status} - ${response.statusText}`);
-    console.error("Response data:", response.data);
+    console.error("Response data:", JSON.stringify(response.data));
   } else if (request) {
     console.error("No response received from the API.");
     console.error("Request details:", request);
