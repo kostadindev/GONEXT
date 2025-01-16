@@ -190,3 +190,6 @@ export interface ObjectiveDetail {
   first: boolean;
   kills: number;
 }
+
+
+export type ChampionName = string; // todo predefined champions
