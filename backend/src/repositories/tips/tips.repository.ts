@@ -13,6 +13,9 @@ class TipsRepository {
     this.baseURL = "http://127.0.0.1:8000/tips"; // FastAPI base URL TODO make an env variable
   }
 
+  /**
+   *  ML generation of tips
+   */
   async generateTips(tipsType: TipsType, myChampion: ChampionName, otherChampion: ChampionName): Promise<TipsResponse> {
     try {
       const response = await axios.post(`${this.baseURL}/`, {
