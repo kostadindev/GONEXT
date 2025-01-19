@@ -1,3 +1,4 @@
+import { LLMOptions } from "../models/llm.models";
 import chatbotRepository from "../repositories/chatbot/chatbot.repository";
 import { Readable } from "stream";
 
@@ -9,9 +10,9 @@ class ChatbotService {
    * @returns {Promise<Readable>} - The chatbot's response stream.
    * @throws {Error} - If the request fails or the response is invalid.
    */
-  async sendMessage(threadId: string, query: string, match?: Record<string, any>): Promise<Readable> {
+  async sendMessage(threadId: string, query: string, match?: Record<string, any>, model?: LLMOptions): Promise<Readable> {
     try {
-      return await chatbotRepository.sendMessage(threadId, query, match);
+      return await chatbotRepository.sendMessage(threadId, query, match, model);
     } catch (error) {
       console.error("Error in ChatbotService while sending message:", error.message);
       throw new Error("Failed to process the chatbot request.");

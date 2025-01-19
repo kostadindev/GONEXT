@@ -49,6 +49,9 @@ class AuthController {
           picture: user.picture,
           givenName: user.givenName,
           familyName: user.familyName,
+          llm: user.llm,
+          theme: user.theme,
+          language: user.language,
           _id: user._id
         },
         JWT_SECRET,

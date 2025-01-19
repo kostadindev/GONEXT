@@ -5,3 +5,5 @@ export enum LLMOptions {
   GEMINI_FLASH = 'gemini-1.5-flash',
   GPT = 'gpt-4o',
 }
+
+export const DEFAULT_LLM = LLMOptions.GEMINI_FLASH;

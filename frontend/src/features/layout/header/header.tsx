@@ -53,11 +53,7 @@ export const Header: React.FC = () => {
     // Update the LLM preference in the backend and localStorage
     try {
       await updateUserLLM(value);
-      localStorage.setItem("llm", value); // Update localStorage
-      notification.success({
-        message: "LLM Updated",
-        description: `Your LLM model has been successfully updated to ${value}.`,
-      });
+      localStorage.setItem("llm", value);
 
       // Update the user context if needed
       if (user) {
