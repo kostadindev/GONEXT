@@ -10,6 +10,7 @@ import sessionRouter from "./routes/sessions/sessions.router";
 import authRouter from "./routes/auth/auth.routes";
 import chatbotRouter from "./routes/chatbot/chatbot.router";
 import tipsRouter from "./routes/tips/tips.router";
+import usersRouter from "./routes/users/users.router";
 
 // Initialize environment variables
 dotenv.config();
@@ -29,5 +30,6 @@ app.use(championsRouter);
 app.use(sessionRouter);
 app.use(chatbotRouter);
 app.use(tipsRouter);
+app.use(usersRouter);
 
 export default app;
