@@ -1,33 +1,56 @@
 import React from "react";
-import { Card, Tooltip, Typography } from "antd";
+import { Card, Tooltip, Typography, Avatar } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import { Game } from "../../../../libs/league/league-types";
 import ChatComponent from "../../../chat/chat";
+import { getItemIconSrcById } from "../../../../libs/league/league-utils";
 
 const { Title, Text } = Typography;
 
 export const GameOverview: React.FC<{ game: Game | null }> = ({ game }) => {
   // Using 55 as a constant value for estimated win rate.
   const estimatedWinRate = 55;
+  const recommendedItems = [3179, 6691, 3814, 3179, 6691, 3814].map((itemId) =>
+    itemId.toString()
+  );
 
   return (
     <div className="flex">
-      <div className="w-1/5 pr-4 flex flex-col space-y-4">
+      <div className="w-4/5">
+        <ChatComponent game={game}></ChatComponent>
+      </div>
+      <div className="w-1/5 pl-4 flex flex-col space-y-4">
         <Card className="rounded-lg shadow-md" bodyStyle={{ padding: "16px" }}>
-          <Title level={5} className="text-sm">
-            Estimated Win Rate
+          <Title level={5} className="text-sm text-center">
+            Estimated Win Probability
           </Title>
-          <div className="flex items-center">
+          <div className="flex items-center justify-center">
             <Text strong className="text-sm mr-2">
               {estimatedWinRate}%
             </Text>
-            <Tooltip title="The Estimated Win Rate is calculated based on various metrics such as player performance, team composition, and other factors.">
+            <Tooltip title="The Estimated Win Probability is calculated using AI models based on various metrics such as player performance, team composition, and other factors.">
               <InfoCircleOutlined className="text-primary text-sm" />
             </Tooltip>
           </div>
         </Card>
         <Card className="rounded-lg shadow-md" bodyStyle={{ padding: "16px" }}>
-          <Title level={5} className="text-sm">
+          <Title level={5} className="text-sm text-center">
+            Recommended Items
+          </Title>
+          <div className="flex justify-between">
+            {recommendedItems.map((itemId, index) => (
+              <Avatar
+                key={index}
+                src={getItemIconSrcById(itemId)}
+                alt={`Item ${itemId}`}
+                size={40}
+                shape="square"
+              />
+            ))}
+          </div>
+        </Card>
+        <Card className="rounded-lg shadow-md" bodyStyle={{ padding: "16px" }}>
+          <Title level={5} className="text-sm text-center">
             Game Summary
           </Title>
           <Text className="text-sm">
@@ -38,9 +61,6 @@ export const GameOverview: React.FC<{ game: Game | null }> = ({ game }) => {
             opponents such as Vayne and Riven from Team 200.
           </Text>
         </Card>
-      </div>
-      <div className="w-4/5">
-        <ChatComponent game={game}></ChatComponent>
       </div>
     </div>
   );
