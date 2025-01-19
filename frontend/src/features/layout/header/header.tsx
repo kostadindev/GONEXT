@@ -85,8 +85,8 @@ export const Header: React.FC = () => {
             size="large"
             bordered={false}
             options={[
-              { label: "GPT Mini", value: LLMOptions.GPT_MINI },
               { label: "Gemini Flash", value: LLMOptions.GEMINI_FLASH },
+              { label: "GPT Mini", value: LLMOptions.GPT_MINI },
               { label: "GPT", value: LLMOptions.GPT },
             ]}
             suffixIcon={<DownOutlined />}

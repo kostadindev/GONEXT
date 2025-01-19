@@ -23,25 +23,27 @@ const ChatComponent: React.FC<{ game: Game | null }> = ({ game }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState<string>("");
   const [loadingSession, setLoadingSession] = useState<boolean>(true);
-  const [isSending, setIsSending] = useState<boolean>(false); // Added loading state
+  const [isSending, setIsSending] = useState<boolean>(false);
   const [isUserScrolling, setIsUserScrolling] = useState<boolean>(false); // Track user scrolling
   const [sessionId, setSessionId] = useState<string | null>(null);
+
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
   const messageContainerRef = React.useRef<HTMLDivElement>(null);
 
   const scrollToBottom = useCallback(() => {
-    if (!isUserScrolling && messagesEndRef.current) {
+    if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, [isUserScrolling]);
+  }, []);
 
   const handleScroll = useCallback(() => {
     if (messageContainerRef.current) {
       const { scrollTop, scrollHeight, clientHeight } =
         messageContainerRef.current;
-      const isAtBottom = scrollTop + clientHeight >= scrollHeight - 10;
 
-      setIsUserScrolling(!isAtBottom); // Set to true if not at the bottom
+      // Detect if user is near the bottom (threshold: 50px)
+      const isAtBottom = scrollTop + clientHeight >= scrollHeight - 50;
+      setIsUserScrolling(!isAtBottom);
     }
   }, []);
 
@@ -153,6 +155,8 @@ const ChatComponent: React.FC<{ game: Game | null }> = ({ game }) => {
   };
 
   useEffect(() => {
+    // Automatically scroll to the bottom when new messages arrive,
+    // unless the user is actively scrolling
     if (!isUserScrolling) {
       scrollToBottom();
     }
