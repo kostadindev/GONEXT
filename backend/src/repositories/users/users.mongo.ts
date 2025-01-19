@@ -1,14 +1,6 @@
-import { Schema, model, Document } from 'mongoose';
-
-interface IUser extends Document {
-  googleId: string;
-  email: string;
-  emailVerified: boolean;
-  name: string;
-  picture: string;
-  givenName: string;
-  familyName: string;
-}
+import { Schema, model } from 'mongoose';
+import { IUser } from '../../models/users.models';
+import { LLMOptions } from '../../models/llm.models';
 
 const userSchema = new Schema({
   googleId: { type: String, required: true, unique: true },
@@ -18,6 +10,14 @@ const userSchema = new Schema({
   picture: { type: String, required: true },
   givenName: { type: String, required: true },
   familyName: { type: String, required: true },
+  llm: {
+    type: String,
+    required: true,
+    enum: Object.values(LLMOptions),
+    default: LLMOptions.GEMINI_FLASH,
+  },
+  theme: { type: String, required: true, default: 'light' },
+  language: { type: String, required: true, default: 'en' }
 });
 
 export const User = model<IUser>('User', userSchema);
