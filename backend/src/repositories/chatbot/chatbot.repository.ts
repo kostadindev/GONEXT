@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import { handleAxiosError } from "../../utils/axiosErrorHandler";
 import { Readable } from "stream";
 import { LLMOptions } from "../../models/llm.models";
+import { Languages } from "../../models/users.models";
 
 dotenv.config();
 
@@ -22,7 +23,7 @@ class ChatBotRepository {
    * @returns {Promise<Readable>} - The response stream from the chatbot.
    * @throws {Error} - If the request fails or the response is invalid.
    */
-  async sendMessage(threadId: string, query: string, match?: Record<string, any>, model?: LLMOptions): Promise<Readable> {
+  async sendMessage(threadId: string, query: string, match?: Record<string, any>, model?: LLMOptions, language?: Languages): Promise<Readable> {
     try {
       const response = await axios.post(
         `${this.baseURL}/`,
@@ -30,7 +31,8 @@ class ChatBotRepository {
           thread_id: threadId,
           query,
           match,
-          model
+          model,
+          language
         },
         {
           responseType: "stream", // This ensures Axios handles the response as a stream.

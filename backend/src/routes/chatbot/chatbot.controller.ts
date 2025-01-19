@@ -20,8 +20,9 @@ class ChatbotController {
       return res.status(401).json({ message: "User not authenticated" });
     }
     const model = req.user?.llm || DEFAULT_LLM;
+    const language = req.user?.language;
     try {
-      const stream = await chatbotService.sendMessage(sessionId, query, match, model);
+      const stream = await chatbotService.sendMessage(sessionId, query, match, model, language);
 
       // Set appropriate headers for streaming
       res.setHeader("Content-Type", "application/octet-stream");
