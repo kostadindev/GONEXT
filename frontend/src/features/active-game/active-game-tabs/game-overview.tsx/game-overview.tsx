@@ -22,20 +22,23 @@ export const GameOverview: React.FC<{ game: Game | null }> = ({ game }) => {
       <div className="w-1/5 pl-4 flex flex-col space-y-4">
         <Card className="rounded-lg shadow-md" bodyStyle={{ padding: "16px" }}>
           <Title level={5} className="text-sm text-center">
-            Estimated Win Probability
+            Estimated Win Probability{" "}
+            <Tooltip title="The Estimated Win Probability is calculated using AI models based on various metrics such as player performance, team composition, and other factors.">
+              <InfoCircleOutlined className="text-primary text-sm ml-1" />
+            </Tooltip>
           </Title>
           <div className="flex items-center justify-center">
             <Text strong className="text-sm mr-2">
               {estimatedWinRate}%
             </Text>
-            <Tooltip title="The Estimated Win Probability is calculated using AI models based on various metrics such as player performance, team composition, and other factors.">
-              <InfoCircleOutlined className="text-primary text-sm" />
-            </Tooltip>
           </div>
         </Card>
         <Card className="rounded-lg shadow-md" bodyStyle={{ padding: "16px" }}>
           <Title level={5} className="text-sm text-center">
-            Recommended Items
+            Recommended Items{" "}
+            <Tooltip title="These items are recommended for the game based on AI analysis of the match context.">
+              <InfoCircleOutlined className="text-primary text-sm ml-1" />
+            </Tooltip>
           </Title>
           <div className="flex justify-between">
             {recommendedItems.map((itemId, index) => (
@@ -51,7 +54,10 @@ export const GameOverview: React.FC<{ game: Game | null }> = ({ game }) => {
         </Card>
         <Card className="rounded-lg shadow-md" bodyStyle={{ padding: "16px" }}>
           <Title level={5} className="text-sm text-center">
-            Game Summary
+            Game Summary{" "}
+            <Tooltip title="This summary is generated using AI analysis based on the events and outcomes of the game.">
+              <InfoCircleOutlined className="text-primary text-sm ml-1" />
+            </Tooltip>
           </Title>
           <Text className="text-sm">
             In a competitive Classic match between Team 100 and Team 200, Team
