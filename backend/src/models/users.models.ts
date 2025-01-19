@@ -23,6 +23,8 @@ export enum Languages {
   Bulgarian = 'bg'
 }
 
+export const DEFAULT_LANGUAGE = Languages.Englsih;
+
 
 export interface IUser extends Document {
   googleId: string;

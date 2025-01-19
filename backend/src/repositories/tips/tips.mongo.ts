@@ -12,6 +12,8 @@ const tipsSchema = new Schema<any>({
   otherChampion: { type: String, required: true },
   tipsType: { type: String, required: true },
   tips: { type: [tipSchema], default: [] },
+  language: { type: String, required: true, default: 'en' },
+  model: { type: String, required: true }
 });
 
 

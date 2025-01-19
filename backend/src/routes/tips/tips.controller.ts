@@ -1,7 +1,11 @@
+import { Response } from "express";
 import tipsService from "../../services/tips.service";
+import { AuthenticatedRequest } from "../../types/misc.types";
+import { DEFAULT_LANGUAGE } from "../../models/users.models";
+import { TipsType } from "../../models/tips.models";
 
 export class TipsController {
-  async getTips(req, res) {
+  async getTips(req: AuthenticatedRequest, res: Response) {
     try {
       const { myChampion, otherChampion, tipsType } = req.query;
 
@@ -17,7 +21,10 @@ export class TipsController {
         return res.status(400).json({ message: 'otherChampion is required' });
       }
 
-      const tips = await tipsService.getTips(tipsType, myChampion, otherChampion);
+      const language = req.user?.language || DEFAULT_LANGUAGE;
+      const model = req.user?.llm;
+
+      const tips = await tipsService.getTips(tipsType as TipsType, myChampion as string, otherChampion as string, model, language);
 
       if (tips) {
         res.status(200).json(tips);

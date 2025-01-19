@@ -1,8 +1,8 @@
 import { Response } from "express";
 import chatbotService from "../../services/chatbot.service";
 import { AuthenticatedRequest } from "../../types/misc.types";
-import { model } from "mongoose";
-import { DEFAULT_LLM, LLMOptions } from "../../models/llm.models";
+import { DEFAULT_LLM } from "../../models/llm.models";
+import { DEFAULT_LANGUAGE } from "../../models/users.models";
 
 class ChatbotController {
   /**
@@ -20,7 +20,7 @@ class ChatbotController {
       return res.status(401).json({ message: "User not authenticated" });
     }
     const model = req.user?.llm || DEFAULT_LLM;
-    const language = req.user?.language;
+    const language = req.user?.language || DEFAULT_LANGUAGE;
     try {
       const stream = await chatbotService.sendMessage(sessionId, query, match, model, language);
 
