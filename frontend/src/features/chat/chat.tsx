@@ -24,12 +24,24 @@ const ChatComponent: React.FC<{ game: Game | null }> = ({ game }) => {
   const [input, setInput] = useState<string>("");
   const [loadingSession, setLoadingSession] = useState<boolean>(true);
   const [isSending, setIsSending] = useState<boolean>(false); // Added loading state
+  const [isUserScrolling, setIsUserScrolling] = useState<boolean>(false); // Track user scrolling
   const [sessionId, setSessionId] = useState<string | null>(null);
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
+  const messageContainerRef = React.useRef<HTMLDivElement>(null);
 
   const scrollToBottom = useCallback(() => {
-    if (messagesEndRef.current) {
+    if (!isUserScrolling && messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [isUserScrolling]);
+
+  const handleScroll = useCallback(() => {
+    if (messageContainerRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } =
+        messageContainerRef.current;
+      const isAtBottom = scrollTop + clientHeight >= scrollHeight - 10;
+
+      setIsUserScrolling(!isAtBottom); // Set to true if not at the bottom
     }
   }, []);
 
@@ -141,8 +153,10 @@ const ChatComponent: React.FC<{ game: Game | null }> = ({ game }) => {
   };
 
   useEffect(() => {
-    scrollToBottom();
-  }, [messages, scrollToBottom]);
+    if (!isUserScrolling) {
+      scrollToBottom();
+    }
+  }, [messages, scrollToBottom, isUserScrolling]);
 
   return (
     <div className="flex justify-center">
@@ -154,7 +168,11 @@ const ChatComponent: React.FC<{ game: Game | null }> = ({ game }) => {
           {messages.length === 0 && game?.gameId && !loadingSession && (
             <DefaultPrompts handleSendMessage={handleSendMessage} />
           )}
-          <div className="flex-1 overflow-auto p-4 h-full">
+          <div
+            className="flex-1 overflow-auto p-4 h-full"
+            ref={messageContainerRef}
+            onScroll={handleScroll} // Attach scroll listener
+          >
             {messages.map((msg, index) => (
               <div key={index} className="my-2 flex pb-4">
                 {msg.role === "system" ? (
