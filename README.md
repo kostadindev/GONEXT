@@ -27,3 +27,6 @@
 This repository is for the Riot API and UI.
 
 ML side is available at https://github.com/kostadindev/gonext-ml
+
+![image](https://github.com/user-attachments/assets/fbbde5da-6da0-4883-b9fb-f7f95e112556)
+![image](https://github.com/user-attachments/assets/b940e0fc-90f8-4a8c-affa-d42352ed1174)
