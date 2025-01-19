@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Select } from "antd";
-import { DownOutlined } from "@ant-design/icons";
+import { DarkModeSwitch } from "react-toggle-dark-mode";
 import { useUser } from "../../context/user.context";
 import {
   updateUserLLM,
@@ -17,17 +17,17 @@ const UserPreferences: React.FC = () => {
   const [selectedLanguage, setSelectedLanguage] = useState<string>(
     localStorage.getItem("language") || "en"
   );
-  const [selectedTheme, setSelectedTheme] = useState<string>(
-    localStorage.getItem("theme") || "light"
+  const [isDarkMode, setDarkMode] = useState<boolean>(
+    localStorage.getItem("theme") === "dark" || false
   );
 
   useEffect(() => {
     if (user) {
       localStorage.setItem("llm", user.llm || LLMOptions.GEMINI_FLASH);
       localStorage.setItem("language", user.language || "en");
-      localStorage.setItem("theme", user.theme || "light");
+      localStorage.setItem("theme", isDarkMode ? "dark" : "light");
     }
-  }, [user]);
+  }, [user, isDarkMode]);
 
   const handleModelChange = async (value: string) => {
     setSelectedModel(value);
@@ -49,10 +49,11 @@ const UserPreferences: React.FC = () => {
     }
   };
 
-  const handleThemeChange = async (value: string) => {
-    setSelectedTheme(value);
+  const toggleDarkMode = async (checked: boolean) => {
+    setDarkMode(checked);
+    const theme = checked ? "dark" : "light";
     try {
-      const updatedUser = await updateUserTheme(value);
+      const updatedUser = await updateUserTheme(theme);
       setUser(updatedUser);
     } catch (error) {
       console.error("Error updating theme:", error);
@@ -62,18 +63,11 @@ const UserPreferences: React.FC = () => {
   return (
     <>
       {/* Theme Selector */}
-      <div style={dropdownStyle}>
-        <Select
-          value={selectedTheme}
-          onChange={handleThemeChange}
-          style={{ width: 120 }}
-          size="large"
-          bordered={false}
-          options={[
-            { label: "Light", value: "light" },
-            { label: "Dark", value: "dark" },
-          ]}
-          suffixIcon={<DownOutlined />}
+      <div style={switchContainerStyle}>
+        <DarkModeSwitch
+          checked={isDarkMode}
+          onChange={toggleDarkMode}
+          size={25}
         />
       </div>
 
@@ -92,7 +86,6 @@ const UserPreferences: React.FC = () => {
             { label: "Spanish", value: "es" },
             { label: "Bulgarian", value: "bg" },
           ]}
-          suffixIcon={<DownOutlined />}
         />
       </div>
 
@@ -109,7 +102,6 @@ const UserPreferences: React.FC = () => {
             { label: "GPT Mini", value: LLMOptions.GPT_MINI },
             { label: "GPT", value: LLMOptions.GPT },
           ]}
-          suffixIcon={<DownOutlined />}
         />
       </div>
     </>
@@ -122,6 +114,13 @@ const dropdownStyle: React.CSSProperties = {
   border: "1px solid #d9d9d9",
   display: "flex",
   alignItems: "center",
+};
+
+const switchContainerStyle: React.CSSProperties = {
+  display: "flex",
+  justifyContent: "center", // Centers horizontally
+  alignItems: "center", // Centers vertically
+  padding: "8px",
 };
 
 export default UserPreferences;
