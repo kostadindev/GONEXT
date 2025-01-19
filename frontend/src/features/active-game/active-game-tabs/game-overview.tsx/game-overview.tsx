@@ -1,63 +1,34 @@
-import { Card, theme } from "antd";
-import {
-  DislikeOutlined,
-  EllipsisOutlined,
-  LikeOutlined,
-} from "@ant-design/icons";
-import Meta from "antd/es/card/Meta";
+import React from "react";
+import { Card, Tooltip, Typography } from "antd";
+import { InfoCircleOutlined } from "@ant-design/icons";
+import { Game } from "../../../../libs/league/league-types";
+import ChatComponent from "../../../chat/chat";
 
-const { useToken } = theme;
+const { Title, Text } = Typography;
 
-const GamePhaseCard = ({
-  title,
-  description,
-}: {
-  title: string;
-  description: string;
-}) => (
-  <Card
-  // actions={[
-  //   <LikeOutlined key="like" />,
-  //   <DislikeOutlined key="dislike" />,
-  //   <EllipsisOutlined key="ellipsis" />,
-  // ]}
-  >
-    <Meta title={title} description={description} />
-  </Card>
-);
-
-const earlyGameDescription = `Clear efficiently: Focus on farming your jungle camps while keeping an eye out for potential gank opportunities.
-Scuttle Control: Contest scuttle crabs to secure vision and deny the enemy jungler.
-Gank when advantageous: Look for lanes that are overextended or have crowd control to set up successful ganks. Kayn's early ganks can be potent if executed well, especially if you're able to utilize his mobility through walls.
-Invade when possible: If you have vision of the enemy jungler on the other side of the map or if you spot them recalling, consider invading their jungle to steal camps and apply pressure.`;
-
-const midGameDescription = `Transform into Shadow Assassin or Rhaast: Depending on the enemy team composition and your preferences, aim to transform into the form that best suits the game situation.
-Objective control: Help secure Rift Herald, Dragon, and towers. Use your mobility to rotate quickly between lanes and objectives.
-Assassinate priority targets: As Shadow Assassin, look for opportunities to catch out squishy targets and delete them quickly with your burst damage. As Rhaast, focus on disrupting the enemy team's backline and sustaining in fights with your sustain and crowd control.
-Split-push or teamfight: Decide whether to split-push in a side lane or group with your team based on the game state. Both forms can excel in different situations, so adapt accordingly.`;
-
-const lateGameDescription = `Teamfighting: Stick with your team and prioritize teamfight objectives such as Baron Nashor and Elder Dragon.
-Vision control: Maintain vision control around key objectives to set up picks and secure objectives safely.
-Peel or dive: Assess whether your team needs you to peel for your carries or dive into the enemy backline. Adapt your playstyle accordingly.
-Shotcalling: Use your map awareness and game knowledge to shotcall rotations, engage/disengage calls, and objective prioritization. Good shotcalling can often be the difference between victory and defeat in the late game.`;
-
-export const GameOverview = () => {
-  const {
-    token: { colorBgContainer, borderRadiusLG },
-  } = useToken();
+export const GameOverview: React.FC<{ game: Game | null }> = ({ game }) => {
+  // Using 55 as a constant value for estimated win rate.
+  const estimatedWinRate = 55;
 
   return (
-    <div
-      className="w-full mx-0 flex flex-row gap-2 overflow-y-auto"
-      style={{ height: "calc(77vh)" }}
-    >
-      <div className="w-1/2 flex flex-col gap-2">
-        <div className="bg-white p-4 rounded-lg">Hello World</div>
+    <div className="flex">
+      <div className="w-1/5 pr-4">
+        <Card className="rounded-lg shadow-md" bodyStyle={{ padding: "16px" }}>
+          <Title level={4} className="text-lg">
+            Estimated Win Rate
+          </Title>
+          <div className="flex items-center">
+            <Text strong className="text-base mr-2">
+              {estimatedWinRate}%
+            </Text>
+            <Tooltip title="The Estimated Win Rate is calculated based on various metrics such as player performance, team composition, and other factors.">
+              <InfoCircleOutlined className="text-primary text-base" />
+            </Tooltip>
+          </div>
+        </Card>
       </div>
-      <div className="w-1/2 flex flex-col gap-2">
-        <GamePhaseCard title="Early Game" description={earlyGameDescription} />
-        <GamePhaseCard title="Mid Game" description={midGameDescription} />
-        <GamePhaseCard title="Late Game" description={lateGameDescription} />
+      <div className="w-4/5">
+        <ChatComponent game={game}></ChatComponent>
       </div>
     </div>
   );

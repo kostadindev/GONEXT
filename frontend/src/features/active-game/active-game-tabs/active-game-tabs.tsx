@@ -69,7 +69,7 @@ export const ActiveGameTabs = ({ game }: { game: Game | null }) => {
         style={{ backgroundColor: "transparent" }}
       />
       <div className="flex flex-col p-5">
-        {selectedView === "chat" && <ChatComponent game={game} />}
+        {selectedView === "chat" && <GameOverview game={game} />}
         {allies?.map((ally) => ally.puuid).includes(selectedView) && (
           <Allies
             summoners={game?.participants}
