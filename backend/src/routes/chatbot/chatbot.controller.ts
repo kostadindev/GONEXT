@@ -1,31 +1,43 @@
-import { Response } from 'express';
-import chatbotService from '../../services/chatbot.service';
-import { AuthenticatedRequest } from '../../types/misc.types';
+import { Response } from "express";
+import chatbotService from "../../services/chatbot.service";
+import { AuthenticatedRequest } from "../../types/misc.types";
 
 class ChatbotController {
   /**
-   * Send a chat message.
+   * Send a chat message and stream the response.
    */
   async sendMessage(req: AuthenticatedRequest, res: Response) {
     const { sessionId } = req.params;
     const { query, match } = req.body;
-
     if (!query) {
-      return res.status(400).json({ message: 'Query is required' });
+      return res.status(400).json({ message: "Query is required" });
     }
 
     const userId = req.user?._id;
     if (!userId) {
-      return res.status(401).json({ message: 'User not authenticated' });
+      return res.status(401).json({ message: "User not authenticated" });
     }
 
     try {
-      const response = await chatbotService.sendMessage(sessionId, query, match);
-      if (response) {
-        res.status(200).json({ response });
-      } else {
-        res.status(404).json({ message: 'Session not found' });
-      }
+      const stream = await chatbotService.sendMessage(sessionId, query, match);
+
+      // Set appropriate headers for streaming
+      res.setHeader("Content-Type", "application/octet-stream");
+      res.setHeader("Transfer-Encoding", "chunked");
+
+      // Pipe the stream directly to the response
+      stream.pipe(res);
+
+      // Handle stream errors
+      stream.on("error", (error) => {
+        console.error("Error while streaming response:", error.message);
+        res.status(500).end("Error while streaming response.");
+      });
+
+      // End the response when the stream ends
+      stream.on("end", () => {
+        res.end();
+      });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }

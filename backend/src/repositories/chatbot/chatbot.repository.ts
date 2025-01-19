@@ -1,6 +1,8 @@
 import axios, { AxiosError } from "axios";
 import dotenv from "dotenv";
 import { handleAxiosError } from "../../utils/axiosErrorHandler";
+import { Readable } from "stream";
+
 dotenv.config();
 
 class ChatBotRepository {
@@ -11,27 +13,28 @@ class ChatBotRepository {
   }
 
   /**
-   * Sends a query to the FastAPI chatbot endpoint and retrieves the response.
+   * Sends a query to the FastAPI chatbot endpoint and processes the streaming response.
    * @param {string} threadId - The thread ID for the conversation context.
    * @param {string} query - The user's message or query to the chatbot.
-   * @returns {Promise<string>} - The chatbot's response.
+   * @param {Record<string, any>} match - Optional matching context.
+   * @returns {Promise<Readable>} - The response stream from the chatbot.
    * @throws {Error} - If the request fails or the response is invalid.
    */
-  async sendMessage(threadId: string, query: string, match?: Record<string, any>): Promise<string> {
+  async sendMessage(threadId: string, query: string, match?: Record<string, any>): Promise<Readable> {
     try {
+      const response = await axios.post(
+        `${this.baseURL}/`,
+        {
+          thread_id: threadId,
+          query,
+          match,
+        },
+        {
+          responseType: "stream", // This ensures Axios handles the response as a stream.
+        }
+      );
 
-      const response = await axios.post(`${this.baseURL}/`, {
-        thread_id: threadId,
-        query,
-        match
-      });
-
-      const chatbotResponse = response.data?.response;
-      if (chatbotResponse) {
-        return chatbotResponse;
-      } else {
-        throw new Error("Invalid response from the chatbot API.");
-      }
+      return response.data as Readable; // Return the readable stream
     } catch (error) {
       handleAxiosError(error as AxiosError);
       throw new Error("Failed to send message to the chatbot.");
