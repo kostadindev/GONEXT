@@ -93,8 +93,8 @@ const ParticipantInfo: React.FC<{ game: GameHistory; kda: string }> = ({
       {[0, 1, 2, 3, 4, 5].map((item) => (
         <Avatar
           key={item}
-          src={getItemIconSrcById((game?.participant as any)[`item${item}`])}
-          alt={(game?.participant as any)[`item${item}`]}
+          src={getItemIconSrcById((game?.participant as any)?.[`item${item}`])}
+          alt={(game?.participant as any)?.[`item${item}`]}
           size={SMALL_ICON_SIZE}
           shape="square"
         />
@@ -112,7 +112,7 @@ const TeamDisplay: React.FC<{ team: Summoner[] }> = ({ team }) => (
 );
 
 export const HistoryItem: React.FC<{ game: GameHistory }> = ({ game }) => {
-  const timeAgo = game
+  const timeAgo = game?.gameCreation
     ? formatDistanceToNow(new Date(game.gameCreation), { addSuffix: true })
     : "";
   const gameDurationString = game
