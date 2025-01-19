@@ -23,6 +23,7 @@ const ChatComponent: React.FC<{ game: Game | null }> = ({ game }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState<string>("");
   const [loadingSession, setLoadingSession] = useState<boolean>(true);
+  const [isSending, setIsSending] = useState<boolean>(false); // Added loading state
   const [sessionId, setSessionId] = useState<string | null>(null);
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
 
@@ -62,6 +63,8 @@ const ChatComponent: React.FC<{ game: Game | null }> = ({ game }) => {
   }, [game]);
 
   const handleSendMessage = async (message?: string) => {
+    if (isSending) return; // Prevent duplicate sending
+
     const textToSend = message || input;
 
     if (textToSend.trim()) {
@@ -70,6 +73,7 @@ const ChatComponent: React.FC<{ game: Game | null }> = ({ game }) => {
         { content: textToSend, role: "user" },
       ]);
       setInput("");
+      setIsSending(true); // Start loading
 
       try {
         if (sessionId) {
@@ -119,6 +123,7 @@ const ChatComponent: React.FC<{ game: Game | null }> = ({ game }) => {
       } catch (error) {
         console.error("Error interacting with chatbot API:", error);
       } finally {
+        setIsSending(false); // End loading
         scrollToBottom();
       }
     }
@@ -129,7 +134,7 @@ const ChatComponent: React.FC<{ game: Game | null }> = ({ game }) => {
   };
 
   const handleKeyPress = (e: any) => {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" && !isSending) {
       e.preventDefault();
       handleSendMessage();
     }
@@ -179,10 +184,12 @@ const ChatComponent: React.FC<{ game: Game | null }> = ({ game }) => {
               placeholder="Type your message here..."
               style={{ fontSize: "16px" }}
               maxLength={256}
+              disabled={isSending} // Disable when loading
             />
             <Button
               icon={<SendOutlined />}
               onClick={() => handleSendMessage()}
+              disabled={isSending} // Disable when loading
             />
           </div>
         </div>
