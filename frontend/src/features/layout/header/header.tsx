@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Avatar, Button, Layout, Select, notification, Typography } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import GlobalSearch from "../../global-search/global-search";
@@ -14,13 +14,27 @@ const { Text } = Typography;
 export const Header: React.FC = () => {
   const { user, setUser } = useUser();
   const [selectedModel, setSelectedModel] = useState<string>(
-    user?.llm || LLMOptions.GEMINI_FLASH
+    localStorage.getItem("llm") || user?.llm || LLMOptions.GEMINI_FLASH
   );
+
+  useEffect(() => {
+    // Sync localStorage with user LLM preference on initial load
+    if (user?.llm && user.llm !== localStorage.getItem("llm")) {
+      localStorage.setItem("llm", user.llm);
+      setSelectedModel(user.llm);
+    }
+  }, [user]);
 
   const onLoginSuccess = async (credentialResponse: any) => {
     const token = credentialResponse.credential;
     const user = await handleLoginSuccess(token);
+
+    // Set user and sync LLM preference with localStorage
     setUser(user);
+    if (user.llm) {
+      localStorage.setItem("llm", user.llm);
+      setSelectedModel(user.llm);
+    }
   };
 
   const onLoginError = () => {
@@ -30,14 +44,16 @@ export const Header: React.FC = () => {
   const onLogout = async () => {
     await handleLogout();
     setUser(null);
+    localStorage.removeItem("llm"); // Clear LLM preference on logout
   };
 
   const handleModelChange = async (value: string) => {
     setSelectedModel(value);
 
-    // Update the LLM preference in the backend
+    // Update the LLM preference in the backend and localStorage
     try {
       await updateUserLLM(value);
+      localStorage.setItem("llm", value); // Update localStorage
       notification.success({
         message: "LLM Updated",
         description: `Your LLM model has been successfully updated to ${value}.`,
