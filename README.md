@@ -1,32 +1,37 @@
 # GoNext
 
-**GoNext** is a GenAI-powered assistant designed for League of Legends players, offering real-time, personalized strategies, matchups, synergies, and builds. By leveraging the Riot API, GoNext retrieves live game data, including details about both allied and enemy players, and uses GPT-4 to provide tailored, context-specific guidance for each game.
+**GoNext** is a GenAI-powered assistant tailored for League of Legends players, delivering real-time and personalized strategies, matchups, synergies, and builds. By harnessing the Riot API, GoNext retrieves live game data—covering both allied and enemy players—and employs large language models to offer context-specific guidance for every match.
 
 ---
 
 ## Features
 
-- **Real-Time Guidance**  
-  Get actionable insights during your game, including strategies tailored to the current team compositions and game state.
+- **GenAI-powered Chatbot**  
+  A knowledge-enriched chatbot that adapts to the current game state. It can suggest item builds, devise game plans, and answer any in-game questions in natural language.
 
-- **Matchup Analysis**  
-  Understand your strengths and weaknesses against enemy champions and learn how to counter them effectively.
+- **Win Chance Estimation**  
+  Advanced AI calculates the probability of victory, factoring in the chosen champions and player performance data.
 
-- **Synergy Suggestions**  
-  Discover optimal builds, runes, and playstyles that enhance synergy with your team.
+- **Game Overview**  
+  An LLM-generated concise summary that highlights the key strategic considerations for each match.
 
-- **Dynamic Builds**  
-  Receive updated item and skill build recommendations based on a specific game.
+- **Live Game Analysis**  
+  Real-time insights powered by AI and integrated data from the Riot API.
 
-- **Riot API Integration**  
-  Access live game data such as allied and enemy player information, champion stats, and more.
+- **Match History & Rank Analysis**  
+  Explore detailed match histories and rank information for all players with a single click.
 
-- **Powered by GPT-4**  
-  Benefit from the advanced language understanding and contextual recommendations of GPT-4.
+- **Multi-Language Support**  
+  Obtain AI-driven insights in various supported languages (English, Korean, Chinese, Spanish, Bulgarian, etc.).
 
-This repository is for the Riot API and UI.
+- **Seamless LLM Switch**  
+  Instantly switch between GPT-4o, GPT-4o-mini, and Gemini 1.5 Flash for optimal performance and cost efficiency.
 
-ML side is available at https://github.com/kostadindev/gonext-ml
+---
 
-![image](https://github.com/user-attachments/assets/fbbde5da-6da0-4883-b9fb-f7f95e112556)
-![image](https://github.com/user-attachments/assets/b940e0fc-90f8-4a8c-affa-d42352ed1174)
+ML side available at [GoNext ML GitHub Repository](https://github.com/kostadindev/gonext-ml)
+
+
+![image](https://github.com/user-attachments/assets/9de8fc3e-9938-4d27-aab0-4a50e2628f86)
+![image](https://github.com/user-attachments/assets/573ddef1-51c1-4eac-b462-37d7906de7be)
+![image](https://github.com/user-attachments/assets/8592bb82-f627-4f78-a537-0d163b833c23)
