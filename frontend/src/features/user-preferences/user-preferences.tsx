@@ -94,13 +94,13 @@ const UserPreferences: React.FC = () => {
         <Select
           value={selectedModel}
           onChange={handleModelChange}
-          style={{ width: 150 }}
+          style={{ width: 175 }}
           size="large"
           bordered={false}
           options={[
-            { label: "Gemini Flash", value: LLMOptions.GEMINI_FLASH },
-            { label: "GPT Mini", value: LLMOptions.GPT_MINI },
-            { label: "GPT", value: LLMOptions.GPT },
+            { label: "Gemini 1.5 Flash", value: LLMOptions.GEMINI_FLASH },
+            { label: "GPT-4o Mini", value: LLMOptions.GPT_MINI },
+            { label: "GPT-4o", value: LLMOptions.GPT },
           ]}
         />
       </div>
