@@ -32,6 +32,7 @@
 ML side available at [GoNext ML GitHub Repository](https://github.com/kostadindev/gonext-ml)
 
 
-![image](https://github.com/user-attachments/assets/9de8fc3e-9938-4d27-aab0-4a50e2628f86)
-![image](https://github.com/user-attachments/assets/573ddef1-51c1-4eac-b462-37d7906de7be)
-![image](https://github.com/user-attachments/assets/8592bb82-f627-4f78-a537-0d163b833c23)
+![image](https://github.com/user-attachments/assets/19f03754-e637-4cdf-8eaf-cea434d6bdf9)
+![image](https://github.com/user-attachments/assets/92c64060-849f-4e6f-a725-40d22e5765a2)
+![image](https://github.com/user-attachments/assets/e7609db4-59d5-4ed6-ad4e-073f5f9153c1)
+
