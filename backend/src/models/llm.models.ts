@@ -7,3 +7,22 @@ export enum LLMOptions {
 }
 
 export const DEFAULT_LLM = LLMOptions.GEMINI_FLASH;
+
+export interface GameOverviewMLResponse {
+  response: {
+    estimated_win_rate: number;
+    recommended_items: string[];
+    game_summary: string;
+  }
+}
+
+export interface GameOverviewResponse {
+  response: {
+    estimated_win_rate: number;
+    recommended_items: {
+      itemId: string;
+      itemName: string;
+    }[];
+    game_summary: string;
+  }
+}

@@ -11,6 +11,7 @@ import authRouter from "./routes/auth/auth.routes";
 import chatbotRouter from "./routes/chatbot/chatbot.router";
 import tipsRouter from "./routes/tips/tips.router";
 import usersRouter from "./routes/users/users.router";
+import gameOverviewRouter from "./routes/game-overview/game-overview.router";
 
 // Initialize environment variables
 dotenv.config();
@@ -31,5 +32,6 @@ app.use(sessionRouter);
 app.use(chatbotRouter);
 app.use(tipsRouter);
 app.use(usersRouter);
+app.use(gameOverviewRouter);
 
 export default app;
