@@ -1,18 +1,48 @@
-import React from "react";
-import { Card, Tooltip, Typography, Avatar } from "antd";
+import React, { useEffect, useState } from "react";
+import { Card, Tooltip, Typography, Avatar, Spin } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import { Game } from "../../../../libs/league/league-types";
 import ChatComponent from "../../../chat/chat";
 import { getItemIconSrcById } from "../../../../libs/league/league-utils";
+import { fetchGameOverview } from "../../../../libs/apis/game-overview-api";
 
 const { Title, Text } = Typography;
 
 export const GameOverview: React.FC<{ game: Game | null }> = ({ game }) => {
-  // Using 55 as a constant value for estimated win rate.
-  const estimatedWinRate = 55;
-  const recommendedItems = [3179, 6691, 3814, 3179, 6691, 3814].map((itemId) =>
-    itemId.toString()
-  );
+  const [estimatedWinRate, setEstimatedWinRate] = useState<number | null>(null);
+  const [recommendedItems, setRecommendedItems] = useState<
+    { itemId: string; itemName: string }[]
+  >([]);
+  const [gameSummary, setGameSummary] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (game) {
+        try {
+          // Replace "gemini-1.5-flash" and "en" with your desired model and language if needed
+          const { response } = await fetchGameOverview(game);
+          setEstimatedWinRate(response.estimated_win_rate || 0); // Assume API returns `estimatedWinRate`
+          setRecommendedItems(response.recommended_items || []); // Assume API returns `recommendedItems`
+          setGameSummary(response.game_summary || "No summary available."); // Assume API returns `gameSummary`
+        } catch (error) {
+          console.error("Error fetching game overview:", error);
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchData();
+  }, [game]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-full">
+        <Spin size="large" />
+      </div>
+    );
+  }
 
   return (
     <div className="flex">
@@ -41,7 +71,7 @@ export const GameOverview: React.FC<{ game: Game | null }> = ({ game }) => {
             </Tooltip>
           </Title>
           <div className="flex justify-between">
-            {recommendedItems.map((itemId, index) => (
+            {recommendedItems.map(({ itemId }, index) => (
               <Avatar
                 key={index}
                 src={getItemIconSrcById(itemId)}
@@ -54,18 +84,12 @@ export const GameOverview: React.FC<{ game: Game | null }> = ({ game }) => {
         </Card>
         <Card className="rounded-lg shadow-md" bodyStyle={{ padding: "16px" }}>
           <Title level={5} className="text-sm text-center">
-            Game Summary{" "}
+            Game Overview{" "}
             <Tooltip title="This summary is generated using AI analysis based on the events and outcomes of the game.">
               <InfoCircleOutlined className="text-primary text-sm ml-1" />
             </Tooltip>
           </Title>
-          <Text className="text-sm">
-            In a competitive Classic match between Team 100 and Team 200, Team
-            100 emerged victorious after a battle lasting 401 seconds. Champions
-            like Lillia, Warwick, and Caitlyn played pivotal roles in securing
-            key objectives and leveraging their team synergy effectively against
-            opponents such as Vayne and Riven from Team 200.
-          </Text>
+          <Text className="text-sm">{gameSummary}</Text>
         </Card>
       </div>
     </div>

@@ -5,6 +5,7 @@ class LeagueService {
   private summonerSpellsDict: Record<string, string | undefined> = {};
   private queuesDict: Record<string, string> = {};
   private latestVersion: string = '';
+  private itemsDict: Record<string, string> = {};
 
   constructor() {
     this.initializeDictionaries();
@@ -15,7 +16,8 @@ class LeagueService {
     await Promise.all([
       this.fetchChampionsDict(),
       this.fetchSummonerSpellDict(),
-      this.fetchQueueTypes()
+      this.fetchQueueTypes(),
+      this.fetchItemsDict()
     ]);
   }
 
@@ -54,6 +56,28 @@ class LeagueService {
       this.summonerSpellsDict[spells[key].key] = spells[key].id;
     });
   }
+
+  private async fetchItemsDict() {
+    if (!this.latestVersion) await this.fetchLatestVersion();
+    const url = `https://ddragon.leagueoflegends.com/cdn/${this.latestVersion}/data/en_US/item.json`;
+    const items = await leagueRepository.fetchData(url);
+
+    if (items?.data) {
+      Object.keys(items.data).forEach((itemId) => {
+        const itemName = items.data[itemId]?.name?.toLowerCase();
+        if (itemName) {
+          this.itemsDict[itemName] = itemId;
+        }
+      });
+    } else {
+      throw new Error('Unable to fetch items data.');
+    }
+  }
+
+  getItemIdByName(itemName: string): string | undefined {
+    return this.itemsDict[itemName?.toLowerCase()];
+  }
+
 
   getChampionName(championId: string): string {
     return this.championsDict[championId]?.name || 'Unknown Champion';
