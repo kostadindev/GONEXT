@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Avatar, Button, Layout, Typography } from "antd";
 import GlobalSearch from "../../global-search/global-search";
 import { QuickSearch } from "../../quick-search/quick-search";
@@ -32,12 +32,16 @@ export const Header: React.FC = () => {
 
   return (
     <Layout.Header style={headerStyle}>
-      <div className="flex items-center gap-5">
-        <GlobalSearch />
-        <span>or</span>
-        <QuickSearch />
+      <div style={{ display: "flex", alignItems: "center", gap: "2rem" }}>
+        {/* Apply the inline style to the logo */}
+        <div style={goldmanStyle}>gonext</div>
+        <div style={{ display: "flex", alignItems: "center", gap: "1.25rem" }}>
+          <GlobalSearch />
+          <span>or</span>
+          <QuickSearch />
+        </div>
       </div>
-      <div className="flex items-center gap-4">
+      <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
         <UserPreferences />
 
         {/* Authentication */}
@@ -69,6 +73,7 @@ export const Header: React.FC = () => {
   );
 };
 
+// Inline style for the header
 const headerStyle: React.CSSProperties = {
   background: "#FFF",
   height: "80px",
@@ -77,6 +82,14 @@ const headerStyle: React.CSSProperties = {
   justifyContent: "space-between",
   boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.1)",
   padding: "0 20px",
+};
+
+// Inline style for the logo
+const goldmanStyle: React.CSSProperties = {
+  fontFamily: '"Goldman", serif', // Use quotes for multi-word font names
+  fontWeight: 400,
+  fontStyle: "normal",
+  fontSize: "3rem",
 };
 
 export default Header;
