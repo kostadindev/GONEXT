@@ -5,6 +5,7 @@ import {
   ContactsOutlined,
   DesktopOutlined,
   HomeOutlined,
+  SettingOutlined,
   TeamOutlined,
   UserOutlined,
 } from "@ant-design/icons";
@@ -23,6 +24,7 @@ const items = [
   getItem("In Game Analytics", "1", <DesktopOutlined />),
   getItem("Drafting Tool", "2", <TeamOutlined />),
   getItem("Player Analytics", "3", <UserOutlined />),
+  getItem("Settings", "5", <SettingOutlined />),
   getItem("Our Team", "4", <ContactsOutlined />),
   // getItem("Game Analytics", "sub1", <PieChartOutlined />, [
   //   getItem("Game Overview", "3"),
