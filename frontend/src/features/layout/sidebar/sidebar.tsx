@@ -1,6 +1,6 @@
 import { Menu } from "antd";
 import Sider from "antd/es/layout/Sider";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ContactsOutlined,
   DesktopOutlined,
@@ -9,7 +9,7 @@ import {
   TeamOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function getItem(label: any, key: any, icon?: any, children?: any) {
   return {
@@ -31,7 +31,27 @@ const items = [
 
 export const Sidebar = () => {
   const [collapsed, setCollapsed] = useState(true);
+  const [selectedKey, setSelectedKey] = useState("0");
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    // Map URLs to corresponding keys
+    const pathToKeyMap: { [key: string]: string } = {
+      "/": "0",
+      "/NA/:summoner/:tagline/in-game": "1",
+      "/drafting-tool": "2",
+      "/player-analytics": "3",
+      "/settings": "5",
+      "/about-us": "4",
+    };
+
+    // Determine the selected key based on the current path
+    const currentKey = Object.keys(pathToKeyMap).find((path) =>
+      location.pathname.startsWith(path.replace(/:.*?\//g, ""))
+    );
+    setSelectedKey(currentKey || "0");
+  }, [location]);
 
   const handleMenuClick = (key: string) => {
     if (key === "1") {
@@ -44,6 +64,14 @@ export const Sidebar = () => {
       }
     } else if (key === "4") {
       navigate("/about-us");
+    } else if (key === "0") {
+      navigate("/");
+    } else if (key === "2") {
+      navigate("/drafting-tool");
+    } else if (key === "3") {
+      navigate("/player-analytics");
+    } else if (key === "5") {
+      navigate("/settings");
     }
   };
 
@@ -57,7 +85,7 @@ export const Sidebar = () => {
       <div className="demo-logo-vertical" />
       <Menu
         theme="dark"
-        defaultSelectedKeys={["1"]}
+        selectedKeys={[selectedKey]}
         mode="inline"
         items={items}
         onClick={({ key }) => handleMenuClick(key)}
