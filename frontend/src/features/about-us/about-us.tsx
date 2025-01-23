@@ -1,5 +1,10 @@
 import React from "react";
 import { Card, Row, Col, Typography, Button } from "antd";
+import {
+  GithubOutlined,
+  MailOutlined,
+  SearchOutlined,
+} from "@ant-design/icons";
 
 const { Title, Text } = Typography;
 
@@ -82,8 +87,8 @@ const AboutUs: React.FC = () => {
                 title={<Title level={5}>{member.name}</Title>}
                 description={<Text>{member.title}</Text>}
               />
-              <div style={{ marginTop: "16px" }}>
-                <Button type="primary" href={member.link} target="_blank">
+              <div>
+                <Button type="link" href={member.link} target="_blank">
                   Read Bio
                 </Button>
               </div>
@@ -110,11 +115,27 @@ const AboutUs: React.FC = () => {
           creating impactful solutions, we’d love to hear from you!
         </p>
         <Button
-          type="primary"
           href="mailto:kostadin.g.devedzhiev@gmail.com"
-          style={{ marginTop: "16px" }}
+          style={{ margin: "16px 8px" }}
+          icon={<MailOutlined />}
         >
           Apply Here
+        </Button>
+        <Button
+          href="https://github.com/kostadindev/gonext"
+          target="_blank"
+          icon={<GithubOutlined />}
+          style={{ margin: "16px 8px" }}
+        >
+          gonext UI
+        </Button>
+        <Button
+          href="https://github.com/kostadindev/gonext-ml"
+          target="_blank"
+          icon={<GithubOutlined />}
+          style={{ margin: "16px 8px" }}
+        >
+          gonext ML
         </Button>
       </div>
     </div>
