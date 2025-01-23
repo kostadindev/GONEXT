@@ -43,7 +43,7 @@ const AboutUs: React.FC = () => {
 
   return (
     <div style={{ backgroundColor: "#f5f5f5", padding: "20px 10%" }}>
-      <div className="text-center mb-10 mx-auto">
+      <div className="text-center mb-10 mx-auto" style={{ maxWidth: "1100px" }}>
         <h2 className="text-2xl md:text-3xl font-bold mb-4">Meet the Team</h2>
         <p className="text-gray-600 text-sm sm:text-base md:text-lg">
           Our team operates from New York, USA, and Sofia, Bulgaria, combining
@@ -91,6 +91,28 @@ const AboutUs: React.FC = () => {
           </Col>
         ))}
       </Row>
+
+      {/* New Section: Interested in Joining? */}
+      <div
+        style={{
+          textAlign: "center",
+          paddingTop: "20px",
+          maxWidth: "1100px",
+          margin: "0 auto",
+        }}
+      >
+        <h2 className="text-2xl md:text-3xl font-bold mb-4">
+          Interested in Joining?
+        </h2>
+        <p className="text-gray-600 text-sm sm:text-base md:text-lg">
+          We’re always looking for talented individuals to join our team. If
+          you’re passionate about innovation and creating impactful solutions,
+          we’d love to hear from you!
+        </p>
+        <Button type="primary" href="/careers" style={{ marginTop: "16px" }}>
+          Apply Here
+        </Button>
+      </div>
     </div>
   );
 };
