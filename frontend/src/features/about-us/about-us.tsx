@@ -105,9 +105,9 @@ const AboutUs: React.FC = () => {
           Interested in Contributing?
         </h2>
         <p className="text-gray-600 text-sm sm:text-base md:text-lg">
-          We’re always looking for talented individuals to join our team. If
-          you’re passionate about innovation and creating impactful solutions,
-          we’d love to hear from you!
+          As an open source project we’re always looking for talented
+          individuals to help us. If you’re passionate about innovation and
+          creating impactful solutions, we’d love to hear from you!
         </p>
         <Button
           type="primary"
