@@ -10,6 +10,7 @@ import { ActiveGame } from "./features/active-game/active-game";
 import { Placeholder } from "./features/filler-content";
 import { NotificationProvider } from "./features/notifications/notification-context";
 import { UserProvider } from "./context/user.context";
+import AboutUs from "./features/about-us/about-us";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -20,7 +21,7 @@ const router = createBrowserRouter(
         path="/:region/:gameName/:tagLine/in-game"
         element={<ActiveGame />}
       />
-      <Route path="/about-us" element={<div>hello world</div>} />
+      <Route path="/about-us" element={<AboutUs />} />
     </Route>
   )
 );
