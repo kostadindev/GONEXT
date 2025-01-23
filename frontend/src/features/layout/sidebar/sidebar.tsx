@@ -11,14 +11,11 @@ import {
 } from "@ant-design/icons";
 import { useNavigate, useLocation } from "react-router-dom";
 
-function getItem(label: any, key: any, icon?: any, children?: any) {
-  return {
-    key,
-    icon,
-    children,
-    label,
-  };
-}
+const getItem = (label: string, key: string, icon?: JSX.Element) => ({
+  key,
+  icon,
+  label,
+});
 
 const items = [
   getItem("Home", "0", <HomeOutlined />),
@@ -31,47 +28,56 @@ const items = [
 
 export const Sidebar = () => {
   const [collapsed, setCollapsed] = useState(true);
-  const [selectedKey, setSelectedKey] = useState("0");
+  const [selectedKey, setSelectedKey] = useState<string | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
-    // Map URLs to corresponding keys
-    const pathToKeyMap: { [key: string]: string } = {
-      "/": "0",
-      "/NA/:summoner/:tagline/in-game": "1",
+    const pathToKeyMap: Record<string, string> = {
+      "/in-game": "1",
       "/drafting-tool": "2",
       "/player-analytics": "3",
       "/settings": "5",
       "/about-us": "4",
     };
 
-    // Determine the selected key based on the current path
-    const currentKey = Object.keys(pathToKeyMap).find((path) =>
-      location.pathname.startsWith(path.replace(/:.*?\//g, ""))
-    );
-    setSelectedKey(currentKey || "0");
+    const currentKey =
+      Object.entries(pathToKeyMap).find(([path]) =>
+        location.pathname.includes(path)
+      )?.[1] || null;
+
+    setSelectedKey(currentKey);
   }, [location]);
 
   const handleMenuClick = (key: string) => {
-    if (key === "1") {
-      const summoner = localStorage.getItem("latestSummoner");
-      const tagline = localStorage.getItem("latestTagline");
-      if (summoner && tagline) {
-        navigate(`/${"NA"}/${summoner}/${tagline}/in-game`);
-      } else {
-        alert("No summoner data found. Please perform a search first.");
+    switch (key) {
+      case "1": {
+        const summoner = localStorage.getItem("latestSummoner");
+        const tagline = localStorage.getItem("latestTagline");
+        if (summoner && tagline) {
+          navigate(`/${"NA"}/${summoner}/${tagline}/in-game`);
+        } else {
+          alert("No summoner data found. Please perform a search first.");
+        }
+        break;
       }
-    } else if (key === "4") {
-      navigate("/about-us");
-    } else if (key === "0") {
-      navigate("/");
-    } else if (key === "2") {
-      navigate("/drafting-tool");
-    } else if (key === "3") {
-      navigate("/player-analytics");
-    } else if (key === "5") {
-      navigate("/settings");
+      case "4":
+        navigate("/about-us");
+        break;
+      case "0":
+        navigate("/");
+        break;
+      case "2":
+        navigate("/drafting-tool");
+        break;
+      case "3":
+        navigate("/player-analytics");
+        break;
+      case "5":
+        navigate("/settings");
+        break;
+      default:
+        break;
     }
   };
 
@@ -80,12 +86,12 @@ export const Sidebar = () => {
       collapsible
       collapsed={collapsed}
       width="calc(max(12vw, 280px))"
-      onCollapse={(value) => setCollapsed(value)}
+      onCollapse={setCollapsed}
     >
       <div className="demo-logo-vertical" />
       <Menu
         theme="dark"
-        selectedKeys={[selectedKey]}
+        selectedKeys={selectedKey ? [selectedKey] : []}
         mode="inline"
         items={items}
         onClick={({ key }) => handleMenuClick(key)}
