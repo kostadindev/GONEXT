@@ -102,14 +102,18 @@ const AboutUs: React.FC = () => {
         }}
       >
         <h2 className="text-2xl md:text-3xl font-bold mb-4">
-          Interested in Joining?
+          Interested in Contributing?
         </h2>
         <p className="text-gray-600 text-sm sm:text-base md:text-lg">
           We’re always looking for talented individuals to join our team. If
           you’re passionate about innovation and creating impactful solutions,
           we’d love to hear from you!
         </p>
-        <Button type="primary" href="/careers" style={{ marginTop: "16px" }}>
+        <Button
+          type="primary"
+          href="mailto:kostadin.g.devedzhiev@gmail.com"
+          style={{ marginTop: "16px" }}
+        >
           Apply Here
         </Button>
       </div>
