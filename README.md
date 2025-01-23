@@ -35,4 +35,6 @@ ML side available at [GoNext ML GitHub Repository](https://github.com/kostadinde
 ![image](https://github.com/user-attachments/assets/19f03754-e637-4cdf-8eaf-cea434d6bdf9)
 ![image](https://github.com/user-attachments/assets/92c64060-849f-4e6f-a725-40d22e5765a2)
 ![image](https://github.com/user-attachments/assets/e7609db4-59d5-4ed6-ad4e-073f5f9153c1)
+![image](https://github.com/user-attachments/assets/e3dbec08-06ac-4b93-a111-352db79a008c)
+
 
