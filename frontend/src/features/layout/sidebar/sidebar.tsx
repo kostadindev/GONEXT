@@ -9,6 +9,7 @@ import {
   TeamOutlined,
   UserOutlined,
 } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 
 function getItem(label: any, key: any, icon?: any, children?: any) {
   return {
@@ -25,21 +26,27 @@ const items = [
   getItem("Drafting Tool", "2", <TeamOutlined />),
   getItem("Player Analytics", "3", <UserOutlined />),
   getItem("Settings", "5", <SettingOutlined />),
-  getItem("Our Team", "4", <ContactsOutlined />),
-  // getItem("Game Analytics", "sub1", <PieChartOutlined />, [
-  //   getItem("Game Overview", "3"),
-  //   getItem("Infernal AI", "4"),
-  // getItem("Alex", "5"),
-  // ]),
-  // getItem("Team", "sub2", <TeamOutlined />, [
-  //   getItem("Team 1", "6"),
-  //   getItem("Team 2", "8"),
-  // ]),
-  // getItem("Files", "9", <FileOutlined />),
+  getItem("About", "4", <ContactsOutlined />),
 ];
 
 export const Sidebar = () => {
   const [collapsed, setCollapsed] = useState(true);
+  const navigate = useNavigate();
+
+  const handleMenuClick = (key: string) => {
+    if (key === "1") {
+      const summoner = localStorage.getItem("latestSummoner");
+      const tagline = localStorage.getItem("latestTagline");
+      if (summoner && tagline) {
+        navigate(`/${"NA"}/${summoner}/${tagline}/in-game`);
+      } else {
+        alert("No summoner data found. Please perform a search first.");
+      }
+    } else if (key === "4") {
+      navigate("/about-us");
+    }
+  };
+
   return (
     <Sider
       collapsible
@@ -53,6 +60,7 @@ export const Sidebar = () => {
         defaultSelectedKeys={["1"]}
         mode="inline"
         items={items}
+        onClick={({ key }) => handleMenuClick(key)}
       />
     </Sider>
   );

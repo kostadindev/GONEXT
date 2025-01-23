@@ -20,6 +20,7 @@ const router = createBrowserRouter(
         path="/:region/:gameName/:tagLine/in-game"
         element={<ActiveGame />}
       />
+      <Route path="/about-us" element={<div>hello world</div>} />
     </Route>
   )
 );

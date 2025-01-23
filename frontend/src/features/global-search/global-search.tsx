@@ -47,6 +47,10 @@ export default function GlobalSearch() {
   const onSearch = (searchedUser: string) => {
     const [summoner, tagline] = searchedUser.split("#");
     if (summoner && tagline) {
+      // Cache the searched user in local storage
+      localStorage.setItem("latestSummoner", summoner);
+      localStorage.setItem("latestTagline", tagline);
+
       navigate(`/${region}/${summoner}/${tagline}/in-game`);
     } else {
       setError({

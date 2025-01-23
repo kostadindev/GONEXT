@@ -48,6 +48,10 @@ export const QuickSearch = () => {
       .split("#")
       .map((str) => str.trim());
     if (summoner && tagline) {
+      // Save to local storage
+      localStorage.setItem("latestSummoner", summoner);
+      localStorage.setItem("latestTagline", tagline);
+
       navigate(`/${"NA"}/${summoner}/${tagline}/in-game`);
     }
   };
