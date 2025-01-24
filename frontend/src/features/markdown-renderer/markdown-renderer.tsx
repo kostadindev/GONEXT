@@ -36,6 +36,7 @@ const MarkdownComponents = {
   pre: ({ children }: { children: React.ReactNode }) => (
     <pre className="p-4 rounded overflow-x-auto">{children}</pre>
   ),
+  hr: () => <hr className="border-t my-4" />,
   a: ({ href, children }: { href: string; children: React.ReactNode }) => (
     <a href={href} className="text-blue-600 underline hover:text-blue-800">
       {children}
