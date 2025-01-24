@@ -1,9 +1,12 @@
 import React from "react";
 import { Card, Row, Col, Typography, Button } from "antd";
 import {
+  GithubFilled,
   GithubOutlined,
+  GlobalOutlined,
+  LinkedinFilled,
+  MailFilled,
   MailOutlined,
-  SearchOutlined,
 } from "@ant-design/icons";
 
 const { Title, Text } = Typography;
@@ -12,7 +15,10 @@ type TeamMember = {
   name: string;
   title: string;
   image: string;
-  link: string;
+  github?: string;
+  linkedin?: string;
+  email?: string;
+  website?: string;
 };
 
 const AboutUs: React.FC = () => {
@@ -21,28 +27,33 @@ const AboutUs: React.FC = () => {
       name: "Kostadin Devedzhiev",
       title: "Founder | ML",
       image: "/profile-photos/kostadin.jpg",
-      link: "https://kostadindev.github.io/",
+      github: "https://github.com/kostadindev",
+      linkedin: "https://www.linkedin.com/in/kostadin-dev/",
+      email: "kostadin.g.devedzhiev@gmail.com",
+      website: "https://kostadindev.github.io/",
     },
     {
       name: "Ivan Nikolov",
       title: "Backend | DevOps",
       image:
         "https://scontent-lga3-2.xx.fbcdn.net/v/t39.30808-6/463968694_27285182364459185_394874216162696016_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=jeMA9FNu3wUQ7kNvgGomv9-&_nc_zt=23&_nc_ht=scontent-lga3-2.xx&_nc_gid=ADJN9tIISQ6-sj7Ecix0AOi&oh=00_AYCKMdO-LOfrVY1lXH-6_ITzdXFSYTW5lBjRm2levWqjuA&oe=679865CA",
-      link: "https://www.facebook.com/profile.php?id=100001823682092",
+      github: "https://github.com/nnivan",
     },
     {
       name: "Nicholas Bruhnev",
       title: "UI | UX",
       image:
         "https://media.licdn.com/dms/image/v2/C4E03AQEPzvNce2yw-g/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1643814080655?e=1743033600&v=beta&t=WPSZ8ecHRbYyjFhF8D3DFxundPdRHESHqOkK6w46dvg",
-      link: "https://www.linkedin.com/in/nick-bruhnev/",
+      linkedin: "https://www.linkedin.com/in/nick-bruhnev/",
+      github: "https://github.com/nickpeterb",
     },
     {
       name: "Nikola Polihronov",
       title: "PM | UI",
       image:
         "https://media.licdn.com/dms/image/v2/D4D03AQECzDuJVxACiw/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1698224514318?e=1743033600&v=beta&t=R8naXMpH4zDE0jsKk6VYRFH2etIIpPl7BqgLXfaqG6c",
-      link: "https://www.linkedin.com/in/nikola-p-811891279/overlay/photo/",
+      linkedin: "https://www.linkedin.com/in/nikola-p-811891279/",
+      github: "https://github.com/Polihronos",
     },
   ];
 
@@ -87,17 +98,50 @@ const AboutUs: React.FC = () => {
                 title={<Title level={5}>{member.name}</Title>}
                 description={<Text>{member.title}</Text>}
               />
-              <div>
-                <Button type="link" href={member.link} target="_blank">
-                  Read Bio
-                </Button>
+              <div style={{ marginTop: "10px" }}>
+                {member.website && (
+                  <Button
+                    shape="circle"
+                    type="text"
+                    target="_blank"
+                    href={member.website}
+                    style={{ paddingRight: "0px" }}
+                    icon={<GlobalOutlined />}
+                  ></Button>
+                )}
+                {member.email && (
+                  <Button
+                    shape="circle"
+                    type="text"
+                    target="_blank"
+                    href={`mailto:${member.email}`}
+                    style={{ paddingRight: "0px" }}
+                    icon={<MailFilled />}
+                  />
+                )}
+                {member.linkedin && (
+                  <Button
+                    shape="circle"
+                    type="text"
+                    href={member.linkedin}
+                    target="_blank"
+                    icon={<LinkedinFilled />}
+                  ></Button>
+                )}
+                {member.github && (
+                  <Button
+                    shape="circle"
+                    type="text"
+                    href={member.github}
+                    target="_blank"
+                    icon={<GithubFilled />}
+                  ></Button>
+                )}
               </div>
             </Card>
           </Col>
         ))}
       </Row>
-
-      {/* New Section: Interested in Joining? */}
       <div
         style={{
           textAlign: "center",
