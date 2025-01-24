@@ -48,8 +48,16 @@ export const GameOverview: React.FC<{ game: Game | null }> = ({ game }) => {
       <div className="w-4/5">
         <ChatComponent game={game} height={"75vh"}></ChatComponent>
       </div>
-      <div className="w-1/5 pl-4 flex flex-col space-y-4">
-        <Card className="rounded-lg shadow-md" bodyStyle={{ padding: "16px" }}>
+      <div className="w-1/5 min-w-[250px] pl-4 flex flex-col space-y-4">
+        <Card
+          className="rounded-lg shadow-md"
+          hoverable
+          styles={{
+            body: {
+              padding: "12px",
+            },
+          }}
+        >
           <Title level={5} className="text-sm text-center">
             Win Chance{" "}
             <Tooltip title="This is calculated using AI based on player performance, team composition, and other factors.">
@@ -62,7 +70,15 @@ export const GameOverview: React.FC<{ game: Game | null }> = ({ game }) => {
             </Text>
           </div>
         </Card>
-        <Card className="rounded-lg shadow-md" bodyStyle={{ padding: "16px" }}>
+        <Card
+          className="rounded-lg shadow-md"
+          hoverable
+          styles={{
+            body: {
+              padding: "12px",
+            },
+          }}
+        >
           <Title level={5} className="text-sm text-center">
             Recommended Items
             <Tooltip title="AI-recommended items for this match.">
@@ -75,14 +91,22 @@ export const GameOverview: React.FC<{ game: Game | null }> = ({ game }) => {
                 <Avatar
                   src={getItemIconSrcById(itemId)}
                   alt={`Item ${itemName}`}
-                  size={32}
+                  size={35}
                   shape="square"
                 />
               </Tooltip>
             ))}
           </div>
         </Card>
-        <Card className="rounded-lg shadow-md" bodyStyle={{ padding: "16px" }}>
+        <Card
+          className="rounded-lg shadow-md"
+          hoverable
+          styles={{
+            body: {
+              padding: "12px",
+            },
+          }}
+        >
           <Title level={5} className="text-sm text-center">
             Game Overview{" "}
             <Tooltip title="This is a summary generated using AI based on the match events.">
