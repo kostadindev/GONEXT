@@ -26,7 +26,8 @@ const AboutUs: React.FC = () => {
     {
       name: "Kostadin Devedzhiev",
       title: "Founder | ML",
-      image: "/profile-photos/kostadin.jpg",
+      image:
+        "https://media.licdn.com/dms/image/v2/D4E03AQHT-wFQ9xo1sA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1727758296269?e=1743033600&v=beta&t=u7b94xnynKeCumtQDipci8K8p9uiuIgMs_8dO9Qotdo",
       github: "https://github.com/kostadindev",
       linkedin: "https://www.linkedin.com/in/kostadin-dev/",
       email: "kostadin.g.devedzhiev@gmail.com",
