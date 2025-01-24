@@ -172,62 +172,60 @@ const ChatComponent: React.FC<{ game: Game | null; height: string }> = ({
 
   return (
     <div className="flex justify-center pt-5">
-      <Spin spinning={loadingSession} size="large">
-        <div className="flex flex-col" style={{ height: height }}>
-          {messages.length === 0 && game?.gameId && !loadingSession && (
-            <DefaultPrompts handleSendMessage={handleSendMessage} />
-          )}
-          <div
-            className="flex-1 overflow-auto p-4 h-full"
-            ref={messageContainerRef}
-            onScroll={handleScroll} // Attach scroll listener
-          >
-            {messages.map((msg, index) => (
-              <div key={index} className="my-2 flex pb-4">
-                {msg.role === "system" ? (
-                  <Avatar style={{ marginRight: 8 }} icon={<OpenAIFilled />} />
-                ) : (
-                  <Avatar style={{ marginRight: 8 }} src={user?.picture} />
-                )}
-                {msg.role === "user" ? (
-                  <div
-                    className="inline-block p-2 px-4 rounded-lg break-words text-white max-w-[calc(100%-40px)]"
-                    style={{
-                      backgroundColor: primaryColor,
-                    }}
-                  >
-                    {msg.content}
-                  </div>
-                ) : (
-                  <Card
-                    className={`inline-block rounded-lg  text-black w-full break-words max-w-[calc(100%-40px)]`}
-                  >
-                    <MarkdownRenderer content={msg.content} />
-                  </Card>
-                )}
-              </div>
-            ))}
-            <div ref={messagesEndRef} />
-          </div>
-          <div className="p-1 flex gap-3">
-            <TextArea
-              autoSize
-              value={input}
-              onChange={handleInputChange}
-              onKeyDown={handleKeyPress}
-              placeholder="Type your message here..."
-              style={{ fontSize: "16px" }}
-              maxLength={256}
-              disabled={isSending} // Disable when loading
-            />
-            <Button
-              icon={<SendOutlined />}
-              onClick={() => handleSendMessage()}
-              disabled={isSending} // Disable when loading
-            />
-          </div>
+      <div className="flex flex-col w-[100%]" style={{ height: height }}>
+        {messages.length === 0 && game?.gameId && !loadingSession && (
+          <DefaultPrompts handleSendMessage={handleSendMessage} />
+        )}
+        <div
+          className="flex-1 overflow-auto p-4 h-full"
+          ref={messageContainerRef}
+          onScroll={handleScroll} // Attach scroll listener
+        >
+          {messages.map((msg, index) => (
+            <div key={index} className="my-2 flex pb-4">
+              {msg.role === "system" ? (
+                <Avatar style={{ marginRight: 8 }} icon={<OpenAIFilled />} />
+              ) : (
+                <Avatar style={{ marginRight: 8 }} src={user?.picture} />
+              )}
+              {msg.role === "user" ? (
+                <div
+                  className="inline-block p-2 px-4 rounded-lg break-words text-white max-w-[calc(100%-40px)]"
+                  style={{
+                    backgroundColor: primaryColor,
+                  }}
+                >
+                  {msg.content}
+                </div>
+              ) : (
+                <Card
+                  className={`inline-block rounded-lg  text-black w-full break-words max-w-[calc(100%-40px)]`}
+                >
+                  <MarkdownRenderer content={msg.content} />
+                </Card>
+              )}
+            </div>
+          ))}
+          <div ref={messagesEndRef} />
         </div>
-      </Spin>
+        <div className="p-1 flex gap-3">
+          <TextArea
+            autoSize
+            value={input}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyPress}
+            placeholder="Type your message here..."
+            style={{ fontSize: "16px" }}
+            maxLength={256}
+            disabled={isSending} // Disable when loading
+          />
+          <Button
+            icon={<SendOutlined />}
+            onClick={() => handleSendMessage()}
+            disabled={isSending} // Disable when loading
+          />
+        </div>
+      </div>
     </div>
   );
 };

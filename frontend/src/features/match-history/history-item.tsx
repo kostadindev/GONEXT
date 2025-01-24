@@ -108,9 +108,9 @@ const ParticipantInfo: React.FC<{ game: GameHistory; kda: string }> = ({
       </div>
       <div className="min-w-[80]">
         <Tooltip title="Kills/Deaths/Assists">
-          <div className="text-base flex justify-center items-center">
+          <div className="text-md flex justify-center items-center">
             <span>{game?.participant?.kills}</span>/
-            <span className="text-red-500">{game?.participant?.deaths}</span>/
+            <span className="text-[#e84749]">{game?.participant?.deaths}</span>/
             <span>{game?.participant?.assists}</span>
           </div>
         </Tooltip>

@@ -7,13 +7,11 @@ import ChatComponent from "../chat/chat";
 interface PlayerViewProps {
   summoners?: Summoner[];
   playerPuuid?: string;
-  searchedSummonerPuuid?: string;
   game?: Game;
 }
 
 export const PlayerView: React.FC<PlayerViewProps> = ({
   playerPuuid,
-  searchedSummonerPuuid,
   game,
 }) => {
   const player = game?.participants?.find(
