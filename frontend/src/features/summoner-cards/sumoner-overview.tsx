@@ -6,7 +6,7 @@ import {
   getWinRateString,
 } from "../../libs/league/league-utils";
 import { getSummonerStats } from "../../libs/apis/league-api";
-import { Card, Avatar, Badge, Typography, theme, Spin } from "antd";
+import { Card, Avatar, Badge, Typography, theme, Spin, Tooltip } from "antd";
 
 interface SummonerOverviewProps {
   summoner: Summoner;
@@ -24,8 +24,12 @@ const SummonerStatBlock = ({
     <>
       {label && value ? (
         <div className="flex flex-col items-center justify-center flex-1">
-          <span className="text-sm font-medium text-center">{label}</span>
-          <span className="text-sm text-center">{value}</span>
+          <Tooltip title={label}>
+            <span className="text-sm font-medium text-center">{label}</span>
+          </Tooltip>
+          <Tooltip title={value}>
+            <span className="text-sm text-center">{value}</span>
+          </Tooltip>
         </div>
       ) : (
         <></>
@@ -82,29 +86,43 @@ export const SummonerOverview: React.FC<SummonerOverviewProps> = ({
       >
         <div className="flex gap-1">
           <Badge>
-            <Avatar
-              src={getChampionIconSrc(summoner?.championImageId)}
-              size="large"
-            />
+            <Tooltip title={summoner?.championName || "Champion"}>
+              <Avatar
+                src={getChampionIconSrc(summoner?.championImageId)}
+                size="large"
+              />
+            </Tooltip>
           </Badge>
           <div className="flex gap-1">
             <div className="flex flex-col">
-              <Avatar
-                src={getSummonerSpellIconSrc(summoner?.summonerSpell1Name)}
-                alt={summoner?.summonerSpell1Name}
-                size={20}
-              />
-              <Avatar
-                src={getSummonerSpellIconSrc(summoner?.summonerSpell2Name)}
-                alt={summoner?.summonerSpell1Name}
-                size={20}
-              />
+              <Tooltip
+                title={summoner?.summonerSpell1Name || "Summoner Spell 1"}
+              >
+                <Avatar
+                  src={getSummonerSpellIconSrc(summoner?.summonerSpell1Name)}
+                  alt={summoner?.summonerSpell1Name}
+                  size={20}
+                />
+              </Tooltip>
+              <Tooltip
+                title={summoner?.summonerSpell2Name || "Summoner Spell 2"}
+              >
+                <Avatar
+                  src={getSummonerSpellIconSrc(summoner?.summonerSpell2Name)}
+                  alt={summoner?.summonerSpell2Name}
+                  size={20}
+                />
+              </Tooltip>
             </div>
             <div>
-              <Typography.Title level={5} style={{ margin: 0 }}>
-                {summoner?.summonerName}
-              </Typography.Title>
-              <Typography.Text>{summoner?.championName}</Typography.Text>
+              <Tooltip title={summoner?.summonerName || "Summoner Name"}>
+                <Typography.Title level={5} style={{ margin: 0 }}>
+                  {summoner?.summonerName}
+                </Typography.Title>
+              </Tooltip>
+              <Tooltip title={summoner?.championName || "Champion Name"}>
+                <Typography.Text>{summoner?.championName}</Typography.Text>
+              </Tooltip>
             </div>
           </div>
         </div>
@@ -121,35 +139,43 @@ export const SummonerOverview: React.FC<SummonerOverviewProps> = ({
           {summonerStats && (
             <div className="flex flex-row justify-center w-full">
               {summonerStats?.ranked && (
-                <SummonerStatBlock
-                  label={"Ranked"}
-                  value={`${summonerStats?.ranked?.tier} ${summonerStats?.ranked?.rank} (${summonerStats?.ranked?.leaguePoints}LP)`}
-                  rank={summonerStats?.ranked?.tier}
-                ></SummonerStatBlock>
+                <Tooltip title="Ranked Stats">
+                  <SummonerStatBlock
+                    label={"Ranked"}
+                    value={`${summonerStats?.ranked?.tier} ${summonerStats?.ranked?.rank} (${summonerStats?.ranked?.leaguePoints}LP)`}
+                    rank={summonerStats?.ranked?.tier}
+                  ></SummonerStatBlock>
+                </Tooltip>
               )}
               {summonerStats?.ranked && (
-                <SummonerStatBlock
-                  label={"Ranked Win Rate"}
-                  value={getWinRateString(
-                    summonerStats?.ranked?.wins,
-                    summonerStats?.ranked?.losses
-                  )}
-                ></SummonerStatBlock>
+                <Tooltip title="Ranked Win Rate">
+                  <SummonerStatBlock
+                    label={"Ranked Win Rate"}
+                    value={getWinRateString(
+                      summonerStats?.ranked?.wins,
+                      summonerStats?.ranked?.losses
+                    )}
+                  ></SummonerStatBlock>
+                </Tooltip>
               )}
               {summonerStats?.flex && (
-                <SummonerStatBlock
-                  label={"Flex"}
-                  value={`${summonerStats?.flex?.tier} ${summonerStats?.flex?.rank} (${summonerStats?.flex?.leaguePoints}LP)`}
-                ></SummonerStatBlock>
+                <Tooltip title="Flex Stats">
+                  <SummonerStatBlock
+                    label={"Flex"}
+                    value={`${summonerStats?.flex?.tier} ${summonerStats?.flex?.rank} (${summonerStats?.flex?.leaguePoints}LP)`}
+                  ></SummonerStatBlock>
+                </Tooltip>
               )}
               {summonerStats?.flex && (
-                <SummonerStatBlock
-                  label={"Flex Win Rate"}
-                  value={getWinRateString(
-                    summonerStats?.flex?.wins,
-                    summonerStats?.flex?.losses
-                  )}
-                ></SummonerStatBlock>
+                <Tooltip title="Flex Win Rate">
+                  <SummonerStatBlock
+                    label={"Flex Win Rate"}
+                    value={getWinRateString(
+                      summonerStats?.flex?.wins,
+                      summonerStats?.flex?.losses
+                    )}
+                  ></SummonerStatBlock>
+                </Tooltip>
               )}
             </div>
           )}
