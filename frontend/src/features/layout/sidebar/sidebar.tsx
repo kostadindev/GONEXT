@@ -86,11 +86,12 @@ export const Sidebar = () => {
       collapsible
       collapsed={collapsed}
       width="calc(max(12vw, 280px))"
+      theme="light"
       onCollapse={setCollapsed}
     >
       <div className="demo-logo-vertical" />
       <Menu
-        theme="dark"
+        theme="light"
         selectedKeys={selectedKey ? [selectedKey] : []}
         mode="inline"
         items={items}

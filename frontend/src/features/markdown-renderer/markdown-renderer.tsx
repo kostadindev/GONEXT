@@ -1,5 +1,6 @@
 import React from "react";
 import Markdown from "markdown-to-jsx";
+import { theme } from "antd";
 
 // Custom components for Markdown elements
 const MarkdownComponents = {
@@ -25,19 +26,15 @@ const MarkdownComponents = {
     <ol className="list-decimal ml-6">{children}</ol>
   ),
   blockquote: ({ children }: { children: React.ReactNode }) => (
-    <blockquote className="border-l-4 border-blue-500 pl-4 italic text-gray-600">
+    <blockquote className="border-l-4 border-blue-500 pl-4 italic">
       {children}
     </blockquote>
   ),
   code: ({ children }: { children: React.ReactNode }) => (
-    <code className="bg-gray-100 text-red-600 px-1 py-0.5 rounded">
-      {children}
-    </code>
+    <code className="px-1 py-0.5 rounded">{children}</code>
   ),
   pre: ({ children }: { children: React.ReactNode }) => (
-    <pre className="bg-gray-900 text-white p-4 rounded overflow-x-auto">
-      {children}
-    </pre>
+    <pre className="p-4 rounded overflow-x-auto">{children}</pre>
   ),
   a: ({ href, children }: { href: string; children: React.ReactNode }) => (
     <a href={href} className="text-blue-600 underline hover:text-blue-800">
@@ -47,14 +44,21 @@ const MarkdownComponents = {
 };
 
 const MarkdownRenderer: React.FC<{ content: string }> = ({ content }) => {
+  const { useToken } = theme;
+  const { token } = useToken();
+
+  const textColor = token.colorText; // Text color based on theme
+
   return (
-    <Markdown
-      options={{
-        overrides: MarkdownComponents,
-      }}
-    >
-      {content}
-    </Markdown>
+    <div style={{ color: textColor }}>
+      <Markdown
+        options={{
+          overrides: MarkdownComponents,
+        }}
+      >
+        {content}
+      </Markdown>
+    </div>
   );
 };
 

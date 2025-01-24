@@ -75,7 +75,6 @@ export const Header: React.FC = () => {
 
 // Inline style for the header
 const headerStyle: React.CSSProperties = {
-  background: "#FFF",
   height: "80px",
   display: "flex",
   alignItems: "center",

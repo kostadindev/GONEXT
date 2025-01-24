@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, ChangeEvent } from "react";
-import { Button, Avatar, Spin } from "antd";
+import { Button, Avatar, Spin, Card } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { SendOutlined } from "@ant-design/icons";
 import { OpenAIFilled } from "@ant-design/icons";
@@ -189,18 +189,22 @@ const ChatComponent: React.FC<{ game: Game | null }> = ({ game }) => {
                 ) : (
                   <Avatar style={{ marginRight: 8 }} src={user?.picture} />
                 )}
-                <div
-                  className={`inline-block p-2 px-4 rounded-lg break-words ${
-                    msg.role === "user"
-                      ? "text-white max-w-[calc(100%-40px)]"
-                      : "text-black w-full max-w-[calc(100%-40px)]"
-                  }`}
-                  style={{
-                    backgroundColor: msg.role === "user" ? primaryColor : "",
-                  }}
-                >
-                  <MarkdownRenderer content={msg.content} />
-                </div>
+                {msg.role === "user" ? (
+                  <div
+                    className="inline-block p-2 px-4 rounded-lg break-words text-white max-w-[calc(100%-40px)]"
+                    style={{
+                      backgroundColor: primaryColor,
+                    }}
+                  >
+                    {msg.content}
+                  </div>
+                ) : (
+                  <Card
+                    className={`inline-block rounded-lg  text-black w-full break-words max-w-[calc(100%-40px)]`}
+                  >
+                    <MarkdownRenderer content={msg.content} />
+                  </Card>
+                )}
               </div>
             ))}
             <div ref={messagesEndRef} />

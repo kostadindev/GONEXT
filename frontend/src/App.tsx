@@ -1,3 +1,4 @@
+import React from "react";
 import AppLayout from "./features/layout/layout";
 import {
   Route,
@@ -9,9 +10,9 @@ import ErrorPage from "./features/layout/error-page";
 import { ActiveGame } from "./features/active-game/active-game";
 import { Placeholder } from "./features/filler-content";
 import { NotificationProvider } from "./features/notifications/notification-context";
-import { UserProvider } from "./context/user.context";
+import { useUser, UserProvider } from "./context/user.context";
 import AboutUs from "./features/about-us/about-us";
-import { ConfigProvider } from "antd";
+import { ConfigProvider, theme, Layout } from "antd";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -27,30 +28,47 @@ const router = createBrowserRouter(
   )
 );
 
-function App() {
+const ThemedApp = () => {
+  const { user } = useUser();
+
+  // Default to "light" theme if the user does not have a theme preference
+  const currentTheme = user?.theme || "light";
+
   return (
     <ConfigProvider
       theme={{
+        algorithm:
+          currentTheme === "light"
+            ? theme.defaultAlgorithm
+            : theme.darkAlgorithm,
         token: {
-          // Seed Token
-          // colorPrimary: "#00b96b",
-          // borderRadius: 2,
-          // Alias Token
-          // colorBgContainer: "#f6ffed",
+          colorPrimary: currentTheme === "light" ? "#1890ff" : "#1890ff",
+          borderRadius: 4,
         },
         components: {
           Layout: {
-            bodyBg: "#f8fafd",
+            headerBg: currentTheme === "light" ? "#ffffff" : "#1f1f1f",
+            headerColor: currentTheme === "light" ? "#000000" : "#ffffff",
+            bodyBg: currentTheme === "light" ? "#f0f2f5" : "#121212",
+            siderBg: "#fff",
           },
         },
       }}
     >
       <NotificationProvider>
-        <UserProvider>
+        <Layout>
           <RouterProvider router={router} />
-        </UserProvider>
+        </Layout>
       </NotificationProvider>
     </ConfigProvider>
+  );
+};
+
+function App() {
+  return (
+    <UserProvider>
+      <ThemedApp />
+    </UserProvider>
   );
 }
 

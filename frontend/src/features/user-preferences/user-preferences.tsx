@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Select } from "antd";
+import { Select, theme } from "antd";
 import { DarkModeSwitch } from "react-toggle-dark-mode";
 import { useUser } from "../../context/user.context";
 import {
@@ -10,6 +10,7 @@ import {
 import { LLMOptions } from "../../libs/general/users";
 
 const UserPreferences: React.FC = () => {
+  const { token } = theme.useToken(); // Access the Ant Design theme token
   const { user, setUser } = useUser();
   const [selectedModel, setSelectedModel] = useState<string>(
     localStorage.getItem("llm") || user?.llm || LLMOptions.GEMINI_FLASH
@@ -72,7 +73,13 @@ const UserPreferences: React.FC = () => {
       </div>
 
       {/* Language Selector */}
-      <div style={dropdownStyle}>
+      <div
+        style={{
+          ...dropdownStyle,
+          background: token.colorBgContainer,
+          border: `1px solid ${token.colorBorder}`,
+        }}
+      >
         <Select
           value={selectedLanguage}
           onChange={handleLanguageChange}
@@ -90,7 +97,13 @@ const UserPreferences: React.FC = () => {
       </div>
 
       {/* LLM Selector */}
-      <div style={dropdownStyle}>
+      <div
+        style={{
+          ...dropdownStyle,
+          background: token.colorBgContainer,
+          border: `1px solid ${token.colorBorder}`,
+        }}
+      >
         <Select
           value={selectedModel}
           onChange={handleModelChange}
@@ -109,9 +122,7 @@ const UserPreferences: React.FC = () => {
 };
 
 const dropdownStyle: React.CSSProperties = {
-  background: "#f6f8fa",
   borderRadius: "8px",
-  border: "1px solid #d9d9d9",
   display: "flex",
   alignItems: "center",
 };
