@@ -9,7 +9,7 @@ import {
   MailOutlined,
 } from "@ant-design/icons";
 
-const { Title, Text } = Typography;
+const { Title, Text, Paragraph } = Typography;
 
 type TeamMember = {
   name: string;
@@ -61,14 +61,16 @@ const AboutUs: React.FC = () => {
   return (
     <div style={{ padding: "20px 10%" }}>
       <div className="text-center mb-10 mx-auto" style={{ maxWidth: "1100px" }}>
-        <h2 className="text-2xl md:text-3xl font-bold mb-4">Meet the Team</h2>
-        <p className="text-gray-600 text-sm sm:text-base md:text-lg">
+        <Title level={2} style={{ marginBottom: "16px" }}>
+          Meet the Team
+        </Title>
+        <Paragraph type="secondary" style={{ fontSize: "16px" }}>
           Our team operates from New York, USA, and Sofia, Bulgaria, combining
           expertise in machine learning, backend development, DevOps, UI/UX
           design, and project management. With diverse perspectives and a shared
           passion for innovation, we work together to develop impactful
           solutions that empower gamers worldwide.
-        </p>
+        </Paragraph>
       </div>
 
       <Row gutter={[24, 24]}>
@@ -97,7 +99,7 @@ const AboutUs: React.FC = () => {
             >
               <Card.Meta
                 title={<Title level={5}>{member.name}</Title>}
-                description={<Text>{member.title}</Text>}
+                description={<Text type="secondary">{member.title}</Text>}
               />
               <div style={{ marginTop: "10px" }}>
                 {member.website && (
@@ -151,6 +153,7 @@ const AboutUs: React.FC = () => {
           </Col>
         ))}
       </Row>
+
       <div
         style={{
           textAlign: "center",
@@ -159,14 +162,14 @@ const AboutUs: React.FC = () => {
           margin: "0 auto",
         }}
       >
-        <h2 className="text-2xl md:text-3xl font-bold mb-4">
+        <Title level={2} style={{ marginBottom: "16px" }}>
           Interested in Contributing?
-        </h2>
-        <p className="text-gray-600 text-sm sm:text-base md:text-lg">
+        </Title>
+        <Paragraph type="secondary" style={{ fontSize: "16px" }}>
           As an open source project we’re always looking for talented
           individuals to help us. If you’re passionate about innovation and
           creating impactful solutions, we’d love to hear from you!
-        </p>
+        </Paragraph>
         <Tooltip title="Email us">
           <Button
             href="mailto:kostadin.g.devedzhiev@gmail.com"
