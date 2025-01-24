@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Row, Col, Typography, Button } from "antd";
+import { Card, Row, Col, Typography, Button, Tooltip } from "antd";
 import {
   GithubFilled,
   GithubOutlined,
@@ -100,42 +100,50 @@ const AboutUs: React.FC = () => {
               />
               <div style={{ marginTop: "10px" }}>
                 {member.website && (
-                  <Button
-                    shape="circle"
-                    type="text"
-                    target="_blank"
-                    href={member.website}
-                    style={{ paddingRight: "0px" }}
-                    icon={<GlobalOutlined />}
-                  ></Button>
+                  <Tooltip title="Website">
+                    <Button
+                      shape="circle"
+                      type="text"
+                      target="_blank"
+                      href={member.website}
+                      style={{ paddingRight: "0px" }}
+                      icon={<GlobalOutlined />}
+                    />
+                  </Tooltip>
                 )}
                 {member.email && (
-                  <Button
-                    shape="circle"
-                    type="text"
-                    target="_blank"
-                    href={`mailto:${member.email}`}
-                    style={{ paddingRight: "0px" }}
-                    icon={<MailFilled />}
-                  />
+                  <Tooltip title="Email">
+                    <Button
+                      shape="circle"
+                      type="text"
+                      target="_blank"
+                      href={`mailto:${member.email}`}
+                      style={{ paddingRight: "0px" }}
+                      icon={<MailFilled />}
+                    />
+                  </Tooltip>
                 )}
                 {member.linkedin && (
-                  <Button
-                    shape="circle"
-                    type="text"
-                    href={member.linkedin}
-                    target="_blank"
-                    icon={<LinkedinFilled />}
-                  ></Button>
+                  <Tooltip title="LinkedIn">
+                    <Button
+                      shape="circle"
+                      type="text"
+                      href={member.linkedin}
+                      target="_blank"
+                      icon={<LinkedinFilled />}
+                    />
+                  </Tooltip>
                 )}
                 {member.github && (
-                  <Button
-                    shape="circle"
-                    type="text"
-                    href={member.github}
-                    target="_blank"
-                    icon={<GithubFilled />}
-                  ></Button>
+                  <Tooltip title="GitHub">
+                    <Button
+                      shape="circle"
+                      type="text"
+                      href={member.github}
+                      target="_blank"
+                      icon={<GithubFilled />}
+                    />
+                  </Tooltip>
                 )}
               </div>
             </Card>
@@ -158,29 +166,35 @@ const AboutUs: React.FC = () => {
           individuals to help us. If you’re passionate about innovation and
           creating impactful solutions, we’d love to hear from you!
         </p>
-        <Button
-          href="mailto:kostadin.g.devedzhiev@gmail.com"
-          style={{ margin: "16px 8px" }}
-          icon={<MailOutlined />}
-        >
-          Apply Here
-        </Button>
-        <Button
-          href="https://github.com/kostadindev/gonext"
-          target="_blank"
-          icon={<GithubOutlined />}
-          style={{ margin: "16px 8px" }}
-        >
-          gonext UI
-        </Button>
-        <Button
-          href="https://github.com/kostadindev/gonext-ml"
-          target="_blank"
-          icon={<GithubOutlined />}
-          style={{ margin: "16px 8px" }}
-        >
-          gonext ML
-        </Button>
+        <Tooltip title="Email us">
+          <Button
+            href="mailto:kostadin.g.devedzhiev@gmail.com"
+            style={{ margin: "16px 8px" }}
+            icon={<MailOutlined />}
+          >
+            Apply Here
+          </Button>
+        </Tooltip>
+        <Tooltip title="View on GitHub">
+          <Button
+            href="https://github.com/kostadindev/gonext"
+            target="_blank"
+            icon={<GithubOutlined />}
+            style={{ margin: "16px 8px" }}
+          >
+            gonext UI
+          </Button>
+        </Tooltip>
+        <Tooltip title="View on GitHub">
+          <Button
+            href="https://github.com/kostadindev/gonext-ml"
+            target="_blank"
+            icon={<GithubOutlined />}
+            style={{ margin: "16px 8px" }}
+          >
+            gonext ML
+          </Button>
+        </Tooltip>
       </div>
     </div>
   );
