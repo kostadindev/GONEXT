@@ -31,6 +31,7 @@ export const ActiveGame = () => {
       style={{
         margin: "0 16px",
       }}
+      className="w-[80%]"
     >
       <div
         style={{

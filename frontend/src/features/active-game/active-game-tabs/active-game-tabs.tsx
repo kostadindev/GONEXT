@@ -6,8 +6,7 @@ import { getTeams } from "../../../libs/league/league-utils";
 import { useNavigate, useLocation } from "react-router-dom";
 import { GameOverview } from "./game-overview.tsx/game-overview";
 import { Allies } from "./allies/allies";
-import { Enemies } from "./enemies/enemies";
-import ChatComponent from "../../chat/chat";
+import { PlayerView } from "../../player-view/player-view";
 
 export const ActiveGameTabs = ({ game }: { game: Game | null }) => {
   const navigate = useNavigate();
@@ -77,13 +76,15 @@ export const ActiveGameTabs = ({ game }: { game: Game | null }) => {
             searchedSummonerPuuid={game?.searchedSummoner?.puuid}
           />
         )}
-        {enemies?.map((enemy) => enemy.puuid).includes(selectedView) && (
-          <Enemies
-            summoners={game?.participants}
-            enemyPuuid={selectedView}
-            searchedSummonerPuuid={game?.searchedSummoner?.puuid}
-          />
-        )}
+        {game &&
+          enemies?.map((enemy) => enemy.puuid).includes(selectedView) && (
+            // <Enemies
+            //   summoners={game?.participants}
+            //   enemyPuuid={selectedView}
+            //   searchedSummonerPuuid={game?.searchedSummoner?.puuid}
+            // />
+            <PlayerView game={game} playerPuuid={selectedView} />
+          )}
       </div>
     </div>
   );
