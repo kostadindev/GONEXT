@@ -46,7 +46,7 @@ export const GameOverview: React.FC<{ game: Game | null }> = ({ game }) => {
   return (
     <div className="flex">
       <div className="w-4/5">
-        <ChatComponent game={game}></ChatComponent>
+        <ChatComponent game={game} height={"75vh"}></ChatComponent>
       </div>
       <div className="w-1/5 pl-4 flex flex-col space-y-4">
         <Card className="rounded-lg shadow-md" bodyStyle={{ padding: "16px" }}>

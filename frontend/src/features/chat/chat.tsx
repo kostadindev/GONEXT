@@ -20,7 +20,10 @@ interface Message {
   role: "user" | "system";
 }
 
-const ChatComponent: React.FC<{ game: Game | null }> = ({ game }) => {
+const ChatComponent: React.FC<{ game: Game | null; height: string }> = ({
+  game,
+  height,
+}) => {
   const { user } = useUser();
   const { token } = useToken(); // Access Ant Design theme tokens
   const primaryColor = token.colorPrimary; // Get the primary color from the theme
@@ -168,12 +171,9 @@ const ChatComponent: React.FC<{ game: Game | null }> = ({ game }) => {
   }, [messages, scrollToBottom, isUserScrolling]);
 
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center pt-5">
       <Spin spinning={loadingSession} size="large">
-        <div
-          className="flex flex-col"
-          style={{ width: "50vw", height: "calc(77vh)" }}
-        >
+        <div className="flex flex-col" style={{ height: height }}>
           {messages.length === 0 && game?.gameId && !loadingSession && (
             <DefaultPrompts handleSendMessage={handleSendMessage} />
           )}
