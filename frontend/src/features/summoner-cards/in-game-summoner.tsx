@@ -1,4 +1,4 @@
-import { Avatar, Card, Typography } from "antd";
+import { Avatar, Card, Tooltip } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Summoner } from "../../libs/league/league-types";
 import {
@@ -37,28 +37,38 @@ export const InGameSummoner = ({
       onClick={handleCardClick}
     >
       <div className="h-full flex items-center gap-2">
-        <Avatar
-          src={getChampionIconSrc(summoner.championImageId)}
-          size="large"
-          alt={summoner.championName}
-        />
+        <Tooltip title={`${summoner.championName}`}>
+          <Avatar
+            src={getChampionIconSrc(summoner.championImageId)}
+            size="large"
+            alt={summoner.championName}
+          />
+        </Tooltip>
         <div className="flex flex-col gap-1">
-          <Avatar
-            src={getSummonerSpellIconSrc(summoner.summonerSpell1Name)}
-            size={20}
-            alt={summoner.summonerSpell1Name}
-          />
-          <Avatar
-            src={getSummonerSpellIconSrc(summoner.summonerSpell2Name)}
-            size={20}
-            alt={summoner.summonerSpell2Name}
-          />
+          <Tooltip title={`${summoner.summonerSpell1Name}`}>
+            <Avatar
+              src={getSummonerSpellIconSrc(summoner.summonerSpell1Name)}
+              size={20}
+              alt={summoner.summonerSpell1Name}
+            />
+          </Tooltip>
+          <Tooltip title={`${summoner.summonerSpell2Name}`}>
+            <Avatar
+              src={getSummonerSpellIconSrc(summoner.summonerSpell2Name)}
+              size={20}
+              alt={summoner.summonerSpell2Name}
+            />
+          </Tooltip>
         </div>
         <div className="flex flex-col">
-          <span className="font-medium ">
-            {summoner.summonerName || summoner?.riotId}
-          </span>
-          <span className="text-gray-500"> {summoner.championName}</span>
+          <Tooltip title="Summoner Name">
+            <span className="font-medium">
+              {summoner.summonerName || summoner?.riotId}
+            </span>
+          </Tooltip>
+          <Tooltip title={`Champion: ${summoner.championName}`}>
+            <span className="text-gray-500"> {summoner.championName}</span>
+          </Tooltip>
         </div>
       </div>
     </Card>
