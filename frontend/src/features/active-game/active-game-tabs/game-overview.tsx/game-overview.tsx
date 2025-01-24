@@ -20,11 +20,10 @@ export const GameOverview: React.FC<{ game: Game | null }> = ({ game }) => {
     const fetchData = async () => {
       if (game) {
         try {
-          // Replace "gemini-1.5-flash" and "en" with your desired model and language if needed
           const { response } = await fetchGameOverview(game);
-          setEstimatedWinRate(response.estimated_win_rate || 0); // Assume API returns `estimatedWinRate`
-          setRecommendedItems(response.recommended_items || []); // Assume API returns `recommendedItems`
-          setGameSummary(response.game_summary || "No summary available."); // Assume API returns `gameSummary`
+          setEstimatedWinRate(response.estimated_win_rate || 0);
+          setRecommendedItems(response.recommended_items || []);
+          setGameSummary(response.game_summary || "No summary available.");
         } catch (error) {
           console.error("Error fetching game overview:", error);
         } finally {
@@ -53,7 +52,7 @@ export const GameOverview: React.FC<{ game: Game | null }> = ({ game }) => {
         <Card className="rounded-lg shadow-md" bodyStyle={{ padding: "16px" }}>
           <Title level={5} className="text-sm text-center">
             Estimated Win Probability{" "}
-            <Tooltip title="The Estimated Win Probability is calculated using AI models based on various metrics such as player performance, team composition, and other factors.">
+            <Tooltip title="This is calculated using AI based on player performance, team composition, and other factors.">
               <InfoCircleOutlined className="text-primary text-sm ml-1" />
             </Tooltip>
           </Title>
@@ -66,26 +65,27 @@ export const GameOverview: React.FC<{ game: Game | null }> = ({ game }) => {
         <Card className="rounded-lg shadow-md" bodyStyle={{ padding: "16px" }}>
           <Title level={5} className="text-sm text-center">
             Recommended Items{" "}
-            <Tooltip title="These items are recommended for the game based on AI analysis of the match context.">
+            <Tooltip title="AI-recommended items for this match.">
               <InfoCircleOutlined className="text-primary text-sm ml-1" />
             </Tooltip>
           </Title>
           <div className="flex justify-between">
-            {recommendedItems.map(({ itemId }, index) => (
-              <Avatar
-                key={index}
-                src={getItemIconSrcById(itemId)}
-                alt={`Item ${itemId}`}
-                size={40}
-                shape="square"
-              />
+            {recommendedItems.map(({ itemId, itemName }, index) => (
+              <Tooltip key={index} title={itemName}>
+                <Avatar
+                  src={getItemIconSrcById(itemId)}
+                  alt={`Item ${itemName}`}
+                  size={40}
+                  shape="square"
+                />
+              </Tooltip>
             ))}
           </div>
         </Card>
         <Card className="rounded-lg shadow-md" bodyStyle={{ padding: "16px" }}>
           <Title level={5} className="text-sm text-center">
             Game Overview{" "}
-            <Tooltip title="This summary is generated using AI analysis based on the events and outcomes of the game.">
+            <Tooltip title="This is a summary generated using AI based on the match events.">
               <InfoCircleOutlined className="text-primary text-sm ml-1" />
             </Tooltip>
           </Title>
