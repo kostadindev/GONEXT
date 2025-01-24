@@ -20,10 +20,9 @@ export const InGameSummoner = ({
   const handleCardClick = () => {
     navigate(`${location.pathname}?view=${summoner.puuid}`);
   };
-
   const borderColor =
     summoner.puuid === game.searchedSummoner.puuid
-      ? token.colorPrimary
+      ? "#e89a3c"
       : summoner.teamId === 100
       ? "#65a9f3"
       : "#e84749";
@@ -33,10 +32,9 @@ export const InGameSummoner = ({
       style={{
         height: "7vh",
         width: 300,
-        borderLeft: `5px solid ${borderColor}`,
       }}
       hoverable
-      className="flex items-center"
+      className={`flex items-center border-l-8 border-l-[${borderColor}]`}
       onClick={handleCardClick}
     >
       <div className="h-full flex items-center gap-2">

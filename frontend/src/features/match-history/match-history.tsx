@@ -39,7 +39,7 @@ export const MatchHistory: React.FC<MatchHistoryProps> = ({ summoner }) => {
       <Spin spinning={isLoading}>
         <div
           className="flex-1 overflow-y-auto grid grid-cols-1 "
-          style={{ height: "calc(70vh - 79px)" }}
+          style={{ height: "calc(70vh - 50px)" }}
         >
           {games?.map((game, index) => (
             <div className="max-w-[380px] p-0" key={index}>

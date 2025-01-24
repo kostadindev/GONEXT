@@ -13,6 +13,12 @@ interface PromptCardProps {
 const PromptCard: React.FC<PromptCardProps> = ({ description, onClick }) => (
   <Card
     className="rounded-2xl shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center"
+    styles={{
+      body: {
+        padding: "8px",
+      },
+    }}
+    hoverable
     onClick={onClick}
   >
     {description}

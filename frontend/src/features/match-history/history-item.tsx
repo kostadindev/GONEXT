@@ -172,6 +172,7 @@ export const HistoryItem: React.FC<{ game: GameHistory }> = ({ game }) => {
   return (
     <Card
       className={`${borderColorClass} p-0 m-0`}
+      hoverable
       styles={{
         body: {
           padding: "8px 16px",
