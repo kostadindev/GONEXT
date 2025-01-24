@@ -25,7 +25,7 @@ const AboutUs: React.FC = () => {
   const teamMembers: TeamMember[] = [
     {
       name: "Kostadin Devedzhiev",
-      title: "Founder | ML | UI",
+      title: "Founder | ML | API | UI",
       image:
         "https://media.licdn.com/dms/image/v2/D4E03AQHT-wFQ9xo1sA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1727758296269?e=1743033600&v=beta&t=u7b94xnynKeCumtQDipci8K8p9uiuIgMs_8dO9Qotdo",
       github: "https://github.com/kostadindev",
@@ -35,7 +35,7 @@ const AboutUs: React.FC = () => {
     },
     {
       name: "Ivan Nikolov",
-      title: "Backend | DevOps",
+      title: "API | DevOps",
       image:
         "https://scontent-lga3-2.xx.fbcdn.net/v/t39.30808-6/463968694_27285182364459185_394874216162696016_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=jeMA9FNu3wUQ7kNvgGomv9-&_nc_zt=23&_nc_ht=scontent-lga3-2.xx&_nc_gid=ADJN9tIISQ6-sj7Ecix0AOi&oh=00_AYCKMdO-LOfrVY1lXH-6_ITzdXFSYTW5lBjRm2levWqjuA&oe=679865CA",
       github: "https://github.com/nnivan",
