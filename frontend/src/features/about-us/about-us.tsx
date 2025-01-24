@@ -25,7 +25,7 @@ const AboutUs: React.FC = () => {
   const teamMembers: TeamMember[] = [
     {
       name: "Kostadin Devedzhiev",
-      title: "Founder | ML",
+      title: "Founder | ML | UI",
       image:
         "https://media.licdn.com/dms/image/v2/D4E03AQHT-wFQ9xo1sA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1727758296269?e=1743033600&v=beta&t=u7b94xnynKeCumtQDipci8K8p9uiuIgMs_8dO9Qotdo",
       github: "https://github.com/kostadindev",
@@ -50,7 +50,7 @@ const AboutUs: React.FC = () => {
     },
     {
       name: "Nikola Polihronov",
-      title: "PM | UI",
+      title: "PM | UI | QA",
       image:
         "https://media.licdn.com/dms/image/v2/D4D03AQECzDuJVxACiw/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1698224514318?e=1743033600&v=beta&t=R8naXMpH4zDE0jsKk6VYRFH2etIIpPl7BqgLXfaqG6c",
       linkedin: "https://www.linkedin.com/in/nikola-p-811891279/",
