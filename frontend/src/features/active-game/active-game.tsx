@@ -42,7 +42,9 @@ export const ActiveGame = () => {
         }}
       >
         <div className="pr-8 mt-[15px]">
-          <Divider orientation="left">Blue Team</Divider>
+          <Divider orientation="left">
+            {game?.searchedSummoner?.teamId === 100 ? "Blue Team" : "Red Team"}
+          </Divider>
           {allies?.map((summoner: Summoner) => (
             <InGameSummoner
               key={summoner.puuid}
@@ -50,7 +52,9 @@ export const ActiveGame = () => {
               game={game}
             ></InGameSummoner>
           ))}
-          <Divider orientation="left">Red Team</Divider>
+          <Divider orientation="left">
+            {game?.searchedSummoner?.teamId === 100 ? "Blue Team" : "Red Team"}
+          </Divider>
           {enemies?.map((summoner: Summoner) => (
             <InGameSummoner
               key={summoner.puuid}

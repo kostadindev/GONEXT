@@ -1,4 +1,4 @@
-import { Avatar, Card, Tooltip } from "antd";
+import { Avatar, Card, theme, Tooltip } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Summoner } from "../../libs/league/league-types";
 import {
@@ -15,22 +15,25 @@ export const InGameSummoner = ({
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const isAlly = summoner.teamId === game.searchedSummoner.teamId;
+  const { token } = theme.useToken();
 
   const handleCardClick = () => {
     navigate(`${location.pathname}?view=${summoner.puuid}`);
   };
 
-  const colorGradient = isAlly
-    ? "linear-gradient(to left, #e2e8f0, #99ccff)"
-    : "linear-gradient(to left, #e2e8f0, #ff9999)";
+  const borderColor =
+    summoner.puuid === game.searchedSummoner.puuid
+      ? token.colorPrimary
+      : summoner.teamId === 100
+      ? "#65a9f3"
+      : "#e84749";
 
   return (
     <Card
       style={{
         height: "7vh",
         width: 300,
-        background: colorGradient,
+        borderLeft: `5px solid ${borderColor}`,
       }}
       hoverable
       className="flex items-center"

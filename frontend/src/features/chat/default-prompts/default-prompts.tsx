@@ -11,12 +11,12 @@ interface PromptCardProps {
 }
 
 const PromptCard: React.FC<PromptCardProps> = ({ description, onClick }) => (
-  <div
-    className="border rounded-2xl bg-white p-4 shadow-md hover:bg-gray-100 hover:shadow-lg transition-all duration-300 cursor-pointer flex items-center justify-center h-full"
+  <Card
+    className="rounded-2xl shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center"
     onClick={onClick}
   >
-    <span className="text-center text-gray-500">{description}</span>
-  </div>
+    {description}
+  </Card>
 );
 
 const DEFAULT_PROMPTS = [
