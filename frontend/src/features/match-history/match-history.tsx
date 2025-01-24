@@ -34,15 +34,21 @@ export const MatchHistory: React.FC<MatchHistoryProps> = ({ summoner }) => {
   return (
     <div className="pt-3 pr-3 rounded-lg flex flex-col">
       <div className="text-lg font-bold mb-2">
-        {`${summoner.championName}'s Match History`}
+        {/* {`${summoner.championName}'s Match History`} */}
       </div>
       <Spin spinning={isLoading}>
         <div
-          className="flex-1 overflow-y-auto grid grid-cols-1 gap-2"
+          className="flex-1 overflow-y-auto grid grid-cols-1 "
           style={{ height: "calc(70vh - 79px)" }}
         >
           {games?.map((game, index) => (
-            <HistoryItem key={`${summoner?.championId}-${index}`} game={game} />
+            <div className="max-w-[380px] p-0" key={index}>
+              {" "}
+              <HistoryItem
+                key={`${summoner?.championId}-${index}`}
+                game={game}
+              />
+            </div>
           ))}
         </div>
       </Spin>

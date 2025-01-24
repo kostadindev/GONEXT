@@ -8,7 +8,7 @@ import {
   getItemIconSrcById,
 } from "../../libs/league/league-utils";
 
-const SMALL_ICON_SIZE = 25;
+const SMALL_ICON_SIZE = 20;
 
 const MiniSummonerDisplay: React.FC<{ summoner: Summoner }> = ({
   summoner,
@@ -48,10 +48,10 @@ const GameInfo: React.FC<{
   <div className="w-[120px] mb-3 md:mb-0">
     <div>
       <span className="font-medium">{game?.queueName}</span>
-      <div className="mb-3">{timeAgo}</div>
+      <div className="mb-1">{timeAgo}</div>
     </div>
     <div>
-      <div className="font-medium">{game?.win ? "Victory" : "Defeat"}</div>
+      <div className="font-small">{game?.win ? "Victory" : "Defeat"}</div>
       <div>{gameDurationString}</div>
     </div>
   </div>
@@ -61,8 +61,8 @@ const ParticipantInfo: React.FC<{ game: GameHistory; kda: string }> = ({
   game,
   kda,
 }) => (
-  <div className="w-[200px] flex items-left justify-center flex-col">
-    <div className="w-[200px] flex gap-4">
+  <div className="flex items-left justify-center flex-col">
+    <div className="flex gap-4">
       <div className="flex gap-1">
         <Badge>
           <Tooltip
@@ -72,7 +72,7 @@ const ParticipantInfo: React.FC<{ game: GameHistory; kda: string }> = ({
           >
             <Avatar
               src={getChampionIconSrc(game?.participant?.championImageId)}
-              size={50}
+              size="large"
               shape="square"
             />
           </Tooltip>
@@ -167,33 +167,30 @@ export const HistoryItem: React.FC<{ game: GameHistory }> = ({ game }) => {
   const kda = `${(
     (game?.participant?.kills + game?.participant?.assists) /
     game?.participant?.deaths
-  ).toFixed(2)}:1 KDA`;
+  ).toFixed(2)}:1`;
 
   return (
     <Card
-      className={`${borderColorClass}`}
+      className={`${borderColorClass} p-0 m-0`}
       styles={{
         body: {
-          paddingLeft: 12,
-          paddingRight: 12,
-          paddingTop: 6,
-          paddingBottom: 6,
+          padding: "8px 16px",
         },
       }}
     >
-      <div className="flex flex-col md:flex-row text-xs justify-between">
+      <div className="flex md:flex-row text-xs justify-between">
         <GameInfo
           game={game}
           timeAgo={timeAgo}
           gameDurationString={gameDurationString}
         />
         <ParticipantInfo game={game} kda={kda} />
-        <div className="w-[225px] flex flex-col">
-          <div className="flex flex-wrap">
-            <TeamDisplay team={redTeam} />
-            <TeamDisplay team={blueTeam} />
-          </div>
-        </div>
+        {/* <div className="w-[225px] flex flex-col">
+      <div className="flex flex-wrap">
+        <TeamDisplay team={redTeam} />
+        <TeamDisplay team={blueTeam} />
+      </div>
+    </div> */}
       </div>
     </Card>
   );
