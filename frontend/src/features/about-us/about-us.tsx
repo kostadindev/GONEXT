@@ -82,7 +82,7 @@ const AboutUs: React.FC = () => {
                   style={{
                     height: "200px",
                     width: "200px",
-                    borderRadius: "50%",
+                    borderRadius: "25%",
                     objectFit: "contain",
                     margin: "20px auto",
                   }}
