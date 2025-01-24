@@ -11,6 +11,7 @@ import { Placeholder } from "./features/filler-content";
 import { NotificationProvider } from "./features/notifications/notification-context";
 import { UserProvider } from "./context/user.context";
 import AboutUs from "./features/about-us/about-us";
+import { ConfigProvider } from "antd";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -28,11 +29,28 @@ const router = createBrowserRouter(
 
 function App() {
   return (
-    <NotificationProvider>
-      <UserProvider>
-        <RouterProvider router={router} />
-      </UserProvider>
-    </NotificationProvider>
+    <ConfigProvider
+      theme={{
+        token: {
+          // Seed Token
+          // colorPrimary: "#00b96b",
+          // borderRadius: 2,
+          // Alias Token
+          // colorBgContainer: "#f6ffed",
+        },
+        components: {
+          Layout: {
+            bodyBg: "#f8fafd",
+          },
+        },
+      }}
+    >
+      <NotificationProvider>
+        <UserProvider>
+          <RouterProvider router={router} />
+        </UserProvider>
+      </NotificationProvider>
+    </ConfigProvider>
   );
 }
 

@@ -59,7 +59,7 @@ const AboutUs: React.FC = () => {
   ];
 
   return (
-    <div style={{ backgroundColor: "#f5f5f5", padding: "20px 10%" }}>
+    <div style={{ padding: "20px 10%" }}>
       <div className="text-center mb-10 mx-auto" style={{ maxWidth: "1100px" }}>
         <h2 className="text-2xl md:text-3xl font-bold mb-4">Meet the Team</h2>
         <p className="text-gray-600 text-sm sm:text-base md:text-lg">

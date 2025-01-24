@@ -12,7 +12,9 @@ import { useUser } from "../../context/user.context";
 import { sendChatMessageStream } from "../../libs/apis/chatbot-api";
 import { Game } from "../../libs/league/league-types";
 import MarkdownRenderer from "../markdown-renderer/markdown-renderer";
+import { theme } from "antd";
 
+const { useToken } = theme;
 interface Message {
   content: string;
   role: "user" | "system";
@@ -20,6 +22,9 @@ interface Message {
 
 const ChatComponent: React.FC<{ game: Game | null }> = ({ game }) => {
   const { user } = useUser();
+  const { token } = useToken(); // Access Ant Design theme tokens
+  const primaryColor = token.colorPrimary; // Get the primary color from the theme
+
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState<string>("");
   const [loadingSession, setLoadingSession] = useState<boolean>(true);
@@ -187,9 +192,12 @@ const ChatComponent: React.FC<{ game: Game | null }> = ({ game }) => {
                 <div
                   className={`inline-block p-2 px-4 rounded-lg break-words ${
                     msg.role === "user"
-                      ? "text-white bg-blue-500 max-w-[calc(100%-40px)]"
-                      : "text-black bg-gray-200 w-full max-w-[calc(100%-40px)]"
+                      ? "text-white max-w-[calc(100%-40px)]"
+                      : "text-black w-full max-w-[calc(100%-40px)]"
                   }`}
+                  style={{
+                    backgroundColor: msg.role === "user" ? primaryColor : "",
+                  }}
                 >
                   <MarkdownRenderer content={msg.content} />
                 </div>
@@ -197,7 +205,7 @@ const ChatComponent: React.FC<{ game: Game | null }> = ({ game }) => {
             ))}
             <div ref={messagesEndRef} />
           </div>
-          <div className="p-1 border-gray-200 flex gap-3">
+          <div className="p-1 flex gap-3">
             <TextArea
               autoSize
               value={input}
