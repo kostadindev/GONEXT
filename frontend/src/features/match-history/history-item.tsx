@@ -73,6 +73,7 @@ const ParticipantInfo: React.FC<{ game: GameHistory; kda: string }> = ({
             <Avatar
               src={getChampionIconSrc(game?.participant?.championImageId)}
               size={50}
+              shape="square"
             />
           </Tooltip>
         </Badge>

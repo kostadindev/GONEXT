@@ -44,6 +44,7 @@ export const InGameSummoner = ({
           <Avatar
             src={getChampionIconSrc(summoner.championImageId)}
             size="large"
+            shape="square"
             alt={summoner.championName}
           />
         </Tooltip>
@@ -52,6 +53,7 @@ export const InGameSummoner = ({
             <Avatar
               src={getSummonerSpellIconSrc(summoner.summonerSpell1Name)}
               size={20}
+              shape="square"
               alt={summoner.summonerSpell1Name}
             />
           </Tooltip>
@@ -59,6 +61,7 @@ export const InGameSummoner = ({
             <Avatar
               src={getSummonerSpellIconSrc(summoner.summonerSpell2Name)}
               size={20}
+              shape="square"
               alt={summoner.summonerSpell2Name}
             />
           </Tooltip>

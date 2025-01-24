@@ -89,18 +89,20 @@ export const SummonerOverview: React.FC<SummonerOverviewProps> = ({
             <Tooltip title={summoner?.championName || "Champion"}>
               <Avatar
                 src={getChampionIconSrc(summoner?.championImageId)}
-                size="large"
+                size={50}
+                shape="square"
               />
             </Tooltip>
           </Badge>
           <div className="flex gap-1">
-            <div className="flex flex-col">
+            <div className="flex flex-col justify-center gap-1">
               <Tooltip
                 title={summoner?.summonerSpell1Name || "Summoner Spell 1"}
               >
                 <Avatar
                   src={getSummonerSpellIconSrc(summoner?.summonerSpell1Name)}
                   alt={summoner?.summonerSpell1Name}
+                  shape="square"
                   size={20}
                 />
               </Tooltip>
@@ -110,11 +112,12 @@ export const SummonerOverview: React.FC<SummonerOverviewProps> = ({
                 <Avatar
                   src={getSummonerSpellIconSrc(summoner?.summonerSpell2Name)}
                   alt={summoner?.summonerSpell2Name}
+                  shape="square"
                   size={20}
                 />
               </Tooltip>
             </div>
-            <div>
+            <div className="flex flex-col justify-center gap-1">
               <Tooltip title={summoner?.summonerName || "Summoner Name"}>
                 <Typography.Title level={5} style={{ margin: 0 }}>
                   {summoner?.summonerName}
