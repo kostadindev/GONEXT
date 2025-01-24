@@ -53,7 +53,7 @@ export const ActiveGame = () => {
             ></InGameSummoner>
           ))}
           <Divider orientation="left">
-            {game?.searchedSummoner?.teamId === 100 ? "Blue Team" : "Red Team"}
+            {game?.searchedSummoner?.teamId !== 100 ? "Blue Team" : "Red Team"}
           </Divider>
           {enemies?.map((summoner: Summoner) => (
             <InGameSummoner

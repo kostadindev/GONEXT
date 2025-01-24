@@ -155,8 +155,8 @@ export const HistoryItem: React.FC<{ game: GameHistory }> = ({ game }) => {
     ? formatGameDurationFromMs(game.gameDuration)
     : "N/A";
   const borderColorClass = game?.win
-    ? "border-l-8 border-l-[#99ccff]"
-    : "border-l-8 border-l-[#ff9999]";
+    ? "border-l-8 border-l-[#65a9f3]"
+    : "border-l-8 border-l-[#e84749]";
   const blueTeam = game?.participants?.filter(
     (participant) => participant.teamId === 100
   );
