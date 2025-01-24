@@ -94,6 +94,7 @@ export const Sidebar = () => {
         theme="light"
         selectedKeys={selectedKey ? [selectedKey] : []}
         mode="inline"
+        style={{ border: "none" }}
         items={items}
         onClick={({ key }) => handleMenuClick(key)}
       />

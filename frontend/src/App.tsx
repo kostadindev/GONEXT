@@ -42,7 +42,7 @@ const ThemedApp = () => {
             ? theme.defaultAlgorithm
             : theme.darkAlgorithm,
         token: {
-          colorPrimary: currentTheme === "light" ? "#1890ff" : "#1890ff",
+          colorPrimary: "#e89a3c",
           borderRadius: 4,
         },
         components: {
