@@ -211,22 +211,24 @@ const ChatComponent: React.FC<{ game: Game | null; height: string }> = ({
           ))}
           <div ref={messagesEndRef} />
         </div>
-        <div className="p-1 flex gap-3">
-          <TextArea
-            autoSize
-            value={input}
-            onChange={handleInputChange}
-            onKeyDown={handleKeyPress}
-            placeholder="Type your message here..."
-            style={{ fontSize: "16px" }}
-            maxLength={256}
-            disabled={isSending} // Disable when loading
-          />
-          <Button
-            icon={<SendOutlined />}
-            onClick={() => handleSendMessage()}
-            disabled={isSending} // Disable when loading
-          />
+        <div className="flex justify-center pt-2">
+          <div className="p-1 flex gap-3 w-[80%]">
+            <TextArea
+              autoSize
+              value={input}
+              onChange={handleInputChange}
+              onKeyDown={handleKeyPress}
+              placeholder="Type your message here..."
+              style={{ fontSize: "16px" }}
+              maxLength={256}
+              disabled={isSending} // Disable when loading
+            />
+            <Button
+              icon={<SendOutlined />}
+              onClick={() => handleSendMessage()}
+              disabled={isSending} // Disable when loading
+            />
+          </div>
         </div>
       </div>
     </div>
