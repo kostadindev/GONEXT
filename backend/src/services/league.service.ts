@@ -134,7 +134,7 @@ class LeagueService {
     return { ranked, flex };
   }
 
-  async getMatchesIds(puuid: string, count: number = 10): Promise<string[] | null> {
+  async getMatchesIds(puuid: string, count: number = 7): Promise<string[] | null> {
     return leagueRepository.getMatchesIds(puuid, count);
   }
 

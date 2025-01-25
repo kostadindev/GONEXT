@@ -38,12 +38,11 @@ export const MatchHistory: React.FC<MatchHistoryProps> = ({ summoner }) => {
       </div>
       <Spin spinning={isLoading}>
         <div
-          className="flex-1 overflow-y-auto grid grid-cols-1 "
+          className="flex-1 overflow-y-auto flex flex-col items-start gap-0" // Added `items-start` and removed spacing
           style={{ height: "calc(70vh - 50px)" }}
         >
           {games?.map((game, index) => (
-            <div className="max-w-[380px] p-0" key={index}>
-              {" "}
+            <div className="max-w-[380px]" key={index}>
               <HistoryItem
                 key={`${summoner?.championId}-${index}`}
                 game={game}

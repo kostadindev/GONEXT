@@ -13,6 +13,7 @@ import { NotificationProvider } from "./features/notifications/notification-cont
 import { useUser, UserProvider } from "./context/user.context";
 import AboutUs from "./features/about-us/about-us";
 import { ConfigProvider, theme, Layout } from "antd";
+import { PlayerPage } from "./features/player-view/player-page";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -22,6 +23,10 @@ const router = createBrowserRouter(
       <Route
         path="/:region/:gameName/:tagLine/in-game"
         element={<ActiveGame />}
+      />
+      <Route
+        path="/:region/:gameName/:tagLine/player"
+        element={<PlayerPage />}
       />
       <Route path="/about-us" element={<AboutUs />} />
     </Route>

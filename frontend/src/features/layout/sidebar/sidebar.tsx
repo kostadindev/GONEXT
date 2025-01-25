@@ -23,7 +23,7 @@ const items = [
   getItem("Drafting Tool", "2", <TeamOutlined />),
   getItem("Player Analytics", "3", <UserOutlined />),
   getItem("Settings", "5", <SettingOutlined />),
-  getItem("About", "4", <ContactsOutlined />),
+  getItem("About Us", "4", <ContactsOutlined />),
 ];
 
 export const Sidebar = () => {
@@ -36,7 +36,7 @@ export const Sidebar = () => {
     const pathToKeyMap: Record<string, string> = {
       "/in-game": "1",
       "/drafting-tool": "2",
-      "/player-analytics": "3",
+      "/player": "3",
       "/settings": "5",
       "/about-us": "4",
     };
@@ -68,13 +68,19 @@ export const Sidebar = () => {
         navigate("/");
         break;
       case "2":
-        navigate("/drafting-tool");
+        // navigate("/drafting-tool");
         break;
       case "3":
-        navigate("/player-analytics");
+        const summoner = localStorage.getItem("latestSummoner");
+        const tagline = localStorage.getItem("latestTagline");
+        if (summoner && tagline) {
+          navigate(`/${"NA"}/${summoner}/${tagline}/player`);
+        } else {
+          alert("No summoner data found. Please perform a search first.");
+        }
         break;
       case "5":
-        navigate("/settings");
+        // navigate("/settings");
         break;
       default:
         break;
