@@ -172,7 +172,10 @@ const ChatComponent: React.FC<{ game: Game | null; height: string }> = ({
 
   return (
     <div className="flex justify-center pt-5">
-      <div className="flex flex-col w-[100%]" style={{ height: height }}>
+      <div
+        className="flex flex-col w-[100%] min-w-[500px]"
+        style={{ height: height }}
+      >
         {messages.length === 0 && game?.gameId && !loadingSession && (
           <DefaultPrompts handleSendMessage={handleSendMessage} />
         )}
