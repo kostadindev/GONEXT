@@ -43,7 +43,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
       {player && <SummonerOverview summoner={player} />}
       <div className="flex w-full h-[67vh]">
         {/* MatchHistory container */}
-        <div className="flex-shrink-0">
+        <div className="flex-shrink-0 min-w-[308px]">
           {player && <MatchHistory summoner={player} />}
         </div>
         {/* Chat container */}
