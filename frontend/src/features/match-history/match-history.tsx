@@ -32,14 +32,19 @@ export const MatchHistory: React.FC<MatchHistoryProps> = ({ summoner }) => {
   }, [summoner]);
 
   return (
-    <div className="pt-3 pr-3 rounded-lg flex flex-col">
-      <div className="text-lg font-bold mb-2">
-        {/* {`${summoner.championName}'s Match History`} */}
-      </div>
-      <Spin spinning={isLoading}>
+    <div className="flex flex-col">
+      <div className="flex-1 mb-2 pt-8">
+        {/* Spinner */}
+        {isLoading && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <Spin />
+          </div>
+        )}
+        {/* Content */}
         <div
-          className="flex-1 overflow-y-auto flex flex-col items-start gap-0" // Added `items-start` and removed spacing
-          style={{ height: "calc(70vh - 50px)" }}
+          className={`flex-1 overflow-y-auto ${
+            isLoading ? "opacity-0" : "opacity-100"
+          } transition-opacity duration-300`}
         >
           {games?.map((game, index) => (
             <div className="max-w-[380px]" key={index}>
@@ -50,7 +55,7 @@ export const MatchHistory: React.FC<MatchHistoryProps> = ({ summoner }) => {
             </div>
           ))}
         </div>
-      </Spin>
+      </div>
     </div>
   );
 };
