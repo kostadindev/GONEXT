@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Card, Tooltip, Typography, Avatar, Spin } from "antd";
+import { Card, Tooltip, Typography, Avatar, Spin, Statistic } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import { Game } from "../../../../libs/league/league-types";
 import ChatComponent from "../../../chat/chat";
@@ -13,7 +13,9 @@ export const GameOverview: React.FC<{ game: Game | null }> = ({ game }) => {
   const [recommendedItems, setRecommendedItems] = useState<
     { itemId: string; itemName: string }[]
   >([]);
-  const [gameSummary, setGameSummary] = useState<string>("");
+  const [gameSummary, setGameSummary] = useState<string>(
+    "No summary available."
+  );
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -55,20 +57,31 @@ export const GameOverview: React.FC<{ game: Game | null }> = ({ game }) => {
           styles={{
             body: {
               padding: "12px",
+              display: "flex",
+              justifyContent: "center",
+              flexDirection: "column",
+              alignItems: "center",
             },
           }}
         >
+          {" "}
           <Title level={5} className="text-sm text-center">
             Win Chance{" "}
             <Tooltip title="This is calculated using AI based on player performance, team composition, and other factors.">
               <InfoCircleOutlined className="text-primary text-sm ml-1" />
             </Tooltip>
           </Title>
-          <div className="flex items-center justify-center">
-            <Text strong className="text-sm mr-2">
-              {estimatedWinRate}%
-            </Text>
-          </div>
+          <Statistic
+            value={estimatedWinRate as number}
+            precision={2}
+            valueStyle={{
+              color:
+                estimatedWinRate && estimatedWinRate > 50
+                  ? "#3f8600"
+                  : "#cf1322",
+            }}
+            suffix="%"
+          />
         </Card>
         <Card
           className="rounded-lg shadow-md"
