@@ -32,28 +32,29 @@ export const MatchHistory: React.FC<MatchHistoryProps> = ({ summoner }) => {
   }, [summoner]);
 
   return (
-    <div className="flex flex-col">
-      <div className="flex-1 mb-2 pt-8">
+    <div className="flex flex-col h-full pt-4">
+      <div className="relative flex-1 overflow-hidden">
         {/* Spinner */}
         {isLoading && (
-          <div className="absolute inset-0 flex items-center justify-center">
+          <div className="absolute inset-0 flex items-center justify-center z-10">
             <Spin />
           </div>
         )}
         {/* Content */}
         <div
-          className={`flex-1 overflow-y-auto ${
-            isLoading ? "opacity-0" : "opacity-100"
-          } transition-opacity duration-300`}
+          className={`flex flex-col h-full overflow-y-auto transition-opacity duration-300 ${
+            isLoading ? "opacity-0 pointer-events-none" : "opacity-100"
+          }`}
         >
-          {games?.map((game, index) => (
-            <div className="max-w-full" key={index}>
-              <HistoryItem
-                key={`${summoner?.championId}-${index}`}
-                game={game}
-              />
-            </div>
-          ))}
+          {games &&
+            games.map((game, index) => (
+              <div key={index}>
+                <HistoryItem
+                  key={`${summoner?.championId}-${index}`}
+                  game={game}
+                />
+              </div>
+            ))}
         </div>
       </div>
     </div>
