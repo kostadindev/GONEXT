@@ -25,7 +25,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
     let ignore = false;
     if (!game) {
       getSummoner(gameName as string, tagLine as string).then((summoner) => {
-        if (!ignore) setPlayer(summoner);
+        setPlayer(summoner);
       });
       return () => {
         ignore = true;
@@ -36,14 +36,17 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
   return (
     <>
       {player && <SummonerOverview summoner={player} />}
-      <div className="flex w-full h-[67vh]">
-        {/* MatchHistory container */}
-        <div className="flex-shrink-0">
+      <div className="flex w-full">
+        {" "}
+        {/* Increased space here */}
+        <div className="w-1/3 min-w-[300px]">
           {player && <MatchHistory summoner={player} />}
         </div>
-        {/* Chat container */}
-        <div className="flex-grow">
-          <ChatComponent game={game || null} height={"65vh"} />
+        <div
+          className="w-2/3 min-w-[300px]"
+          style={{ height: `calc(70vh - 79px)` }}
+        >
+          {<ChatComponent game={game || null} height={"65vh"} />}
         </div>
       </div>
     </>
