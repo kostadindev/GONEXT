@@ -72,59 +72,33 @@ const UserPreferences: React.FC = () => {
         />
       </div>
 
-      {/* Language Selector */}
-      <div
-        style={{
-          ...dropdownStyle,
-          background: token.colorBgContainer,
-          border: `1px solid ${token.colorBorder}`,
-        }}
-      >
-        <Select
-          value={selectedLanguage}
-          onChange={handleLanguageChange}
-          style={{ width: 120 }}
-          size="large"
-          bordered={false}
-          options={[
-            { label: "English", value: "en" },
-            { label: "Korean", value: "ko" },
-            { label: "Chinese", value: "zh" },
-            { label: "Spanish", value: "es" },
-            { label: "Bulgarian", value: "bg" },
-          ]}
-        />
-      </div>
+      <Select
+        value={selectedLanguage}
+        onChange={handleLanguageChange}
+        style={{ width: 120 }}
+        size="large"
+        options={[
+          { label: "English", value: "en" },
+          { label: "Korean", value: "ko" },
+          { label: "Chinese", value: "zh" },
+          { label: "Spanish", value: "es" },
+          { label: "Bulgarian", value: "bg" },
+        ]}
+      />
 
-      {/* LLM Selector */}
-      <div
-        style={{
-          ...dropdownStyle,
-          background: token.colorBgContainer,
-          border: `1px solid ${token.colorBorder}`,
-        }}
-      >
-        <Select
-          value={selectedModel}
-          onChange={handleModelChange}
-          style={{ width: 175 }}
-          size="large"
-          bordered={false}
-          options={[
-            { label: "Gemini 1.5 Flash", value: LLMOptions.GEMINI_FLASH },
-            { label: "GPT-4o Mini", value: LLMOptions.GPT_MINI },
-            { label: "GPT-4o", value: LLMOptions.GPT },
-          ]}
-        />
-      </div>
+      <Select
+        value={selectedModel}
+        onChange={handleModelChange}
+        style={{ width: 175 }}
+        size="large"
+        options={[
+          { label: "Gemini 1.5 Flash", value: LLMOptions.GEMINI_FLASH },
+          { label: "GPT-4o Mini", value: LLMOptions.GPT_MINI },
+          { label: "GPT-4o", value: LLMOptions.GPT },
+        ]}
+      />
     </>
   );
-};
-
-const dropdownStyle: React.CSSProperties = {
-  borderRadius: "8px",
-  display: "flex",
-  alignItems: "center",
 };
 
 const switchContainerStyle: React.CSSProperties = {
