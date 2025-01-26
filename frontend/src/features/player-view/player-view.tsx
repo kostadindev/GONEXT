@@ -17,28 +17,31 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
   game,
 }) => {
   const { tagLine, gameName } = useParams();
-  const [player, setPlayer] = useState(
-    game?.participants?.find((summoner) => summoner.puuid === playerPuuid)
-  );
+  const [player, setPlayer] = useState<Summoner | undefined>(undefined);
 
   useEffect(() => {
-    let ignore = false;
-    if (!game) {
+    let isMounted = true;
+
+    if (game && playerPuuid) {
+      const foundPlayer = game.participants?.find(
+        (summoner) => summoner.puuid === playerPuuid
+      );
+      if (isMounted) setPlayer(foundPlayer);
+    } else if (gameName && tagLine) {
       getSummoner(gameName as string, tagLine as string).then((summoner) => {
-        setPlayer(summoner);
+        if (isMounted) setPlayer(summoner);
       });
-      return () => {
-        ignore = true;
-      };
     }
-  }, [gameName, tagLine]);
+
+    return () => {
+      isMounted = false; // Clean up to prevent setting state after unmount.
+    };
+  }, [game, playerPuuid, gameName, tagLine]);
 
   return (
     <>
       {player && <SummonerOverview summoner={player} />}
       <div className="flex w-full">
-        {" "}
-        {/* Increased space here */}
         <div className="w-1/3 min-w-[300px]">
           {player && <MatchHistory summoner={player} />}
         </div>
