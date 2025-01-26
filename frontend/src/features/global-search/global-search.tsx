@@ -1,13 +1,32 @@
-import { Input, Select, Space } from "antd";
 import React, { useState, useEffect } from "react";
+import { AutoComplete, Flex, Input, Select, Space } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
 import { useNotification } from "../notifications/notification-context";
+import { UserOutlined } from "@ant-design/icons";
 
 interface Params extends Record<string, string | undefined> {
   region?: string;
   summoner?: string;
   tagline?: string;
 }
+
+const MAX_RECENT_USERS = 20;
+
+const Title: React.FC<Readonly<{ title?: string }>> = (props) => (
+  <Flex align="center" justify="space-between">
+    {props.title}
+  </Flex>
+);
+
+const renderItem = (title: string) => ({
+  value: title,
+  label: (
+    <Flex align="center" justify="space-between">
+      {title}
+      <UserOutlined style={{ marginLeft: 8 }} />
+    </Flex>
+  ),
+});
 
 const options = [
   {
@@ -31,12 +50,14 @@ export default function GlobalSearch() {
     tagline: taglineParam,
   } = useParams<Params>();
 
-  const [region, setRegion] = useState<string>(regionParam || "na"); // Default region
+  const [region, setRegion] = useState<string>(regionParam || "na");
   const [searchedUser, setSearchedUser] = useState<string>(
     summonerParam
       ? `${summonerParam}${taglineParam ? `#${taglineParam}` : ""}`
       : ""
   );
+  const [recentUsers, setRecentUsers] = useState<string[]>([]);
+  const [autocompleteOptions, setAutocompleteOptions] = useState<any[]>([]);
 
   useEffect(() => {
     if (regionParam) setRegion(regionParam);
@@ -44,12 +65,32 @@ export default function GlobalSearch() {
       setSearchedUser(`${summonerParam}#${taglineParam}`);
   }, [regionParam, summonerParam, taglineParam]);
 
+  useEffect(() => {
+    const storedUsers = JSON.parse(localStorage.getItem("recentUsers") || "[]");
+    setRecentUsers(storedUsers);
+
+    setAutocompleteOptions([
+      {
+        label: <Title title="Recent Searches" />,
+        options: storedUsers.map((user: string) => renderItem(user)),
+      },
+    ]);
+  }, []);
+
+  const updateRecentUsers = (user: string) => {
+    const updatedUsers = [user, ...recentUsers.filter((u) => u !== user)];
+    if (updatedUsers.length > MAX_RECENT_USERS) {
+      updatedUsers.length = MAX_RECENT_USERS;
+    }
+
+    setRecentUsers(updatedUsers);
+    localStorage.setItem("recentUsers", JSON.stringify(updatedUsers));
+  };
+
   const onSearch = (searchedUser: string) => {
     const [summoner, tagline] = searchedUser.split("#");
     if (summoner && tagline) {
-      // Cache the searched user in local storage
-      localStorage.setItem("latestSummoner", summoner);
-      localStorage.setItem("latestTagline", tagline);
+      updateRecentUsers(searchedUser);
 
       navigate(`/${region}/${summoner}/${tagline}/in-game`);
     } else {
@@ -64,6 +105,21 @@ export default function GlobalSearch() {
     setRegion(value);
   };
 
+  const onInputChange = (value: string) => {
+    setSearchedUser(value);
+
+    const filteredOptions = recentUsers
+      .filter((user) => user.toLowerCase().includes(value.toLowerCase()))
+      .map((user) => renderItem(user));
+
+    setAutocompleteOptions([
+      {
+        label: <Title title="Recent Players" />,
+        options: filteredOptions,
+      },
+    ]);
+  };
+
   return (
     <Space>
       <Space.Compact size="large" style={{ width: "600px" }}>
@@ -74,14 +130,19 @@ export default function GlobalSearch() {
           onChange={onRegionChange}
           style={{ width: "100px" }}
         />
-        <Search
+        <AutoComplete
           value={searchedUser}
-          placeholder="Doublelift#NA1"
-          onSearch={onSearch}
-          onChange={(e) => setSearchedUser(e.target.value)}
-          enterButton
+          options={autocompleteOptions}
           style={{ flex: 1 }}
-        />
+          onChange={onInputChange}
+          onSelect={(value) => onSearch(value)}
+        >
+          <Search
+            placeholder="Doublelift#NA1"
+            enterButton
+            onSearch={onSearch}
+          />
+        </AutoComplete>
       </Space.Compact>
     </Space>
   );
