@@ -47,7 +47,7 @@ export const MatchHistory: React.FC<MatchHistoryProps> = ({ summoner }) => {
           } transition-opacity duration-300`}
         >
           {games?.map((game, index) => (
-            <div className="max-w-[380px]" key={index}>
+            <div className="max-w-full" key={index}>
               <HistoryItem
                 key={`${summoner?.championId}-${index}`}
                 game={game}
