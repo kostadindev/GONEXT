@@ -67,7 +67,7 @@ export const InGameSummoner = ({
         <div className="flex flex-col">
           <Tooltip title="Summoner Name">
             <span className="font-medium">
-              {summoner.summonerName || summoner?.riotId}
+              {(summoner.summonerName || summoner?.riotId)?.split("#")?.[0]}
             </span>
           </Tooltip>
           <Tooltip title={`Champion: ${summoner.championName}`}>
