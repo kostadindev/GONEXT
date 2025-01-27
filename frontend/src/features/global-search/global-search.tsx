@@ -18,15 +18,33 @@ const Title: React.FC<Readonly<{ title?: string }>> = (props) => (
   </Flex>
 );
 
-const renderItem = (title: string) => ({
-  value: title,
-  label: (
-    <Flex align="center" justify="space-between">
-      {title}
-      <UserOutlined style={{ marginLeft: 8 }} />
-    </Flex>
-  ),
-});
+const splitTitle = (title: string) => {
+  const parts = title.split("#");
+  const name = parts[0];
+  const tag = parts[1] ? `#${parts[1]}` : "";
+  return { name, tag };
+};
+
+const renderItem = (title: string) => {
+  const { name, tag } = splitTitle(title);
+
+  return {
+    value: title,
+    label: (
+      <Flex align="center" justify="space-between">
+        <span>
+          {name}
+          {tag && (
+            <span style={{ color: "gray", fontStyle: "italic", marginLeft: 4 }}>
+              {tag}
+            </span>
+          )}
+        </span>
+        <UserOutlined style={{ marginLeft: 8 }} />
+      </Flex>
+    ),
+  };
+};
 
 const options = [
   {
@@ -71,7 +89,7 @@ export default function GlobalSearch() {
 
     setAutocompleteOptions([
       {
-        label: <Title title="Recent Searches" />,
+        label: <Title title="Recent Players Searched" />,
         options: storedUsers.map((user: string) => renderItem(user)),
       },
     ]);
