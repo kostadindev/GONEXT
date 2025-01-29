@@ -89,7 +89,7 @@ export default function GlobalSearch() {
 
     setAutocompleteOptions([
       {
-        label: <Title title="Recent Players Searched" />,
+        label: <Title title="Recent Players" />,
         options: storedUsers.map((user: string) => renderItem(user)),
       },
     ]);
