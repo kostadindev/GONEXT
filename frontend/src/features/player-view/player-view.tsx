@@ -18,7 +18,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
 }) => {
   const { tagLine, gameName } = useParams();
   const [player, setPlayer] = useState<Summoner | undefined>(undefined);
-
+  const height = game ? "65vh" : "calc(100vh - 250px)";
   useEffect(() => {
     let isMounted = true;
 
@@ -37,18 +37,17 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
       isMounted = false; // Clean up to prevent setting state after unmount.
     };
   }, [game, playerPuuid, gameName, tagLine]);
-
   return (
     <>
       {player && <SummonerOverview summoner={player} />}
-      <div className="flex w-full h-[67vh]">
+      <div className={`flex w-full h-[${height}`}>
         {/* MatchHistory container */}
         <div className="flex-shrink-0 min-w-[308px]">
           {player && <MatchHistory summoner={player} />}
         </div>
         {/* Chat container */}
         <div className="flex-grow">
-          <ChatComponent game={game || null} height={"65vh"} />
+          <ChatComponent game={game || null} height={height} />
         </div>
       </div>
     </>

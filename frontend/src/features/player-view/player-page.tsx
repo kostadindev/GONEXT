@@ -14,7 +14,7 @@ export const PlayerPage: React.FC<PlayerPageProps> = ({
   game,
 }) => {
   return (
-    <div className="container mx-auto px-[10%] pt-8">
+    <div className="container mx-auto px-[10%] pt-8 h-full">
       <PlayerView summoners={summoners} playerPuuid={playerPuuid} game={game} />
     </div>
   );
