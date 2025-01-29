@@ -6,7 +6,6 @@ let latestVersion = '14.15.1';
 axios.get('https://ddragon.leagueoflegends.com/api/versions.json').then(
   res => {
     const versions = res?.data;
-    console.log("versions", versions);
     if (Array.isArray(versions) && versions.length > 0) {
       latestVersion = versions[0];
     }
@@ -15,7 +14,6 @@ axios.get('https://ddragon.leagueoflegends.com/api/versions.json').then(
 
 
 export const getChampionIconSrc = (championImageId: string) => {
-  console.log(latestVersion);
   return `https://ddragon.leagueoflegends.com/cdn/${latestVersion}/img/champion/${championImageId}.png`;
 }
 

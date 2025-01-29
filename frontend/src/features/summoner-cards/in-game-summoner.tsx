@@ -26,7 +26,6 @@ export const InGameSummoner = ({
       : summoner.teamId === 100
       ? "#65a9f3"
       : "#e84749";
-
   return (
     <Card
       style={{

@@ -30,12 +30,10 @@ export const sendChatMessageStream = async (
       done = readerDone;
       if (value) {
         const chunk = decoder.decode(value, { stream: true });
-        console.log('Received chunk:', chunk);
         onStreamChunk(chunk); // Process each chunk
       }
     }
 
-    console.log('Stream completed');
   } catch (error) {
     console.error('Error while streaming chatbot response:', error);
     throw error;
