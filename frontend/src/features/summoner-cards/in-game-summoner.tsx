@@ -65,7 +65,7 @@ export const InGameSummoner = ({
         </div>
         <div className="flex flex-col">
           <Tooltip title="Summoner Name">
-            <span className="font-medium">
+            <span className="font-medium truncate w-40 block">
               {(summoner.summonerName || summoner?.riotId)?.split("#")?.[0]}
             </span>
           </Tooltip>
