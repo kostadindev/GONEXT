@@ -64,12 +64,14 @@ export const InGameSummoner = ({
           </Tooltip>
         </div>
         <div className="flex flex-col">
-          <Tooltip title="Summoner Name">
-            <span className="font-medium truncate w-40 block">
+          <Tooltip
+            title={(summoner.summonerName || summoner?.riotId)?.split("#")?.[0]}
+          >
+            <span className="font-medium truncate w-32 block">
               {(summoner.summonerName || summoner?.riotId)?.split("#")?.[0]}
             </span>
           </Tooltip>
-          <Tooltip title={`Champion: ${summoner.championName}`}>
+          <Tooltip title={summoner.championName}>
             <span className="text-gray-500"> {summoner.championName}</span>
           </Tooltip>
         </div>
