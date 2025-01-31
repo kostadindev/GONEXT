@@ -69,20 +69,11 @@ export const ActiveGameTabs = ({ game }: { game: Game | null }) => {
       />
       <div className="flex flex-col p-5">
         {selectedView === "chat" && <GameOverview game={game} />}
-        {allies?.map((ally) => ally.puuid).includes(selectedView) && (
-          <Allies
-            summoners={game?.participants}
-            allyPuuid={selectedView}
-            searchedSummonerPuuid={game?.searchedSummoner?.puuid}
-          />
+        {game && allies?.map((ally) => ally.puuid).includes(selectedView) && (
+          <PlayerView game={game} playerPuuid={selectedView} />
         )}
         {game &&
           enemies?.map((enemy) => enemy.puuid).includes(selectedView) && (
-            // <Enemies
-            //   summoners={game?.participants}
-            //   enemyPuuid={selectedView}
-            //   searchedSummonerPuuid={game?.searchedSummoner?.puuid}
-            // />
             <PlayerView game={game} playerPuuid={selectedView} />
           )}
       </div>
