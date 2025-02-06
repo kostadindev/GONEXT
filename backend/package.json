@@ -14,18 +14,22 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@neondatabase/serverless": "^0.10.4",
+    "@prisma/client": "^6.3.1",
     "axios": "^1.6.8",
     "backend": "file:",
     "concurrently": "^8.2.2",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "express": "^4.19.2",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
     "google-auth-library": "^9.13.0",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.8.0",
     "mongoose": "^8.5.2",
     "morgan": "^1.10.0",
+    "pg": "^8.13.1",
+    "pg-pool": "^3.7.0",
     "pm2": "^5.4.2",
     "tsoa": "^6.2.1"
   },
@@ -33,9 +37,12 @@
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/morgan": "^1.9.9",
-    "@types/node": "^20.14.14",
+    "@types/node": "^20.17.17",
+    "@types/pg": "^8.11.11",
     "nodemon": "^3.1.0",
+    "prisma": "^6.3.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.4.5"
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.7.3"
   }
 }

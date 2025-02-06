@@ -1,0 +1,56 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model MatchParticipant {
+  participant_id     String   @id
+  match_id           String
+  summoner_id        String?
+  summoner_name      String?
+  team_position      String?
+  champion_id        Int?
+  champion_name      String?
+  kills              Int?
+  deaths             Int?
+  assists            Int?
+  gold_earned        Int?
+  total_damage_dealt BigInt?
+  total_damage_taken BigInt?
+  vision_score       Int?
+  win                Boolean?
+  team_id            Int?
+
+  // Relationship with the Match table
+  match              Match    @relation(fields: [match_id], references: [match_id], onDelete: Cascade)
+
+  @@index([participant_id], map: "idx_match_participant_id")
+  @@map("match_participants")
+}
+
+model Match {
+  match_id           String               @id
+  data_version       String?
+  game_id            BigInt               @unique
+  game_mode          String?
+  game_type          String?
+  game_name          String?
+  game_version       String?
+  map_id             Int?
+  end_of_game_result String?
+  game_creation      BigInt?
+  game_start_time    BigInt?
+  game_end_time      BigInt?
+  game_duration      Int?
+
+  // Relation with MatchParticipant table
+  participants       MatchParticipant[]
+
+  @@index([match_id], map: "idx_matches_match_id")
+  @@index([game_id], map: "idx_matches_game_id")
+  @@map("matches")
+}
