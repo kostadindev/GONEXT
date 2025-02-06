@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Select, theme } from "antd";
+import { Select } from "antd";
 import { DarkModeSwitch } from "react-toggle-dark-mode";
 import { useUser } from "../../context/user.context";
 import {
@@ -10,7 +10,6 @@ import {
 import { LLMOptions } from "../../libs/general/users";
 
 const UserPreferences: React.FC = () => {
-  const { token } = theme.useToken(); // Access the Ant Design theme token
   const { user, setUser } = useUser();
   const [selectedModel, setSelectedModel] = useState<string>(
     localStorage.getItem("llm") || user?.llm || LLMOptions.GEMINI_FLASH
@@ -63,7 +62,6 @@ const UserPreferences: React.FC = () => {
 
   return (
     <>
-      {/* Theme Selector */}
       <div style={switchContainerStyle}>
         <DarkModeSwitch
           checked={isDarkMode}
@@ -103,8 +101,8 @@ const UserPreferences: React.FC = () => {
 
 const switchContainerStyle: React.CSSProperties = {
   display: "flex",
-  justifyContent: "center", // Centers horizontally
-  alignItems: "center", // Centers vertically
+  justifyContent: "center",
+  alignItems: "center",
   padding: "8px",
 };
 

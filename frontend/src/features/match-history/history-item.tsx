@@ -186,12 +186,6 @@ export const HistoryItem: React.FC<{ game: GameHistory }> = ({ game }) => {
           gameDurationString={gameDurationString}
         />
         <ParticipantInfo game={game} kda={kda} />
-        {/* <div className="w-[225px] flex flex-col">
-      <div className="flex flex-wrap">
-        <TeamDisplay team={redTeam} />
-        <TeamDisplay team={blueTeam} />
-      </div>
-    </div> */}
       </div>
     </Card>
   );
