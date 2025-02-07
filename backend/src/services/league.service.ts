@@ -140,6 +140,36 @@ class LeagueService {
   }
 
 
+  async getMatches(puuid: string, count: number = 7): Promise<any[] | null> {
+    const matchIds = await this.getMatchesIds(puuid, count);
+    return (await this.getMatchesByIds(matchIds)).map(
+      (match: any) => {
+        const participants = this.getParticipantsFromMatch(match);
+        let participant = match?.info?.participants.find((p: any) => p?.puuid === puuid);
+
+        if (participant) {
+          participant = {
+            ...participant,
+            summonerSpell1Name: this.getSummonerSpellName(participant.summoner1Id?.toString()),
+            summonerSpell2Name: this.getSummonerSpellName(participant.summoner2Id?.toString()),
+            championImageId: this.getChampionImageId(participant?.championId)
+          } as any;
+        }
+
+        return {
+          win: participant?.win,
+          gameCreation: match?.info?.gameCreation,
+          gameDuration: match?.info?.gameDuration,
+          gameMode: match?.info?.gameMode,
+          matchId: match?.metadata?.matchId,
+          queueName: match?.info?.queueName,
+          participant,
+          participants
+        };
+      }
+    );
+  }
+
   async getMatchesByIds(matchIds: string[]): Promise<any[] | null> {
     const oldMatches = await leagueRepository.getMatchesByIdsSQL(matchIds);
     const existingMatchIds = oldMatches.map(match => match.metadata.matchId);
