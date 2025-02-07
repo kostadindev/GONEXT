@@ -185,23 +185,8 @@ class LeagueRepository {
 
   async saveMatches(matches: any[]): Promise<void> {
     try {
-      const matchIds = matches
-        .filter(match => match !== null)
-        .map(match => match.metadata.matchId);
 
-      // Fetch existing match IDs from the database
-      const existingMatches = await prisma.match.findMany({
-        where: { match_id: { in: matchIds } },
-        select: { match_id: true },
-      });
-
-      const existingMatchIds = new Set(existingMatches.map(m => m.match_id));
-
-      // Filter out matches that already exist
-      const newMatches = matches.filter(match => !existingMatchIds.has(match.metadata.matchId));
-
-      // Prepare the data for new matches with nested participants
-      const matchData = newMatches.map((match) => ({
+      const matchData = matches.map((match) => ({
         match_id: match.metadata.matchId,
         data_version: match?.metadata?.dataVersion,
         game_id: BigInt(match?.info?.gameId),
@@ -215,7 +200,6 @@ class LeagueRepository {
         game_start_time: BigInt(match.info.gameStartTimestamp),
         game_end_time: BigInt(match.info.gameEndTimestamp),
         game_duration: match.info.gameDuration,
-        // In saveMatches(), when mapping each participant:
         participants: {
           create: match.info.participants.map((p: any) => ({
             participant_id: `${match.metadata.matchId}_${p.puuid}`,
@@ -234,7 +218,6 @@ class LeagueRepository {
             vision_score: p.visionScore ?? 0,
             win: p.win ?? false,
             team_id: p.teamId,
-            // New item fields:
             item0: p.item0,
             item1: p.item1,
             item2: p.item2,
@@ -250,9 +233,7 @@ class LeagueRepository {
 
       // Insert new matches with their participants
       for (const data of matchData) {
-        await prisma.match.create({
-          data,
-        });
+        await prisma.match.create({ data });
       }
 
       console.log('New matches with participants saved successfully.');
