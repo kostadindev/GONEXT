@@ -142,14 +142,15 @@ class LeagueService {
 
   async getMatchesByIds(matchIds: string[]): Promise<any[] | null> {
     const oldMatches = await leagueRepository.getMatchesByIdsSQL(matchIds);
-    const existingMatchIds = oldMatches.map(match => match.id);
+    const existingMatchIds = oldMatches.map(match => match.metadata.matchId);
     const newMatchIds = matchIds.filter(matchId => !existingMatchIds.includes(matchId));
     const newMatches = (await Promise.all(
       newMatchIds.map((matchId) => leagueRepository.getMatchById(matchId))
     ));
-    leagueRepository.saveMatches(newMatches);
-
-    return [...oldMatches, ...newMatches];
+    if (newMatches.length > 0) {
+      leagueRepository.saveMatches(newMatches);
+    }
+    return [...oldMatches, ...newMatches].sort((a, b) => a.info.gameEndTimestampgameEndTime - b.info.gameEndTimestamp);
   }
 
   getParticipantsFromMatch(match: any) {
