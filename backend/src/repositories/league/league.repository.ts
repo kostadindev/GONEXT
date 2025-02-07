@@ -118,62 +118,71 @@ class LeagueRepository {
 
   async saveMatches(matches: any[]): Promise<void> {
     try {
-      const matchData = matches.filter(match => match !== null).map((match) => {
-        const matchId = match.metadata.matchId;
-        return {
-          match_id: matchId,
-          data_version: match?.metadata?.dataVersion,
-          game_id: BigInt(match?.info?.gameId),
-          game_mode: match.info.gameMode,
-          game_type: match.info.gameType,
-          game_name: match.info.gameName,
-          game_version: match.info.gameVersion,
-          map_id: match.info.mapId,
-          end_of_game_result: match.info.endOfGameResult,
-          game_creation: BigInt(match.info.gameCreation),
-          game_start_time: BigInt(match.info.gameStartTimestamp),
-          game_end_time: BigInt(match.info.gameEndTimestamp),
-          game_duration: match.info.gameDuration,
-          participants: {
-            create: match.info.participants.map((p: any) => ({
-              participant_id: `${matchId}_${p.puuid}`,
-              puuid: p.puuid,
-              summoner_id: p.summonerId,
-              summoner_name: p.summonerName,
-              team_position: p.individualPosition,
-              champion_id: p.championId,
-              champion_name: p.championName,
-              kills: p.kills ?? 0,
-              deaths: p.deaths ?? 0,
-              assists: p.assists ?? 0,
-              gold_earned: p.goldEarned ?? 0,
-              total_damage_dealt: BigInt(p.totalDamageDealt ?? 0),
-              total_damage_taken: BigInt(p.totalDamageTaken ?? 0),
-              vision_score: p.visionScore ?? 0,
-              win: p.win ?? false,
-              team_id: p.teamId,
-            })),
-          },
-        };
+      const matchIds = matches
+        .filter(match => match !== null)
+        .map(match => match.metadata.matchId);
+
+      // Fetch existing match IDs from the database
+      const existingMatches = await prisma.match.findMany({
+        where: { match_id: { in: matchIds } },
+        select: { match_id: true },
       });
 
-      for (const data of matchData) {
-        const existingMatch = await prisma.match.findUnique({
-          where: { match_id: data.match_id },
-        });
+      const existingMatchIds = new Set(existingMatches.map(m => m.match_id));
 
-        if (!existingMatch) {
-          await prisma.match.create({
-            data,
-          });
-        }
+      // Filter out matches that already exist
+      const newMatches = matches.filter(match => !existingMatchIds.has(match.metadata.matchId));
+
+      // Prepare the data for new matches with nested participants
+      const matchData = newMatches.map((match) => ({
+        match_id: match.metadata.matchId,
+        data_version: match?.metadata?.dataVersion,
+        game_id: BigInt(match?.info?.gameId),
+        game_mode: match.info.gameMode,
+        game_type: match.info.gameType,
+        game_name: match.info.gameName,
+        game_version: match.info.gameVersion,
+        map_id: match.info.mapId,
+        end_of_game_result: match.info.endOfGameResult,
+        game_creation: BigInt(match.info.gameCreation),
+        game_start_time: BigInt(match.info.gameStartTimestamp),
+        game_end_time: BigInt(match.info.gameEndTimestamp),
+        game_duration: match.info.gameDuration,
+        participants: {
+          create: match.info.participants.map((p: any) => ({
+            participant_id: `${match.metadata.matchId}_${p.puuid}`,
+            puuid: p.puuid,
+            summoner_id: p.summonerId,
+            summoner_name: p.summonerName,
+            team_position: p.individualPosition,
+            champion_id: p.championId,
+            champion_name: p.championName,
+            kills: p.kills ?? 0,
+            deaths: p.deaths ?? 0,
+            assists: p.assists ?? 0,
+            gold_earned: p.goldEarned ?? 0,
+            total_damage_dealt: BigInt(p.totalDamageDealt ?? 0),
+            total_damage_taken: BigInt(p.totalDamageTaken ?? 0),
+            vision_score: p.visionScore ?? 0,
+            win: p.win ?? false,
+            team_id: p.teamId,
+          })),
+        },
+      }));
+
+      // Insert new matches with their participants
+      for (const data of matchData) {
+        await prisma.match.create({
+          data,
+        });
       }
 
-      console.log('New matches saved successfully.');
+      console.log('New matches with participants saved successfully.');
     } catch (error) {
       console.error('Error saving matches to the database:', error);
     }
   }
+
 
 
 
