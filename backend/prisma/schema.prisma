@@ -8,7 +8,8 @@ datasource db {
 }
 
 model MatchParticipant {
-  puuid     String   @id
+  participant_id     String   @id
+  puuid              String   
   match_id           String
   summoner_id        String?
   summoner_name      String?
