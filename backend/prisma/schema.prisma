@@ -8,7 +8,7 @@ datasource db {
 }
 
 model MatchParticipant {
-  participant_id     String   @id
+  puuid     String   @id
   match_id           String
   summoner_id        String?
   summoner_name      String?
@@ -28,7 +28,7 @@ model MatchParticipant {
   // Relationship with the Match table
   match              Match    @relation(fields: [match_id], references: [match_id], onDelete: Cascade)
 
-  @@index([participant_id], map: "idx_match_participant_id")
+  @@index([puuid], map: "idx_match_participant_puuid")
   @@map("match_participants")
 }
 
