@@ -26,6 +26,19 @@ model MatchParticipant {
   win                Boolean?
   team_id            Int?
 
+  // Fields for purchased items
+  item0              Int?
+  item1              Int?
+  item2              Int?
+  item3              Int?
+  item4              Int?
+  item5              Int?
+  item6              Int?
+
+  // NEW: Fields for summoner spells
+  summoner_1_id    Int?
+  summoner_2_id    Int?
+
   // Relationship with the Match table
   match              Match    @relation(fields: [match_id], references: [match_id], onDelete: Cascade)
 

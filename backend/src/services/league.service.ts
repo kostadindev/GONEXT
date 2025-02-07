@@ -141,9 +141,15 @@ class LeagueService {
 
 
   async getMatchesByIds(matchIds: string[]): Promise<any[] | null> {
-    const matches = await Promise.all(matchIds.map((matchId) => leagueRepository.getMatchById(matchId)));
-    leagueRepository.saveMatches(matches);
-    return matches;
+    const oldMatches = await leagueRepository.getMatchesByIdsSQL(matchIds);
+    const existingMatchIds = oldMatches.map(match => match.id);
+    const newMatchIds = matchIds.filter(matchId => !existingMatchIds.includes(matchId));
+    const newMatches = (await Promise.all(
+      newMatchIds.map((matchId) => leagueRepository.getMatchById(matchId))
+    ));
+    leagueRepository.saveMatches(newMatches);
+
+    return [...oldMatches, ...newMatches];
   }
 
   getParticipantsFromMatch(match: any) {
