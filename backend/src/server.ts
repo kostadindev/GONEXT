@@ -4,6 +4,7 @@ import app from "./app";
 import mongoose from "mongoose";
 import process from "process";
 import { neon } from "@neondatabase/serverless";
+import redis from "./db/redis";
 
 dotenv.config();
 
@@ -25,11 +26,18 @@ async function testNeonConnection() {
 
 async function startServer() {
   try {
+    // Connect to MongoDB
     await mongoose.connect(MONGO_URI);
     console.log("Connected to MongoDB successfully");
 
+    // Connect to Redis
+    await redis.connect();
+    console.log("Connected to Redis successfully");
+
+    // Test NeonDB connection
     await testNeonConnection();
 
+    // Start the HTTP server
     server.listen(port, () => {
       console.log(`[server]: Server is running at http://localhost:${port}`);
     });
