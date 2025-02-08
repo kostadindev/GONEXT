@@ -56,11 +56,10 @@ class SummonersController {
         return res.status(404).json({ error: 'Summoner not found or missing PUUID.' });
       }
 
-      const activeGame = await leagueService.getActiveGameByPuuid(summoner.puuid);
-      const enrichedGame = await leagueService.getEnrichedGame(activeGame, summoner.puuid);
+      const game = await leagueService.getActiveGameByPuuid(summoner.puuid);
 
-      if (enrichedGame) {
-        res.json(enrichedGame);
+      if (game) {
+        res.json(game);
       } else {
         res.status(204).json({ message: 'No active game found.' });
       }

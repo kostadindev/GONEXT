@@ -1,4 +1,5 @@
 import prisma from "../db/prisma";
+import redis from "../db/redis";
 import leagueRepository from "../repositories/league/league.repository";
 
 class LeagueService {
@@ -155,14 +156,13 @@ class LeagueService {
             championImageId: this.getChampionImageId(participant?.championId)
           } as any;
         }
-
         return {
           win: participant?.win,
           gameCreation: match?.info?.gameCreation,
           gameDuration: match?.info?.gameDuration,
           gameMode: match?.info?.gameMode,
           matchId: match?.metadata?.matchId,
-          queueName: match?.info?.queueName,
+          queueName: this.queuesDict[match?.info?.queueId],
           participant,
           participants
         };
@@ -197,8 +197,26 @@ class LeagueService {
   }
 
   async getActiveGameByPuuid(puuid: string): Promise<any | null> {
-    return leagueRepository.getActiveGameByPuuid(puuid);
+    const cacheKey = `game:${puuid}`;
+    const cachedGame = await redis.get(cacheKey);
+
+    if (cachedGame) {
+      return JSON.parse(cachedGame);
+    }
+
+    // Cache miss: Fetch from the repository
+    const game = await leagueRepository.getActiveGameByPuuid(puuid);
+    const enrichedGame = this.getEnrichedGame(game, puuid);
+
+    if (enrichedGame) {
+      // Cache the result with a TTL of 3 minutes
+      await redis.set(cacheKey, JSON.stringify(enrichedGame), { PX: 180000 });
+    }
+
+    return enrichedGame;
   }
+
+
 
   async getFeaturedGames(): Promise<any | null> {
     return leagueRepository.getFeaturedGames();
