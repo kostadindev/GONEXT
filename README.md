@@ -41,5 +41,9 @@ ML side available at [GoNext ML GitHub Repository](https://github.com/kostadinde
 
 ![image](https://github.com/user-attachments/assets/0c7c618f-7c1f-408b-80ad-6a77fb56e626)
 
+Stack:
 
-
+- **UI:** Built with React, styled using Ant Design and Tailwind CSS for a sleek and responsive interface.  
+- **API:** Node.js with the Express framework, seamlessly interfacing with the Riot API for real-time game data.  
+- **Machine Learning API:** FastAPI integrated with LangChain, leveraging OpenAI API and Google AI Studio for advanced AI-driven insights.  
+- **Databases:** PostgreSQL for data analytics, MongoDB for flexible general-purpose storage, and Redis for high-performance caching.
