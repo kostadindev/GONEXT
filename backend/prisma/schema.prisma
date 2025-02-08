@@ -49,6 +49,7 @@ model MatchParticipant {
 model Match {
   match_id           String               @id
   data_version       String?
+  queue_id            Int?
   game_id            BigInt               @unique
   game_mode          String?
   game_type          String?

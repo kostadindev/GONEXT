@@ -168,6 +168,7 @@ class LeagueRepository {
           gameName: match.game_name,
           gameVersion: match.game_version,
           mapId: match.map_id,
+          queueId: match.queue_id,
           endOfGameResult: match.end_of_game_result,
           gameCreation: Number(match.game_creation), // Convert BigInt to number
           gameStartTimestamp: Number(match.game_start_time),
@@ -185,10 +186,10 @@ class LeagueRepository {
 
   async saveMatches(matches: any[]): Promise<void> {
     try {
-
       const matchData = matches.map((match) => ({
         match_id: match.metadata.matchId,
         data_version: match?.metadata?.dataVersion,
+        queue_id: match.info.queueId,
         game_id: BigInt(match?.info?.gameId),
         game_mode: match.info.gameMode,
         game_type: match.info.gameType,
