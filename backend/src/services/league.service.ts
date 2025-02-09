@@ -1,4 +1,3 @@
-import prisma from "../db/prisma";
 import redis from "../db/redis";
 import leagueRepository from "../repositories/league/league.repository";
 
