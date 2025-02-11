@@ -33,29 +33,6 @@ const AboutUs: React.FC = () => {
       email: "kostadin.g.devedzhiev@gmail.com",
       website: "https://kostadindev.github.io/",
     },
-    {
-      name: "Ivan Nikolov",
-      title: "API | DevOps",
-      image:
-        "https://scontent-lga3-2.xx.fbcdn.net/v/t39.30808-6/463968694_27285182364459185_394874216162696016_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=jeMA9FNu3wUQ7kNvgGomv9-&_nc_zt=23&_nc_ht=scontent-lga3-2.xx&_nc_gid=ADJN9tIISQ6-sj7Ecix0AOi&oh=00_AYCKMdO-LOfrVY1lXH-6_ITzdXFSYTW5lBjRm2levWqjuA&oe=679865CA",
-      github: "https://github.com/nnivan",
-    },
-    {
-      name: "Nicholas Bruhnev",
-      title: "UI | UX",
-      image:
-        "https://media.licdn.com/dms/image/v2/C4E03AQEPzvNce2yw-g/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1643814080655?e=1743033600&v=beta&t=WPSZ8ecHRbYyjFhF8D3DFxundPdRHESHqOkK6w46dvg",
-      linkedin: "https://www.linkedin.com/in/nick-bruhnev/",
-      github: "https://github.com/nickpeterb",
-    },
-    {
-      name: "Nikola Polihronov",
-      title: "PM | UI | QA",
-      image:
-        "https://media.licdn.com/dms/image/v2/D4D03AQECzDuJVxACiw/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1698224514318?e=1743033600&v=beta&t=R8naXMpH4zDE0jsKk6VYRFH2etIIpPl7BqgLXfaqG6c",
-      linkedin: "https://www.linkedin.com/in/nikola-p-811891279/",
-      github: "https://github.com/Polihronos",
-    },
   ];
 
   return (
@@ -64,13 +41,13 @@ const AboutUs: React.FC = () => {
         <Title level={2} style={{ marginBottom: "16px" }}>
           Meet the Team
         </Title>
-        <Paragraph type="secondary" style={{ fontSize: "16px" }}>
-          Our team operates from New York, USA, and Sofia, Bulgaria, combining
+        {/* <Paragraph type="secondary" style={{ fontSize: "16px" }}>
+          Our team operates from New York, USA, combining
           expertise in machine learning, backend development, DevOps, UI/UX
           design, and project management. With diverse perspectives and a shared
           passion for innovation, we work together to develop impactful
           solutions that empower gamers worldwide.
-        </Paragraph>
+        </Paragraph> */}
       </div>
 
       <Row gutter={[24, 24]}>
