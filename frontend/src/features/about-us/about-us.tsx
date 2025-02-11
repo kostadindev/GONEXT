@@ -41,16 +41,12 @@ const AboutUs: React.FC = () => {
         <Title level={2} style={{ marginBottom: "16px" }}>
           Meet the Team
         </Title>
-        {/* <Paragraph type="secondary" style={{ fontSize: "16px" }}>
-          Our team operates from New York, USA, combining
-          expertise in machine learning, backend development, DevOps, UI/UX
-          design, and project management. With diverse perspectives and a shared
-          passion for innovation, we work together to develop impactful
-          solutions that empower gamers worldwide.
-        </Paragraph> */}
+        <Paragraph type="secondary" style={{ fontSize: "16px" }}>
+          Our team operates from New York City.
+        </Paragraph>
       </div>
 
-      <Row gutter={[24, 24]}>
+      <Row gutter={[24, 24]} justify="center">
         {teamMembers.map((member, index) => (
           <Col xs={24} sm={12} md={8} lg={6} key={index}>
             <Card
