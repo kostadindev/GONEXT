@@ -37,7 +37,7 @@ export const Sidebar = () => {
       "/in-game": "1",
       // "/drafting-tool": "2",
       "/player": "3",
-      "/settings": "5",
+      // "/settings": "5",
       "/about-us": "4",
     };
 
