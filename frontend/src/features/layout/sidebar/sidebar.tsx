@@ -35,7 +35,7 @@ export const Sidebar = () => {
   useEffect(() => {
     const pathToKeyMap: Record<string, string> = {
       "/in-game": "1",
-      "/drafting-tool": "2",
+      // "/drafting-tool": "2",
       "/player": "3",
       "/settings": "5",
       "/about-us": "4",
