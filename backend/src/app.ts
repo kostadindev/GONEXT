@@ -13,12 +13,10 @@ import tipsRouter from "./routes/tips/tips.router";
 import usersRouter from "./routes/users/users.router";
 import gameOverviewRouter from "./routes/game-overview/game-overview.router";
 
-// Initialize environment variables
 dotenv.config();
 
 const app: Express = express();
 
-// Middleware setup
 app.use(cookieParser());
 app.use(express.json());
 app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
