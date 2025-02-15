@@ -33,6 +33,13 @@ const AboutUs: React.FC = () => {
       email: "kostadin.g.devedzhiev@gmail.com",
       website: "https://kostadindev.github.io/",
     },
+    {
+      name: "Ivan Nikolov",
+      title: "API | DevOps",
+      image:
+        "https://scontent-lga3-2.xx.fbcdn.net/v/t39.30808-6/463968694_27285182364459185_394874216162696016_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=amd8TTMeACAQ7kNvgFbYleM&_nc_oc=Adhsh2rsAUshCEz8iMZh26cbm3K3qPL6UnuOAMTRBdMX7FqTd1GL6k40-d5fw70Bq6Ju2fmqNLO4_VhbJbLfa2ZM&_nc_zt=23&_nc_ht=scontent-lga3-2.xx&_nc_gid=ARUAB4_vNlIN-aGXlezoqP2&oh=00_AYA2qivcv2ljXqUGH-Tn8Mj7CCe1KV0QL_z3GUd8q7kHEA&oe=67B5D74A",
+      github: "https://github.com/nnivan",
+    },
   ];
 
   return (
