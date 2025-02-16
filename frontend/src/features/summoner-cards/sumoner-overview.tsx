@@ -4,12 +4,17 @@ import Meta from "antd/es/card/Meta";
 import { getSummonerStats } from "../../libs/apis/league-api";
 import { Summoner } from "../../libs/league/league-types";
 
-interface SummonerStats {
+interface GameModeStats {
   tier: string;
   rank: string;
   wins: number;
   losses: number;
   winRate: string;
+}
+
+interface SummonerStatsData {
+  ranked?: GameModeStats;
+  flex?: GameModeStats;
 }
 
 interface SummonerOverviewProps {
@@ -35,7 +40,7 @@ const SummonerStatBlock: React.FC<{ label: string; value: string }> = ({
 export const SummonerOverview: React.FC<SummonerOverviewProps> = ({
   summoner,
 }) => {
-  const [summonerStats, setSummonerStats] = useState<SummonerStats | null>(
+  const [summonerStats, setSummonerStats] = useState<SummonerStatsData | null>(
     null
   );
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -49,22 +54,59 @@ export const SummonerOverview: React.FC<SummonerOverviewProps> = ({
         const stats = await getSummonerStats("NA", summoner.puuid);
         console.log("stats: ", stats, summoner);
 
-        const wins = stats?.ranked?.wins || 0;
-        const losses = stats?.ranked?.losses || 0;
-        const winRateCalc = wins + losses > 0 ? wins / (wins + losses) : 0;
-        const winRate = winRateCalc ? (winRateCalc * 100).toFixed(2) + "%" : "";
-        const tierRaw = stats?.ranked?.tier;
-        const formattedTier = tierRaw
-          ? tierRaw.charAt(0).toUpperCase() + tierRaw.slice(1).toLowerCase()
+        // Process Ranked Solo/Duo stats
+        const rankedWins = stats?.ranked?.wins || 0;
+        const rankedLosses = stats?.ranked?.losses || 0;
+        const rankedWinRateCalc =
+          rankedWins + rankedLosses > 0
+            ? rankedWins / (rankedWins + rankedLosses)
+            : 0;
+        const rankedWinRate = rankedWinRateCalc
+          ? (rankedWinRateCalc * 100).toFixed(2) + "%"
           : "";
+        const rankedTierRaw = stats?.ranked?.tier;
+        const rankedFormattedTier = rankedTierRaw
+          ? rankedTierRaw.charAt(0).toUpperCase() +
+            rankedTierRaw.slice(1).toLowerCase()
+          : "";
+        const rankedStats: GameModeStats | undefined = stats?.ranked
+          ? {
+              tier: rankedFormattedTier,
+              rank: stats.ranked.rank,
+              wins: rankedWins,
+              losses: rankedLosses,
+              winRate: rankedWinRate,
+            }
+          : undefined;
+
+        // Process Flex stats if present
+        let flexStats: GameModeStats | undefined;
+        if (stats?.flex) {
+          const flexWins = stats.flex.wins || 0;
+          const flexLosses = stats.flex.losses || 0;
+          const flexWinRateCalc =
+            flexWins + flexLosses > 0 ? flexWins / (flexWins + flexLosses) : 0;
+          const flexWinRate = flexWinRateCalc
+            ? (flexWinRateCalc * 100).toFixed(2) + "%"
+            : "";
+          const flexTierRaw = stats.flex.tier;
+          const flexFormattedTier = flexTierRaw
+            ? flexTierRaw.charAt(0).toUpperCase() +
+              flexTierRaw.slice(1).toLowerCase()
+            : "";
+          flexStats = {
+            tier: flexFormattedTier,
+            rank: stats.flex.rank,
+            wins: flexWins,
+            losses: flexLosses,
+            winRate: flexWinRate,
+          };
+        }
 
         if (isMounted) {
           setSummonerStats({
-            tier: formattedTier,
-            rank: stats?.ranked?.rank,
-            wins,
-            losses,
-            winRate,
+            ranked: rankedStats,
+            flex: flexStats,
           });
         }
       } catch (error) {
@@ -83,8 +125,11 @@ export const SummonerOverview: React.FC<SummonerOverviewProps> = ({
     };
   }, [summoner]);
 
-  const tierLabel = summonerStats
-    ? `${summonerStats.tier} ${summonerStats.rank}`
+  const rankedTierLabel = summonerStats?.ranked
+    ? `${summonerStats.ranked.tier} ${summonerStats.ranked.rank}`
+    : "";
+  const flexTierLabel = summonerStats?.flex
+    ? `${summonerStats.flex.tier} ${summonerStats.flex.rank}`
     : "";
 
   return (
@@ -92,7 +137,7 @@ export const SummonerOverview: React.FC<SummonerOverviewProps> = ({
       <Card
         style={{ width: 300, height: "100%" }}
         cover={
-          <Tooltip title={`${summoner.championImageId}`}>
+          <Tooltip title={summoner.championImageId}>
             <div style={{ position: "relative" }}>
               <img
                 alt="Champion Splash"
@@ -120,7 +165,7 @@ export const SummonerOverview: React.FC<SummonerOverviewProps> = ({
           </Tooltip>
         }
         title={
-          <Tooltip title={`${summoner.riotId}`}>
+          <Tooltip title={summoner.riotId}>
             <Typography.Title level={4} style={{ margin: 0 }}>
               {summoner.riotId.split("#")[0]}
               <span
@@ -133,55 +178,109 @@ export const SummonerOverview: React.FC<SummonerOverviewProps> = ({
         }
       >
         <Spin spinning={isLoading}>
-          <Meta
-            avatar={
-              <Tooltip title={`${tierLabel}`}>
-                <Avatar
-                  size={80}
-                  src={`/images/ranks/RANK=${summonerStats?.tier}.png`}
-                />
-              </Tooltip>
-            }
-            title={
-              <Tooltip title={`${tierLabel}`}>
-                <span
-                  style={{
-                    color: "gray",
-                    fontStyle: "italic",
-                    fontSize: 14,
-                  }}
-                >
-                  {"Ranked Solo/Duo"}
-                </span>
-                <Typography.Title
-                  level={4}
-                  style={{ margin: 0, display: "flex" }}
-                >
-                  {tierLabel}
-                </Typography.Title>
-              </Tooltip>
-            }
-            description={
-              summonerStats ? (
+          {/* Ranked Solo/Duo Meta */}
+          {summonerStats?.ranked && (
+            <Meta
+              avatar={
+                <Tooltip title={rankedTierLabel}>
+                  <Avatar
+                    size={80}
+                    src={`/images/ranks/RANK=${summonerStats.ranked.tier}.png`}
+                  />
+                </Tooltip>
+              }
+              title={
+                <Tooltip title={rankedTierLabel}>
+                  <>
+                    <span
+                      style={{
+                        color: "gray",
+                        fontStyle: "italic",
+                        fontSize: 14,
+                      }}
+                    >
+                      Ranked Solo/Duo
+                    </span>
+                    <Typography.Title
+                      level={4}
+                      style={{ margin: 0, display: "flex" }}
+                    >
+                      {rankedTierLabel}
+                    </Typography.Title>
+                  </>
+                </Tooltip>
+              }
+              description={
                 <div className="flex justify-between mt-2">
                   <SummonerStatBlock
                     label="Wins"
-                    value={summonerStats.wins.toString()}
+                    value={summonerStats.ranked.wins.toString()}
                   />
                   <SummonerStatBlock
                     label="Losses"
-                    value={summonerStats.losses.toString()}
+                    value={summonerStats.ranked.losses.toString()}
                   />
                   <SummonerStatBlock
                     label="Win Rate"
-                    value={summonerStats.winRate}
+                    value={summonerStats.ranked.winRate}
                   />
                 </div>
-              ) : (
-                ""
-              )
-            }
-          />
+              }
+            />
+          )}
+
+          {/* Flex Meta (render only if data is present) */}
+          {summonerStats?.flex && (
+            <div className="mt-4">
+              <Meta
+                avatar={
+                  <Tooltip title={flexTierLabel}>
+                    <Avatar
+                      size={80}
+                      src={`/images/ranks/RANK=${summonerStats.flex.tier}.png`}
+                    />
+                  </Tooltip>
+                }
+                title={
+                  <Tooltip title={flexTierLabel}>
+                    <>
+                      <span
+                        style={{
+                          color: "gray",
+                          fontStyle: "italic",
+                          fontSize: 14,
+                        }}
+                      >
+                        Ranked Flex
+                      </span>
+                      <Typography.Title
+                        level={4}
+                        style={{ margin: 0, display: "flex" }}
+                      >
+                        {flexTierLabel}
+                      </Typography.Title>
+                    </>
+                  </Tooltip>
+                }
+                description={
+                  <div className="flex justify-between mt-2">
+                    <SummonerStatBlock
+                      label="Wins"
+                      value={summonerStats.flex.wins.toString()}
+                    />
+                    <SummonerStatBlock
+                      label="Losses"
+                      value={summonerStats.flex.losses.toString()}
+                    />
+                    <SummonerStatBlock
+                      label="Win Rate"
+                      value={summonerStats.flex.winRate}
+                    />
+                  </div>
+                }
+              />
+            </div>
+          )}
         </Spin>
       </Card>
     </div>
