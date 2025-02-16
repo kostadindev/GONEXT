@@ -7,8 +7,6 @@ import { useParams } from "react-router-dom";
 import { getSummoner } from "../../libs/apis/league-api";
 
 import { Card, Typography, Spin, Tooltip } from "antd";
-import Meta from "antd/es/card/Meta";
-import { getSummonerStats } from "../../libs/apis/league-api";
 
 interface PlayerViewProps {
   summoners?: Summoner[];
@@ -100,14 +98,18 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
         {player && (
           <SummonerCard summoner={player} isLoading={false}></SummonerCard>
         )}
-        <div className="h-[450px]">
+        <div className="h-[470px]">
           {player && <MatchHistory summoner={player} />}
         </div>
       </div>
       <div>
         {player && <SummonerOverview summoner={player} />}
-        <div className="flex-grow h-[450px]">
-          <ChatComponent game={game || null} height={"550px"} />
+        <div className="flex-grow h-[450px] max-w-[770px]">
+          <ChatComponent
+            game={game || null}
+            height={"600px"}
+            showAvatar={false}
+          />
         </div>
       </div>
     </div>

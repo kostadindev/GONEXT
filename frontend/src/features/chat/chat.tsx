@@ -20,19 +20,20 @@ interface Message {
   role: "user" | "system";
 }
 
-const ChatComponent: React.FC<{ game: Game | null; height: string }> = ({
-  game,
-  height,
-}) => {
+const ChatComponent: React.FC<{
+  game: Game | null;
+  height: string;
+  showAvatar?: boolean;
+}> = ({ game, height, showAvatar = true }) => {
   const { user } = useUser();
-  const { token } = useToken(); // Access Ant Design theme tokens
-  const primaryColor = token.colorPrimary; // Get the primary color from the theme
+  const { token } = useToken();
+  const primaryColor = token.colorPrimary;
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState<string>("");
   const [loadingSession, setLoadingSession] = useState<boolean>(true);
   const [isSending, setIsSending] = useState<boolean>(false);
-  const [isUserScrolling, setIsUserScrolling] = useState<boolean>(false); // Track user scrolling
+  const [isUserScrolling, setIsUserScrolling] = useState<boolean>(false);
   const [sessionId, setSessionId] = useState<string | null>(null);
 
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
@@ -48,8 +49,6 @@ const ChatComponent: React.FC<{ game: Game | null; height: string }> = ({
     if (messageContainerRef.current) {
       const { scrollTop, scrollHeight, clientHeight } =
         messageContainerRef.current;
-
-      // Detect if user is near the bottom (threshold: 50px)
       const isAtBottom = scrollTop + clientHeight >= scrollHeight - 50;
       setIsUserScrolling(!isAtBottom);
     }
@@ -78,7 +77,6 @@ const ChatComponent: React.FC<{ game: Game | null; height: string }> = ({
     };
 
     initializeSession();
-
     return () => {
       isMounted = false;
     };
@@ -163,8 +161,6 @@ const ChatComponent: React.FC<{ game: Game | null; height: string }> = ({
   };
 
   useEffect(() => {
-    // Automatically scroll to the bottom when new messages arrive,
-    // unless the user is actively scrolling
     if (!isUserScrolling) {
       scrollToBottom();
     }
@@ -177,32 +173,37 @@ const ChatComponent: React.FC<{ game: Game | null; height: string }> = ({
         style={{ height: height }}
       >
         {messages.length === 0 && !loadingSession && (
-          <DefaultPrompts handleSendMessage={handleSendMessage} />
+          <DefaultPrompts handleSendMessage={() => {}} />
         )}
         <div
           className="flex-1 overflow-auto p-4 h-full"
           ref={messageContainerRef}
-          onScroll={handleScroll} // Attach scroll listener
+          onScroll={handleScroll}
         >
           {messages.map((msg, index) => (
             <div key={index} className="my-2 flex pb-4">
-              {msg.role === "system" ? (
-                <Avatar style={{ marginRight: 8 }} icon={<OpenAIFilled />} />
-              ) : (
-                <Avatar style={{ marginRight: 8 }} src={user?.picture} />
-              )}
+              {showAvatar &&
+                (msg.role === "system" ? (
+                  <Avatar style={{ marginRight: 8 }} icon={<OpenAIFilled />} />
+                ) : (
+                  <Avatar style={{ marginRight: 8 }} src={user?.picture} />
+                ))}
               {msg.role === "user" ? (
                 <div
-                  className="inline-block p-2 px-4 rounded-lg break-words text-white max-w-[calc(100%-40px)]"
+                  className="inline-block p-2 px-4 rounded-lg break-words text-white"
                   style={{
                     backgroundColor: primaryColor,
+                    maxWidth: showAvatar ? "calc(100% - 40px)" : "100%",
                   }}
                 >
                   {msg.content}
                 </div>
               ) : (
                 <Card
-                  className={`inline-block rounded-lg  text-black w-full break-words max-w-[calc(100%-40px)]`}
+                  className="inline-block rounded-lg text-black w-full break-words"
+                  style={{
+                    maxWidth: showAvatar ? "calc(100% - 40px)" : "100%",
+                  }}
                 >
                   <MarkdownRenderer content={msg.content} />
                 </Card>
