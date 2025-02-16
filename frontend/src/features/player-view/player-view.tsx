@@ -4,13 +4,68 @@ import { MatchHistory } from "../match-history/match-history";
 import { Game, Summoner } from "../../libs/league/league-types";
 import ChatComponent from "../chat/chat";
 import { useParams } from "react-router-dom";
-import { getActiveGame, getSummoner } from "../../libs/apis/league-api";
+import { getSummoner } from "../../libs/apis/league-api";
+
+import { Card, Typography, Spin, Tooltip } from "antd";
+import Meta from "antd/es/card/Meta";
+import { getSummonerStats } from "../../libs/apis/league-api";
 
 interface PlayerViewProps {
   summoners?: Summoner[];
   playerPuuid?: string;
   game?: Game;
 }
+
+interface SummonerCardProps {
+  summoner: Summoner;
+  isLoading: boolean;
+}
+
+const CARD_WIDTH = 300;
+
+const SummonerCard: React.FC<SummonerCardProps> = ({ summoner, isLoading }) => (
+  <Card
+    style={{ width: CARD_WIDTH }}
+    hoverable
+    cover={
+      <Tooltip title={summoner.championImageId}>
+        <div style={{ position: "relative" }}>
+          <img
+            alt="Champion Splash"
+            src={`https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${summoner.championImageId}_0.jpg`}
+            style={{ width: "100%", display: "block" }}
+          />
+          {isLoading && (
+            <div
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                background: "rgba(255, 255, 255, 0.5)",
+              }}
+            >
+              <Spin />
+            </div>
+          )}
+        </div>
+      </Tooltip>
+    }
+  >
+    <Tooltip title={summoner.riotId}>
+      <Typography.Title level={4} style={{ margin: 0 }}>
+        {summoner.riotId.split("#")[0]}
+        <span style={{ color: "gray", fontStyle: "italic", marginLeft: 4 }}>
+          #{summoner.riotId.split("#")[1]}
+        </span>
+      </Typography.Title>
+    </Tooltip>
+  </Card>
+);
 
 export const PlayerView: React.FC<PlayerViewProps> = ({
   playerPuuid,
@@ -19,6 +74,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
   const { tagLine, gameName } = useParams();
   const [player, setPlayer] = useState<Summoner | undefined>(undefined);
   const height = game ? "65vh" : "calc(100vh - 250px)";
+
   useEffect(() => {
     let isMounted = true;
 
@@ -37,17 +93,23 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
       isMounted = false; // Clean up to prevent setting state after unmount.
     };
   }, [game, playerPuuid, gameName, tagLine]);
+
   return (
-    <>
-      {player && <SummonerOverview summoner={player} />}
-      {/* <div className={`flex w-full h-[${height}`}>
-        <div className="flex-shrink-0 min-w-[308px]">
+    <div className="flex w-full space-x-4">
+      <div className="flex-col">
+        {player && (
+          <SummonerCard summoner={player} isLoading={false}></SummonerCard>
+        )}
+        <div className="h-[450px]">
           {player && <MatchHistory summoner={player} />}
         </div>
-        <div className="flex-grow">
-          <ChatComponent game={game || null} height={height} />
+      </div>
+      <div>
+        {player && <SummonerOverview summoner={player} />}
+        <div className="flex-grow h-[450px]">
+          <ChatComponent game={game || null} height={"550px"} />
         </div>
-      </div> */}
-    </>
+      </div>
+    </div>
   );
 };
