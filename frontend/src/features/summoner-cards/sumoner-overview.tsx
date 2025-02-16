@@ -20,7 +20,7 @@ const SummonerStatBlock: React.FC<{ label: string; value: string }> = ({
   label,
   value,
 }) => (
-  <Tooltip title={label}>
+  <Tooltip title={`${label}: ${value}`}>
     <div className="flex flex-col items-center justify-center">
       <Typography.Text strong style={{ fontSize: 16 }}>
         {value}
@@ -52,13 +52,11 @@ export const SummonerOverview: React.FC<SummonerOverviewProps> = ({
         const wins = stats?.ranked?.wins || 0;
         const losses = stats?.ranked?.losses || 0;
         const winRateCalc = wins + losses > 0 ? wins / (wins + losses) : 0;
-        const winRate = winRateCalc
-          ? (winRateCalc * 100).toFixed(2) + "%"
-          : "N/A";
+        const winRate = winRateCalc ? (winRateCalc * 100).toFixed(2) + "%" : "";
         const tierRaw = stats?.ranked?.tier;
         const formattedTier = tierRaw
           ? tierRaw.charAt(0).toUpperCase() + tierRaw.slice(1).toLowerCase()
-          : "N/A";
+          : "";
 
         if (isMounted) {
           setSummonerStats({
@@ -94,32 +92,62 @@ export const SummonerOverview: React.FC<SummonerOverviewProps> = ({
       <Card
         style={{ width: 300, height: "100%" }}
         cover={
-          <img
-            alt="Champion Splash"
-            src={`https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${summoner.championImageId}_0.jpg`}
-          />
+          <Tooltip title={`${summoner.championImageId}`}>
+            <div style={{ position: "relative" }}>
+              <img
+                alt="Champion Splash"
+                src={`https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${summoner.championImageId}_0.jpg`}
+                style={{ width: "100%", display: "block" }}
+              />
+              {isLoading && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    background: "rgba(255, 255, 255, 0.5)",
+                  }}
+                >
+                  <Spin />
+                </div>
+              )}
+            </div>
+          </Tooltip>
         }
         title={
-          <Typography.Title level={4} style={{ margin: 0 }}>
-            {summoner.riotId.split("#")[0]}
-            <span style={{ color: "gray", fontStyle: "italic", marginLeft: 4 }}>
-              #{summoner.riotId.split("#")[1]}
-            </span>
-          </Typography.Title>
+          <Tooltip title={`${summoner.riotId}`}>
+            <Typography.Title level={4} style={{ margin: 0 }}>
+              {summoner.riotId.split("#")[0]}
+              <span
+                style={{ color: "gray", fontStyle: "italic", marginLeft: 4 }}
+              >
+                #{summoner.riotId.split("#")[1]}
+              </span>
+            </Typography.Title>
+          </Tooltip>
         }
       >
         <Spin spinning={isLoading}>
           <Meta
             avatar={
-              <Avatar
-                size={80}
-                src={`/images/ranks/RANK=${summonerStats?.tier}.png`}
-              />
+              <Tooltip title={`${tierLabel}`}>
+                <Avatar
+                  size={80}
+                  src={`/images/ranks/RANK=${summonerStats?.tier}.png`}
+                />
+              </Tooltip>
             }
             title={
-              <Typography.Title level={4} style={{ margin: 0 }}>
-                {tierLabel}
-              </Typography.Title>
+              <Tooltip title={`${tierLabel}`}>
+                <Typography.Title level={4} style={{ margin: 0 }}>
+                  {tierLabel}
+                </Typography.Title>
+              </Tooltip>
             }
             description={
               summonerStats ? (
@@ -138,7 +166,7 @@ export const SummonerOverview: React.FC<SummonerOverviewProps> = ({
                   />
                 </div>
               ) : (
-                "Fetching stats..."
+                ""
               )
             }
           />
