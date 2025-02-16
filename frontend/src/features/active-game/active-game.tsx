@@ -31,7 +31,7 @@ export const ActiveGame = () => {
       style={{
         margin: "0 16px",
       }}
-      className="w-[90%]" // turn on when adding ads
+      className="w-[80%]" // turn on when adding ads
     >
       <div
         style={{
