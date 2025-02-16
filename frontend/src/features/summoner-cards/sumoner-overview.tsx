@@ -21,6 +21,8 @@ interface SummonerOverviewProps {
   summoner: Summoner;
 }
 
+const CARD_WIDTH = 300;
+
 const SummonerStatBlock: React.FC<{ label: string; value: string }> = ({
   label,
   value,
@@ -135,7 +137,7 @@ export const SummonerOverview: React.FC<SummonerOverviewProps> = ({
   return (
     <div className="flex flex-col gap-2">
       <Card
-        style={{ width: 300 }}
+        style={{ width: CARD_WIDTH }}
         cover={
           <Tooltip title={summoner.championImageId}>
             <div style={{ position: "relative" }}>
@@ -176,7 +178,7 @@ export const SummonerOverview: React.FC<SummonerOverviewProps> = ({
       </Card>
 
       {summonerStats?.ranked && (
-        <Card style={{ width: 300 }}>
+        <Card style={{ width: CARD_WIDTH }}>
           <Meta
             avatar={
               <Tooltip title={rankedTierLabel}>
@@ -228,7 +230,7 @@ export const SummonerOverview: React.FC<SummonerOverviewProps> = ({
       )}
 
       {summonerStats?.flex && (
-        <Card style={{ width: 300 }}>
+        <Card style={{ width: CARD_WIDTH }}>
           <Meta
             avatar={
               <Tooltip title={flexTierLabel}>
