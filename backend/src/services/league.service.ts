@@ -115,6 +115,12 @@ class LeagueService {
   }
 
   async getSummonerStats(puuid: string): Promise<{ ranked: any; flex: any } | undefined> {
+    const cacheKey = `summonerStats:${puuid}`;
+    const cachedStats = await redis.get(cacheKey);
+    if (cachedStats) {
+      return JSON.parse(cachedStats);
+    }
+
     const summonerId = await this.getSummonerIdByPuuid(puuid);
     if (!summonerId) {
       console.error('Summoner ID could not be retrieved.');
@@ -132,7 +138,10 @@ class LeagueService {
       }
     });
 
-    return { ranked, flex };
+    const result = { ranked, flex };
+    // Cache the result with a TTL of 5 minutes (300,000 milliseconds)
+    await redis.set(cacheKey, JSON.stringify(result), { PX: 300000 });
+    return result;
   }
 
   async getMatchesIds(puuid: string, count: number = 7): Promise<string[] | null> {
