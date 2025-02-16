@@ -18,11 +18,11 @@ const getItem = (label: string, key: string, icon?: JSX.Element) => ({
 });
 
 const items = [
-  getItem("Home", "0", <HomeOutlined />),
+  // getItem("Home", "0", <HomeOutlined />),
   getItem("In Game Analytics", "1", <DesktopOutlined />),
-  getItem("Drafting Tool", "2", <TeamOutlined />),
-  getItem("Player Analytics", "3", <UserOutlined />),
-  getItem("Settings", "5", <SettingOutlined />),
+  // getItem("Drafting Tool", "2", <TeamOutlined />),
+  // getItem("Player Analytics", "3", <UserOutlined />),
+  // getItem("Settings", "5", <SettingOutlined />),
   getItem("About Us", "4", <ContactsOutlined />),
 ];
 
