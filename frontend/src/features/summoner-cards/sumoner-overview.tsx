@@ -1,68 +1,79 @@
 import React, { useEffect, useState } from "react";
-import { Summoner } from "../../libs/league/league-types";
-import {
-  getChampionIconSrc,
-  getSummonerSpellIconSrc,
-  getWinRateString,
-} from "../../libs/league/league-utils";
+import { Card, Avatar, Typography, Spin, Tooltip } from "antd";
+import Meta from "antd/es/card/Meta";
 import { getSummonerStats } from "../../libs/apis/league-api";
-import { Card, Avatar, Badge, Typography, theme, Spin, Tooltip } from "antd";
+import { Summoner } from "../../libs/league/league-types";
+
+interface SummonerStats {
+  tier: string;
+  rank: string;
+  wins: number;
+  losses: number;
+  winRate: string;
+}
 
 interface SummonerOverviewProps {
   summoner: Summoner;
 }
 
-const SummonerStatBlock = ({
+const SummonerStatBlock: React.FC<{ label: string; value: string }> = ({
   label,
   value,
-}: {
-  label: string;
-  value: string;
-  rank?: string;
-}) => {
-  return (
-    <>
-      {label && value ? (
-        <div className="flex flex-col items-center justify-center flex-1">
-          <Tooltip title={label}>
-            <span className="text-sm font-medium text-center">{label}</span>
-          </Tooltip>
-          <Tooltip title={value}>
-            <span className="text-sm text-center">{value}</span>
-          </Tooltip>
-        </div>
-      ) : (
-        <></>
-      )}
-    </>
-  );
-};
+}) => (
+  <Tooltip title={label}>
+    <div className="flex flex-col items-center justify-center">
+      <Typography.Text strong style={{ fontSize: 16 }}>
+        {value}
+      </Typography.Text>
+      <Typography.Text type="secondary" style={{ fontSize: 12 }}>
+        {label}
+      </Typography.Text>
+    </div>
+  </Tooltip>
+);
 
 export const SummonerOverview: React.FC<SummonerOverviewProps> = ({
   summoner,
 }) => {
-  const [summonerStats, setSummonerStats] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const {
-    token: { colorBgContainer, borderRadiusLG },
-  } = theme.useToken();
+  const [summonerStats, setSummonerStats] = useState<SummonerStats | null>(
+    null
+  );
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    let isMounted = true; // Flag to track mounting status
-    setIsLoading(true); // Set loading to true at the start of the effect
+    let isMounted = true;
+    setIsLoading(true);
 
     const fetchStats = async () => {
       try {
-        setIsLoading(true);
         const stats = await getSummonerStats("NA", summoner.puuid);
+        console.log("stats: ", stats, summoner);
+
+        const wins = stats?.ranked?.wins || 0;
+        const losses = stats?.ranked?.losses || 0;
+        const winRateCalc = wins + losses > 0 ? wins / (wins + losses) : 0;
+        const winRate = winRateCalc
+          ? (winRateCalc * 100).toFixed(2) + "%"
+          : "N/A";
+        const tierRaw = stats?.ranked?.tier;
+        const formattedTier = tierRaw
+          ? tierRaw.charAt(0).toUpperCase() + tierRaw.slice(1).toLowerCase()
+          : "N/A";
+
         if (isMounted) {
-          setSummonerStats(stats);
-          setIsLoading(false); // Set loading to false when data is fetched
+          setSummonerStats({
+            tier: formattedTier,
+            rank: stats?.ranked?.rank,
+            wins,
+            losses,
+            winRate,
+          });
         }
       } catch (error) {
+        console.error("Failed to fetch summoner stats:", error);
+      } finally {
         if (isMounted) {
-          console.error("Failed to fetch summoner stats:", error);
-          setIsLoading(false); // Ensure loading is false on error
+          setIsLoading(false);
         }
       }
     };
@@ -70,118 +81,67 @@ export const SummonerOverview: React.FC<SummonerOverviewProps> = ({
     fetchStats();
 
     return () => {
-      isMounted = false; // Set flag to false on unmount
+      isMounted = false;
     };
   }, [summoner]);
 
+  const tierLabel = summonerStats
+    ? `${summonerStats.tier} ${summonerStats.rank}`
+    : "";
+
   return (
-    <div className="flex gap-5 h-[90px]">
+    <div className="flex gap-5">
       <Card
-        style={{
-          width: "15vw",
-          backgroundColor: colorBgContainer,
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <div className="flex gap-1">
-          <Badge>
-            <Tooltip title={summoner?.championName || "Champion"}>
-              <Avatar
-                src={getChampionIconSrc(summoner?.championImageId)}
-                size={50}
-                shape="square"
-              />
-            </Tooltip>
-          </Badge>
-          <div className="flex gap-1">
-            <div className="flex flex-col justify-center gap-1">
-              <Tooltip
-                title={summoner?.summonerSpell1Name || "Summoner Spell 1"}
-              >
-                <Avatar
-                  src={getSummonerSpellIconSrc(summoner?.summonerSpell1Name)}
-                  alt={summoner?.summonerSpell1Name}
-                  shape="square"
-                  size={20}
-                />
-              </Tooltip>
-              <Tooltip
-                title={summoner?.summonerSpell2Name || "Summoner Spell 2"}
-              >
-                <Avatar
-                  src={getSummonerSpellIconSrc(summoner?.summonerSpell2Name)}
-                  alt={summoner?.summonerSpell2Name}
-                  shape="square"
-                  size={20}
-                />
-              </Tooltip>
-            </div>
-            <div className="flex flex-col justify-center gap-1">
-              <Tooltip title={summoner?.summonerName || "Summoner Name"}>
-                <Typography.Title level={5} style={{ margin: 0 }}>
-                  {summoner?.summonerName}
-                </Typography.Title>
-              </Tooltip>
-              <Tooltip title={summoner?.championName || "Champion Name"}>
-                <Typography.Text>{summoner?.championName}</Typography.Text>
-              </Tooltip>
-            </div>
-          </div>
-        </div>
-      </Card>
-      <Card
-        className="flex-1"
-        style={{
-          backgroundColor: colorBgContainer,
-          alignItems: "center",
-          justifyContent: "center",
-        }}
+        style={{ width: 300, height: "100%" }}
+        cover={
+          <img
+            alt="Champion Splash"
+            src={`https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${summoner.championImageId}_0.jpg`}
+          />
+        }
+        title={
+          <Typography.Title level={4} style={{ margin: 0 }}>
+            {summoner.riotId.split("#")[0]}
+            <span style={{ color: "gray", fontStyle: "italic", marginLeft: 4 }}>
+              #{summoner.riotId.split("#")[1]}
+            </span>
+          </Typography.Title>
+        }
       >
         <Spin spinning={isLoading}>
-          {summonerStats && (
-            <div className="flex flex-row justify-center w-full">
-              {summonerStats?.ranked && (
-                <Tooltip title="Ranked Stats">
+          <Meta
+            avatar={
+              <Avatar
+                size={80}
+                src={`/images/ranks/RANK=${summonerStats?.tier}.png`}
+              />
+            }
+            title={
+              <Typography.Title level={4} style={{ margin: 0 }}>
+                {tierLabel}
+              </Typography.Title>
+            }
+            description={
+              summonerStats ? (
+                <div className="flex justify-between mt-2">
                   <SummonerStatBlock
-                    label={"Ranked"}
-                    value={`${summonerStats?.ranked?.tier} ${summonerStats?.ranked?.rank} (${summonerStats?.ranked?.leaguePoints}LP)`}
-                    rank={summonerStats?.ranked?.tier}
-                  ></SummonerStatBlock>
-                </Tooltip>
-              )}
-              {summonerStats?.ranked && (
-                <Tooltip title="Ranked Win Rate">
+                    label="Wins"
+                    value={summonerStats.wins.toString()}
+                  />
                   <SummonerStatBlock
-                    label={"Ranked Win Rate"}
-                    value={getWinRateString(
-                      summonerStats?.ranked?.wins,
-                      summonerStats?.ranked?.losses
-                    )}
-                  ></SummonerStatBlock>
-                </Tooltip>
-              )}
-              {summonerStats?.flex && (
-                <Tooltip title="Flex Stats">
+                    label="Losses"
+                    value={summonerStats.losses.toString()}
+                  />
                   <SummonerStatBlock
-                    label={"Flex"}
-                    value={`${summonerStats?.flex?.tier} ${summonerStats?.flex?.rank} (${summonerStats?.flex?.leaguePoints}LP)`}
-                  ></SummonerStatBlock>
-                </Tooltip>
-              )}
-              {summonerStats?.flex && (
-                <Tooltip title="Flex Win Rate">
-                  <SummonerStatBlock
-                    label={"Flex Win Rate"}
-                    value={getWinRateString(
-                      summonerStats?.flex?.wins,
-                      summonerStats?.flex?.losses
-                    )}
-                  ></SummonerStatBlock>
-                </Tooltip>
-              )}
-            </div>
-          )}
+                    label="Win Rate"
+                    value={summonerStats.winRate}
+                  />
+                </div>
+              ) : (
+                "Fetching stats..."
+              )
+            }
+          />
         </Spin>
       </Card>
     </div>
