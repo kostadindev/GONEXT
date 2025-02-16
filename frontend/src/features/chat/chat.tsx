@@ -173,7 +173,7 @@ const ChatComponent: React.FC<{
         style={{ height: height }}
       >
         {messages.length === 0 && !loadingSession && (
-          <DefaultPrompts handleSendMessage={() => {}} />
+          <DefaultPrompts handleSendMessage={handleSendMessage} />
         )}
         <div
           className="flex-1 overflow-auto p-4 h-full"
