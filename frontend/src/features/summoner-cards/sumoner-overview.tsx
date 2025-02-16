@@ -21,7 +21,7 @@ interface SummonerOverviewProps {
   summoner: Summoner;
 }
 
-const CARD_WIDTH = 300;
+const CARD_WIDTH = 380;
 
 const SummonerStatBlock: React.FC<{ label: string; value: string }> = ({
   label,
@@ -38,6 +38,63 @@ const SummonerStatBlock: React.FC<{ label: string; value: string }> = ({
     </div>
   </Tooltip>
 );
+
+const RankCard: React.FC<{ title: string; stats: GameModeStats }> = ({
+  title,
+  stats,
+}) => {
+  const tierLabel = `${stats.tier} ${stats.rank}`;
+  return (
+    <Card
+      style={{ width: CARD_WIDTH }}
+      hoverable
+      styles={{
+        body: {
+          padding: "16px",
+        },
+      }}
+    >
+      <Meta
+        avatar={
+          <Tooltip title={tierLabel}>
+            <Avatar size={80} src={`/images/ranks/RANK=${stats.tier}.png`} />
+          </Tooltip>
+        }
+        title={
+          <Tooltip title={tierLabel}>
+            <Typography.Title
+              level={4}
+              style={{ margin: 0, display: "flex", width: "100%" }}
+              className="w-100"
+            >
+              <div className="flex justify-between w-[100%]">
+                {tierLabel}
+                <span
+                  style={{
+                    color: "gray",
+                    fontStyle: "italic",
+                    fontSize: 14,
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  {title}
+                </span>
+              </div>
+            </Typography.Title>
+          </Tooltip>
+        }
+        description={
+          <div className="flex justify-between mt-2">
+            <SummonerStatBlock label="Wins" value={stats.wins.toString()} />
+            <SummonerStatBlock label="Losses" value={stats.losses.toString()} />
+            <SummonerStatBlock label="Win Rate" value={stats.winRate} />
+          </div>
+        }
+      />
+    </Card>
+  );
+};
 
 export const SummonerOverview: React.FC<SummonerOverviewProps> = ({
   summoner,
@@ -56,59 +113,27 @@ export const SummonerOverview: React.FC<SummonerOverviewProps> = ({
         const stats = await getSummonerStats("NA", summoner.puuid);
         console.log("stats: ", stats, summoner);
 
-        // Process Ranked Solo/Duo stats
-        const rankedWins = stats?.ranked?.wins || 0;
-        const rankedLosses = stats?.ranked?.losses || 0;
-        const rankedWinRateCalc =
-          rankedWins + rankedLosses > 0
-            ? rankedWins / (rankedWins + rankedLosses)
-            : 0;
-        const rankedWinRate = rankedWinRateCalc
-          ? (rankedWinRateCalc * 100).toFixed(2) + "%"
-          : "";
-        const rankedTierRaw = stats?.ranked?.tier;
-        const rankedFormattedTier = rankedTierRaw
-          ? rankedTierRaw.charAt(0).toUpperCase() +
-            rankedTierRaw.slice(1).toLowerCase()
-          : "";
-        const rankedStats: GameModeStats | undefined = stats?.ranked
-          ? {
-              tier: rankedFormattedTier,
-              rank: stats.ranked.rank,
-              wins: rankedWins,
-              losses: rankedLosses,
-              winRate: rankedWinRate,
-            }
-          : undefined;
-
-        // Process Flex stats if present
-        let flexStats: GameModeStats | undefined;
-        if (stats?.flex) {
-          const flexWins = stats.flex.wins || 0;
-          const flexLosses = stats.flex.losses || 0;
-          const flexWinRateCalc =
-            flexWins + flexLosses > 0 ? flexWins / (flexWins + flexLosses) : 0;
-          const flexWinRate = flexWinRateCalc
-            ? (flexWinRateCalc * 100).toFixed(2) + "%"
+        const processStats = (gameMode: GameModeStats | undefined) => {
+          if (!gameMode) return undefined;
+          const { wins = 0, losses = 0, tier, rank } = gameMode;
+          const winRateCalc =
+            wins + losses > 0 ? (wins / (wins + losses)) * 100 : 0;
+          const formattedTier = tier
+            ? tier.charAt(0).toUpperCase() + tier.slice(1).toLowerCase()
             : "";
-          const flexTierRaw = stats.flex.tier;
-          const flexFormattedTier = flexTierRaw
-            ? flexTierRaw.charAt(0).toUpperCase() +
-              flexTierRaw.slice(1).toLowerCase()
-            : "";
-          flexStats = {
-            tier: flexFormattedTier,
-            rank: stats.flex.rank,
-            wins: flexWins,
-            losses: flexLosses,
-            winRate: flexWinRate,
+          return {
+            tier: formattedTier,
+            rank,
+            wins,
+            losses,
+            winRate: winRateCalc ? winRateCalc.toFixed(2) + "%" : "",
           };
-        }
+        };
 
         if (isMounted) {
           setSummonerStats({
-            ranked: rankedStats,
-            flex: flexStats,
+            ranked: processStats(stats?.ranked),
+            flex: processStats(stats?.flex),
           });
         }
       } catch (error) {
@@ -127,158 +152,19 @@ export const SummonerOverview: React.FC<SummonerOverviewProps> = ({
     };
   }, [summoner]);
 
-  const rankedTierLabel = summonerStats?.ranked
-    ? `${summonerStats.ranked.tier} ${summonerStats.ranked.rank}`
-    : "";
-  const flexTierLabel = summonerStats?.flex
-    ? `${summonerStats.flex.tier} ${summonerStats.flex.rank}`
-    : "";
-
   return (
-    <div className="flex flex-col gap-2">
-      <Card
-        style={{ width: CARD_WIDTH }}
-        cover={
-          <Tooltip title={summoner.championImageId}>
-            <div style={{ position: "relative" }}>
-              <img
-                alt="Champion Splash"
-                src={`https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${summoner.championImageId}_0.jpg`}
-                style={{ width: "100%", display: "block" }}
-              />
-              {isLoading && (
-                <div
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    width: "100%",
-                    height: "100%",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    background: "rgba(255, 255, 255, 0.5)",
-                  }}
-                >
-                  <Spin />
-                </div>
-              )}
-            </div>
-          </Tooltip>
-        }
-      >
-        <Tooltip title={summoner.riotId}>
-          <Typography.Title level={4} style={{ margin: 0 }}>
-            {summoner.riotId.split("#")[0]}
-            <span style={{ color: "gray", fontStyle: "italic", marginLeft: 4 }}>
-              #{summoner.riotId.split("#")[1]}
-            </span>
-          </Typography.Title>
-        </Tooltip>
-      </Card>
-
-      {summonerStats?.ranked && (
-        <Card style={{ width: CARD_WIDTH }}>
-          <Meta
-            avatar={
-              <Tooltip title={rankedTierLabel}>
-                <Avatar
-                  size={80}
-                  src={`/images/ranks/RANK=${summonerStats.ranked.tier}.png`}
-                />
-              </Tooltip>
-            }
-            title={
-              <Tooltip title={rankedTierLabel}>
-                <>
-                  <span
-                    style={{
-                      color: "gray",
-                      fontStyle: "italic",
-                      fontSize: 14,
-                    }}
-                  >
-                    Ranked Solo/Duo
-                  </span>
-                  <Typography.Title
-                    level={4}
-                    style={{ margin: 0, display: "flex" }}
-                  >
-                    {rankedTierLabel}
-                  </Typography.Title>
-                </>
-              </Tooltip>
-            }
-            description={
-              <div className="flex justify-between mt-2">
-                <SummonerStatBlock
-                  label="Wins"
-                  value={summonerStats.ranked.wins.toString()}
-                />
-                <SummonerStatBlock
-                  label="Losses"
-                  value={summonerStats.ranked.losses.toString()}
-                />
-                <SummonerStatBlock
-                  label="Win Rate"
-                  value={summonerStats.ranked.winRate}
-                />
-              </div>
-            }
-          />
-        </Card>
-      )}
-
-      {summonerStats?.flex && (
-        <Card style={{ width: CARD_WIDTH }}>
-          <Meta
-            avatar={
-              <Tooltip title={flexTierLabel}>
-                <Avatar
-                  size={80}
-                  src={`/images/ranks/RANK=${summonerStats.flex.tier}.png`}
-                />
-              </Tooltip>
-            }
-            title={
-              <Tooltip title={flexTierLabel}>
-                <>
-                  <span
-                    style={{
-                      color: "gray",
-                      fontStyle: "italic",
-                      fontSize: 14,
-                    }}
-                  >
-                    Ranked Flex
-                  </span>
-                  <Typography.Title
-                    level={4}
-                    style={{ margin: 0, display: "flex" }}
-                  >
-                    {flexTierLabel}
-                  </Typography.Title>
-                </>
-              </Tooltip>
-            }
-            description={
-              <div className="flex justify-between mt-2">
-                <SummonerStatBlock
-                  label="Wins"
-                  value={summonerStats.flex.wins.toString()}
-                />
-                <SummonerStatBlock
-                  label="Losses"
-                  value={summonerStats.flex.losses.toString()}
-                />
-                <SummonerStatBlock
-                  label="Win Rate"
-                  value={summonerStats.flex.winRate}
-                />
-              </div>
-            }
-          />
-        </Card>
+    <div className="flex gap-2">
+      {isLoading ? (
+        <Spin size="large" />
+      ) : (
+        <>
+          {summonerStats?.ranked && (
+            <RankCard title="Ranked Solo/Duo" stats={summonerStats.ranked} />
+          )}
+          {summonerStats?.flex && (
+            <RankCard title="Ranked Flex" stats={summonerStats.flex} />
+          )}
+        </>
       )}
     </div>
   );
