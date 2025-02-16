@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Card, Avatar, Typography, Spin, Tooltip } from "antd";
+import { Card, Avatar, Typography, Tooltip, Spin } from "antd";
 import Meta from "antd/es/card/Meta";
 import { getSummonerStats } from "../../libs/apis/league-api";
 import { Summoner } from "../../libs/league/league-types";
@@ -22,6 +22,7 @@ interface SummonerOverviewProps {
 }
 
 const CARD_WIDTH = 380;
+const CARD_HEIGHT = 110; // Set the fixed height for the cards
 
 const SummonerStatBlock: React.FC<{ label: string; value: string }> = ({
   label,
@@ -46,13 +47,9 @@ const RankCard: React.FC<{ title: string; stats: GameModeStats }> = ({
   const tierLabel = `${stats.tier} ${stats.rank}`;
   return (
     <Card
-      style={{ width: CARD_WIDTH }}
+      style={{ width: CARD_WIDTH, height: CARD_HEIGHT }}
       hoverable
-      styles={{
-        body: {
-          padding: "16px",
-        },
-      }}
+      bodyStyle={{ padding: "16px" }}
     >
       <Meta
         avatar={
@@ -67,7 +64,7 @@ const RankCard: React.FC<{ title: string; stats: GameModeStats }> = ({
               style={{ margin: 0, display: "flex", width: "100%" }}
               className="w-100"
             >
-              <div className="flex justify-between w-[100%]">
+              <div className="flex justify-between w-full">
                 {tierLabel}
                 <span
                   style={{
@@ -153,9 +150,11 @@ export const SummonerOverview: React.FC<SummonerOverviewProps> = ({
   }, [summoner]);
 
   return (
-    <div className="flex gap-2">
+    <div className="flex gap-2" style={{ height: CARD_HEIGHT, width: "100%" }}>
       {isLoading ? (
-        <Spin size="large" />
+        <div className="flex w-full justify-center items-center">
+          <Spin size="large" />
+        </div>
       ) : (
         <>
           {summonerStats?.ranked && (
