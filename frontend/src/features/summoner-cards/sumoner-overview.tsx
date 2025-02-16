@@ -13,8 +13,8 @@ interface GameModeStats {
 }
 
 interface SummonerStatsData {
-  ranked?: GameModeStats;
-  flex?: GameModeStats;
+  ranked: GameModeStats;
+  flex: GameModeStats;
 }
 
 interface SummonerOverviewProps {
@@ -22,7 +22,15 @@ interface SummonerOverviewProps {
 }
 
 const CARD_WIDTH = 380;
-const CARD_HEIGHT = 110; // Set the fixed height for the cards
+const CARD_HEIGHT = 110; // Fixed height for the cards
+
+const defaultStats: GameModeStats = {
+  tier: "",
+  rank: "",
+  wins: 0,
+  losses: 0,
+  winRate: "0%",
+};
 
 const SummonerStatBlock: React.FC<{ label: string; value: string }> = ({
   label,
@@ -44,7 +52,9 @@ const RankCard: React.FC<{ title: string; stats: GameModeStats }> = ({
   title,
   stats,
 }) => {
-  const tierLabel = `${stats.tier} ${stats.rank}`;
+  // If there is no rank data, avoid adding extra space after "No Rank"
+  const tierLabel = stats.rank ? `${stats.tier} ${stats.rank}` : stats.tier;
+
   return (
     <Card
       style={{ width: CARD_WIDTH, height: CARD_HEIGHT }}
@@ -53,9 +63,11 @@ const RankCard: React.FC<{ title: string; stats: GameModeStats }> = ({
     >
       <Meta
         avatar={
-          <Tooltip title={tierLabel}>
-            <Avatar size={80} src={`/images/ranks/RANK=${stats.tier}.png`} />
-          </Tooltip>
+          stats.tier ? (
+            <Tooltip title={tierLabel}>
+              <Avatar size={80} src={`/images/ranks/RANK=${stats.tier}.png`} />
+            </Tooltip>
+          ) : null
         }
         title={
           <Tooltip title={tierLabel}>
@@ -65,7 +77,7 @@ const RankCard: React.FC<{ title: string; stats: GameModeStats }> = ({
               className="w-100"
             >
               <div className="flex justify-between w-full">
-                {tierLabel}
+                {tierLabel || ""}
                 <span
                   style={{
                     color: "gray",
@@ -110,8 +122,10 @@ export const SummonerOverview: React.FC<SummonerOverviewProps> = ({
         const stats = await getSummonerStats("NA", summoner.puuid);
         console.log("stats: ", stats, summoner);
 
-        const processStats = (gameMode: GameModeStats | undefined) => {
-          if (!gameMode) return undefined;
+        const processStats = (
+          gameMode: GameModeStats | undefined
+        ): GameModeStats => {
+          if (!gameMode) return defaultStats;
           const { wins = 0, losses = 0, tier, rank } = gameMode;
           const winRateCalc =
             wins + losses > 0 ? (wins / (wins + losses)) * 100 : 0;
@@ -123,7 +137,7 @@ export const SummonerOverview: React.FC<SummonerOverviewProps> = ({
             rank,
             wins,
             losses,
-            winRate: winRateCalc ? winRateCalc.toFixed(2) + "%" : "",
+            winRate: winRateCalc ? winRateCalc.toFixed(2) + "%" : "0%",
           };
         };
 
@@ -135,6 +149,13 @@ export const SummonerOverview: React.FC<SummonerOverviewProps> = ({
         }
       } catch (error) {
         console.error("Failed to fetch summoner stats:", error);
+        // In case of error, ensure we still display the default stats
+        if (isMounted) {
+          setSummonerStats({
+            ranked: defaultStats,
+            flex: defaultStats,
+          });
+        }
       } finally {
         if (isMounted) {
           setIsLoading(false);
@@ -157,12 +178,15 @@ export const SummonerOverview: React.FC<SummonerOverviewProps> = ({
         </div>
       ) : (
         <>
-          {summonerStats?.ranked && (
-            <RankCard title="Ranked Solo/Duo" stats={summonerStats.ranked} />
-          )}
-          {summonerStats?.flex && (
-            <RankCard title="Ranked Flex" stats={summonerStats.flex} />
-          )}
+          {/* Always render both cards, even if the API returns no data */}
+          <RankCard
+            title="Ranked Solo/Duo"
+            stats={summonerStats?.ranked || defaultStats}
+          />
+          <RankCard
+            title="Ranked Flex"
+            stats={summonerStats?.flex || defaultStats}
+          />
         </>
       )}
     </div>
