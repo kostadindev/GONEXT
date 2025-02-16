@@ -144,7 +144,19 @@ export const SummonerOverview: React.FC<SummonerOverviewProps> = ({
             }
             title={
               <Tooltip title={`${tierLabel}`}>
-                <Typography.Title level={4} style={{ margin: 0 }}>
+                <span
+                  style={{
+                    color: "gray",
+                    fontStyle: "italic",
+                    fontSize: 14,
+                  }}
+                >
+                  {"Ranked Solo/Duo"}
+                </span>
+                <Typography.Title
+                  level={4}
+                  style={{ margin: 0, display: "flex" }}
+                >
                   {tierLabel}
                 </Typography.Title>
               </Tooltip>
