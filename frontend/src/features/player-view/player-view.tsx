@@ -40,16 +40,14 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
   return (
     <>
       {player && <SummonerOverview summoner={player} />}
-      <div className={`flex w-full h-[${height}`}>
-        {/* MatchHistory container */}
+      {/* <div className={`flex w-full h-[${height}`}>
         <div className="flex-shrink-0 min-w-[308px]">
           {player && <MatchHistory summoner={player} />}
         </div>
-        {/* Chat container */}
         <div className="flex-grow">
           <ChatComponent game={game || null} height={height} />
         </div>
-      </div>
+      </div> */}
     </>
   );
 };

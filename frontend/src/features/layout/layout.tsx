@@ -6,7 +6,7 @@ import { Body } from "./body/body";
 function AppLayout() {
   return (
     <Layout className="min-h-screen">
-      <Sidebar />
+      {/* <Sidebar /> */}
       <Layout>
         <Header />
         <Body />
