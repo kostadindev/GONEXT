@@ -133,9 +133,9 @@ export const SummonerOverview: React.FC<SummonerOverviewProps> = ({
     : "";
 
   return (
-    <div className="flex gap-5">
+    <div className="flex flex-col gap-2">
       <Card
-        style={{ width: 300, height: "100%" }}
+        style={{ width: 300 }}
         cover={
           <Tooltip title={summoner.championImageId}>
             <div style={{ position: "relative" }}>
@@ -164,125 +164,120 @@ export const SummonerOverview: React.FC<SummonerOverviewProps> = ({
             </div>
           </Tooltip>
         }
-        title={
-          <Tooltip title={summoner.riotId}>
-            <Typography.Title level={4} style={{ margin: 0 }}>
-              {summoner.riotId.split("#")[0]}
-              <span
-                style={{ color: "gray", fontStyle: "italic", marginLeft: 4 }}
-              >
-                #{summoner.riotId.split("#")[1]}
-              </span>
-            </Typography.Title>
-          </Tooltip>
-        }
       >
-        <Spin spinning={isLoading}>
-          {/* Ranked Solo/Duo Meta */}
-          {summonerStats?.ranked && (
-            <Meta
-              avatar={
-                <Tooltip title={rankedTierLabel}>
-                  <Avatar
-                    size={80}
-                    src={`/images/ranks/RANK=${summonerStats.ranked.tier}.png`}
-                  />
-                </Tooltip>
-              }
-              title={
-                <Tooltip title={rankedTierLabel}>
-                  <>
-                    <span
-                      style={{
-                        color: "gray",
-                        fontStyle: "italic",
-                        fontSize: 14,
-                      }}
-                    >
-                      Ranked Solo/Duo
-                    </span>
-                    <Typography.Title
-                      level={4}
-                      style={{ margin: 0, display: "flex" }}
-                    >
-                      {rankedTierLabel}
-                    </Typography.Title>
-                  </>
-                </Tooltip>
-              }
-              description={
-                <div className="flex justify-between mt-2">
-                  <SummonerStatBlock
-                    label="Wins"
-                    value={summonerStats.ranked.wins.toString()}
-                  />
-                  <SummonerStatBlock
-                    label="Losses"
-                    value={summonerStats.ranked.losses.toString()}
-                  />
-                  <SummonerStatBlock
-                    label="Win Rate"
-                    value={summonerStats.ranked.winRate}
-                  />
-                </div>
-              }
-            />
-          )}
-
-          {/* Flex Meta (render only if data is present) */}
-          {summonerStats?.flex && (
-            <div className="mt-4">
-              <Meta
-                avatar={
-                  <Tooltip title={flexTierLabel}>
-                    <Avatar
-                      size={80}
-                      src={`/images/ranks/RANK=${summonerStats.flex.tier}.png`}
-                    />
-                  </Tooltip>
-                }
-                title={
-                  <Tooltip title={flexTierLabel}>
-                    <>
-                      <span
-                        style={{
-                          color: "gray",
-                          fontStyle: "italic",
-                          fontSize: 14,
-                        }}
-                      >
-                        Ranked Flex
-                      </span>
-                      <Typography.Title
-                        level={4}
-                        style={{ margin: 0, display: "flex" }}
-                      >
-                        {flexTierLabel}
-                      </Typography.Title>
-                    </>
-                  </Tooltip>
-                }
-                description={
-                  <div className="flex justify-between mt-2">
-                    <SummonerStatBlock
-                      label="Wins"
-                      value={summonerStats.flex.wins.toString()}
-                    />
-                    <SummonerStatBlock
-                      label="Losses"
-                      value={summonerStats.flex.losses.toString()}
-                    />
-                    <SummonerStatBlock
-                      label="Win Rate"
-                      value={summonerStats.flex.winRate}
-                    />
-                  </div>
-                }
-              />
-            </div>
-          )}
-        </Spin>
+        <Tooltip title={summoner.riotId}>
+          <Typography.Title level={4} style={{ margin: 0 }}>
+            {summoner.riotId.split("#")[0]}
+            <span style={{ color: "gray", fontStyle: "italic", marginLeft: 4 }}>
+              #{summoner.riotId.split("#")[1]}
+            </span>
+          </Typography.Title>
+        </Tooltip>
       </Card>
+
+      {summonerStats?.ranked && (
+        <Card style={{ width: 300 }}>
+          <Meta
+            avatar={
+              <Tooltip title={rankedTierLabel}>
+                <Avatar
+                  size={80}
+                  src={`/images/ranks/RANK=${summonerStats.ranked.tier}.png`}
+                />
+              </Tooltip>
+            }
+            title={
+              <Tooltip title={rankedTierLabel}>
+                <>
+                  <span
+                    style={{
+                      color: "gray",
+                      fontStyle: "italic",
+                      fontSize: 14,
+                    }}
+                  >
+                    Ranked Solo/Duo
+                  </span>
+                  <Typography.Title
+                    level={4}
+                    style={{ margin: 0, display: "flex" }}
+                  >
+                    {rankedTierLabel}
+                  </Typography.Title>
+                </>
+              </Tooltip>
+            }
+            description={
+              <div className="flex justify-between mt-2">
+                <SummonerStatBlock
+                  label="Wins"
+                  value={summonerStats.ranked.wins.toString()}
+                />
+                <SummonerStatBlock
+                  label="Losses"
+                  value={summonerStats.ranked.losses.toString()}
+                />
+                <SummonerStatBlock
+                  label="Win Rate"
+                  value={summonerStats.ranked.winRate}
+                />
+              </div>
+            }
+          />
+        </Card>
+      )}
+
+      {summonerStats?.flex && (
+        <Card style={{ width: 300 }}>
+          <Meta
+            avatar={
+              <Tooltip title={flexTierLabel}>
+                <Avatar
+                  size={80}
+                  src={`/images/ranks/RANK=${summonerStats.flex.tier}.png`}
+                />
+              </Tooltip>
+            }
+            title={
+              <Tooltip title={flexTierLabel}>
+                <>
+                  <span
+                    style={{
+                      color: "gray",
+                      fontStyle: "italic",
+                      fontSize: 14,
+                    }}
+                  >
+                    Ranked Flex
+                  </span>
+                  <Typography.Title
+                    level={4}
+                    style={{ margin: 0, display: "flex" }}
+                  >
+                    {flexTierLabel}
+                  </Typography.Title>
+                </>
+              </Tooltip>
+            }
+            description={
+              <div className="flex justify-between mt-2">
+                <SummonerStatBlock
+                  label="Wins"
+                  value={summonerStats.flex.wins.toString()}
+                />
+                <SummonerStatBlock
+                  label="Losses"
+                  value={summonerStats.flex.losses.toString()}
+                />
+                <SummonerStatBlock
+                  label="Win Rate"
+                  value={summonerStats.flex.winRate}
+                />
+              </div>
+            }
+          />
+        </Card>
+      )}
     </div>
   );
 };
