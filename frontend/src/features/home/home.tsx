@@ -31,7 +31,7 @@ const HomePage: React.FC = () => {
   // If no user is logged in, the "Login" step is active; otherwise, the process continues.
   const stepsItems = user
     ? [
-        { title: "Google Sign in", status: "finish", icon: <UserOutlined /> },
+        { title: "Sign in", status: "finish", icon: <UserOutlined /> },
         {
           title: "Search Player in Game",
           status: "process",

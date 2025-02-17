@@ -23,6 +23,10 @@ const UserPreferences: React.FC = () => {
 
   useEffect(() => {
     if (user) {
+      const theme = user?.theme || "light";
+      if (isDarkMode !== (theme === "dark")) {
+        setDarkMode(theme === "dark");
+      }
       localStorage.setItem("llm", user.llm || LLMOptions.GEMINI_FLASH);
       localStorage.setItem("language", user.language || "en");
       localStorage.setItem("theme", isDarkMode ? "dark" : "light");
@@ -62,13 +66,15 @@ const UserPreferences: React.FC = () => {
 
   return (
     <>
-      <div style={switchContainerStyle}>
-        <DarkModeSwitch
-          checked={isDarkMode}
-          onChange={toggleDarkMode}
-          size={25}
-        />
-      </div>
+      {user && (
+        <div style={switchContainerStyle}>
+          <DarkModeSwitch
+            checked={isDarkMode}
+            onChange={toggleDarkMode}
+            size={25}
+          />
+        </div>
+      )}
 
       <Select
         value={selectedLanguage}
