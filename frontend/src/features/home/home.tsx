@@ -1,5 +1,5 @@
 import React from "react";
-import { Layout, Typography, Space, Carousel, Steps } from "antd";
+import { Layout, Typography, Space, Steps, Carousel } from "antd";
 import GlobalSearch from "../global-search/global-search";
 import { QuickSearch } from "../quick-search/quick-search";
 import {
@@ -9,13 +9,52 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 
-const { Header, Content } = Layout;
+const { Content } = Layout;
 const { Title } = Typography;
 
 const HomePage: React.FC = () => {
   return (
     <div className="w-full h-full flex flex-col justify-center items-center">
-      {/* <div style={headerStyle}>
+      <div className="w-full max-w-[50%] py-8">
+        <Steps
+          // direction="vertical"
+          // size=""
+          // responsive={false}
+          className="w-full"
+          items={[
+            {
+              title: "Login",
+              status: "finish",
+              icon: <UserOutlined />,
+            },
+            {
+              title: "Search Player in Game",
+              status: "process",
+              icon: <LoadingOutlined />,
+            },
+            {
+              title: "Ask AI",
+              status: "wait",
+              icon: <SolutionOutlined />,
+            },
+            {
+              title: "Win",
+              status: "wait",
+              icon: <SmileOutlined />,
+            },
+          ]}
+        />
+      </div>
+
+      <Content style={contentStyle}>
+        <div style={centeredContainerStyle}>
+          {/* <Title level={3}>Search a player in game</Title> */}
+          <Space size="small">
+            <GlobalSearch /> <span>or</span> <QuickSearch />
+          </Space>
+        </div>
+      </Content>
+      <div style={headerStyle}>
         <Carousel autoplay arrows>
           <div style={carouselItemWrapperStyle}>
             <img src="images/carousel/slide0.png" alt="" />
@@ -30,40 +69,7 @@ const HomePage: React.FC = () => {
             <img src="images/carousel/slide3.png" alt="" />
           </div>
         </Carousel>
-      </div> */}
-
-      <Steps
-        items={[
-          {
-            title: "Login",
-            status: "finish",
-            icon: <UserOutlined />,
-          },
-          {
-            title: "Search User in Game",
-            status: "finish",
-            icon: <SolutionOutlined />,
-          },
-          {
-            title: "Ask AI Questions About the Game",
-            status: "process",
-            icon: <LoadingOutlined />,
-          },
-          {
-            title: "Win",
-            status: "wait",
-            icon: <SmileOutlined />,
-          },
-        ]}
-      />
-      <Content style={contentStyle}>
-        <div style={centeredContainerStyle}>
-          <Title level={3}>Search a player in game</Title>
-          <Space size="small">
-            <GlobalSearch /> <span>or</span> <QuickSearch />
-          </Space>
-        </div>
-      </Content>
+      </div>
     </div>
   );
 };
