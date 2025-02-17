@@ -17,8 +17,8 @@ export const Header: React.FC = () => {
 
   const onLoginSuccess = async (credentialResponse: any) => {
     const token = credentialResponse.credential;
-    const user = await handleLoginSuccess(token);
-    setUser(user);
+    const userData = await handleLoginSuccess(token);
+    setUser(userData);
   };
 
   const onLoginError = () => {
@@ -59,7 +59,12 @@ export const Header: React.FC = () => {
       <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
         <UserPreferences />
 
-        {/* Authentication */}
+        {/* 
+          Authentication:
+          - If the user is logged in, show the logout button.
+          - If the user is not logged in and NOT on the home page, show the sign-in button.
+          - If on the home page and not logged in, show nothing.
+        */}
         {user ? (
           <Button
             type="primary"
@@ -74,14 +79,16 @@ export const Header: React.FC = () => {
             </div>
           </Button>
         ) : (
-          <GoogleLogin
-            onSuccess={onLoginSuccess}
-            theme="filled_blue"
-            text={undefined}
-            useOneTap
-            shape="circle"
-            onError={onLoginError}
-          />
+          location.pathname !== "/" && (
+            <GoogleLogin
+              onSuccess={onLoginSuccess}
+              theme="filled_blue"
+              text={undefined}
+              useOneTap
+              shape="circle"
+              onError={onLoginError}
+            />
+          )
         )}
       </div>
     </Layout.Header>

@@ -3,35 +3,60 @@ import { Layout, Typography, Space, Steps, Carousel } from "antd";
 import GlobalSearch from "../global-search/global-search";
 import { QuickSearch } from "../quick-search/quick-search";
 import {
-  LoadingOutlined,
   RobotOutlined,
   SmileOutlined,
   SolutionOutlined,
   UserOutlined,
 } from "@ant-design/icons";
+import { GoogleLogin } from "@react-oauth/google";
+import { handleLoginSuccess } from "../../libs/apis/auth-api";
+import { useUser } from "../../context/user.context";
 
 const { Content } = Layout;
 const { Title, Paragraph } = Typography;
 
 const HomePage: React.FC = () => {
+  const { user, setUser } = useUser();
+
+  const onLoginSuccess = async (credentialResponse: any) => {
+    const token = credentialResponse.credential;
+    const userData = await handleLoginSuccess(token);
+    setUser(userData);
+  };
+
+  const onLoginError = () => {
+    console.error("Login Failed");
+  };
+
+  // If no user is logged in, the "Login" step is active; otherwise, the process continues.
+  const stepsItems = user
+    ? [
+        { title: "Google Sign in", status: "finish", icon: <UserOutlined /> },
+        {
+          title: "Search Player in Game",
+          status: "process",
+          icon: <SolutionOutlined />,
+        },
+        { title: "Ask AI", status: "wait", icon: <RobotOutlined /> },
+        { title: "Win", status: "wait", icon: <SmileOutlined /> },
+      ]
+    : [
+        { title: "Google Sign in", status: "process", icon: <UserOutlined /> },
+        {
+          title: "Search Player in Game",
+          status: "wait",
+          icon: <SolutionOutlined />,
+        },
+        { title: "Ask AI", status: "wait", icon: <RobotOutlined /> },
+        { title: "Win", status: "wait", icon: <SmileOutlined /> },
+      ];
+
   return (
     <div className="w-full h-full flex flex-col justify-center items-center">
       {/* Header Section */}
       <div className="w-full max-w-[50%] py-8 text-center">
         <Title level={3}>AI-powered In-Game Assistance and Analytics</Title>
-        <Steps
-          className="w-full"
-          items={[
-            { title: "Login", status: "finish", icon: <UserOutlined /> },
-            {
-              title: "Search Player in Game",
-              status: "process",
-              icon: <SolutionOutlined />,
-            },
-            { title: "Ask AI", status: "wait", icon: <RobotOutlined /> },
-            { title: "Win", status: "wait", icon: <SmileOutlined /> },
-          ]}
-        />
+        <Steps className="w-full" items={stepsItems as any} />
       </div>
 
       {/* AI Chatbot Usage Explanation */}
@@ -43,11 +68,21 @@ const HomePage: React.FC = () => {
         optimal item builds and laning strategies tailored for this match.
       </Paragraph>
 
-      {/* Search Options */}
+      {/* Conditional rendering: if user exists, show search; otherwise, show sign in */}
       <Content className="flex flex-col items-center mt-8 text-center">
-        <Space size="small">
-          <GlobalSearch /> <span>or</span> <QuickSearch />
-        </Space>
+        {user ? (
+          <Space size="small">
+            <GlobalSearch /> <span>or</span> <QuickSearch />
+          </Space>
+        ) : (
+          <GoogleLogin
+            onSuccess={onLoginSuccess}
+            onError={onLoginError}
+            theme="filled_blue"
+            // text="Sign in"
+            useOneTap
+          />
+        )}
       </Content>
 
       {/* Image Carousel */}
