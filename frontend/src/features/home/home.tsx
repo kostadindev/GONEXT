@@ -4,6 +4,7 @@ import GlobalSearch from "../global-search/global-search";
 import { QuickSearch } from "../quick-search/quick-search";
 import {
   LoadingOutlined,
+  RobotOutlined,
   SmileOutlined,
   SolutionOutlined,
   UserOutlined,
@@ -25,9 +26,9 @@ const HomePage: React.FC = () => {
             {
               title: "Search Player in Game",
               status: "process",
-              icon: <LoadingOutlined />,
+              icon: <SolutionOutlined />,
             },
-            { title: "Ask AI", status: "wait", icon: <SolutionOutlined /> },
+            { title: "Ask AI", status: "wait", icon: <RobotOutlined /> },
             { title: "Win", status: "wait", icon: <SmileOutlined /> },
           ]}
         />
