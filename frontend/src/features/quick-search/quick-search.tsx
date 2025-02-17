@@ -67,7 +67,10 @@ export const QuickSearch = () => {
   return (
     <>
       <Button type="primary" size="large" onClick={handleQuickSearch}>
-        {featuredSummoner}
+        {featuredSummoner?.split("#")?.[0]}{" "}
+        <span style={{ fontStyle: "italic", marginLeft: 4 }}>
+          #{featuredSummoner?.split("#")?.[1]}
+        </span>
       </Button>
     </>
   );
