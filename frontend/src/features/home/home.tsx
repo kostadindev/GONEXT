@@ -78,8 +78,6 @@ const HomePage: React.FC = () => {
           <GoogleLogin
             onSuccess={onLoginSuccess}
             onError={onLoginError}
-            theme="filled_blue"
-            // text="Sign in"
             useOneTap
           />
         )}
