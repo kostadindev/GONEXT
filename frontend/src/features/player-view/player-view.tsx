@@ -24,6 +24,7 @@ const CARD_WIDTH = 300;
 const SummonerCard: React.FC<SummonerCardProps> = ({ summoner, isLoading }) => (
   <Card
     style={{ width: CARD_WIDTH }}
+    styles={{ body: { padding: 16 } }}
     hoverable
     cover={
       <Tooltip title={summoner.championImageId}>
