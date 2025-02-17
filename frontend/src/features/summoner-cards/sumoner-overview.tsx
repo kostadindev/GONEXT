@@ -77,7 +77,7 @@ const RankCard: React.FC<{ title: string; stats: GameModeStats }> = ({
               className="w-100"
             >
               <div className="flex justify-between w-full">
-                {tierLabel || ""}
+                {tierLabel}
                 <span
                   style={{
                     color: "gray",

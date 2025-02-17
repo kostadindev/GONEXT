@@ -156,7 +156,7 @@ export default function GlobalSearch() {
           onSelect={(value) => onSearch(value)}
         >
           <Search
-            placeholder="Doublelift#NA1"
+            placeholder={"Doublelift#NA1"}
             enterButton
             onSearch={onSearch}
           />

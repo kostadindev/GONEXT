@@ -181,7 +181,7 @@ const ChatComponent: React.FC<{
           onScroll={handleScroll}
         >
           {messages.map((msg, index) => (
-            <div key={index} className="my-2 flex pb-4">
+            <div key={index} className="my-2 flex pb-1">
               {showAvatar &&
                 (msg.role === "system" ? (
                   <Avatar style={{ marginRight: 8 }} icon={<OpenAIFilled />} />

@@ -1,5 +1,6 @@
 import React from "react";
 import { Avatar, Button, Layout, Typography } from "antd";
+import { useNavigate } from "react-router-dom";
 import GlobalSearch from "../../global-search/global-search";
 import { QuickSearch } from "../../quick-search/quick-search";
 import { GoogleLogin } from "@react-oauth/google";
@@ -10,6 +11,7 @@ import UserPreferences from "../../user-preferences/user-preferences";
 const { Text } = Typography;
 
 export const Header: React.FC = () => {
+  const navigate = useNavigate();
   const { user, setUser } = useUser();
 
   const onLoginSuccess = async (credentialResponse: any) => {
@@ -33,8 +35,13 @@ export const Header: React.FC = () => {
   return (
     <Layout.Header style={headerStyle}>
       <div style={{ display: "flex", alignItems: "center", gap: "2rem" }}>
-        {/* Apply the inline style to the logo */}
-        <div style={goldmanStyle}>gonext</div>
+        {/* Make the logo a clickable text */}
+        <div
+          style={{ ...goldmanStyle, cursor: "pointer" }}
+          onClick={() => navigate("/")}
+        >
+          gonext
+        </div>
         <div style={{ display: "flex", alignItems: "center", gap: "1.25rem" }}>
           <GlobalSearch />
           <span>or</span>
@@ -85,10 +92,11 @@ const headerStyle: React.CSSProperties = {
 
 // Inline style for the logo
 const goldmanStyle: React.CSSProperties = {
-  fontFamily: '"Goldman", serif', // Use quotes for multi-word font names
+  fontFamily: '"Goldman", serif',
   fontWeight: 400,
   fontStyle: "normal",
   fontSize: "3rem",
+  cursor: "pointer",
 };
 
 export default Header;
