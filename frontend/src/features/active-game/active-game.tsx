@@ -13,13 +13,17 @@ export const ActiveGame = () => {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
   const [game, setGame] = useState<Game | null>(null);
-  const { allies, enemies } = getTeams(game);
+  const { allies = [], enemies = [] } = getTeams(game);
   const { tagLine, gameName } = useParams();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let ignore = false;
     getActiveGame(gameName as string, tagLine as string).then((game) => {
-      !ignore && game && setGame(game);
+      if (!ignore) {
+        game && setGame(game);
+        setLoading(false);
+      }
     });
     return () => {
       ignore = true;
@@ -37,7 +41,6 @@ export const ActiveGame = () => {
         style={{
           padding: 24,
           minHeight: 360,
-          // background: colorBgContainer,
           borderRadius: borderRadiusLG,
           display: "flex",
         }}
@@ -46,23 +49,29 @@ export const ActiveGame = () => {
           <Divider orientation="left">
             {game?.searchedSummoner?.teamId === 100 ? "Blue Team" : "Red Team"}
           </Divider>
-          {allies?.map((summoner: Summoner) => (
-            <InGameSummoner
-              key={summoner.puuid}
-              summoner={summoner}
-              game={game}
-            ></InGameSummoner>
-          ))}
+          {(loading ? Array.from({ length: 5 }) : allies)?.map(
+            (summoner, index) => (
+              <InGameSummoner
+                key={`ally-${index}`}
+                summoner={summoner || {}}
+                game={game}
+                loading={loading}
+              />
+            )
+          )}
           <Divider orientation="left">
             {game?.searchedSummoner?.teamId !== 100 ? "Blue Team" : "Red Team"}
           </Divider>
-          {enemies?.map((summoner: Summoner) => (
-            <InGameSummoner
-              key={summoner.puuid}
-              summoner={summoner}
-              game={game}
-            ></InGameSummoner>
-          ))}
+          {(loading ? Array.from({ length: 5 }) : enemies)?.map(
+            (summoner, index) => (
+              <InGameSummoner
+                key={`enemy-${index}`}
+                summoner={summoner || {}}
+                game={game}
+                loading={loading}
+              />
+            )
+          )}
         </div>
         <ActiveGameTabs game={game} />
       </div>
