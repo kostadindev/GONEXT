@@ -1,6 +1,6 @@
 import React from "react";
 import { Avatar, Button, Layout, Typography } from "antd";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import GlobalSearch from "../../global-search/global-search";
 import { QuickSearch } from "../../quick-search/quick-search";
 import { GoogleLogin } from "@react-oauth/google";
@@ -12,6 +12,7 @@ const { Text } = Typography;
 
 export const Header: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation(); // Get the current route
   const { user, setUser } = useUser();
 
   const onLoginSuccess = async (credentialResponse: any) => {
@@ -42,12 +43,19 @@ export const Header: React.FC = () => {
         >
           gonext
         </div>
-        <div style={{ display: "flex", alignItems: "center", gap: "1.25rem" }}>
-          <GlobalSearch />
-          <span>or</span>
-          <QuickSearch />
-        </div>
+
+        {/* Hide search when on home page */}
+        {location.pathname !== "/" && (
+          <div
+            style={{ display: "flex", alignItems: "center", gap: "1.25rem" }}
+          >
+            <GlobalSearch />
+            <span>or</span>
+            <QuickSearch />
+          </div>
+        )}
       </div>
+
       <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
         <UserPreferences />
 

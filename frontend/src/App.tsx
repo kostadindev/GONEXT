@@ -14,11 +14,12 @@ import { useUser, UserProvider } from "./context/user.context";
 import AboutUs from "./features/about-us/about-us";
 import { ConfigProvider, theme, Layout } from "antd";
 import { PlayerPage } from "./features/player-view/player-page";
+import HomePage from "./features/home/home";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route element={<AppLayout />}>
-      <Route path="/" element={<div></div>} errorElement={<ErrorPage />} />
+      <Route path="/" element={<HomePage />} errorElement={<ErrorPage />} />
       <Route path="/placeholder" element={<Placeholder />} />
       <Route
         path="/:region/:gameName/:tagLine/in-game"
