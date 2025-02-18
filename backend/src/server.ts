@@ -3,23 +3,26 @@ import http from "http";
 import app from "./app";
 import mongoose from "mongoose";
 import process from "process";
-import { neon } from "@neondatabase/serverless";
+import { Pool } from "pg";
 import redis from "./db/redis";
 
 dotenv.config();
 
 const MONGO_URI = process.env.MONGO_URI as string;
-const sql = neon(process.env.DATABASE_URL);
 const port = process.env.PORT || 8000;
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+});
 
 const server = http.createServer(app);
 
-async function testNeonConnection() {
+async function testPostgresConnection() {
   try {
-    const result = await sql`SELECT version()`;
-    console.log("Connected to NeonDB successfully:", result[0].version);
+    const result = await pool.query('SELECT version()');
+    console.log("Connected to PostgreSQL successfully:", result.rows[0].version);
   } catch (err) {
-    console.error("Error connecting to NeonDB:", err);
+    console.error("Error connecting to PostgreSQL:", err);
     process.exit(1);
   }
 }
@@ -34,8 +37,8 @@ async function startServer() {
     await redis.connect();
     console.log("Connected to Redis successfully");
 
-    // Test NeonDB connection
-    await testNeonConnection();
+    // Test PostgreSQL connection
+    await testPostgresConnection();
 
     // Start the HTTP server
     server.listen(port, () => {
