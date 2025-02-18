@@ -41,7 +41,7 @@ const HomePage: React.FC = () => {
         { title: "Win", status: "wait", icon: <SmileOutlined /> },
       ]
     : [
-        { title: "Google Sign in", status: "process", icon: <UserOutlined /> },
+        { title: "Sign in", status: "process", icon: <UserOutlined /> },
         {
           title: "Search Player in Game",
           status: "wait",

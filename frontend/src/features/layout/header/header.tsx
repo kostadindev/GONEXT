@@ -67,7 +67,7 @@ export const Header: React.FC = () => {
         */}
         {user ? (
           <Button
-            type="primary"
+            // type="primary"
             size="large"
             onClick={onLogout}
             className="cool-button"
