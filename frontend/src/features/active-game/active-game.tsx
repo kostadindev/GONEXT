@@ -16,7 +16,7 @@ export const ActiveGame = () => {
 
   const [game, setGame] = useState<Game | null>(null);
   const [loading, setLoading] = useState(true);
-  const [errorType, setErrorType] = useState<"game" | "player" | null>(null); // Track error type
+  const [errorType, setErrorType] = useState<"game" | "player" | null>(null);
 
   const { tagLine, gameName } = useParams();
   const { allies = [], enemies = [] } = getTeams(game);
@@ -39,10 +39,10 @@ export const ActiveGame = () => {
       .catch((err) => {
         if (!ignore) {
           if (err.response?.status === 404) {
-            setErrorType("player"); // No Player Found
+            setErrorType("player");
           } else {
             console.log("HellO", err);
-            setErrorType("game"); // Fallback to No Game Found for unexpected issues
+            setErrorType("game");
           }
         }
       })
@@ -66,7 +66,7 @@ export const ActiveGame = () => {
           justifyContent: "center",
           alignItems: "center",
           flexGrow: 1,
-          minHeight: 0,
+          height: "100vh", // Ensures it takes full height
         }}
       >
         <Spin size="large" />
@@ -83,7 +83,7 @@ export const ActiveGame = () => {
           justifyContent: "center",
           alignItems: "center",
           flexGrow: 1,
-          minHeight: 0,
+          height: "100vh", // Ensures full height on error state
         }}
       >
         <NotFound type={errorType} />
@@ -95,13 +95,16 @@ export const ActiveGame = () => {
     <Content
       style={{
         margin: "0 16px",
+        height: "100vh", // Ensures it stretches
+        display: "flex",
+        flexDirection: "column",
       }}
       className="w-[80%]" // turn on when adding ads
     >
       <div
         style={{
           padding: 24,
-          minHeight: 360,
+          flexGrow: 1, // Allow content to expand
           borderRadius: borderRadiusLG,
           display: "flex",
         }}
