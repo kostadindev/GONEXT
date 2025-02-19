@@ -14,7 +14,7 @@ const NotFound: React.FC<NotFoundProps> = ({ type }) => {
   const message =
     type === "game"
       ? "The player you are looking for is not in an active game."
-      : "The player you are looking for was not found. Please check if his name and tag are correct.";
+      : "The player you are looking for was not found. Please check if their name and tag are correct.";
   return (
     <Result
       status="404"
