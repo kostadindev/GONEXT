@@ -214,6 +214,9 @@ class LeagueService {
 
     // Cache miss: Fetch from the repository
     const game = await leagueRepository.getActiveGameByPuuid(puuid);
+    if (!game) {
+      return null;
+    }
     const enrichedGame = this.getEnrichedGame(game, puuid);
 
     if (enrichedGame) {
