@@ -3,32 +3,87 @@ import { getActiveGame } from "../../libs/apis/league-api";
 import { useEffect, useState } from "react";
 import { Game, Summoner } from "../../libs/league/league-types";
 import { InGameSummoner } from "../summoner-cards/in-game-summoner";
-import { Divider, theme } from "antd";
+import { Divider, theme, Spin } from "antd";
 import { ActiveGameTabs } from "./active-game-tabs/active-game-tabs";
 import { getTeams } from "../../libs/league/league-utils";
 import { useParams } from "react-router-dom";
+import NotFound from "../not-found/not-found";
 
 export const ActiveGame = () => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
   const [game, setGame] = useState<Game | null>(null);
-  const { allies = [], enemies = [] } = getTeams(game);
-  const { tagLine, gameName } = useParams();
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false); // Track if the game is not found
+
+  const { tagLine, gameName } = useParams();
+  const { allies = [], enemies = [] } = getTeams(game);
 
   useEffect(() => {
     let ignore = false;
-    getActiveGame(gameName as string, tagLine as string).then((game) => {
-      if (!ignore) {
-        game && setGame(game);
-        setLoading(false);
-      }
-    });
+    setLoading(true);
+    setError(false);
+
+    getActiveGame(gameName as string, tagLine as string)
+      .then((game) => {
+        if (!ignore) {
+          if (game) {
+            setGame(game);
+          } else {
+            setError(true); // Handle 404 error case
+          }
+        }
+      })
+      .catch((err) => {
+        if (!ignore && err.response?.status === 404) {
+          setError(true);
+        }
+      })
+      .finally(() => {
+        if (!ignore) {
+          setLoading(false);
+        }
+      });
+
     return () => {
       ignore = true;
     };
   }, [gameName, tagLine]);
+
+  if (loading) {
+    return (
+      <Content
+        style={{
+          margin: "0 16px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexGrow: 1, // Allow it to take up remaining space
+          minHeight: 0, // Prevent overflow issues
+        }}
+      >
+        <Spin size="large" />
+      </Content>
+    );
+  }
+
+  if (error) {
+    return (
+      <Content
+        style={{
+          margin: "0 16px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexGrow: 1, // Allow it to take up remaining space
+          minHeight: 0, // Prevent overflow issues
+        }}
+      >
+        <NotFound type="game" />
+      </Content>
+    );
+  }
 
   return (
     <Content
