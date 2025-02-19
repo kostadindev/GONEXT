@@ -4,13 +4,8 @@ export const BASE_URL = 'http://localhost:8080/api'; // TODO use env var
 
 // Helper function to handle GET requests
 export const fetchData = async (endpoint: string, params: Record<string, any> = {}) => {
-  try {
-    const response = await axios.get(`${BASE_URL}/${endpoint}`, { params, withCredentials: true });
-    return response.data;
-  } catch (error) {
-    console.error(`There was an error fetching data from ${endpoint}:`, error);
-    return null;
-  }
+  const response = await axios.get(`${BASE_URL}/${endpoint}`, { params, withCredentials: true });
+  return response.data;
 };
 
 // Helper function to handle POST requests

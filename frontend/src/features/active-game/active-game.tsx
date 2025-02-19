@@ -1,7 +1,7 @@
 import { Content } from "antd/es/layout/layout";
 import { getActiveGame } from "../../libs/apis/league-api";
 import { useEffect, useState } from "react";
-import { Game, Summoner } from "../../libs/league/league-types";
+import { Game } from "../../libs/league/league-types";
 import { InGameSummoner } from "../summoner-cards/in-game-summoner";
 import { Divider, theme, Spin } from "antd";
 import { ActiveGameTabs } from "./active-game-tabs/active-game-tabs";
@@ -13,9 +13,10 @@ export const ActiveGame = () => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
+
   const [game, setGame] = useState<Game | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false); // Track if the game is not found
+  const [errorType, setErrorType] = useState<"game" | "player" | null>(null); // Track error type
 
   const { tagLine, gameName } = useParams();
   const { allies = [], enemies = [] } = getTeams(game);
@@ -23,21 +24,26 @@ export const ActiveGame = () => {
   useEffect(() => {
     let ignore = false;
     setLoading(true);
-    setError(false);
+    setErrorType(null);
 
     getActiveGame(gameName as string, tagLine as string)
       .then((game) => {
         if (!ignore) {
-          if (game) {
-            setGame(game);
+          if (!game) {
+            setErrorType("game");
           } else {
-            setError(true); // Handle 404 error case
+            setGame(game);
           }
         }
       })
       .catch((err) => {
-        if (!ignore && err.response?.status === 404) {
-          setError(true);
+        if (!ignore) {
+          if (err.response?.status === 404) {
+            setErrorType("player"); // No Player Found
+          } else {
+            console.log("HellO", err);
+            setErrorType("game"); // Fallback to No Game Found for unexpected issues
+          }
         }
       })
       .finally(() => {
@@ -59,8 +65,8 @@ export const ActiveGame = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          flexGrow: 1, // Allow it to take up remaining space
-          minHeight: 0, // Prevent overflow issues
+          flexGrow: 1,
+          minHeight: 0,
         }}
       >
         <Spin size="large" />
@@ -68,7 +74,7 @@ export const ActiveGame = () => {
     );
   }
 
-  if (error) {
+  if (errorType) {
     return (
       <Content
         style={{
@@ -76,11 +82,11 @@ export const ActiveGame = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          flexGrow: 1, // Allow it to take up remaining space
-          minHeight: 0, // Prevent overflow issues
+          flexGrow: 1,
+          minHeight: 0,
         }}
       >
-        <NotFound type="game" />
+        <NotFound type={errorType} />
       </Content>
     );
   }
