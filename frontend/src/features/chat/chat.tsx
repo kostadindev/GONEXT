@@ -40,8 +40,11 @@ const ChatComponent: React.FC<{
   const messageContainerRef = React.useRef<HTMLDivElement>(null);
 
   const scrollToBottom = useCallback(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    if (messageContainerRef.current) {
+      messageContainerRef.current.scrollTo({
+        top: messageContainerRef.current.scrollHeight,
+        behavior: "smooth",
+      });
     }
   }, []);
 
