@@ -11,7 +11,10 @@ interface NotFoundProps {
 
 const NotFound: React.FC<NotFoundProps> = ({ type }) => {
   const navigate = useNavigate();
-
+  const message =
+    type === "game"
+      ? "The player you are looking for is not in an active game."
+      : "The player you are looking for was not found. Please check if his name and tag are correct.";
   return (
     <Result
       status="404"
@@ -20,8 +23,8 @@ const NotFound: React.FC<NotFoundProps> = ({ type }) => {
           style={{ fontSize: "48px", color: "#faad14" }}
         />
       }
-      title="404 Not Found"
-      subTitle={`The ${type} you are looking for does not exist or has been removed.`}
+      title={`${type?.charAt(0)?.toUpperCase() + type?.slice(1)} Not Found`}
+      subTitle={message}
       extra={[
         <Button type="primary" onClick={() => navigate("/")}>
           Go Home
