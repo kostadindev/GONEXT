@@ -15,6 +15,7 @@ import AboutUs from "./features/about-us/about-us";
 import { ConfigProvider, theme, Layout } from "antd";
 import { PlayerPage } from "./features/player-view/player-page";
 import HomePage from "./features/home/home";
+import NotFound from "./features/not-found/not-found";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -30,6 +31,9 @@ const router = createBrowserRouter(
         element={<PlayerPage />}
       />
       <Route path="/about-us" element={<AboutUs />} />
+
+      {/* Catch-all 404 route */}
+      <Route path="*" element={<NotFound />} />
     </Route>
   )
 );
@@ -37,7 +41,6 @@ const router = createBrowserRouter(
 const ThemedApp = () => {
   const { user } = useUser();
 
-  // Default to "light" theme if the user does not have a theme preference
   const currentTheme = user?.theme || "light";
 
   return (
