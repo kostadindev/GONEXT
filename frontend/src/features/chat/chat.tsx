@@ -203,7 +203,8 @@ const ChatComponent: React.FC<{
                 </div>
               ) : (
                 <Card
-                  className="inline-block rounded-lg text-black w-full break-words"
+                  className="inline-block rounded-lg shadow-md text-black w-full break-words"
+                  hoverable
                   style={{
                     maxWidth: showAvatar ? "calc(100% - 40px)" : "100%",
                   }}
