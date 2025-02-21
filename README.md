@@ -1,4 +1,4 @@
-# GoNext
+# gonext
 
 **GoNext** is a GenAI-powered assistant tailored for League of Legends players, delivering real-time and personalized strategies, matchups, synergies, and builds. By harnessing the Riot API, GoNext retrieves live game data—covering both allied and enemy players—and employs large language models to offer context-specific guidance for every match.
 
