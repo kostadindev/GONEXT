@@ -86,7 +86,7 @@ export const ActiveGame = () => {
           height: "100vh", // Ensures full height on error state
         }}
       >
-        <NotFound type={errorType} />
+        <NotFound type={errorType} name={gameName} tag={tagLine} />
       </Content>
     );
   }
