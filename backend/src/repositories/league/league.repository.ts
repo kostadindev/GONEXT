@@ -9,6 +9,18 @@ class LeagueRepository {
     'X-Riot-Token': process.env.LEAGUE_API_KEY,
   };
 
+  // Helper method to check database connectivity
+  private async isDbConnected(): Promise<boolean> {
+    try {
+      // This simple query will succeed if the connection is alive
+      await prisma.$queryRaw`SELECT 1;`;
+      return true;
+    } catch (error) {
+      console.error('Database connection not alive:', error);
+      return false;
+    }
+  }
+
   async fetchChampionsDict(url: string): Promise<any> {
     try {
       const response = await axios.get(url);
@@ -117,6 +129,12 @@ class LeagueRepository {
   }
 
   async getMatchesByIdsSQL(matchIds: string[]): Promise<any[] | null> {
+    // Check if database connection is alive
+    if (!(await this.isDbConnected())) {
+      console.error('Skipping database query: connection not alive.');
+      return [];
+    }
+
     const matches = await prisma.match.findMany({
       where: { match_id: { in: matchIds } },
       include: {
@@ -154,12 +172,11 @@ class LeagueRepository {
         summoner2Id: participant.summoner_2_id,
       }));
 
-
       // Reconstruct match structure
       return {
         metadata: {
           matchId: match.match_id,
-          dataVersion: match.data_version,
+          dataVersion: match?.data_version,
         },
         info: {
           gameId: match.game_id.toString(), // Ensure gameId is consistent with API type
@@ -182,9 +199,13 @@ class LeagueRepository {
     return deserializedMatches;
   }
 
-
-
   async saveMatches(matches: any[]): Promise<void> {
+    // Check if database connection is alive
+    if (!(await this.isDbConnected())) {
+      console.error('Skipping saving matches: database connection not alive.');
+      return;
+    }
+
     try {
       const matchData = matches.map((match) => ({
         match_id: match.metadata.matchId,
@@ -242,9 +263,6 @@ class LeagueRepository {
       console.error('Error saving matches to the database:', error);
     }
   }
-
-
-
 
   async getSummonerByRiotId(gameName: string, tagLine: string): Promise<any | null> {
     const url = `https://americas.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${gameName}/${tagLine}`;
