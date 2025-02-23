@@ -43,7 +43,14 @@ const AboutUs: React.FC = () => {
   ];
 
   return (
-    <div style={{ padding: "20px 10%" }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        minHeight: "calc(100vh - 64px)", // Assuming a 64px header height
+        padding: "20px 10%",
+      }}
+    >
       <div className="text-center mb-10 mx-auto" style={{ maxWidth: "1100px" }}>
         <Title level={2} style={{ marginBottom: "16px" }}>
           Meet the Team
@@ -53,7 +60,7 @@ const AboutUs: React.FC = () => {
         </Paragraph>
       </div>
 
-      <Row gutter={[24, 24]} justify="center">
+      <Row gutter={[24, 24]} justify="center" style={{ flex: 1 }}>
         {teamMembers.map((member, index) => (
           <Col xs={24} sm={12} md={8} lg={6} key={index}>
             <Card
@@ -146,7 +153,7 @@ const AboutUs: React.FC = () => {
           Interested in Contributing?
         </Title>
         <Paragraph type="secondary" style={{ fontSize: "16px" }}>
-          As an open source project we’re always looking for talented
+          As an open-source project, we’re always looking for talented
           individuals to help us. If you’re passionate about innovation and
           creating impactful solutions, we’d love to hear from you!
         </Paragraph>
