@@ -1,4 +1,13 @@
-version: '3.8'
+tversion: '3.8'
+
+networks:
+  public-network:
+    driver: bridge
+  private-network:
+    driver: bridge
+    internal: true
+  ml-network:
+    driver: bridge
 
 services:
   frontend:
@@ -7,11 +16,10 @@ services:
       dockerfile: Dockerfile
     ports:
       - "80:80"
+    networks:
+      - public-network
     depends_on:
       - backend
-      - gonext-ml
-    networks:
-      - app-network
 
   backend:
     build:
@@ -22,11 +30,13 @@ services:
     environment:
       - REDIS_URL=redis://redis:6379
       - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/postgres
+    networks:
+      - public-network
+      - private-network
+      - ml-network
     depends_on:
       - redis
       - postgres
-    networks:
-      - app-network
     dns:
       - 8.8.8.8
       - 8.8.4.4
@@ -35,19 +45,17 @@ services:
     build:
       context: ../gonext-ml
       dockerfile: Dockerfile
-    ports:
-      - "8000:8000"
     environment:
       - REDIS_URL=redis://redis:6379
       - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/postgres
-    depends_on:
-      - redis
-      - postgres
     networks:
-      - app-network
+      - ml-network
     dns:
       - 8.8.8.8
       - 8.8.4.4
+    depends_on:
+      - redis
+      - postgres
 
   postgres:
     image: postgres:15-alpine
@@ -55,25 +63,21 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=postgres
-    ports:
-      - "5432:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
     networks:
-      - app-network
+      - private-network
+    expose:
+      - "5432"
 
   redis:
     image: redis:7-alpine
-    ports:
-      - "6379:6379"
     volumes:
       - redis-data:/data
     networks:
-      - app-network
-
-networks:
-  app-network:
-    driver: bridge
+      - private-network
+    expose:
+      - "6379"
 
 volumes:
   postgres-data:
