@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const BASE_URL = 'http://localhost:8080/api'; // TODO use env var
+export const BASE_URL = 'http://gonext.lol:8080/api'; // TODO use env var
 
 // Helper function to handle GET requests
 export const fetchData = async (endpoint: string, params: Record<string, any> = {}) => {

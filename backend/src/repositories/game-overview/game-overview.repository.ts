@@ -10,7 +10,7 @@ class GameOverviewRepository {
   private baseURL: string;
 
   constructor() {
-    this.baseURL = "http://127.0.0.1:8000/game_overview"; // FastAPI base URL TODO make an env variable
+    this.baseURL = "http://gonext-ml:8000/game_overview"; // FastAPI base URL TODO make an env variable
   }
 
   /**

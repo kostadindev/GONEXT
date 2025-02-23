@@ -42,7 +42,7 @@ async function startServer() {
 
     // Start the HTTP server
     server.listen(port, () => {
-      console.log(`[server]: Server is running at http://localhost:${port}`);
+      console.log(`[server]: Server is running at http://gonext.lol:${port}`);
     });
   } catch (err) {
     console.error("Error starting the server:", err);
