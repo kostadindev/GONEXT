@@ -27,10 +27,13 @@ services:
       - postgres
     networks:
       - app-network
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
 
   gonext-ml:
     build:
-      context: ../gonext-ml  # TODO: Find a better way to run this service
+      context: ../gonext-ml
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
@@ -42,6 +45,9 @@ services:
       - postgres
     networks:
       - app-network
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
 
   postgres:
     image: postgres:15-alpine
