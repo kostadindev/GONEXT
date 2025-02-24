@@ -45,7 +45,7 @@ He is an incoming student pursuing a Master's in Computer Science, specializing 
       title: "API | DevOps",
       description:
         "Ivan specializes in API development and DevOps practices, ensuring robust, scalable, and secure backend services.",
-      image: `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/MasterYi_5.jpg`,
+      image: `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/MasterYi_2.jpg`,
       github: "https://github.com/nnivan",
       email: "ivan@gonext.lol",
     },
