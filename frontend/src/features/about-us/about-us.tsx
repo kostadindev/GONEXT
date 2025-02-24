@@ -34,7 +34,7 @@ Kostadin leads engineering and product at GONEXT. Prior to founding GONEXT, Kost
 
 He is an incoming student pursuing a Master's in Computer Science, specializing in Natural Language Processing, at Columbia University in New York City.`,
       image:
-        "https://media.licdn.com/dms/image/v2/D4E03AQHT-wFQ9xo1sA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1727758296269?e=1743033600&v=beta&t=u7b94xnynKeCumtQDipci8K8p9uiuIgMs_8dO9Qotdo",
+        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/MonkeyKing_5.jpg",
       github: "https://github.com/kostadindev",
       linkedin: "https://www.linkedin.com/in/kostadin-dev/",
       email: "kostadin@gonext.lol",
@@ -45,7 +45,7 @@ He is an incoming student pursuing a Master's in Computer Science, specializing 
       title: "API | DevOps | Jungle",
       description:
         "Ivan specializes in API development and DevOps practices, ensuring robust, scalable, and secure backend services.",
-      image: `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/MasterYi_2.jpg`,
+      image: `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/MasterYi_9.jpg`,
       github: "https://github.com/nnivan",
       email: "ivan@gonext.lol",
     },
@@ -98,8 +98,8 @@ He is an incoming student pursuing a Master's in Computer Science, specializing 
                     alt={member.name}
                     src={member.image}
                     style={{
-                      height: "200px",
-                      width: "200px",
+                      height: "250px",
+                      width: "400px",
                       borderRadius: "15%",
                       objectFit: "cover",
                     }}
