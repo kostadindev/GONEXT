@@ -2,6 +2,7 @@ import React from "react";
 import { Card, Row, Col, Typography, Button, Tooltip } from "antd";
 import {
   GithubFilled,
+  GithubOutlined,
   GlobalOutlined,
   LinkedinFilled,
   MailFilled,
@@ -28,9 +29,9 @@ const AboutUs: React.FC = () => {
       title: "Founder | ML | API | UI",
       description: `Kostadin has been playing League of Legends since Season 3, achieving a peak rank of Diamond 1. He currently leads engineering and product development at gonext.
 
-Prior to founding gonext, Kostadin was a Software Engineer at Stellar Cyber.
+Prior to founding GONEXT, Kostadin was a Software Engineer at Stellar Cyber.
 
-He is currently pursuing a Master's in Computer Science, specializing in Natural Language Processing, at Columbia University in New York City.`,
+He is an incoming student pursuing a Master's in Computer Science, specializing in Natural Language Processing, at Columbia University in New York City.`,
       image:
         "https://media.licdn.com/dms/image/v2/D4E03AQHT-wFQ9xo1sA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1727758296269?e=1743033600&v=beta&t=u7b94xnynKeCumtQDipci8K8p9uiuIgMs_8dO9Qotdo",
       github: "https://github.com/kostadindev",
@@ -61,13 +62,21 @@ He is currently pursuing a Master's in Computer Science, specializing in Natural
         padding: "20px",
       }}
     >
-      <div
-        style={{ maxWidth: "500px", textAlign: "center", marginBottom: "40px" }}
-      >
-        <Title level={2}>Meet the Team</Title>
+      <Title level={2} style={{ marginBottom: "16px" }}>
+        About Us
+      </Title>
+      <Row gutter={[24, 24]} style={{ flex: 1, maxWidth: "1000px" }}>
         <Paragraph type="secondary" style={{ fontSize: "16px" }}>
-          Our team operates from New York City.
+          GONEXT is a GenAI-powered assistant tailored for League of Legends
+          players, delivering real-time and personalized strategies, matchups,
+          synergies, and builds. By harnessing the Riot API, GONEXT retrieves
+          live game data—covering both allied and enemy players—and employs
+          large language models to offer context-specific guidance for every
+          match.
         </Paragraph>
+      </Row>
+      <div style={{ maxWidth: "500px", textAlign: "center" }}>
+        <Title level={2}>Meet the Team</Title>
       </div>
 
       <Row gutter={[24, 24]} style={{ flex: 1, maxWidth: "1000px" }}>
@@ -99,12 +108,12 @@ He is currently pursuing a Master's in Computer Science, specializing in Natural
                   </Paragraph>
                   {member.email && (
                     <Paragraph style={emailStyle}>
-                      <a
+                      <Typography.Link
                         href={`mailto:${member.email}`}
-                        style={{ fontStyle: "italic" }}
+                        target="_blank"
                       >
                         {member.email}
-                      </a>
+                      </Typography.Link>
                     </Paragraph>
                   )}
                   <div style={{ marginTop: "10px" }}>
@@ -160,19 +169,53 @@ He is currently pursuing a Master's in Computer Science, specializing in Natural
       </Row>
 
       <div
-        style={{ textAlign: "center", paddingTop: "40px", maxWidth: "1100px" }}
+        style={{
+          textAlign: "center",
+          paddingTop: "20px",
+          maxWidth: "1100px",
+          margin: "0 auto",
+        }}
       >
-        <Title level={2}>Interested in Contributing?</Title>
+        <Title level={2} style={{ marginBottom: "16px" }}>
+          Making GONEXT better
+        </Title>
         <Paragraph type="secondary" style={{ fontSize: "16px" }}>
-          As an open-source project, we’re always looking for talented
-          individuals to help us.
+          Let us know what you want to see in future releases and report bugs.
+          We will listen! Email us at{" "}
+          <Typography.Link href={`mailto:info@gonext.lol`} target="_blank">
+            info@gonext.lol
+          </Typography.Link>
+          .
         </Paragraph>
-        <Button
-          href="mailto:kostadin.g.devedzhiev@gmail.com"
-          icon={<MailOutlined />}
-        >
-          Apply Here
-        </Button>
+        <Tooltip title="Email us">
+          <Button
+            href="mailto:info@gonext.lol"
+            style={{ margin: "16px 8px" }}
+            icon={<MailOutlined />}
+          >
+            Email
+          </Button>
+        </Tooltip>
+        <Tooltip title="View on GitHub">
+          <Button
+            href="https://github.com/kostadindev/gonext"
+            target="_blank"
+            icon={<GithubOutlined />}
+            style={{ margin: "16px 8px" }}
+          >
+            UI
+          </Button>
+        </Tooltip>
+        <Tooltip title="View on GitHub">
+          <Button
+            href="https://github.com/kostadindev/gonext-ml"
+            target="_blank"
+            icon={<GithubOutlined />}
+            style={{ margin: "16px 8px" }}
+          >
+            ML
+          </Button>
+        </Tooltip>
       </div>
     </div>
   );
