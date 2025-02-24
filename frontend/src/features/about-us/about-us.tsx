@@ -8,6 +8,7 @@ import {
   MailFilled,
   MailOutlined,
 } from "@ant-design/icons";
+import { getChampionIconSrc } from "../../libs/league/league-utils";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -27,9 +28,9 @@ const AboutUs: React.FC = () => {
     {
       name: "Kostadin Devedzhiev",
       title: "Founder | ML | API | UI",
-      description: `Kostadin has been playing League of Legends since Season 3, achieving a peak rank of Diamond 1. He currently leads engineering and product development at gonext.
+      description: `Kostadin has been playing League of Legends since Season 3, achieving a peak rank of Diamond 1. He plays ADC and Jungle and his best champions are Tristana and Wukong.
 
-Prior to founding GONEXT, Kostadin was a Software Engineer at Stellar Cyber.
+Kostadin leads engineering and product at GONEXT. Prior to founding GONEXT, Kostadin was a Software Engineer at Stellar Cyber.
 
 He is an incoming student pursuing a Master's in Computer Science, specializing in Natural Language Processing, at Columbia University in New York City.`,
       image:
@@ -44,9 +45,9 @@ He is an incoming student pursuing a Master's in Computer Science, specializing 
       title: "API | DevOps",
       description:
         "Ivan specializes in API development and DevOps practices, ensuring robust, scalable, and secure backend services.",
-      image:
-        "https://scontent-lga3-2.xx.fbcdn.net/v/t39.30808-6/463968694_27285182364459185_394874216162696016_n.jpg",
+      image: `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/MasterYi_5.jpg`,
       github: "https://github.com/nnivan",
+      email: "ivan@gonext.lol",
     },
   ];
 
@@ -82,17 +83,25 @@ He is an incoming student pursuing a Master's in Computer Science, specializing 
       <Row gutter={[24, 24]} style={{ flex: 1, maxWidth: "1000px" }}>
         {teamMembers.map((member, index) => (
           <Col span={24} key={index}>
-            <Card hoverable style={{ borderRadius: "8px", padding: "20px" }}>
+            <Card hoverable>
               <Row gutter={[16, 16]} align="middle">
-                <Col xs={24} md={8} style={{ textAlign: "center" }}>
+                <Col
+                  xs={24}
+                  md={8}
+                  style={{
+                    textAlign: "center",
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
                   <img
                     alt={member.name}
                     src={member.image}
                     style={{
                       height: "200px",
                       width: "200px",
-                      borderRadius: "25%",
-                      objectFit: "contain",
+                      borderRadius: "15%",
+                      objectFit: "cover",
                     }}
                   />
                 </Col>
