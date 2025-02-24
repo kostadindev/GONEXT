@@ -46,10 +46,10 @@ export const Footer = () => {
 
         {/* Company Info */}
         <Col xs={24} sm={12} md={8} style={{ textAlign: "center" }}>
-          <Typography.Text strong>gonext</Typography.Text> ©{" "}
+          <Typography.Text strong>GONEXT</Typography.Text> ©{" "}
           {new Date().getFullYear()}. All rights reserved.
           <Typography.Paragraph style={{ fontSize: "12px", color: "#666" }}>
-            gonext is not endorsed by Riot Games and does not reflect the views
+            GONEXT is not endorsed by Riot Games and does not reflect the views
             or opinions of Riot Games or anyone officially involved in producing
             or managing Riot Games properties. Riot Games and all associated
             properties are trademarks or registered trademarks of Riot Games,

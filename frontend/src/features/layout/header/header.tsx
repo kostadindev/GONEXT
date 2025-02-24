@@ -41,7 +41,7 @@ export const Header: React.FC = () => {
           style={{ ...goldmanStyle, cursor: "pointer" }}
           onClick={() => navigate("/")}
         >
-          gonext
+          GONEXT
         </div>
 
         {/* Hide search when on home page */}
