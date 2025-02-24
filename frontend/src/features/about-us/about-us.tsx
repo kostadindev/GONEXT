@@ -2,7 +2,6 @@ import React from "react";
 import { Card, Row, Col, Typography, Button, Tooltip } from "antd";
 import {
   GithubFilled,
-  GithubOutlined,
   GlobalOutlined,
   LinkedinFilled,
   MailFilled,
@@ -11,7 +10,7 @@ import {
 
 const { Title, Text, Paragraph } = Typography;
 
-type TeamMember = {
+interface TeamMember {
   name: string;
   title: string;
   description: string;
@@ -20,15 +19,18 @@ type TeamMember = {
   linkedin?: string;
   email?: string;
   website?: string;
-};
+}
 
 const AboutUs: React.FC = () => {
   const teamMembers: TeamMember[] = [
     {
       name: "Kostadin Devedzhiev",
       title: "Founder | ML | API | UI",
-      description:
-        "Kostadin is a visionary leader with expertise in machine learning, API development, and UI design. He drives innovation and excellence in our projects.",
+      description: `Kostadin has been playing League of Legends since Season 3, achieving a peak rank of Diamond 1. He currently leads engineering and product development at gonext.
+
+Prior to founding gonext, Kostadin was a Software Engineer at Stellar Cyber.
+
+He is currently pursuing a Master's in Computer Science, specializing in Natural Language Processing, at Columbia University in New York City.`,
       image:
         "https://media.licdn.com/dms/image/v2/D4E03AQHT-wFQ9xo1sA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1727758296269?e=1743033600&v=beta&t=u7b94xnynKeCumtQDipci8K8p9uiuIgMs_8dO9Qotdo",
       github: "https://github.com/kostadindev",
@@ -47,11 +49,7 @@ const AboutUs: React.FC = () => {
     },
   ];
 
-  const emailStyle = {
-    // color: "#1890ff",
-    fontSize: "16px",
-    marginTop: "10px",
-  };
+  const emailStyle = { fontSize: "16px", marginTop: "10px" };
 
   return (
     <div
@@ -64,12 +62,9 @@ const AboutUs: React.FC = () => {
       }}
     >
       <div
-        className="text-center mb-10 mx-auto"
-        style={{ maxWidth: "500px", textAlign: "center" }}
+        style={{ maxWidth: "500px", textAlign: "center", marginBottom: "40px" }}
       >
-        <Title level={2} style={{ marginBottom: "16px" }}>
-          Meet the Team
-        </Title>
+        <Title level={2}>Meet the Team</Title>
         <Paragraph type="secondary" style={{ fontSize: "16px" }}>
           Our team operates from New York City.
         </Paragraph>
@@ -78,169 +73,86 @@ const AboutUs: React.FC = () => {
       <Row gutter={[24, 24]} style={{ flex: 1, maxWidth: "1000px" }}>
         {teamMembers.map((member, index) => (
           <Col span={24} key={index}>
-            <Card
-              hoverable
-              style={{
-                borderRadius: "8px",
-                overflow: "hidden",
-                marginBottom: "20px",
-                padding: "20px",
-              }}
-            >
+            <Card hoverable style={{ borderRadius: "8px", padding: "20px" }}>
               <Row gutter={[16, 16]} align="middle">
-                {index % 2 === 0 ? (
-                  <>
-                    <Col xs={24} md={8} style={{ textAlign: "center" }}>
-                      <img
-                        alt={member.name}
-                        src={member.image}
-                        style={{
-                          height: "200px",
-                          width: "200px",
-                          borderRadius: "25%",
-                          objectFit: "contain",
-                        }}
-                      />
-                    </Col>
-                    <Col xs={24} md={16}>
-                      <Title level={5}>{member.name}</Title>
-                      <Text type="secondary">{member.title}</Text>
-                      <Paragraph style={{ marginTop: "10px" }}>
-                        {member.description}
-                      </Paragraph>
-                      {member.email && (
-                        <Paragraph style={emailStyle}>
-                          <a
-                            href={`mailto:${member.email}`}
-                            style={{ fontStyle: "italic"}}
-                          >
-                            {member.email}
-                          </a>
-                        </Paragraph>
-                      )}
-                      <div style={{ marginTop: "10px" }}>
-                        {member.website && (
-                          <Tooltip title="Website">
-                            <Button
-                              shape="circle"
-                              type="text"
-                              target="_blank"
-                              href={member.website}
-                              icon={<GlobalOutlined />}
-                            />
-                          </Tooltip>
-                        )}
-                        {member.email && (
-                          <Tooltip title="Email">
-                            <Button
-                              shape="circle"
-                              type="text"
-                              target="_blank"
-                              href={`mailto:${member.email}`}
-                              icon={<MailFilled />}
-                            />
-                          </Tooltip>
-                        )}
-                        {member.linkedin && (
-                          <Tooltip title="LinkedIn">
-                            <Button
-                              shape="circle"
-                              type="text"
-                              href={member.linkedin}
-                              target="_blank"
-                              icon={<LinkedinFilled />}
-                            />
-                          </Tooltip>
-                        )}
-                        {member.github && (
-                          <Tooltip title="GitHub">
-                            <Button
-                              shape="circle"
-                              type="text"
-                              href={member.github}
-                              target="_blank"
-                              icon={<GithubFilled />}
-                            />
-                          </Tooltip>
-                        )}
-                      </div>
-                    </Col>
-                  </>
-                ) : (
-                  <>
-                    <Col xs={24} md={16}>
-                      <Title level={5}>{member.name}</Title>
-                      <Text type="secondary">{member.title}</Text>
-                      <Paragraph style={{ marginTop: "10px" }}>
-                        {member.description}
-                      </Paragraph>
-                      {member.email && (
-                        <Paragraph style={emailStyle}>
-                          <MailFilled style={{ marginRight: "8px" }} />
-                          {member.email}
-                        </Paragraph>
-                      )}
-                      <div style={{ marginTop: "10px" }}>
-                        {member.website && (
-                          <Tooltip title="Website">
-                            <Button
-                              shape="circle"
-                              type="text"
-                              target="_blank"
-                              href={member.website}
-                              icon={<GlobalOutlined />}
-                            />
-                          </Tooltip>
-                        )}
-                        {member.email && (
-                          <Tooltip title="Email">
-                            <Button
-                              shape="circle"
-                              type="text"
-                              target="_blank"
-                              href={`mailto:${member.email}`}
-                              icon={<MailFilled />}
-                            />
-                          </Tooltip>
-                        )}
-                        {member.linkedin && (
-                          <Tooltip title="LinkedIn">
-                            <Button
-                              shape="circle"
-                              type="text"
-                              href={member.linkedin}
-                              target="_blank"
-                              icon={<LinkedinFilled />}
-                            />
-                          </Tooltip>
-                        )}
-                        {member.github && (
-                          <Tooltip title="GitHub">
-                            <Button
-                              shape="circle"
-                              type="text"
-                              href={member.github}
-                              target="_blank"
-                              icon={<GithubFilled />}
-                            />
-                          </Tooltip>
-                        )}
-                      </div>
-                    </Col>
-                    <Col xs={24} md={8} style={{ textAlign: "center" }}>
-                      <img
-                        alt={member.name}
-                        src={member.image}
-                        style={{
-                          height: "200px",
-                          width: "200px",
-                          borderRadius: "25%",
-                          objectFit: "contain",
-                        }}
-                      />
-                    </Col>
-                  </>
-                )}
+                <Col xs={24} md={8} style={{ textAlign: "center" }}>
+                  <img
+                    alt={member.name}
+                    src={member.image}
+                    style={{
+                      height: "200px",
+                      width: "200px",
+                      borderRadius: "25%",
+                      objectFit: "contain",
+                    }}
+                  />
+                </Col>
+                <Col xs={24} md={16}>
+                  <Title level={4}>{member.name}</Title>
+                  <Text type="secondary" style={{ fontSize: "16px" }}>
+                    {member.title}
+                  </Text>
+                  <Paragraph
+                    style={{ marginTop: "10px", whiteSpace: "pre-line" }}
+                  >
+                    {member.description}
+                  </Paragraph>
+                  {member.email && (
+                    <Paragraph style={emailStyle}>
+                      <a
+                        href={`mailto:${member.email}`}
+                        style={{ fontStyle: "italic" }}
+                      >
+                        {member.email}
+                      </a>
+                    </Paragraph>
+                  )}
+                  <div style={{ marginTop: "10px" }}>
+                    {member.website && (
+                      <Tooltip title="Website">
+                        <Button
+                          shape="circle"
+                          type="text"
+                          target="_blank"
+                          href={member.website}
+                          icon={<GlobalOutlined />}
+                        />
+                      </Tooltip>
+                    )}
+                    {member.email && (
+                      <Tooltip title="Email">
+                        <Button
+                          shape="circle"
+                          type="text"
+                          href={`mailto:${member.email}`}
+                          icon={<MailFilled />}
+                        />
+                      </Tooltip>
+                    )}
+                    {member.linkedin && (
+                      <Tooltip title="LinkedIn">
+                        <Button
+                          shape="circle"
+                          type="text"
+                          target="_blank"
+                          href={member.linkedin}
+                          icon={<LinkedinFilled />}
+                        />
+                      </Tooltip>
+                    )}
+                    {member.github && (
+                      <Tooltip title="GitHub">
+                        <Button
+                          shape="circle"
+                          type="text"
+                          target="_blank"
+                          href={member.github}
+                          icon={<GithubFilled />}
+                        />
+                      </Tooltip>
+                    )}
+                  </div>
+                </Col>
               </Row>
             </Card>
           </Col>
@@ -248,50 +160,19 @@ const AboutUs: React.FC = () => {
       </Row>
 
       <div
-        style={{
-          textAlign: "center",
-          paddingTop: "20px",
-          maxWidth: "1100px",
-          margin: "0 auto",
-        }}
+        style={{ textAlign: "center", paddingTop: "40px", maxWidth: "1100px" }}
       >
-        <Title level={2} style={{ marginBottom: "16px" }}>
-          Interested in Contributing?
-        </Title>
+        <Title level={2}>Interested in Contributing?</Title>
         <Paragraph type="secondary" style={{ fontSize: "16px" }}>
           As an open-source project, we’re always looking for talented
-          individuals to help us. If you’re passionate about innovation and
-          creating impactful solutions, we’d love to hear from you!
+          individuals to help us.
         </Paragraph>
-        <Tooltip title="Email us">
-          <Button
-            href="mailto:kostadin.g.devedzhiev@gmail.com"
-            style={{ margin: "16px 8px" }}
-            icon={<MailOutlined />}
-          >
-            Apply Here
-          </Button>
-        </Tooltip>
-        <Tooltip title="View on GitHub">
-          <Button
-            href="https://github.com/kostadindev/gonext"
-            target="_blank"
-            icon={<GithubOutlined />}
-            style={{ margin: "16px 8px" }}
-          >
-            gonext UI
-          </Button>
-        </Tooltip>
-        <Tooltip title="View on GitHub">
-          <Button
-            href="https://github.com/kostadindev/gonext-ml"
-            target="_blank"
-            icon={<GithubOutlined />}
-            style={{ margin: "16px 8px" }}
-          >
-            gonext ML
-          </Button>
-        </Tooltip>
+        <Button
+          href="mailto:kostadin.g.devedzhiev@gmail.com"
+          icon={<MailOutlined />}
+        >
+          Apply Here
+        </Button>
       </div>
     </div>
   );
