@@ -27,7 +27,7 @@ const AboutUs: React.FC = () => {
   const teamMembers: TeamMember[] = [
     {
       name: "Kostadin Devedzhiev",
-      title: "Founder | ML | API | UI",
+      title: "Founder | ML | API | UI | ADC",
       description: `Kostadin has been playing League of Legends since Season 3, achieving a peak rank of Diamond 1. He plays ADC and Jungle and his best champions are Tristana and Wukong.
 
 Kostadin leads engineering and product at GONEXT. Prior to founding GONEXT, Kostadin was a Software Engineer at Stellar Cyber.
@@ -42,7 +42,7 @@ He is an incoming student pursuing a Master's in Computer Science, specializing 
     },
     {
       name: "Ivan Nikolov",
-      title: "API | DevOps",
+      title: "API | DevOps | Jungle",
       description:
         "Ivan specializes in API development and DevOps practices, ensuring robust, scalable, and secure backend services.",
       image: `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/MasterYi_2.jpg`,
@@ -68,13 +68,13 @@ He is an incoming student pursuing a Master's in Computer Science, specializing 
       </Title>
       <Row gutter={[24, 24]} style={{ flex: 1, maxWidth: "1000px" }}>
         <Paragraph type="secondary" style={{ fontSize: "16px" }}>
-          GONEXT is a GenAI-powered assistant tailored for League of Legends
-          players, delivering real-time and personalized strategies, matchups,
-          synergies, and builds. By harnessing the Riot API, GONEXT retrieves
-          live game data—covering both allied and enemy players—and employs
-          large language models to offer context-specific guidance for every
-          match.
-        </Paragraph>
+          <b>GONEXT</b> is a GenAI-powered assistant tailored for League of
+          Legends players, delivering real-time and personalized strategies,
+          matchups, synergies, and builds. By harnessing the Riot API,{" "}
+          <b>GONEXT</b> retrieves live game data—covering both allied and enemy
+          players—and employs large language models to offer context-specific
+          guidance for every match.
+        </Paragraph>300
       </Row>
       <div style={{ maxWidth: "500px", textAlign: "center" }}>
         <Title level={2}>Meet the Team</Title>
