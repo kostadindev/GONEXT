@@ -74,7 +74,7 @@ He is an incoming student pursuing a Master's in Computer Science, specializing 
           <b>GONEXT</b> retrieves live game data—covering both allied and enemy
           players—and employs large language models to offer context-specific
           guidance for every match.
-        </Paragraph>300
+        </Paragraph>
       </Row>
       <div style={{ maxWidth: "500px", textAlign: "center" }}>
         <Title level={2}>Meet the Team</Title>
