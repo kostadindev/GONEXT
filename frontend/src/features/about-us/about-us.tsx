@@ -28,7 +28,7 @@ const AboutUs: React.FC = () => {
     {
       name: "Kostadin Devedzhiev",
       title: "Founder | ML | API | UI | ADC",
-      description: `Kostadin has been playing League of Legends since Season 3, achieving a peak rank of Diamond 1. He plays ADC and Jungle and his best champions are Tristana and Wukong.
+      description: `Kostadin has been playing League of Legends since Season 3, achieving a peak rank of Diamond 1. He plays ADC and Jungle. His favorite champion is Wukong.
 
 Kostadin leads engineering and product at GONEXT. Prior to founding GONEXT, Kostadin was a Software Engineer at Stellar Cyber.
 

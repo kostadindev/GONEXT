@@ -84,12 +84,11 @@ export const Footer = () => {
           </p>
           <p>
             <a
-              href="https://github.com/yourgithub"
+              href="https://github.com/kostadindev/gonext"
               target="_blank"
               rel="noreferrer"
             >
-              <GithubOutlined style={{ fontSize: "18px", color: "#171515" }} />{" "}
-              GitHub
+              <GithubOutlined style={{ fontSize: "18px" }} /> GitHub
             </a>
           </p>
         </Col>
@@ -98,7 +97,7 @@ export const Footer = () => {
       <Divider style={{ margin: "15px 0" }} />
 
       <p style={{ fontSize: "12px", color: "#888" }}>
-        Made with ❤️ by the <b>gonext</b> team.
+        Made with ❤️ by the <b>GONEXT</b> team.
       </p>
     </Layout.Footer>
   );

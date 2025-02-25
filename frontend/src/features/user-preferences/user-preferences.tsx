@@ -96,7 +96,7 @@ const UserPreferences: React.FC = () => {
         style={{ width: 175 }}
         size="large"
         options={[
-          { label: "Gemini 1.5 Flash", value: LLMOptions.GEMINI_FLASH },
+          { label: "Gemini Flash", value: LLMOptions.GEMINI_FLASH },
           { label: "GPT-4o Mini", value: LLMOptions.GPT_MINI },
           { label: "GPT-4o", value: LLMOptions.GPT },
         ]}
