@@ -33,14 +33,14 @@ export const Footer = () => {
             </a>
           </p>
           <p>
-            <a href="/privacy">
+            {/* <a href="/privacy">
               <FileTextOutlined /> Privacy Policy
-            </a>
+            </a> */}
           </p>
           <p>
-            <a href="/terms">
+            {/* <a href="/terms">
               <FileTextOutlined /> Terms of Service
-            </a>
+            </a> */}
           </p>
         </Col>
 
@@ -61,14 +61,14 @@ export const Footer = () => {
         <Col xs={24} sm={12} md={8}>
           <h3 style={{ marginBottom: 10 }}>Follow Us</h3>
           <p>
-            <a
+            {/* <a
               href="https://discord.gg/yourinvite"
               target="_blank"
               rel="noreferrer"
             >
               <DiscordOutlined style={{ fontSize: "18px", color: "#5865F2" }} />{" "}
               Discord
-            </a>
+            </a> */}
           </p>
           <p>
             <a
