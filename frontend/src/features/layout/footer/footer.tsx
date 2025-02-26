@@ -28,7 +28,7 @@ export const Footer = () => {
             </a>
           </p>
           <p>
-            <a href="/about-us">
+            <a href="/contact">
               <MailOutlined /> Contact
             </a>
           </p>

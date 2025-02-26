@@ -16,6 +16,7 @@ import { ConfigProvider, theme, Layout } from "antd";
 import { PlayerPage } from "./features/player-view/player-page";
 import HomePage from "./features/home/home";
 import NotFound from "./features/not-found/not-found";
+import Contact from "./features/contact/contact";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -31,7 +32,7 @@ const router = createBrowserRouter(
         element={<PlayerPage />}
       />
       <Route path="/about-us" element={<AboutUs />} />
-
+      <Route path="/contact" element={<Contact />} />
       {/* Catch-all 404 route */}
       <Route path="*" element={<NotFound />} />
     </Route>
