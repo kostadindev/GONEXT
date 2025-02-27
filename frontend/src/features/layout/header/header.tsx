@@ -78,7 +78,7 @@ export const Header: React.FC = () => {
         />
 
         {/* Authentication: show logout if logged in, or sign in if not */}
-        {user ? (
+        {/* {user ? (
           <Button size="large" onClick={onLogout} className="cool-button">
             <div className="flex gap-3 items-center h-full">
               {user.picture && <Avatar src={user.picture} size={30} />}
@@ -88,13 +88,13 @@ export const Header: React.FC = () => {
         ) : (
           <GoogleLogin
             onSuccess={onLoginSuccess}
-            theme={isDarkMode ? "filled_black" : "outline"}
+            theme={"outline"}
             text={undefined}
             useOneTap
             shape="circle"
             onError={onLoginError}
           />
-        )}
+        )} */}
       </div>
     </Layout.Header>
   );
