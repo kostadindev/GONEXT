@@ -8,8 +8,8 @@ export const rateLimiter = () => {
 
   return async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     try {
-      const userId = req.user?._id;
-      const identifier = userId ? `user:${userId}` : `ip:${req.ip}`;
+      // const userId = req.user?._id;
+      const identifier = `ip:${req.ip}`;
 
       // Define Redis keys for each time frame
       const keys = {
