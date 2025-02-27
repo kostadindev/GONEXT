@@ -29,27 +29,15 @@ const HomePage: React.FC = () => {
   };
 
   // If no user is logged in, the "Login" step is active; otherwise, the process continues.
-  const stepsItems = user
-    ? [
-        { title: "Sign in", status: "finish", icon: <UserOutlined /> },
-        {
-          title: "Search Player in Game",
-          status: "process",
-          icon: <SolutionOutlined />,
-        },
-        { title: "Ask AI", status: "wait", icon: <RobotOutlined /> },
-        { title: "Win", status: "wait", icon: <SmileOutlined /> },
-      ]
-    : [
-        { title: "Sign in", status: "process", icon: <UserOutlined /> },
-        {
-          title: "Search Player in Game",
-          status: "wait",
-          icon: <SolutionOutlined />,
-        },
-        { title: "Ask AI", status: "wait", icon: <RobotOutlined /> },
-        { title: "Win", status: "wait", icon: <SmileOutlined /> },
-      ];
+  const stepsItems = [
+    {
+      title: "Search Player in Game",
+      status: "process",
+      icon: <SolutionOutlined />,
+    },
+    { title: "Ask AI", status: "wait", icon: <RobotOutlined /> },
+    { title: "Win", status: "wait", icon: <SmileOutlined /> },
+  ];
 
   return (
     <div className="w-full h-full flex flex-col justify-center items-center">
@@ -70,7 +58,7 @@ const HomePage: React.FC = () => {
 
       {/* Conditional rendering: if user exists, show search; otherwise, show sign in */}
       <Content className="flex flex-col items-center mt-8 text-center">
-        {user ? (
+        {/* {user ? (
           <Space size="small">
             <GlobalSearch /> <span>or</span> <QuickSearch />
           </Space>
@@ -80,7 +68,10 @@ const HomePage: React.FC = () => {
             onError={onLoginError}
             useOneTap
           />
-        )}
+        )} */}
+        <Space size="small">
+          <GlobalSearch /> <span>or</span> <QuickSearch />
+        </Space>
       </Content>
 
       {/* Image Carousel */}

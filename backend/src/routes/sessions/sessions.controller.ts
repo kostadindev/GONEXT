@@ -7,10 +7,10 @@ import { NEW_SESSION_NAME } from '../../constants/session.constants';
 class SessionController {
   async getAllSessions(req: AuthenticatedRequest, res: Response) {
     try {
-      const userId = req.user?._id; // Extract userId from request
-      if (!userId) {
-        return res.status(401).json({ message: 'User not authenticated' });
-      }
+      const userId = req.user?._id || req.ip; // Extract userId from request
+      // if (!userId) {
+      //   return res.status(401).json({ message: 'User not authenticated' });
+      // }
       const sessions = await sessionService.fetchAllSessions(userId);
       res.status(200).json(sessions);
     } catch (error) {
@@ -21,10 +21,11 @@ class SessionController {
   async getSessionById(req: AuthenticatedRequest, res: Response) {
     const { id } = req.params;
     try {
-      const userId = req.user?._id; // Extract userId from request
-      if (!userId) {
-        return res.status(401).json({ message: 'User not authenticated' });
-      }
+      // user id or user ip
+      const userId = req.user?._id || req.ip;
+      // if (!userId) {
+      //   return res.status(401).json({ message: 'User not authenticated' });
+      // }
       const session = await sessionService.fetchSessionById(id, userId);
       if (session) {
         res.status(200).json(session);
@@ -39,7 +40,7 @@ class SessionController {
   async createSession(req: AuthenticatedRequest, res: Response) {
     try {
       const { name, gameId } = req.body;
-      const userId = req.user?._id; // Extract userId from request
+      const userId = req.user?._id || req?.ip; // Extract userId from request
       if (!userId) {
         return res.status(401).json({ message: 'User not authenticated' });
       }
@@ -57,7 +58,7 @@ class SessionController {
     const { id } = req.params;
     const { name } = req.body;
     try {
-      const userId = req.user?._id; // Extract userId from request
+      const userId = req.user?._id || req.ip; // Extract userId from request
       if (!userId) {
         return res.status(401).json({ message: 'User not authenticated' });
       }
@@ -75,7 +76,7 @@ class SessionController {
   async deleteSession(req: AuthenticatedRequest, res: Response) {
     const { id } = req.params;
     try {
-      const userId = req.user?._id; // Extract userId from request
+      const userId = req.user?._id || req.ip; // Extract userId from request
       if (!userId) {
         return res.status(401).json({ message: 'User not authenticated' });
       }
@@ -98,7 +99,7 @@ class SessionController {
       return res.status(400).json({ message: 'Role and content are required' });
     }
 
-    const userId = req.user?._id; // Extract userId from request
+    const userId = req.user?._id || req.ip; // Extract userId from request
     if (!userId) {
       return res.status(401).json({ message: 'User not authenticated' });
     }
@@ -128,7 +129,7 @@ class SessionController {
       return res.status(400).json({ message: 'Content is required' });
     }
 
-    const userId = req.user?._id; // Extract userId from request
+    const userId = req.user?._id || req.ip; // Extract userId from request
     if (!userId) {
       return res.status(401).json({ message: 'User not authenticated' });
     }
@@ -151,7 +152,7 @@ class SessionController {
   async getSessionByGameId(req: AuthenticatedRequest, res: Response) {
     const { gameId } = req.params;
     try {
-      const userId = req.user?._id;
+      const userId = req.user?._id || req.ip;
       if (!userId) {
         return res.status(401).json({ message: 'User not authenticated' });
       }

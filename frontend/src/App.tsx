@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import AppLayout from "./features/layout/layout";
 import {
   Route,
@@ -10,7 +10,7 @@ import ErrorPage from "./features/layout/error-page";
 import { ActiveGame } from "./features/active-game/active-game";
 import { Placeholder } from "./features/filler-content";
 import { NotificationProvider } from "./features/notifications/notification-context";
-import { useUser, UserProvider } from "./context/user.context";
+import { UserProvider } from "./context/user.context";
 import AboutUs from "./features/about-us/about-us";
 import { ConfigProvider, theme, Layout } from "antd";
 import { PlayerPage } from "./features/player-view/player-page";
@@ -40,9 +40,20 @@ const router = createBrowserRouter(
 );
 
 const ThemedApp = () => {
-  const { user } = useUser();
+  // Initialize the theme from localStorage
+  const [currentTheme, setCurrentTheme] = useState<string>(
+    localStorage.getItem("theme") || "light"
+  );
 
-  const currentTheme = user?.theme || "light";
+  // Listen for the custom "themeChanged" event
+  useEffect(() => {
+    const handleThemeChange = () => {
+      setCurrentTheme(localStorage.getItem("theme") || "light");
+    };
+
+    window.addEventListener("themeChanged", handleThemeChange);
+    return () => window.removeEventListener("themeChanged", handleThemeChange);
+  }, []);
 
   return (
     <ConfigProvider

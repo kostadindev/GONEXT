@@ -4,7 +4,7 @@ import { authenticateToken } from '../../middlewares/auth.middleware';
 
 const summonersRouter = express.Router();
 
-summonersRouter.use(authenticateToken);
+// summonersRouter.use(authenticateToken);
 
 summonersRouter.get('/api/summoners/stats', SummonersController.getSummonerStats);
 summonersRouter.get('/api/summoners/by-riot-id', SummonersController.getSummonerByRiotId);

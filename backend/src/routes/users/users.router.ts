@@ -5,7 +5,7 @@ import { authenticateToken } from '../../middlewares/auth.middleware';
 const router = express.Router();
 
 
-router.use(authenticateToken);
+// router.use(authenticateToken);
 
 /**
  * Route to update the LLM of a user.

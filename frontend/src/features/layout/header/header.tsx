@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Avatar, Button, Layout, Typography } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import GlobalSearch from "../../global-search/global-search";
@@ -6,13 +6,13 @@ import { QuickSearch } from "../../quick-search/quick-search";
 import { GoogleLogin } from "@react-oauth/google";
 import { handleLoginSuccess, handleLogout } from "../../../libs/apis/auth-api";
 import { useUser } from "../../../context/user.context";
-import UserPreferences from "../../user-preferences/user-preferences";
+import { DarkModeSwitch } from "react-toggle-dark-mode";
 
 const { Text } = Typography;
 
 export const Header: React.FC = () => {
   const navigate = useNavigate();
-  const location = useLocation(); // Get the current route
+  const location = useLocation();
   const { user, setUser } = useUser();
 
   const onLoginSuccess = async (credentialResponse: any) => {
@@ -33,10 +33,23 @@ export const Header: React.FC = () => {
     localStorage.removeItem("theme");
   };
 
+  // Initialize dark mode based on local storage
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(
+    localStorage.getItem("theme") === "dark"
+  );
+
+  const toggleDarkMode = (checked: boolean) => {
+    setIsDarkMode(checked);
+    const newTheme = checked ? "dark" : "light";
+    localStorage.setItem("theme", newTheme);
+    // Dispatch a custom event to let the rest of the app know the theme has changed
+    window.dispatchEvent(new Event("themeChanged"));
+  };
+
   return (
     <Layout.Header style={headerStyle}>
       <div style={{ display: "flex", alignItems: "center", gap: "2rem" }}>
-        {/* Make the logo a clickable text */}
+        {/* Logo */}
         <div
           style={{ ...goldmanStyle, cursor: "pointer" }}
           onClick={() => navigate("/")}
@@ -44,7 +57,7 @@ export const Header: React.FC = () => {
           GONEXT
         </div>
 
-        {/* Hide search when on home page */}
+        {/* Global Search and Quick Search (hidden on home) */}
         {location.pathname !== "/" && (
           <div
             style={{ display: "flex", alignItems: "center", gap: "1.25rem" }}
@@ -57,37 +70,30 @@ export const Header: React.FC = () => {
       </div>
 
       <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-        <UserPreferences />
+        {/* Dark mode toggle */}
+        <DarkModeSwitch
+          checked={isDarkMode}
+          onChange={toggleDarkMode}
+          size={25}
+        />
 
-        {/* 
-          Authentication:
-          - If the user is logged in, show the logout button.
-          - If the user is not logged in and NOT on the home page, show the sign-in button.
-          - If on the home page and not logged in, show nothing.
-        */}
+        {/* Authentication: show logout if logged in, or sign in if not */}
         {user ? (
-          <Button
-            // type="primary"
-            size="large"
-            onClick={onLogout}
-            className="cool-button"
-          >
+          <Button size="large" onClick={onLogout} className="cool-button">
             <div className="flex gap-3 items-center h-full">
               {user.picture && <Avatar src={user.picture} size={30} />}
               <span>Log out</span>
             </div>
           </Button>
         ) : (
-          location.pathname !== "/" && (
-            <GoogleLogin
-              onSuccess={onLoginSuccess}
-              theme="filled_blue"
-              text={undefined}
-              useOneTap
-              shape="circle"
-              onError={onLoginError}
-            />
-          )
+          <GoogleLogin
+            onSuccess={onLoginSuccess}
+            theme={isDarkMode ? "filled_black" : "outline"}
+            text={undefined}
+            useOneTap
+            shape="circle"
+            onError={onLoginError}
+          />
         )}
       </div>
     </Layout.Header>
