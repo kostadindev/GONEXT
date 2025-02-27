@@ -1,6 +1,10 @@
 import React from "react";
 import { Card, Typography, Button, Avatar } from "antd";
-import { InfoCircleOutlined } from "@ant-design/icons";
+import {
+  InfoCircleOutlined,
+  RobotFilled,
+  RobotOutlined,
+} from "@ant-design/icons";
 import { OpenAIOutlined, OpenAIFilled, SmileOutlined } from "@ant-design/icons";
 
 const { Title, Text } = Typography;
@@ -42,7 +46,7 @@ const DefaultPrompts: React.FC<DefaultPromptsProps> = ({
   return (
     <div className="p-6 h-full flex justify-center flex-col">
       <div className="flex justify-center w-full p-10">
-        <Avatar style={{ marginRight: 8 }} size={60} icon={<OpenAIFilled />} />
+        <Avatar style={{ marginRight: 8 }} size={60} icon={<RobotFilled />} />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {DEFAULT_PROMPTS.map((prompt, index) => (

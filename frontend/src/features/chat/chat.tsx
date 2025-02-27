@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, ChangeEvent } from "react";
 import { Button, Avatar, Spin, Card } from "antd";
 import TextArea from "antd/es/input/TextArea";
-import { SendOutlined } from "@ant-design/icons";
+import { RobotOutlined, SendOutlined } from "@ant-design/icons";
 import { OpenAIFilled } from "@ant-design/icons";
 import DefaultPrompts from "./default-prompts/default-prompts";
 import {
@@ -187,7 +187,7 @@ const ChatComponent: React.FC<{
             <div key={index} className="my-2 flex pb-1">
               {showAvatar &&
                 (msg.role === "system" ? (
-                  <Avatar style={{ marginRight: 8 }} icon={<OpenAIFilled />} />
+                  <Avatar style={{ marginRight: 8 }} icon={<RobotOutlined />} />
                 ) : (
                   <Avatar style={{ marginRight: 8 }} src={user?.picture} />
                 ))}
