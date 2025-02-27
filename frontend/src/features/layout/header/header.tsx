@@ -35,7 +35,7 @@ export const Header: React.FC = () => {
 
   // Initialize dark mode based on local storage
   const [isDarkMode, setIsDarkMode] = useState<boolean>(
-    localStorage.getItem("theme") === "dark"
+    localStorage.getItem("theme") !== "light"
   );
 
   const toggleDarkMode = (checked: boolean) => {
