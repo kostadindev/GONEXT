@@ -46,7 +46,11 @@ const DefaultPrompts: React.FC<DefaultPromptsProps> = ({
   return (
     <div className="p-6 h-full flex justify-center flex-col">
       <div className="flex justify-center w-full p-10">
-        <Avatar style={{ marginRight: 8 }} size={60} icon={<RobotFilled />} />
+        <Avatar
+          style={{ marginRight: 8 }}
+          size={60}
+          icon={<RobotFilled spin />}
+        />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {DEFAULT_PROMPTS.map((prompt, index) => (
