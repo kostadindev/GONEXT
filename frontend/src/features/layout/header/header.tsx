@@ -48,7 +48,13 @@ export const Header: React.FC = () => {
 
   return (
     <Layout.Header style={headerStyle}>
-      <div style={{ display: "flex", alignItems: "center", gap: "2rem" }}>
+      <div
+        style={{
+          display: "flex",
+          gap: "2rem",
+          width: "100%",
+        }}
+      >
         {/* Logo */}
         <div
           style={{ ...goldmanStyle, cursor: "pointer" }}
@@ -59,11 +65,9 @@ export const Header: React.FC = () => {
 
         {/* Global Search and Quick Search (hidden on home) */}
         {location.pathname !== "/" && (
-          <div
-            style={{ display: "flex", alignItems: "center", gap: "1.25rem" }}
-          >
+          <div className="w-full flex flex-col sm:flex-row items-center  gap-5">
             <GlobalSearch />
-            <span>or</span>
+            <span className="hidden sm:block">or</span>
             <QuickSearch />
           </div>
         )}

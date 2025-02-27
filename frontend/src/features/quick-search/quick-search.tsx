@@ -8,9 +8,8 @@ export const QuickSearch = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
-  const hasFetched = useRef(false); // Prevents double fetching in Strict Mode
+  const hasFetched = useRef(false);
 
-  // Function to fetch and update featured summoner
   const fetchFeaturedSummoner = async () => {
     let isMounted = true;
     setLoading(true);
@@ -37,40 +36,28 @@ export const QuickSearch = () => {
     };
   };
 
-  // Fetch featured summoner on mount only once
   useEffect(() => {
-    let isMounted = true;
-
     if (!hasFetched.current) {
-      hasFetched.current = true; // Prevents duplicate fetches
+      hasFetched.current = true;
       fetchFeaturedSummoner();
     }
-
-    return () => {
-      isMounted = false;
-    };
   }, []);
 
-  // Handle quick search and refetch new summoner after clicking
   const handleQuickSearch = async () => {
     const [summoner, tagline] = featuredSummoner
       .split("#")
       .map((str) => str.trim());
     if (summoner && tagline) {
-      // Save to local storage
       localStorage.setItem("latestSummoner", summoner);
       localStorage.setItem("latestTagline", tagline);
-
       navigate(`/${"NA"}/${summoner}/${tagline}/in-game`);
-
-      // Fetch new featured summoner after navigating
       fetchFeaturedSummoner();
     }
   };
 
   if (loading)
     return (
-      <div className="w-[80px] flex justify-center items-center">
+      <div className="w-20 flex justify-center items-center">
         <Spin />
       </div>
     );
@@ -79,10 +66,8 @@ export const QuickSearch = () => {
   return (
     <>
       <Button type="primary" size="large" onClick={handleQuickSearch}>
-        {featuredSummoner?.split("#")?.[0]}{" "}
-        <span style={{ fontStyle: "italic", marginLeft: 4 }}>
-          #{featuredSummoner?.split("#")?.[1]}
-        </span>
+        {featuredSummoner.split("#")[0]}{" "}
+        <span className="italic ml-1">#{featuredSummoner.split("#")[1]}</span>
       </Button>
     </>
   );

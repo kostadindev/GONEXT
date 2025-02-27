@@ -1,12 +1,11 @@
 import React from "react";
-import { Layout, Typography, Space, Steps, Carousel } from "antd";
+import { Layout, Typography, Steps, Carousel } from "antd";
 import GlobalSearch from "../global-search/global-search";
 import { QuickSearch } from "../quick-search/quick-search";
 import {
   RobotOutlined,
   SmileOutlined,
   SolutionOutlined,
-  UserOutlined,
 } from "@ant-design/icons";
 import { GoogleLogin } from "@react-oauth/google";
 import { handleLoginSuccess } from "../../libs/apis/auth-api";
@@ -28,7 +27,6 @@ const HomePage: React.FC = () => {
     console.error("Login Failed");
   };
 
-  // If no user is logged in, the "Login" step is active; otherwise, the process continues.
   const stepsItems = [
     {
       title: "Search Player in Game",
@@ -40,15 +38,15 @@ const HomePage: React.FC = () => {
   ];
 
   return (
-    <div className="w-full h-full flex flex-col justify-center items-center">
+    <div className="w-full h-full flex flex-col justify-center items-center p-4">
       {/* Header Section */}
-      <div className="w-full max-w-[50%] py-8 text-center">
+      <div className="w-full max-w-3xl py-8 text-center">
         <Title level={3}>AI-powered In-Game Assistance and Analytics</Title>
         <Steps className="w-full" items={stepsItems as any} />
       </div>
 
       {/* AI Chatbot Usage Explanation */}
-      <Paragraph className="text-center max-w-[50%] mb-4">
+      <Paragraph className="text-center max-w-3xl mb-4">
         Once you've searched for a player in an active game, type any question
         about the game or players into the chat to receive AI insights. The AI
         agent has access to all visible game data, including the current match,
@@ -57,7 +55,8 @@ const HomePage: React.FC = () => {
       </Paragraph>
 
       {/* Conditional rendering: if user exists, show search; otherwise, show sign in */}
-      <Content className="flex flex-col items-center mt-8 text-center">
+      <Content className="flex flex-col items-center mt-8 text-center w-full">
+        {/* Uncomment and conditionally render GoogleLogin if needed */}
         {/* {user ? (
           <Space size="small">
             <GlobalSearch /> <span>or</span> <QuickSearch />
@@ -69,22 +68,25 @@ const HomePage: React.FC = () => {
             useOneTap
           />
         )} */}
-        <Space size="small">
-          <GlobalSearch /> <span>or</span> <QuickSearch />
-        </Space>
+        <div className="w-full flex flex-col sm:flex-row items-center justify-center gap-5">
+          <GlobalSearch />
+          <span className="hidden sm:block">or</span>
+          <QuickSearch />
+        </div>
       </Content>
 
       {/* Image Carousel */}
-      <div className="w-[50vw] pt-16">
+      <div className="w-full sm:w-[50vw] pt-16">
         <Carousel autoplay arrows>
           {[0, 1, 2, 3].map((index) => (
             <div
               key={index}
-              className="w-[50vw] h-[50vh] flex items-center justify-center"
+              className="w-full sm:w-[50vw] h-[50vh] flex items-center justify-center"
             >
               <img
                 src={`images/carousel/slide${index}.png`}
                 alt={`Slide ${index}`}
+                className="object-contain w-full h-full"
               />
             </div>
           ))}
