@@ -46,8 +46,9 @@ export const Footer = () => {
 
         {/* Company Info */}
         <Col xs={24} sm={12} md={8} style={{ textAlign: "center" }}>
-          <Typography.Text strong>GONEXT</Typography.Text> ©{" "}
-          {new Date().getFullYear()}. All rights reserved.
+          <Typography.Text strong>GONEXT</Typography.Text>
+          {/* ©{" "} */}
+          {/* {new Date().getFullYear()}. All rights reserved. */}
           <Typography.Paragraph style={{ fontSize: "12px", color: "#666" }}>
             GONEXT is not endorsed by Riot Games and does not reflect the views
             or opinions of Riot Games or anyone officially involved in producing
@@ -70,7 +71,7 @@ export const Footer = () => {
               Discord
             </a> */}
           </p>
-          <p>
+          {/* <p>
             <a
               href="https://www.linkedin.com/company/yourcompany"
               target="_blank"
@@ -81,7 +82,7 @@ export const Footer = () => {
               />{" "}
               LinkedIn
             </a>
-          </p>
+          </p> */}
           <p>
             <a
               href="https://github.com/kostadindev/gonext"
