@@ -64,7 +64,7 @@ const ChatComponent: React.FC<{
       if (game?.gameId) {
         try {
           setLoadingSession(true);
-          const session = await getSessionByGameId(game?.gameId);
+          const session = await getSessionByGameId(game.gameId);
           if (session && isMounted) {
             setSessionId(session._id);
             setMessages(session.messages || []);
@@ -91,12 +91,14 @@ const ChatComponent: React.FC<{
     const textToSend = message || input;
 
     if (textToSend.trim()) {
+      // Add the user message
       setMessages((prevMessages) => [
         ...prevMessages,
         { content: textToSend, role: "user" },
       ]);
       setInput("");
-      setIsSending(true); // Start loading
+      setIsSending(true);
+      console.log("Sending message:", textToSend, sessionId);
 
       try {
         if (sessionId) {
@@ -105,31 +107,34 @@ const ChatComponent: React.FC<{
             role: "user",
           });
 
-          // Handle the streaming response
+          // Start streaming response
           let partialResponse = "";
-          let hasStartedSystemMessage = false;
+          let systemMessageIndex = -1;
+          // Append a new system message and store its index
+          setMessages((prevMessages: any) => {
+            const updatedMessages = [
+              ...prevMessages,
+              { content: "", role: "system" },
+            ];
+            systemMessageIndex = updatedMessages.length - 1;
+            return updatedMessages;
+          });
 
+          // Stream the response chunks
           await sendChatMessageStream(
             sessionId,
             { query: textToSend, match: game },
             (chunk) => {
-              partialResponse += chunk; // Accumulate chunks into partialResponse
+              partialResponse += chunk;
               setMessages((prevMessages) => {
                 const updatedMessages = [...prevMessages];
-
-                if (!hasStartedSystemMessage) {
-                  // Add an initial system message only once
-                  updatedMessages.push({
-                    content: "",
-                    role: "system",
-                  });
-                  hasStartedSystemMessage = true;
+                // Verify that the message at our tracked index is a system message before updating
+                if (
+                  systemMessageIndex >= 0 &&
+                  updatedMessages[systemMessageIndex]?.role === "system"
+                ) {
+                  updatedMessages[systemMessageIndex].content = partialResponse;
                 }
-
-                // Update the last system message with the accumulated response
-                const lastMessageIndex = updatedMessages.length - 1;
-                updatedMessages[lastMessageIndex].content = partialResponse;
-
                 return updatedMessages;
               });
             }
@@ -146,7 +151,7 @@ const ChatComponent: React.FC<{
       } catch (error) {
         console.error("Error interacting with chatbot API:", error);
       } finally {
-        setIsSending(false); // End loading
+        setIsSending(false);
         scrollToBottom();
       }
     }
@@ -226,12 +231,12 @@ const ChatComponent: React.FC<{
               placeholder="Type your message here..."
               style={{ fontSize: "16px" }}
               maxLength={256}
-              disabled={isSending} // Disable when loading
+              disabled={isSending}
             />
             <Button
               icon={<SendOutlined />}
               onClick={() => handleSendMessage()}
-              disabled={isSending} // Disable when loading
+              disabled={isSending}
             />
           </div>
         </div>
