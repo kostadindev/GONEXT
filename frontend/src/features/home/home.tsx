@@ -41,17 +41,15 @@ const HomePage: React.FC = () => {
     <div className="w-full h-full flex flex-col justify-center items-center p-4">
       {/* Header Section */}
       <div className="w-full max-w-3xl py-8 text-center">
-        <Title level={3}>AI-powered In-Game Assistance and Analytics</Title>
         <Steps className="w-full" items={stepsItems as any} />
       </div>
 
       {/* AI Chatbot Usage Explanation */}
-      <Paragraph className="text-center max-w-3xl mb-4">
-        Once you've searched for a player in an active game, type any question
-        about the game or players into the chat to receive AI insights. The AI
-        agent has access to all visible game data, including the current match,
-        players, and their histories. It can provide personalized advice such as
-        optimal item builds and laning strategies tailored for this match.
+      <Paragraph className="text-center max-w-4xl">
+        Search for a player in an active game, then ask anything about the match
+        or players in chat! The AI knows all visible game data—current match,
+        player stats, and histories. Get personalized tips like the best item
+        builds and laning strategies for this game.
       </Paragraph>
 
       {/* Conditional rendering: if user exists, show search; otherwise, show sign in */}

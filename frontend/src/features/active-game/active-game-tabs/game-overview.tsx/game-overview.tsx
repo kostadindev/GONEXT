@@ -49,6 +49,7 @@ export const GameOverview: React.FC<{ game: Game | null }> = ({ game }) => {
           game={game}
           height={"75vh"}
           showAvatar={false}
+          context={{ game: game as Game }}
         ></ChatComponent>
       </div>
       <div className="w-1/5 min-w-[250px] pl-4 flex flex-col space-y-4">

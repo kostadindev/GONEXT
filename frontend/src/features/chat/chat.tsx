@@ -20,11 +20,17 @@ interface Message {
   role: "user" | "system";
 }
 
+interface ChatContext {
+  game?: Game;
+  history?: any;
+}
+
 const ChatComponent: React.FC<{
   game: Game | null;
   height: string;
   showAvatar?: boolean;
-}> = ({ game, height, showAvatar = true }) => {
+  context?: ChatContext;
+}> = ({ game, height, showAvatar = true, context = {} }) => {
   const { user } = useUser();
   const { token } = useToken();
   const primaryColor = token.colorPrimary;
@@ -123,7 +129,7 @@ const ChatComponent: React.FC<{
           // Stream the response chunks
           await sendChatMessageStream(
             sessionId,
-            { query: textToSend, match: game },
+            { query: textToSend, match: game, context },
             (chunk) => {
               partialResponse += chunk;
               setMessages((prevMessages) => {
