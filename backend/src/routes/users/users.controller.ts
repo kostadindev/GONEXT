@@ -41,7 +41,7 @@ class UsersController {
       // Set the updated token in the response cookie
       res.cookie("token", token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        // secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
       });
 
@@ -77,7 +77,7 @@ class UsersController {
       // Set the updated token in the response cookie
       res.cookie("token", token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        // secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
       });
 
@@ -113,7 +113,7 @@ class UsersController {
       // Set the updated token in the response cookie
       res.cookie("token", token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        // secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
       });
 

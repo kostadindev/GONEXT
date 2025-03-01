@@ -1,6 +1,13 @@
 import axios from "axios";
 
-export const BASE_URL = 'http://localhost:8080/api'; // TODO use env var
+// Ensure BACKEND_URL is properly read from environment variables
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+
+if (!BACKEND_URL) {
+  throw new Error("REACT_APP_BACKEND_URL is not defined in environment variables.");
+}
+
+export const BASE_URL = `${BACKEND_URL}/api`;
 
 // Helper function to handle GET requests
 export const fetchData = async (endpoint: string, params: Record<string, any> = {}) => {

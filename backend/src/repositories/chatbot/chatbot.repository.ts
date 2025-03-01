@@ -11,7 +11,7 @@ class ChatBotRepository {
   private baseURL: string;
 
   constructor() {
-    this.baseURL = "http://127.0.0.1:8000/chatbot"; // FastAPI base URL TODO make an env variable
+    this.baseURL = `${process.env.ML_SERVER_URL}/chatbot`;
   }
 
   /**
