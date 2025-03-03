@@ -32,16 +32,6 @@ export const Footer = () => {
               <MailOutlined /> Contact
             </a>
           </p>
-          <p>
-            {/* <a href="/privacy">
-              <FileTextOutlined /> Privacy Policy
-            </a> */}
-          </p>
-          <p>
-            {/* <a href="/terms">
-              <FileTextOutlined /> Terms of Service
-            </a> */}
-          </p>
         </Col>
 
         {/* Company Info */}
@@ -61,28 +51,6 @@ export const Footer = () => {
         {/* Social Media Links */}
         <Col xs={24} sm={12} md={8}>
           <h3 style={{ marginBottom: 10 }}>Follow Us</h3>
-          <p>
-            {/* <a
-              href="https://discord.gg/yourinvite"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <DiscordOutlined style={{ fontSize: "18px", color: "#5865F2" }} />{" "}
-              Discord
-            </a> */}
-          </p>
-          {/* <p>
-            <a
-              href="https://www.linkedin.com/company/yourcompany"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <LinkedinOutlined
-                style={{ fontSize: "18px", color: "#0077B5" }}
-              />{" "}
-              LinkedIn
-            </a>
-          </p> */}
           <p>
             <a
               href="https://github.com/kostadindev/gonext"
