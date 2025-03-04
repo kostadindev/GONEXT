@@ -17,6 +17,7 @@ import { PlayerPage } from "./features/player-view/player-page";
 import HomePage from "./features/home/home";
 import NotFound from "./features/not-found/not-found";
 import Contact from "./features/contact/contact";
+import CookieConsent from "./features/cookie-consent/cookie-consent";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -79,6 +80,7 @@ const ThemedApp = () => {
       <NotificationProvider>
         <Layout>
           <RouterProvider router={router} />
+          <CookieConsent />
         </Layout>
       </NotificationProvider>
     </ConfigProvider>
