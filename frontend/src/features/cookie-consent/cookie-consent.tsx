@@ -1,17 +1,33 @@
 import { useEffect, useState } from "react";
-import { Modal, Button } from "antd";
+import { Layout, Button, Typography, Row, Col, Space } from "antd";
+
+const { Footer } = Layout;
+const { Text, Link } = Typography;
 
 const COOKIE_CONSENT_KEY = "cookieConsent";
 
-const CookieConsent = () => {
+const CookieConsentBanner = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(
+    localStorage.getItem("theme") !== "light"
+  );
 
+  // Check for cookie consent on mount
   useEffect(() => {
-    // Show the modal only if no choice has been made
     const consent = localStorage.getItem(COOKIE_CONSENT_KEY);
-    if (consent === null) {
+    if (!consent) {
       setIsVisible(true);
     }
+  }, []);
+
+  // Listen for theme changes
+  useEffect(() => {
+    const handleThemeChange = () => {
+      setIsDarkMode(localStorage.getItem("theme") !== "light");
+    };
+
+    window.addEventListener("themeChanged", handleThemeChange);
+    return () => window.removeEventListener("themeChanged", handleThemeChange);
   }, []);
 
   const handleAccept = () => {
@@ -26,32 +42,42 @@ const CookieConsent = () => {
     // Optionally, disable non-essential cookies or tracking scripts here
   };
 
+  if (!isVisible) return null;
+
   return (
-    <Modal
-      title="Cookie Consent"
-      open={isVisible}
-      footer={null}
-      closable={false}
-      centered
-      maskClosable={false}
+    <Footer
+      style={{
+        position: "fixed",
+        bottom: 0,
+        width: "100%",
+        padding: "16px 24px",
+        boxShadow: "0 -2px 8px rgba(0, 0, 0, 0.1)",
+        zIndex: 1000,
+        backgroundColor: isDarkMode ? "#1f1f1f" : "#ffffff",
+      }}
     >
-      <p className="text-gray-600">
-        We use cookies to personalize content, provide social media features,
-        and analyze our traffic. By clicking “Accept”, you consent to our use of
-        cookies. You can also{" "}
-        <a href="/privacy-policy" className="text-blue-500 underline ml-1">
-          learn more
-        </a>
-        .
-      </p>
-      <div className="flex justify-end mt-4 space-x-2">
-        <Button onClick={handleDecline}>Decline</Button>
-        <Button type="primary" onClick={handleAccept}>
-          Accept
-        </Button>
-      </div>
-    </Modal>
+      <Row justify="space-between" align="middle" gutter={[16, 16]}>
+        <Col xs={24} sm={16}>
+          <Text style={{ color: isDarkMode ? "#fff" : "#000" }}>
+            We use cookies to personalize content and analyze our traffic. By
+            clicking "Accept", you consent to our use of cookies. You can{" "}
+            <Link href="/privacy-policy" style={{ color: "#e89a3c" }}>
+              learn more
+            </Link>
+            .
+          </Text>
+        </Col>
+        <Col xs={24} sm={8} style={{ textAlign: "right" }}>
+          <Space>
+            <Button onClick={handleDecline}>Decline</Button>
+            <Button type="primary" onClick={handleAccept}>
+              Accept
+            </Button>
+          </Space>
+        </Col>
+      </Row>
+    </Footer>
   );
 };
 
-export default CookieConsent;
+export default CookieConsentBanner;
