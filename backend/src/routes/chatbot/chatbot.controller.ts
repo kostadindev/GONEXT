@@ -15,10 +15,10 @@ class ChatbotController {
       return res.status(400).json({ message: "Query is required" });
     }
 
-    const userId = req.user?._id;
-    if (!userId) {
-      return res.status(401).json({ message: "User not authenticated" });
-    }
+    // const userId = req.user?._id;
+    // if (!userId) {
+    //   return res.status(401).json({ message: "User not authenticated" });
+    // }
     const model = req.user?.llm || DEFAULT_LLM;
     const language = req.user?.language || DEFAULT_LANGUAGE;
     try {

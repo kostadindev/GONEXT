@@ -10,7 +10,7 @@ class GameOverviewRepository {
   private baseURL: string;
 
   constructor() {
-    this.baseURL = "http://gonext-ml:8000/game_overview"; // FastAPI base URL TODO make an env variable
+    this.baseURL = `${process.env.ML_SERVER_URL}/game_overview`; // FastAPI base URL TODO make an env variable
   }
 
   /**

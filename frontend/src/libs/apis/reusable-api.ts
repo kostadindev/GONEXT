@@ -1,16 +1,18 @@
 import axios from "axios";
 
-export const BASE_URL = 'https://gonext.lol:8443/api'; // TODO use env var
+// Ensure BACKEND_URL is properly read from environment variables
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+
+if (!BACKEND_URL) {
+  throw new Error("REACT_APP_BACKEND_URL is not defined in environment variables.");
+}
+
+export const BASE_URL = `${BACKEND_URL}/api`;
 
 // Helper function to handle GET requests
 export const fetchData = async (endpoint: string, params: Record<string, any> = {}) => {
-  try {
-    const response = await axios.get(`${BASE_URL}/${endpoint}`, { params, withCredentials: true });
-    return response.data;
-  } catch (error) {
-    console.error(`There was an error fetching data from ${endpoint}:`, error);
-    return null;
-  }
+  const response = await axios.get(`${BASE_URL}/${endpoint}`, { params, withCredentials: true });
+  return response.data;
 };
 
 // Helper function to handle POST requests

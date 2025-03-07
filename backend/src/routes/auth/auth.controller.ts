@@ -61,7 +61,7 @@ class AuthController {
       // Store the application token in an HTTP-only cookie
       res.cookie('token', appToken, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
+        // secure: process.env.NODE_ENV === 'production',
         sameSite: 'strict',
       });
 

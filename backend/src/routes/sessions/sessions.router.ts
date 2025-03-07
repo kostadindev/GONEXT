@@ -4,7 +4,7 @@ import { authenticateToken } from '../../middlewares/auth.middleware';
 
 const sessionRouter = express.Router();
 
-sessionRouter.use(authenticateToken);
+// sessionRouter.use(authenticateToken);
 
 // Route to get all sessions
 sessionRouter.get('/api/sessions', sessionsController.getAllSessions);

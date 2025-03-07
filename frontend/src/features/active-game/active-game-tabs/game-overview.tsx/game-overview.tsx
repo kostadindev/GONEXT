@@ -45,10 +45,15 @@ export const GameOverview: React.FC<{ game: Game | null }> = ({ game }) => {
   return (
     <div className="flex">
       <div className="w-4/5">
-        <ChatComponent game={game} height={"75vh"}></ChatComponent>
+        <ChatComponent
+          game={game}
+          height={"75vh"}
+          showAvatar={false}
+          context={{ game: game as Game }}
+        ></ChatComponent>
       </div>
       <div className="w-1/5 min-w-[250px] pl-4 flex flex-col space-y-4">
-        <Card
+        {/* <Card
           className="rounded-lg shadow-md"
           hoverable
           styles={{
@@ -86,8 +91,8 @@ export const GameOverview: React.FC<{ game: Game | null }> = ({ game }) => {
               suffix="%"
             />
           )}
-        </Card>
-        <Card
+        </Card> */}
+        {/* <Card
           className="rounded-lg shadow-md"
           hoverable
           styles={{
@@ -123,7 +128,7 @@ export const GameOverview: React.FC<{ game: Game | null }> = ({ game }) => {
                   </Tooltip>
                 ))}
           </div>
-        </Card>
+        </Card> */}
         <Card
           className="rounded-lg shadow-md"
           hoverable

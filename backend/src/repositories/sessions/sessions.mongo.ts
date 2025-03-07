@@ -11,7 +11,7 @@ const sessionSchema = new Schema<ISession>({
   createdAt: { type: Date, default: Date.now },
   modifiedAt: { type: Date, default: Date.now },
   messages: { type: [messageSchema], default: [] },
-  userId: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
+  userId: { type: String, required: true },
   gameId: { type: String, required: false }
 });
 

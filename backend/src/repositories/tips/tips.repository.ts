@@ -12,7 +12,7 @@ class TipsRepository {
   private baseURL: string;
 
   constructor() {
-    this.baseURL = "http://gonext-ml:8000/tips"; // FastAPI base URL TODO make an env variable
+    this.baseURL = `${process.env.ML_SERVER_URL}/tips`;
   }
 
   /**

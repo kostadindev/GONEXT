@@ -4,7 +4,7 @@ import { authenticateToken } from "../../middlewares/auth.middleware";
 
 const gameOverviewRouter = express.Router();
 
-gameOverviewRouter.use(authenticateToken);
+// gameOverviewRouter.use(authenticateToken);
 
 // Route to retrieve a game overview
 gameOverviewRouter.post("/api/game-overview", gameOverviewController.getGameOverview);

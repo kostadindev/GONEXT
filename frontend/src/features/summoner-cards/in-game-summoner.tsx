@@ -34,9 +34,10 @@ export const InGameSummoner = ({
       style={{
         height: "7vh",
         width: 300,
+        borderLeft: `8px solid ${borderColor}`, // Inline style for dynamic border color
       }}
       hoverable={!loading}
-      className={`flex items-center border-l-8 border-l-[${borderColor}]`}
+      className="flex items-center"
       onClick={!loading ? handleCardClick : undefined}
     >
       {loading ? (

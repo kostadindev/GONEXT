@@ -5,12 +5,18 @@ import app from "./app";
 import mongoose from "mongoose";
 import process from "process";
 import { Pool } from "pg";
+import { neon } from "@neondatabase/serverless";
 import redis from "./db/redis";
 
 dotenv.config();
 
 const MONGO_URI = process.env.MONGO_URI as string;
-const port = process.env.PORT || 8443;
+const neonDbUrl = process.env.DATABASE_URL;
+if (!neonDbUrl) {
+  console.warn("DATABASE_URL is not provided, skipping NeonDB connection.");
+}
+const sql = neonDbUrl ? neon(neonDbUrl) : null;
+const port = process.env.PORT || 8000;
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -24,13 +30,17 @@ const httpsOptions = {
 
 const server = https.createServer(httpsOptions, app);
 
-async function testPostgresConnection() {
+async function testNeonConnection() {
+  if (!sql) {
+    console.warn("NeonDB is not configured, skipping connection test.");
+    return;
+  }
+  
   try {
     const result = await pool.query('SELECT version()');
     console.log("Connected to PostgreSQL successfully:", result.rows[0].version);
   } catch (err) {
-    console.error("Error connecting to PostgreSQL:", err);
-    process.exit(1);
+    console.error("Error connecting to NeonDB (continuing without Neon):", err);
   }
 }
 
@@ -44,8 +54,8 @@ async function startServer() {
     await redis.connect();
     console.log("Connected to Redis successfully");
 
-    // Test PostgreSQL connection
-    await testPostgresConnection();
+    // Test NeonDB connection (if not configured or fails, the app still continues)
+    await testNeonConnection();
 
     // Start the HTTPS server
     server.listen(port, () => {

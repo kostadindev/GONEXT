@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Menu, type MenuProps } from "antd";
-import { OpenAIFilled } from "@ant-design/icons";
+import { SyncOutlined } from "@ant-design/icons";
 import { Game, Summoner } from "../../../libs/league/league-types";
 import { getTeams } from "../../../libs/league/league-utils";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -32,9 +32,9 @@ export const ActiveGameTabs = ({ game }: { game: Game | null }) => {
 
   const items: MenuProps["items"] = [
     {
-      label: "Infernal AI",
+      label: "Live Match",
       key: "chat",
-      icon: <OpenAIFilled />,
+      icon: <SyncOutlined spin />,
       // disabled: true,
     },
     {
@@ -67,7 +67,7 @@ export const ActiveGameTabs = ({ game }: { game: Game | null }) => {
         items={items}
         style={{ backgroundColor: "transparent" }}
       />
-      <div className="flex flex-col p-5">
+      <div className="flex flex-col pt-5">
         {selectedView === "chat" && <GameOverview game={game} />}
         {game && allies?.map((ally) => ally.puuid).includes(selectedView) && (
           <PlayerView game={game} playerPuuid={selectedView} />

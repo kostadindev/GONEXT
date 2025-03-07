@@ -4,7 +4,7 @@ import { authenticateToken } from '../../middlewares/auth.middleware';
 
 const router = express.Router();
 
-router.use(authenticateToken);
+// router.use(authenticateToken);
 
 router.get('/api/tips', tipsController.getTips);
 

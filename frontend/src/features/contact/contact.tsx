@@ -8,46 +8,42 @@ import {
   MailFilled,
   MailOutlined,
 } from "@ant-design/icons";
-import { getChampionIconSrc } from "../../libs/league/league-utils";
 
 const { Title, Text, Paragraph } = Typography;
 
-interface TeamMember {
+interface ContactPerson {
   name: string;
-  title: string;
+  role: string;
   description: string;
   image: string;
+  email?: string;
   github?: string;
   linkedin?: string;
-  email?: string;
   website?: string;
 }
 
-const AboutUs: React.FC = () => {
-  const teamMembers: TeamMember[] = [
+const Contact: React.FC = () => {
+  const contactPeople: ContactPerson[] = [
     {
       name: "Kostadin Devedzhiev",
-      title: "Founder | ML | API | UI | ADC",
-      description: `Kostadin has been playing League of Legends since Season 3, achieving a peak rank of Diamond 1. He plays ADC and Jungle. His favorite champion is Wukong.
-
-Kostadin leads engineering and product at GONEXT. Prior to founding GONEXT, Kostadin was a Software Engineer at Stellar Cyber.
-
-He is an incoming student pursuing a Master's in Computer Science, specializing in Natural Language Processing, at Columbia University in New York City.`,
+      role: "Founder & Technical Lead",
+      description: `For technical inquiries, partnerships, or feedback regarding our product, please get in touch.`,
       image:
         "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/MonkeyKing_5.jpg",
+      email: "kostadin@gonext.lol",
       github: "https://github.com/kostadindev",
       linkedin: "https://www.linkedin.com/in/kostadin-dev/",
-      email: "kostadin@gonext.lol",
       website: "https://kostadindev.github.io/",
     },
     {
       name: "Ivan Nikolov",
-      title: "API | DevOps | Jungle",
+      role: "API & DevOps Specialist",
       description:
-        "Ivan specializes in API development and DevOps practices, ensuring robust, scalable, and secure backend services.",
-      image: `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/MasterYi_9.jpg`,
-      github: "https://github.com/nnivan",
+        "For questions about our API services or operational support, feel free to reach out.",
+      image:
+        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/MasterYi_9.jpg",
       email: "ivan@gonext.lol",
+      github: "https://github.com/nnivan",
     },
   ];
 
@@ -64,24 +60,23 @@ He is an incoming student pursuing a Master's in Computer Science, specializing 
       }}
     >
       <Title level={2} style={{ marginBottom: "16px" }}>
-        About Us
+        Contact Us
       </Title>
       <Row gutter={[24, 24]} style={{ flex: 1, maxWidth: "1000px" }}>
         <Paragraph type="secondary" style={{ fontSize: "16px" }}>
-          <b>GONEXT</b> is a GenAI-powered assistant tailored for League of
-          Legends players, delivering real-time and personalized strategies,
-          matchups, synergies, and builds. By harnessing the Riot API,{" "}
-          <b>GONEXT</b> retrieves live game data—covering both allied and enemy
-          players—and employs large language models to offer context-specific
-          guidance for every match.
+          We’re here to help! Whether you have questions about our product, need
+          support, or want to share feedback, please reach out. You can contact
+          any of our team members directly or use our general inquiry channels
+          below.
         </Paragraph>
       </Row>
+
       <div style={{ maxWidth: "500px", textAlign: "center" }}>
-        <Title level={2}>Meet the Team</Title>
+        <Title level={2}>Our Contacts</Title>
       </div>
 
       <Row gutter={[24, 24]} style={{ flex: 1, maxWidth: "1000px" }}>
-        {teamMembers.map((member, index) => (
+        {contactPeople.map((person, index) => (
           <Col span={24} key={index}>
             <Card hoverable>
               <Row gutter={[16, 16]} align="middle">
@@ -95,8 +90,8 @@ He is an incoming student pursuing a Master's in Computer Science, specializing 
                   }}
                 >
                   <img
-                    alt={member.name}
-                    src={member.image}
+                    alt={person.name}
+                    src={person.image}
                     style={{
                       height: "250px",
                       width: "400px",
@@ -106,65 +101,65 @@ He is an incoming student pursuing a Master's in Computer Science, specializing 
                   />
                 </Col>
                 <Col xs={24} md={16}>
-                  <Title level={4}>{member.name}</Title>
+                  <Title level={4}>{person.name}</Title>
                   <Text type="secondary" style={{ fontSize: "16px" }}>
-                    {member.title}
+                    {person.role}
                   </Text>
                   <Paragraph
                     style={{ marginTop: "10px", whiteSpace: "pre-line" }}
                   >
-                    {member.description}
+                    {person.description}
                   </Paragraph>
-                  {member.email && (
+                  {person.email && (
                     <Paragraph style={emailStyle}>
                       <Typography.Link
-                        href={`mailto:${member.email}`}
+                        href={`mailto:${person.email}`}
                         target="_blank"
                       >
-                        {member.email}
+                        {person.email}
                       </Typography.Link>
                     </Paragraph>
                   )}
                   <div style={{ marginTop: "10px" }}>
-                    {member.website && (
+                    {person.website && (
                       <Tooltip title="Website">
                         <Button
                           shape="circle"
                           type="text"
                           target="_blank"
-                          href={member.website}
+                          href={person.website}
                           icon={<GlobalOutlined />}
                         />
                       </Tooltip>
                     )}
-                    {member.email && (
+                    {person.email && (
                       <Tooltip title="Email">
                         <Button
                           shape="circle"
                           type="text"
-                          href={`mailto:${member.email}`}
+                          href={`mailto:${person.email}`}
                           icon={<MailFilled />}
                         />
                       </Tooltip>
                     )}
-                    {member.linkedin && (
+                    {person.linkedin && (
                       <Tooltip title="LinkedIn">
                         <Button
                           shape="circle"
                           type="text"
                           target="_blank"
-                          href={member.linkedin}
+                          href={person.linkedin}
                           icon={<LinkedinFilled />}
                         />
                       </Tooltip>
                     )}
-                    {member.github && (
+                    {person.github && (
                       <Tooltip title="GitHub">
                         <Button
                           shape="circle"
                           type="text"
                           target="_blank"
-                          href={member.github}
+                          href={person.github}
                           icon={<GithubFilled />}
                         />
                       </Tooltip>
@@ -186,12 +181,12 @@ He is an incoming student pursuing a Master's in Computer Science, specializing 
         }}
       >
         <Title level={2} style={{ marginBottom: "16px" }}>
-          Making GONEXT better
+          General Inquiries
         </Title>
         <Paragraph type="secondary" style={{ fontSize: "16px" }}>
-          Let us know what you want to see in future releases and report bugs.
-          We will listen! Email us at{" "}
-          <Typography.Link href={`mailto:info@gonext.lol`} target="_blank">
+          For general questions, partnership opportunities, or media inquiries,
+          please email us at{" "}
+          <Typography.Link href="mailto:info@gonext.lol" target="_blank">
             info@gonext.lol
           </Typography.Link>
           .
@@ -205,7 +200,7 @@ He is an incoming student pursuing a Master's in Computer Science, specializing 
             Email
           </Button>
         </Tooltip>
-        <Tooltip title="View on GitHub">
+        <Tooltip title="View UI on GitHub">
           <Button
             href="https://github.com/kostadindev/gonext"
             target="_blank"
@@ -215,7 +210,7 @@ He is an incoming student pursuing a Master's in Computer Science, specializing 
             UI
           </Button>
         </Tooltip>
-        <Tooltip title="View on GitHub">
+        <Tooltip title="View ML on GitHub">
           <Button
             href="https://github.com/kostadindev/gonext-ml"
             target="_blank"
@@ -230,4 +225,4 @@ He is an incoming student pursuing a Master's in Computer Science, specializing 
   );
 };
 
-export default AboutUs;
+export default Contact;

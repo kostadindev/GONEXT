@@ -11,7 +11,6 @@ export const handleAxiosError = (error: AxiosError): void => {
     console.error(
       `HTTP error: ${response.status} - ${response.statusText} (URL: ${config?.url})`
     );
-    console.error("Response data:", JSON.stringify(response.data));
   } else if (request) {
     console.error(`No response received from the API (URL: ${config?.url}).`);
     console.error("Request details:", request);

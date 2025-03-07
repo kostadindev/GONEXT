@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { AutoComplete, Flex, Input, Select, Space } from "antd";
+import { AutoComplete, Input, Select, Space } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
 import { useNotification } from "../notifications/notification-context";
 import { UserOutlined } from "@ant-design/icons";
@@ -13,9 +13,7 @@ interface Params extends Record<string, string | undefined> {
 const MAX_RECENT_USERS = 20;
 
 const Title: React.FC<Readonly<{ title?: string }>> = (props) => (
-  <Flex align="center" justify="space-between">
-    {props.title}
-  </Flex>
+  <div className="flex items-center justify-between">{props.title}</div>
 );
 
 const splitTitle = (title: string) => {
@@ -27,21 +25,16 @@ const splitTitle = (title: string) => {
 
 const renderItem = (title: string) => {
   const { name, tag } = splitTitle(title);
-
   return {
     value: title,
     label: (
-      <Flex align="center" justify="space-between">
+      <div className="flex items-center justify-between">
         <span>
           {name}
-          {tag && (
-            <span style={{ color: "gray", fontStyle: "italic", marginLeft: 4 }}>
-              {tag}
-            </span>
-          )}
+          {tag && <span className="text-gray-500 italic ml-1">{tag}</span>}
         </span>
-        <UserOutlined style={{ marginLeft: 8 }} />
-      </Flex>
+        <UserOutlined className="ml-2" />
+      </div>
     ),
   };
 };
@@ -86,7 +79,6 @@ export default function GlobalSearch() {
   useEffect(() => {
     const storedUsers = JSON.parse(localStorage.getItem("recentUsers") || "[]");
     setRecentUsers(storedUsers);
-
     setAutocompleteOptions([
       {
         label: <Title title="Recent Players" />,
@@ -100,7 +92,6 @@ export default function GlobalSearch() {
     if (updatedUsers.length > MAX_RECENT_USERS) {
       updatedUsers.length = MAX_RECENT_USERS;
     }
-
     setRecentUsers(updatedUsers);
     localStorage.setItem("recentUsers", JSON.stringify(updatedUsers));
   };
@@ -109,7 +100,6 @@ export default function GlobalSearch() {
     const [summoner, tagline] = searchedUser.split("#");
     if (summoner && tagline) {
       updateRecentUsers(searchedUser);
-
       navigate(`/${region}/${summoner}/${tagline}/in-game`);
     } else {
       setError({
@@ -125,11 +115,9 @@ export default function GlobalSearch() {
 
   const onInputChange = (value: string) => {
     setSearchedUser(value);
-
     const filteredOptions = recentUsers
       .filter((user) => user.toLowerCase().includes(value.toLowerCase()))
       .map((user) => renderItem(user));
-
     setAutocompleteOptions([
       {
         label: <Title title="Recent Players" />,
@@ -139,24 +127,24 @@ export default function GlobalSearch() {
   };
 
   return (
-    <Space>
-      <Space.Compact size="large" style={{ width: "600px" }}>
+    <Space direction="vertical" className="w-full sm:max-w-[600px] w-full">
+      <Space.Compact size="large" className="w-full">
         <Select
           value={region}
           options={options}
           size="large"
           onChange={onRegionChange}
-          style={{ width: "100px" }}
+          className="w-20"
         />
         <AutoComplete
           value={searchedUser}
           options={autocompleteOptions}
-          style={{ flex: 1 }}
+          className="flex-1"
           onChange={onInputChange}
           onSelect={(value) => onSearch(value)}
         >
           <Search
-            placeholder={"Doublelift#NA1"}
+            placeholder="Doublelift#NA1"
             enterButton
             onSearch={onSearch}
           />

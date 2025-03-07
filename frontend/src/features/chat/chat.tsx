@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, ChangeEvent } from "react";
 import { Button, Avatar, Spin, Card } from "antd";
 import TextArea from "antd/es/input/TextArea";
-import { SendOutlined } from "@ant-design/icons";
+import { RobotOutlined, SendOutlined } from "@ant-design/icons";
 import { OpenAIFilled } from "@ant-design/icons";
 import DefaultPrompts from "./default-prompts/default-prompts";
 import {
@@ -20,11 +20,17 @@ interface Message {
   role: "user" | "system";
 }
 
+interface ChatContext {
+  game?: Game;
+  history?: any;
+}
+
 const ChatComponent: React.FC<{
   game: Game | null;
   height: string;
   showAvatar?: boolean;
-}> = ({ game, height, showAvatar = true }) => {
+  context?: ChatContext;
+}> = ({ game, height, showAvatar = true, context = {} }) => {
   const { user } = useUser();
   const { token } = useToken();
   const primaryColor = token.colorPrimary;
@@ -40,8 +46,11 @@ const ChatComponent: React.FC<{
   const messageContainerRef = React.useRef<HTMLDivElement>(null);
 
   const scrollToBottom = useCallback(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    if (messageContainerRef.current) {
+      messageContainerRef.current.scrollTo({
+        top: messageContainerRef.current.scrollHeight,
+        behavior: "smooth",
+      });
     }
   }, []);
 
@@ -61,7 +70,7 @@ const ChatComponent: React.FC<{
       if (game?.gameId) {
         try {
           setLoadingSession(true);
-          const session = await getSessionByGameId(game?.gameId);
+          const session = await getSessionByGameId(game.gameId);
           if (session && isMounted) {
             setSessionId(session._id);
             setMessages(session.messages || []);
@@ -88,12 +97,14 @@ const ChatComponent: React.FC<{
     const textToSend = message || input;
 
     if (textToSend.trim()) {
+      // Add the user message
       setMessages((prevMessages) => [
         ...prevMessages,
         { content: textToSend, role: "user" },
       ]);
       setInput("");
-      setIsSending(true); // Start loading
+      setIsSending(true);
+      console.log("Sending message:", textToSend, sessionId);
 
       try {
         if (sessionId) {
@@ -102,31 +113,34 @@ const ChatComponent: React.FC<{
             role: "user",
           });
 
-          // Handle the streaming response
+          // Start streaming response
           let partialResponse = "";
-          let hasStartedSystemMessage = false;
+          let systemMessageIndex = -1;
+          // Append a new system message and store its index
+          setMessages((prevMessages: any) => {
+            const updatedMessages = [
+              ...prevMessages,
+              { content: "", role: "system" },
+            ];
+            systemMessageIndex = updatedMessages.length - 1;
+            return updatedMessages;
+          });
 
+          // Stream the response chunks
           await sendChatMessageStream(
             sessionId,
-            { query: textToSend, match: game },
+            { query: textToSend, match: game, context },
             (chunk) => {
-              partialResponse += chunk; // Accumulate chunks into partialResponse
+              partialResponse += chunk;
               setMessages((prevMessages) => {
                 const updatedMessages = [...prevMessages];
-
-                if (!hasStartedSystemMessage) {
-                  // Add an initial system message only once
-                  updatedMessages.push({
-                    content: "",
-                    role: "system",
-                  });
-                  hasStartedSystemMessage = true;
+                // Verify that the message at our tracked index is a system message before updating
+                if (
+                  systemMessageIndex >= 0 &&
+                  updatedMessages[systemMessageIndex]?.role === "system"
+                ) {
+                  updatedMessages[systemMessageIndex].content = partialResponse;
                 }
-
-                // Update the last system message with the accumulated response
-                const lastMessageIndex = updatedMessages.length - 1;
-                updatedMessages[lastMessageIndex].content = partialResponse;
-
                 return updatedMessages;
               });
             }
@@ -143,7 +157,7 @@ const ChatComponent: React.FC<{
       } catch (error) {
         console.error("Error interacting with chatbot API:", error);
       } finally {
-        setIsSending(false); // End loading
+        setIsSending(false);
         scrollToBottom();
       }
     }
@@ -184,7 +198,7 @@ const ChatComponent: React.FC<{
             <div key={index} className="my-2 flex pb-1">
               {showAvatar &&
                 (msg.role === "system" ? (
-                  <Avatar style={{ marginRight: 8 }} icon={<OpenAIFilled />} />
+                  <Avatar style={{ marginRight: 8 }} icon={<RobotOutlined />} />
                 ) : (
                   <Avatar style={{ marginRight: 8 }} src={user?.picture} />
                 ))}
@@ -200,7 +214,8 @@ const ChatComponent: React.FC<{
                 </div>
               ) : (
                 <Card
-                  className="inline-block rounded-lg text-black w-full break-words"
+                  className="inline-block rounded-lg shadow-md text-black w-full break-words"
+                  hoverable
                   style={{
                     maxWidth: showAvatar ? "calc(100% - 40px)" : "100%",
                   }}
@@ -222,12 +237,12 @@ const ChatComponent: React.FC<{
               placeholder="Type your message here..."
               style={{ fontSize: "16px" }}
               maxLength={256}
-              disabled={isSending} // Disable when loading
+              disabled={isSending}
             />
             <Button
               icon={<SendOutlined />}
               onClick={() => handleSendMessage()}
-              disabled={isSending} // Disable when loading
+              disabled={isSending}
             />
           </div>
         </div>

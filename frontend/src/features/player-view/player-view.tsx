@@ -110,6 +110,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
             game={game || null}
             height={"600px"}
             showAvatar={false}
+            context={{ game }}
           />
         </div>
       </div>

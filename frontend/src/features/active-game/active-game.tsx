@@ -1,46 +1,110 @@
 import { Content } from "antd/es/layout/layout";
 import { getActiveGame } from "../../libs/apis/league-api";
 import { useEffect, useState } from "react";
-import { Game, Summoner } from "../../libs/league/league-types";
+import { Game } from "../../libs/league/league-types";
 import { InGameSummoner } from "../summoner-cards/in-game-summoner";
-import { Divider, theme } from "antd";
+import { Divider, theme, Spin } from "antd";
 import { ActiveGameTabs } from "./active-game-tabs/active-game-tabs";
 import { getTeams } from "../../libs/league/league-utils";
 import { useParams } from "react-router-dom";
+import NotFound from "../not-found/not-found";
 
 export const ActiveGame = () => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
+
   const [game, setGame] = useState<Game | null>(null);
-  const { allies = [], enemies = [] } = getTeams(game);
-  const { tagLine, gameName } = useParams();
   const [loading, setLoading] = useState(true);
+  const [errorType, setErrorType] = useState<"game" | "player" | null>(null);
+
+  const { tagLine, gameName } = useParams();
+  const { allies = [], enemies = [] } = getTeams(game);
 
   useEffect(() => {
     let ignore = false;
-    getActiveGame(gameName as string, tagLine as string).then((game) => {
-      if (!ignore) {
-        game && setGame(game);
-        setLoading(false);
-      }
-    });
+    setLoading(true);
+    setErrorType(null);
+
+    getActiveGame(gameName as string, tagLine as string)
+      .then((game) => {
+        if (!ignore) {
+          if (!game) {
+            setErrorType("game");
+          } else {
+            setGame(game);
+          }
+        }
+      })
+      .catch((err) => {
+        if (!ignore) {
+          if (err.response?.status === 404) {
+            setErrorType("player");
+          } else {
+            console.log("HellO", err);
+            setErrorType("game");
+          }
+        }
+      })
+      .finally(() => {
+        if (!ignore) {
+          setLoading(false);
+        }
+      });
+
     return () => {
       ignore = true;
     };
   }, [gameName, tagLine]);
 
+  if (loading) {
+    return (
+      <Content
+        style={{
+          margin: "0 16px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexGrow: 1,
+          height: "100vh", // Ensures it takes full height
+        }}
+      >
+        <Spin size="large" />
+      </Content>
+    );
+  }
+
+  if (errorType) {
+    return (
+      <Content
+        style={{
+          margin: "0 16px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexGrow: 1,
+          height: "100vh", // Ensures full height on error state
+        }}
+      >
+        <NotFound type={errorType} name={gameName} tag={tagLine} />
+      </Content>
+    );
+  }
+
   return (
     <Content
       style={{
         margin: "0 16px",
+        height: "100vh", // Ensures it stretches
+        display: "flex",
+        flexDirection: "column",
       }}
       className="w-[80%]" // turn on when adding ads
     >
       <div
         style={{
           padding: 24,
-          minHeight: 360,
+          flexGrow: 1, // Allow content to expand
           borderRadius: borderRadiusLG,
           display: "flex",
         }}

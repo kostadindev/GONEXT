@@ -65,11 +65,7 @@ const ParticipantInfo: React.FC<{ game: GameHistory; kda: string }> = ({
     <div className="flex gap-4">
       <div className="flex gap-1">
         <Badge>
-          <Tooltip
-            title={`Champion: ${
-              game?.participant?.championImageId || "Unknown"
-            }`}
-          >
+          <Tooltip title={`${game?.participant?.championImageId || "Unknown"}`}>
             <Avatar
               src={getChampionIconSrc(game?.participant?.championImageId)}
               size="large"
@@ -79,27 +75,25 @@ const ParticipantInfo: React.FC<{ game: GameHistory; kda: string }> = ({
         </Badge>
         <div className="flex flex-col">
           <Tooltip
-            title={`Summoner Spell 1: ${
-              game?.participant?.summonerSpell1Name || "Unknown"
-            }`}
+            title={`${game?.participant?.summonerSpell1Name || "Unknown"}`}
           >
             <Avatar
               src={getSummonerSpellIconSrc(
                 game?.participant?.summonerSpell1Name
               )}
+              shape="square"
               alt={game?.participant?.summonerSpell1Name}
               size={SMALL_ICON_SIZE}
             />
           </Tooltip>
           <Tooltip
-            title={`Summoner Spell 2: ${
-              game?.participant?.summonerSpell2Name || "Unknown"
-            }`}
+            title={`${game?.participant?.summonerSpell2Name || "Unknown"}`}
           >
             <Avatar
               src={getSummonerSpellIconSrc(
                 game?.participant?.summonerSpell2Name
               )}
+              shape="square"
               alt={game?.participant?.summonerSpell2Name}
               size={SMALL_ICON_SIZE}
             />
