@@ -44,10 +44,6 @@ const options = [
     value: "na",
     label: "NA",
   },
-  {
-    value: "jiangsu",
-    label: "Jiangsu",
-  },
 ];
 
 const { Search } = Input;
