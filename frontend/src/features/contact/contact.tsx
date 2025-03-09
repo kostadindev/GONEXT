@@ -71,10 +71,6 @@ const Contact: React.FC = () => {
         </Paragraph>
       </Row>
 
-      <div style={{ maxWidth: "500px", textAlign: "center" }}>
-        <Title level={2}>Our Contacts</Title>
-      </div>
-
       <Row gutter={[24, 24]} style={{ flex: 1, maxWidth: "1000px" }}>
         {contactPeople.map((person, index) => (
           <Col span={24} key={index}>
