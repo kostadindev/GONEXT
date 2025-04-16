@@ -65,7 +65,7 @@ const RankCard: React.FC<{ title: string; stats: GameModeStats }> = ({
         avatar={
           stats.tier ? (
             <Tooltip title={tierLabel}>
-              <Avatar size={80} src={`/images/ranks/RANK=${stats.tier}.png`} />
+              <Avatar size={80} src={`/images/ranks/Rank=${stats.tier}.png`} />
             </Tooltip>
           ) : null
         }
