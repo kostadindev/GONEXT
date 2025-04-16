@@ -7,7 +7,7 @@ const chatbotRouter = express.Router();
 // chatbotRouter.use(authenticateToken);
 
 // Route to send a chat message
-chatbotRouter.post('/api/chatbot/:sessionId/chat', chatbotController.sendMessage);
+chatbotRouter.post('/api/chatbot/:sessionId/chat', rateLimiter(), chatbotController.sendMessage);
 
 
 export default chatbotRouter;

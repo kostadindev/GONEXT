@@ -1,77 +1,80 @@
 import dotenv from "dotenv";
 import https from "https";
+import http from "http";
 import fs from "fs";
 import app from "./app";
 import mongoose from "mongoose";
 import process from "process";
 import { Pool } from "pg";
-// import { neon } from "@neondatabase/serverless";
-// import redis from "./db/redis";
+import { neon } from "@neondatabase/serverless";
+import redis from "./db/redis";
 
 dotenv.config();
 
 const MONGO_URI = process.env.MONGO_URI as string;
 const neonDbUrl = process.env.DATABASE_URL;
-if (!neonDbUrl) {
-  console.warn("DATABASE_URL is not provided, skipping NeonDB connection.");
-}
-// const sql = neonDbUrl ? neon(neonDbUrl) : null;
 const port = process.env.PORT || 8000;
+const isProduction = process.env.NODE_ENV === "production";
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-});
+// Conditionally setup PostgreSQL and Neon
+let pool: Pool | null = null;
+let sql: ReturnType<typeof neon> | null = null;
 
-// HTTPS options
-const httpsOptions = {
-  key: fs.readFileSync('/etc/letsencrypt/live/gonext.lol/privkey.pem'),
-  cert: fs.readFileSync('/etc/letsencrypt/live/gonext.lol/fullchain.pem')
-};
+if (neonDbUrl) {
+  try {
+    pool = new Pool({ connectionString: neonDbUrl });
+    sql = neon(neonDbUrl);
+  } catch (error) {
+    console.warn("Failed to initialize NeonDB client:", error);
+  }
+} else {
+  console.warn("DATABASE_URL is not provided, skipping NeonDB setup.");
+}
 
-const server = https.createServer(httpsOptions, app);
+// HTTPS options (used only in production)
+const httpsOptions = isProduction
+  ? {
+    key: fs.readFileSync('/etc/letsencrypt/live/gonext.lol/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/gonext.lol/fullchain.pem'),
+  }
+  : null;
 
-// async function testNeonConnection() {
-//   if (!sql) {
-//     console.warn("NeonDB is not configured, skipping connection test.");
-//     return;
-//   }
+const server = isProduction
+  ? https.createServer(httpsOptions!, app)
+  : http.createServer(app);
 
-//   try {
-//     const result = await pool.query('SELECT version()');
-//     console.log("Connected to PostgreSQL successfully:", result.rows[0].version);
-//   } catch (err) {
-//     console.error("Error connecting to NeonDB (continuing without Neon):", err);
-//   }
-// }
-// async function testNeonConnection() {
-//   if (!sql) {
-//     console.warn("NeonDB is not configured, skipping connection test.");
-//     return;
-//   }
-//   try {
-//     const result = await sql`SELECT version()`;
-//     console.log("Connected to NeonDB successfully:", result[0].version);
-//   } catch (err) {
-//     console.error("Error connecting to NeonDB (continuing without Neon):", err);
-//   }
-// }
+// Optional: test Neon connection
+async function testNeonConnection() {
+  if (!pool) {
+    console.warn("PostgreSQL pool not available. Skipping test.");
+    return;
+  }
+
+  try {
+    const result = await pool.query("SELECT version()");
+    console.log("Connected to PostgreSQL successfully:", result.rows[0].version);
+  } catch (err) {
+    console.error("Error connecting to NeonDB (continuing without Neon):", err);
+  }
+}
 
 async function startServer() {
   try {
-    // Connect to MongoDB
     await mongoose.connect(MONGO_URI);
     console.log("Connected to MongoDB successfully");
 
-    // Connect to Redis
-    // await redis.connect();
-    console.log("Connected to Redis successfully");
+    if (redis) {
+      await redis.connect();
+      console.log("Connected to Redis successfully");
+    } else {
+      console.warn("Redis is not configured. Skipping Redis connection.");
+    }
 
-    // Test NeonDB connection (if not configured or fails, the app still continues)
-    // await testNeonConnection();
+    // Optional connection test
+    await testNeonConnection();
 
-    // Start the HTTPS server
     server.listen(port, () => {
-      console.log(`[server]: Server is running at https://gonext.lol:${port}`);
+      console.log(`[server]: Server is running at ${isProduction ? "https" : "http"}://localhost:${port}`);
     });
   } catch (err) {
     console.error("Error starting the server:", err);

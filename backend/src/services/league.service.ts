@@ -115,13 +115,15 @@ class LeagueService {
 
   async getSummonerStats(puuid: string): Promise<{ ranked: any; flex: any } | undefined> {
     const cacheKey = `summonerStats:${puuid}`;
-    try {
-      const cachedStats = await redis.get(cacheKey);
-      if (cachedStats) {
-        return JSON.parse(cachedStats);
+    if (redis) {
+      try {
+        const cachedStats = await redis.get(cacheKey);
+        if (cachedStats) {
+          return JSON.parse(cachedStats);
+        }
+      } catch (err) {
+        console.warn('Redis unavailable for getSummonerStats cache read:', err.message);
       }
-    } catch (err) {
-      console.warn('Redis unavailable for getSummonerStats cache read:', err.message);
     }
 
     const summonerId = await this.getSummonerIdByPuuid(puuid);
@@ -142,10 +144,12 @@ class LeagueService {
     });
 
     const result = { ranked, flex };
-    try {
-      await redis.set(cacheKey, JSON.stringify(result), { PX: 300000 });
-    } catch (err) {
-      console.warn('Redis unavailable for getSummonerStats cache write:', err.message);
+    if (redis) {
+      try {
+        await redis.set(cacheKey, JSON.stringify(result), { PX: 300000 });
+      } catch (err) {
+        console.warn('Redis unavailable for getSummonerStats cache write:', err.message);
+      }
     }
 
     return result;
@@ -182,7 +186,7 @@ class LeagueService {
   }
 
   async getMatchesByIds(matchIds: string[]): Promise<any[] | null> {
-    const oldMatches = await leagueRepository.getMatchesByIdsSQL(matchIds);
+    const oldMatches = await leagueRepository.getMatchesByIdsSQL(matchIds) || [];
     const existingMatchIds = oldMatches.map(match => match.metadata.matchId);
     const newMatchIds = matchIds.filter(matchId => !existingMatchIds.includes(matchId));
     const newMatches = (await Promise.all(
@@ -209,13 +213,15 @@ class LeagueService {
 
   async getActiveGameByPuuid(puuid: string): Promise<any | null> {
     const cacheKey = `game:${puuid}`;
-    try {
-      const cachedGame = await redis.get(cacheKey);
-      if (cachedGame) {
-        return JSON.parse(cachedGame);
+    if (redis) {
+      try {
+        const cachedGame = await redis.get(cacheKey);
+        if (cachedGame) {
+          return JSON.parse(cachedGame);
+        }
+      } catch (err) {
+        console.warn('Redis unavailable for getActiveGameByPuuid cache read:', err.message);
       }
-    } catch (err) {
-      console.warn('Redis unavailable for getActiveGameByPuuid cache read:', err.message);
     }
 
     const game = await leagueRepository.getActiveGameByPuuid(puuid);
@@ -224,10 +230,12 @@ class LeagueService {
     }
     const enrichedGame = this.getEnrichedGame(game, puuid);
 
-    try {
-      await redis.set(cacheKey, JSON.stringify(enrichedGame), { PX: 180000 });
-    } catch (err) {
-      console.warn('Redis unavailable for getActiveGameByPuuid cache write:', err.message);
+    if (redis) {
+      try {
+        await redis.set(cacheKey, JSON.stringify(enrichedGame), { PX: 180000 });
+      } catch (err) {
+        console.warn('Redis unavailable for getActiveGameByPuuid cache write:', err.message);
+      }
     }
 
     return enrichedGame;
