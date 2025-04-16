@@ -26,7 +26,7 @@ class LeagueService {
     const url = 'https://ddragon.leagueoflegends.com/api/versions.json';
     const versions = await leagueRepository.fetchData(url);
     if (Array.isArray(versions) && versions.length > 0) {
-      this.latestVersion = versions[0]; // Assuming the latest version is the first item
+      this.latestVersion = versions[0];
     } else {
       throw new Error('Unable to fetch the latest version.');
     }
@@ -79,7 +79,6 @@ class LeagueService {
     return this.itemsDict[itemName?.toLowerCase()];
   }
 
-
   getChampionName(championId: string): string {
     return this.championsDict[championId]?.name || 'Unknown Champion';
   }
@@ -98,7 +97,7 @@ class LeagueService {
       game.searchedSummoner = {
         teamId: searchedSummoner?.teamId,
         puuid
-      }
+      };
     }
     game.participants = game.participants.map((participant: any) => {
       participant.championName = this.getChampionName(participant.championId);
@@ -116,9 +115,13 @@ class LeagueService {
 
   async getSummonerStats(puuid: string): Promise<{ ranked: any; flex: any } | undefined> {
     const cacheKey = `summonerStats:${puuid}`;
-    const cachedStats = await redis.get(cacheKey);
-    if (cachedStats) {
-      return JSON.parse(cachedStats);
+    try {
+      const cachedStats = await redis.get(cacheKey);
+      if (cachedStats) {
+        return JSON.parse(cachedStats);
+      }
+    } catch (err) {
+      console.warn('Redis unavailable for getSummonerStats cache read:', err.message);
     }
 
     const summonerId = await this.getSummonerIdByPuuid(puuid);
@@ -139,8 +142,12 @@ class LeagueService {
     });
 
     const result = { ranked, flex };
-    // Cache the result with a TTL of 5 minutes (300,000 milliseconds)
-    await redis.set(cacheKey, JSON.stringify(result), { PX: 300000 });
+    try {
+      await redis.set(cacheKey, JSON.stringify(result), { PX: 300000 });
+    } catch (err) {
+      console.warn('Redis unavailable for getSummonerStats cache write:', err.message);
+    }
+
     return result;
   }
 
@@ -148,34 +155,30 @@ class LeagueService {
     return leagueRepository.getMatchesIds(puuid, count);
   }
 
-
   async getMatches(puuid: string, count: number = 7): Promise<any[] | null> {
     const matchIds = await this.getMatchesIds(puuid, count);
-    return (await this.getMatchesByIds(matchIds)).map(
-      (match: any) => {
-        const participants = this.getParticipantsFromMatch(match);
-        let participant = match?.info?.participants.find((p: any) => p?.puuid === puuid);
-
-        if (participant) {
-          participant = {
-            ...participant,
-            summonerSpell1Name: this.getSummonerSpellName(participant.summoner1Id?.toString()),
-            summonerSpell2Name: this.getSummonerSpellName(participant.summoner2Id?.toString()),
-            championImageId: this.getChampionImageId(participant?.championId)
-          } as any;
-        }
-        return {
-          win: participant?.win,
-          gameCreation: match?.info?.gameCreation,
-          gameDuration: match?.info?.gameDuration,
-          gameMode: match?.info?.gameMode,
-          matchId: match?.metadata?.matchId,
-          queueName: this.queuesDict[match?.info?.queueId],
-          participant,
-          participants
-        };
+    return (await this.getMatchesByIds(matchIds)).map((match: any) => {
+      const participants = this.getParticipantsFromMatch(match);
+      let participant = match?.info?.participants.find((p: any) => p?.puuid === puuid);
+      if (participant) {
+        participant = {
+          ...participant,
+          summonerSpell1Name: this.getSummonerSpellName(participant.summoner1Id?.toString()),
+          summonerSpell2Name: this.getSummonerSpellName(participant.summoner2Id?.toString()),
+          championImageId: this.getChampionImageId(participant?.championId)
+        } as any;
       }
-    );
+      return {
+        win: participant?.win,
+        gameCreation: match?.info?.gameCreation,
+        gameDuration: match?.info?.gameDuration,
+        gameMode: match?.info?.gameMode,
+        matchId: match?.metadata?.matchId,
+        queueName: this.queuesDict[match?.info?.queueId],
+        participant,
+        participants
+      };
+    });
   }
 
   async getMatchesByIds(matchIds: string[]): Promise<any[] | null> {
@@ -188,7 +191,7 @@ class LeagueService {
     if (newMatches.length > 0) {
       leagueRepository.saveMatches(newMatches);
     }
-    return [...oldMatches, ...newMatches].sort((a, b) => a.info.gameEndTimestampgameEndTime - b.info.gameEndTimestamp);
+    return [...oldMatches, ...newMatches].sort((a, b) => a.info.gameEndTimestamp - b.info.gameEndTimestamp);
   }
 
   getParticipantsFromMatch(match: any) {
@@ -206,28 +209,29 @@ class LeagueService {
 
   async getActiveGameByPuuid(puuid: string): Promise<any | null> {
     const cacheKey = `game:${puuid}`;
-    const cachedGame = await redis.get(cacheKey);
-
-    if (cachedGame) {
-      return JSON.parse(cachedGame);
+    try {
+      const cachedGame = await redis.get(cacheKey);
+      if (cachedGame) {
+        return JSON.parse(cachedGame);
+      }
+    } catch (err) {
+      console.warn('Redis unavailable for getActiveGameByPuuid cache read:', err.message);
     }
 
-    // Cache miss: Fetch from the repository
     const game = await leagueRepository.getActiveGameByPuuid(puuid);
     if (!game) {
       return null;
     }
     const enrichedGame = this.getEnrichedGame(game, puuid);
 
-    if (enrichedGame) {
-      // Cache the result with a TTL of 3 minutes
+    try {
       await redis.set(cacheKey, JSON.stringify(enrichedGame), { PX: 180000 });
+    } catch (err) {
+      console.warn('Redis unavailable for getActiveGameByPuuid cache write:', err.message);
     }
 
     return enrichedGame;
   }
-
-
 
   async getFeaturedGames(): Promise<any | null> {
     return leagueRepository.getFeaturedGames();
@@ -238,7 +242,9 @@ class LeagueService {
     if (!featuredGames || featuredGames.gameList.length === 0) {
       return null;
     }
-    const classics = featuredGames.gameList.filter(game => game.gameMode === 'CLASSIC' || game?.gameMode === "RANKED_SOLO_5x5" || game?.gameMode === 'RANKED_FLEX_SR')
+    const classics = featuredGames.gameList.filter(game =>
+      game.gameMode === 'CLASSIC' || game?.gameMode === "RANKED_SOLO_5x5" || game?.gameMode === 'RANKED_FLEX_SR'
+    );
     const games = classics?.length ? classics : featuredGames.gameList;
     const randomGame = games[Math.floor(Math.random() * games.length)];
     const randomParticipant = randomGame.participants[Math.floor(Math.random() * randomGame.participants.length)];
