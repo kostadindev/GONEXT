@@ -16,27 +16,44 @@ services:
       dockerfile: Dockerfile
     ports:
       - "80:80"
+      - "443:443"
     networks:
       - public-network
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
     depends_on:
-      - backend
+      backend:
+        condition: service_started
+
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    command: certonly --webroot --webroot-path=/var/www/certbot --email ivannikolov007@gmail.com --agree-tos --no-eff-email --force-renewal -d gonext.lol
 
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
     ports:
-      - "8080:8080"
+      - "8443:8443"
     environment:
       - REDIS_URL=redis://redis:6379
       - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/postgres
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
     networks:
       - public-network
       - private-network
       - ml-network
     depends_on:
-      - redis
-      - postgres
+      redis:
+        condition: service_started
+      postgres:
+        condition: service_started
     dns:
       - 8.8.8.8
       - 8.8.4.4
@@ -54,8 +71,10 @@ services:
       - 8.8.8.8
       - 8.8.4.4
     depends_on:
-      - redis
-      - postgres
+      redis:
+        condition: service_started
+      postgres:
+        condition: service_started
 
   postgres:
     image: postgres:15-alpine

@@ -25,10 +25,12 @@ RUN npm install --only=production
 COPY prisma ./prisma/
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
-
 COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/public ./public
 
-EXPOSE 8080
+RUN mkdir -p /etc/letsencrypt
+
+EXPOSE 8443
 
 COPY .env .env
 

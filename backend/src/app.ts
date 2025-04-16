@@ -12,6 +12,7 @@ import chatbotRouter from "./routes/chatbot/chatbot.router";
 import tipsRouter from "./routes/tips/tips.router";
 import usersRouter from "./routes/users/users.router";
 import gameOverviewRouter from "./routes/game-overview/game-overview.router";
+import path from "path";
 
 dotenv.config();
 
@@ -28,6 +29,8 @@ app.use(
   })
 );
 app.use(morgan("dev"));
+app.use(express.static(path.join(__dirname, "../public")));
+
 
 app.use(authRouter);
 app.use(matchesRouter);
