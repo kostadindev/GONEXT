@@ -22,14 +22,12 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(
   cors({
-    origin: ["http://localhost:3000", "http://24.45.172.199:3000", "http://gonext.lol:3000"],
+    origin: ["http://localhost:3000", "http://24.45.172.199:3000", "http://gonext.lol:3000", "https://gonext.lol"],
     credentials: true,  // Allow cookies and credentials
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
-
-
 app.use(morgan("dev"));
 app.use(express.static(path.join(__dirname, "../public")));
 
