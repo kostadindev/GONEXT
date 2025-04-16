@@ -16,15 +16,19 @@ const neonDbUrl = process.env.DATABASE_URL;
 const port = process.env.PORT || 8000;
 const isProduction = process.env.NODE_ENV === "production";
 
-// PostgreSQL
-const pool = new Pool({
-  connectionString: neonDbUrl,
-});
+// Conditionally setup PostgreSQL and Neon
+let pool: Pool | null = null;
+let sql: ReturnType<typeof neon> | null = null;
 
-// Neon
-const sql = neonDbUrl ? neon(neonDbUrl) : null;
-if (!neonDbUrl) {
-  console.warn("DATABASE_URL is not provided, skipping NeonDB connection.");
+if (neonDbUrl) {
+  try {
+    pool = new Pool({ connectionString: neonDbUrl });
+    sql = neon(neonDbUrl);
+  } catch (error) {
+    console.warn("Failed to initialize NeonDB client:", error);
+  }
+} else {
+  console.warn("DATABASE_URL is not provided, skipping NeonDB setup.");
 }
 
 // HTTPS options (used only in production)
@@ -35,19 +39,19 @@ const httpsOptions = isProduction
   }
   : null;
 
-// Create appropriate server based on environment
 const server = isProduction
   ? https.createServer(httpsOptions!, app)
   : http.createServer(app);
 
+// Optional: test Neon connection
 async function testNeonConnection() {
-  if (!sql) {
-    console.warn("NeonDB is not configured, skipping connection test.");
+  if (!pool) {
+    console.warn("PostgreSQL pool not available. Skipping test.");
     return;
   }
 
   try {
-    const result = await pool.query('SELECT version()');
+    const result = await pool.query("SELECT version()");
     console.log("Connected to PostgreSQL successfully:", result.rows[0].version);
   } catch (err) {
     console.error("Error connecting to NeonDB (continuing without Neon):", err);
@@ -66,7 +70,8 @@ async function startServer() {
       console.warn("Redis is not configured. Skipping Redis connection.");
     }
 
-    // await testNeonConnection();
+    // Optional connection test
+    await testNeonConnection();
 
     server.listen(port, () => {
       console.log(`[server]: Server is running at ${isProduction ? "https" : "http"}://localhost:${port}`);

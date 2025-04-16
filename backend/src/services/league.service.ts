@@ -186,7 +186,7 @@ class LeagueService {
   }
 
   async getMatchesByIds(matchIds: string[]): Promise<any[] | null> {
-    const oldMatches = await leagueRepository.getMatchesByIdsSQL(matchIds);
+    const oldMatches = await leagueRepository.getMatchesByIdsSQL(matchIds) || [];
     const existingMatchIds = oldMatches.map(match => match.metadata.matchId);
     const newMatchIds = matchIds.filter(matchId => !existingMatchIds.includes(matchId));
     const newMatches = (await Promise.all(
