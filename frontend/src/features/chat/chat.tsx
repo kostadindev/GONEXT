@@ -196,6 +196,12 @@ const ChatComponent: React.FC<{
     }
   }, [messages, scrollToBottom, isUserScrolling]);
 
+  useEffect(() => {
+    if (followUps.length > 0 && !isUserScrolling) {
+      scrollToBottom();
+    }
+  }, [followUps, scrollToBottom, isUserScrolling]);
+
   return (
     <div className="flex justify-center pt-5">
       <div
