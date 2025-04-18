@@ -39,3 +39,25 @@ export const sendChatMessageStream = async (
     throw error;
   }
 };
+
+export const getFollowUpSuggestions = async (
+  sessionId: string,
+  historyContext: Record<string, any>
+): Promise<string[]> => {
+  const response = await fetch(`${BASE_URL}/chatbot/suggestions`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(historyContext),
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch suggestions: ${response.statusText}`);
+  }
+
+  const data = await response.json();
+  return data.suggestions;
+};
+
