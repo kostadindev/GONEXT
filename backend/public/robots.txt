@@ -1,0 +1,9 @@
+User-agent: 
+Disallow: /:region/:gameName/:tagLine/in-game
+Disallow: /:region/:gameName/:tagLine/player
+Allow: /
+Allow: /contact
+Allow: /about-us
+Allow: /llms.txt
+
+Sitemap: https://gonext.lol/sitemap.xml

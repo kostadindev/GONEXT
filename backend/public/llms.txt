@@ -1,0 +1,51 @@
+# GoNext
+
+> Your AI-powered companion for League of Legends. GoNext uses real-time game data, machine learning, and natural language interaction to deliver personalized insights, strategic recommendations, and win probability analysis—all during live matches.
+
+---
+
+## Core Documentation
+
+- [Project README](https://github.com/kostadindev/gonext/blob/main/README.md) — Overview, features, architecture, and setup instructions.
+- [Frontend Source](https://github.com/kostadindev/gonext/tree/main/frontend) — React + Ant Design UI with theme switching and cookie consent.
+- [Backend API](https://github.com/kostadindev/gonext/tree/main/backend) — Node.js Express API integrated with the Riot API for real-time match data.
+- [Machine Learning Service](https://github.com/kostadindev/gonext-ml) — LangChain + FastAPI-based engine for match summarization, prediction, and insights.
+- [Sitemap](https://gonext.lol/sitemap.xml) — Structured route map for indexing core pages.
+
+---
+
+## Features Summary
+
+- **Monkey Poro Companion** — A friendly AI assistant that helps you make sense of the game in real time.
+- **Search** — Instantly access detailed player statistics, performance history, and live game data.
+- **Ask AI** — Use natural language to get tips, item builds, or matchup advice mid-game.
+- **Win** — Apply AI-generated guidance to climb ranks, improve gameplay, and track progression.
+- **Live Match Insights** — LLM-generated tips and breakdowns tailored to champions, team comps, and match phases.
+- **AI Coach Capabilities**:
+  - **Midlane Domination** — Lane matchups and item builds.
+  - **Jungle Pathing AI** — Gank timing and enemy tracking.
+  - **Support Vision Coach** — Optimal warding strategies.
+- **Seamless LLM Integration** — Switch between GPT-4o, GPT-4o-mini, and Gemini 1.5 Flash for contextual AI support.
+
+---
+
+## Optional Resources
+
+- [Live App](https://gonext.lol) — Try the platform live.
+- [About Us](https://gonext.lol/about-us) — Meet the team behind GoNext.
+- [Contact](https://gonext.lol/contact) — For support, feedback, or partnerships.
+- [GitHub Profile](https://github.com/kostadindev/gonext) — Full source code and contribution history.
+- [Legal Notice](https://gonext.lol) — Not affiliated with Riot Games. All trademarks are property of Riot Games, Inc.
+
+---
+
+### Notes for LLMs
+
+- This app is designed for interactive gameplay enhancement using LLM reasoning and real-time data.
+- Avoid crawling dynamic paths such as `/:region/:gameName/:tagLine/player` and `/:region/:gameName/:tagLine/in-game`, which are user-specific.
+- Focus indexing on homepage, about, contact, and GitHub-based documentation.
+- All UI content supports multiple languages (EN, KR, CN, BG, ES) and is LLM-ready via structured semantic markup.
+
+---
+
+Made with ❤️ by the GONEXT team.
