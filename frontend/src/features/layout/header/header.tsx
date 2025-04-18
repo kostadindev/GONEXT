@@ -33,7 +33,6 @@ export const Header: React.FC = () => {
     localStorage.removeItem("theme");
   };
 
-  // Initialize dark mode based on local storage
   const [isDarkMode, setIsDarkMode] = useState<boolean>(
     localStorage.getItem("theme") !== "light"
   );
@@ -42,85 +41,100 @@ export const Header: React.FC = () => {
     setIsDarkMode(checked);
     const newTheme = checked ? "dark" : "light";
     localStorage.setItem("theme", newTheme);
-    // Dispatch a custom event to let the rest of the app know the theme has changed
     window.dispatchEvent(new Event("themeChanged"));
   };
 
   return (
     <Layout.Header style={headerStyle}>
-      <div
-        style={{
-          display: "flex",
-          gap: "2rem",
-          width: "100%",
-        }}
-      >
-        {/* Logo */}
-        <div
-          style={{ ...goldmanStyle, cursor: "pointer" }}
-          onClick={() => navigate("/")}
-        >
-          GONEXT
+      <div className="w-full flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        {/* Left Section: Logo + Theme Switch on mobile */}
+        <div className="flex flex-col w-full sm:flex-row sm:items-center sm:gap-5">
+          {/* Mobile: GONEXT + Switch inline */}
+          <div className="flex justify-between sm:hidden w-full items-center">
+            <div
+              style={goldmanStyle}
+              className="cursor-pointer"
+              onClick={() => navigate("/")}
+            >
+              GONEXT
+            </div>
+            <DarkModeSwitch
+              checked={isDarkMode}
+              onChange={toggleDarkMode}
+              size={25}
+            />
+          </div>
+
+          {/* Desktop: GONEXT only (dark switch is in right section) */}
+          <div
+            className="hidden sm:block cursor-pointer"
+            style={goldmanStyle}
+            onClick={() => navigate("/")}
+          >
+            GONEXT
+          </div>
+
+          {/* Global Search and Quick Search */}
+          {location.pathname !== "/" && (
+            <div className="flex flex-col sm:flex-row sm:items-center w-full sm:gap-3 mt-2 sm:mt-0">
+              <div className="w-full sm:max-w-[600px]">
+                <GlobalSearch />
+              </div>
+              <span className="hidden sm:inline-block mx-2 whitespace-nowrap">
+                or
+              </span>
+              <div className="hidden sm:block">
+                <QuickSearch />
+              </div>
+            </div>
+          )}
         </div>
 
-        {/* Global Search and Quick Search (hidden on home) */}
-        {location.pathname !== "/" && (
-          <div className="w-full flex flex-col sm:flex-row items-center  gap-5">
-            <GlobalSearch />
-            <span className="hidden sm:block">or</span>
-            <QuickSearch />
-          </div>
-        )}
-      </div>
-
-      <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-        {/* Dark mode toggle */}
-        <DarkModeSwitch
-          checked={isDarkMode}
-          onChange={toggleDarkMode}
-          size={25}
-        />
-
-        {/* Authentication: show logout if logged in, or sign in if not */}
-        {/* {user ? (
-          <Button size="large" onClick={onLogout} className="cool-button">
-            <div className="flex gap-3 items-center h-full">
-              {user.picture && <Avatar src={user.picture} size={30} />}
-              <span>Log out</span>
-            </div>
-          </Button>
-        ) : (
-          <GoogleLogin
-            onSuccess={onLoginSuccess}
-            theme={"outline"}
-            text={undefined}
-            useOneTap
-            shape="circle"
-            onError={onLoginError}
+        {/* Right Section: Theme (desktop only) & Auth */}
+        <div className="hidden sm:flex items-center gap-3">
+          <DarkModeSwitch
+            checked={isDarkMode}
+            onChange={toggleDarkMode}
+            size={25}
           />
-        )} */}
+
+          {/* Auth (optional) */}
+          {/* {user ? (
+            <Button size="large" onClick={onLogout} className="cool-button">
+              <div className="flex gap-3 items-center h-full">
+                {user.picture && <Avatar src={user.picture} size={30} />}
+                <span>Log out</span>
+              </div>
+            </Button>
+          ) : (
+            <GoogleLogin
+              onSuccess={onLoginSuccess}
+              theme={"outline"}
+              text={undefined}
+              useOneTap
+              shape="circle"
+              onError={onLoginError}
+            />
+          )} */}
+        </div>
       </div>
     </Layout.Header>
   );
 };
 
-// Inline style for the header
 const headerStyle: React.CSSProperties = {
-  height: "80px",
+  height: "auto", // allow height to grow
   display: "flex",
   alignItems: "center",
-  justifyContent: "space-between",
   boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.1)",
-  padding: "0 20px",
+  padding: "10px 20px",
 };
 
-// Inline style for the logo
 const goldmanStyle: React.CSSProperties = {
   fontFamily: '"Goldman", serif',
   fontWeight: 400,
   fontStyle: "normal",
   fontSize: "3rem",
-  cursor: "pointer",
 };
 
 export default Header;
