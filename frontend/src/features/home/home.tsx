@@ -139,17 +139,14 @@ const HomePage: React.FC = () => {
             Here's what you can expect when using our AI-powered match
             assistant.
           </Paragraph>
-          <div className="w-full max-w-4xl mx-auto">
+          <div className="w-full max-w-7xl mx-auto">
             <Carousel
               autoplay
               dots
-              className="rounded-lg shadow-md overflow-hidden"
+              className="rounded-xl shadow-lg overflow-hidden"
             >
               {[0, 1, 2].map((index) => (
-                <div
-                  key={index}
-                  className="h-[60vh] bg-white flex justify-center items-center"
-                >
+                <div key={index} className="flex justify-center items-center">
                   <img
                     src={`images/carousel/slide${index}.png`}
                     alt={`Slide ${index}`}
