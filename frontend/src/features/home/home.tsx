@@ -34,7 +34,7 @@ const HomePage: React.FC = () => {
     >
       <div className="flex flex-col items-center w-full text-gray-800 bg-white">
         {/* Hero Section */}
-        <section className="w-full h-screen flex flex-col justify-center items-center px-6 bg-gradient-to-b from-[#ffe7ba] to-[#fff] text-black text-center">
+        <section className="w-full h-screen flex flex-col justify-center items-center px-6 text-black text-center bg-[linear-gradient(45deg,_#ffd8bf,_#ffe7ba,_#fff)]">
           <Title className="!text-5xl sm:!text-4xl font-bold">
             Your Game Companion Powered by AI
           </Title>
@@ -121,7 +121,7 @@ const HomePage: React.FC = () => {
         </section>
 
         {/* AI Smarts Section */}
-        <section className="w-full py-20 px-6 bg-gray-100 text-center text-black">
+        <section className="w-full py-20 px-6 text-center text-black bg-[linear-gradient(120deg,_#fff2e8,_#ffd8bf)]">
           <Title level={2}>Why It’s Smart</Title>
           <div className="max-w-3xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-6 text-left mt-10">
             {[
@@ -181,8 +181,7 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* Final CTA */}
-        <section className="w-full py-20 px-6 bg-blue-100 text-black text-center">
+        <section className="w-full py-20 px-6 text-black text-center bg-[linear-gradient(135deg,_#ffe7ba,_#fff1e6)]  ">
           <Title className="!text-3xl sm:!text-4xl">Ready to Win More?</Title>
           <Paragraph className="text-lg max-w-xl mx-auto mb-6">
             Get AI-powered insights before and during your games. It's like
