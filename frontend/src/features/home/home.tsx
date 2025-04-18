@@ -63,14 +63,14 @@ const HomePage: React.FC = () => {
             real-time data and personalized insights.
           </Paragraph>
 
-          <div className="mt-10 flex flex-col items-center gap-4 w-full max-w-lg px-4">
+          <div className="mt-10 flex flex-col items-center gap-4 w-full max-w-lg px-4 mb-12 sm:mb-0">
             <div className="w-full">
               <GlobalSearch />
             </div>
-            <span className="text-gray-600 font-medium text-base sm:text-lg mt-1">
+            <span className="hidden sm:inline text-gray-600 font-medium text-base sm:text-lg mt-1">
               or try it out for
             </span>
-            <div className="w-full">
+            <div className="hidden sm:block w-full">
               <QuickSearch />
             </div>
           </div>
