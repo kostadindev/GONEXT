@@ -1,5 +1,11 @@
 import React from "react";
-import { Layout, Typography, Steps, Carousel } from "antd";
+import {
+  Typography,
+  Steps,
+  Carousel,
+  ConfigProvider,
+  theme as antdTheme,
+} from "antd";
 import {
   RobotOutlined,
   SmileOutlined,
@@ -8,73 +14,160 @@ import {
 import GlobalSearch from "../global-search/global-search";
 import { QuickSearch } from "../quick-search/quick-search";
 
-const { Content } = Layout;
 const { Title, Paragraph } = Typography;
 
 const HomePage: React.FC = () => {
   const stepsItems = [
-    { title: "Search Player", icon: <SolutionOutlined /> },
+    { title: "Search", icon: <SolutionOutlined /> },
     { title: "Ask AI", icon: <RobotOutlined /> },
     { title: "Win", icon: <SmileOutlined /> },
   ];
 
   return (
-    <div className="min-h-screen w-full bg-gray-50 flex flex-col items-center text-gray-800">
-      {/* Hero Section */}
-      <section className="w-full max-w-5xl px-6 pt-20 pb-10 text-center">
-        <Title level={4} className="!text-4xl sm:!text-4xl !leading-tight mb-4">
-          Dominate Your Game with AI Insights
-        </Title>
-        <Paragraph className="text-lg sm:text-xl max-w-3xl mx-auto">
-          Real-time match intelligence and personalized strategy tips. Instantly
-          analyze players, draft plans, and win more games.
-        </Paragraph>
+    <ConfigProvider
+      theme={{
+        algorithm: antdTheme.defaultAlgorithm, // Force light mode
+        token: {
+          colorPrimary: "#e89a3c",
+        },
+      }}
+    >
+      <div className="flex flex-col items-center w-full text-gray-800 bg-white">
+        {/* Hero Section */}
+        <section className="w-full h-screen flex flex-col justify-center items-center px-6 bg-gradient-to-b from-blue-100 to-blue-50 text-black text-center">
+          <Title className="!text-5xl sm:!text-6xl font-bold">
+            Your Game Companion Powered by AI
+          </Title>
+          <Paragraph className="text-lg sm:text-xl max-w-2xl mt-4">
+            Instantly analyze players, strategies, and match conditions with
+            real-time data and personalized insights.
+          </Paragraph>
+          <div className="mt-10 flex flex-wrap justify-center gap-6">
+            <GlobalSearch />
+            <QuickSearch />
+          </div>
+        </section>
 
-        {/* Search Tools Always Visible */}
-        <div className="mt-8 flex justify-center flex-wrap gap-6">
-          <GlobalSearch />
-          <QuickSearch />
-        </div>
-      </section>
+        {/* How It Works */}
+        <section className="w-full py-20 px-6 bg-gray-50 text-center text-black">
+          <Title level={2}>How It Works</Title>
+          <Paragraph className="max-w-2xl mx-auto text-lg mb-8">
+            Get smarter with every match. Here’s what the AI can do:
+          </Paragraph>
+          <div className="flex justify-center">
+            <Steps
+              direction="horizontal"
+              size="default"
+              current={0}
+              items={stepsItems}
+            />
+          </div>
+        </section>
 
-      {/* Steps Section */}
-      <section className="w-full max-w-4xl px-6 mb-10">
-        <Steps current={0} items={stepsItems} responsive />
-      </section>
-
-      {/* Image Carousel */}
-      <section className="w-full max-w-4xl px-6 mb-16">
-        <Carousel
-          autoplay
-          dots
-          className="rounded-xl shadow-lg overflow-hidden"
-        >
-          {[0, 1, 2, 3].map((index) => (
-            <div
-              key={index}
-              className="h-[50vh] bg-black flex justify-center items-center"
+        {/* Carousel / Product Demo */}
+        <section className="w-full py-20 px-6 bg-white text-center text-black">
+          <Title level={2}>Live Preview</Title>
+          <Paragraph className="max-w-2xl mx-auto text-lg mb-10">
+            Here's what you can expect when using our AI-powered match
+            assistant.
+          </Paragraph>
+          <div className="w-full max-w-4xl mx-auto">
+            <Carousel
+              autoplay
+              dots
+              className="rounded-lg shadow-md overflow-hidden"
             >
-              <img
-                src={`images/carousel/slide${index}.png`}
-                alt={`Slide ${index}`}
-                className="object-contain w-full h-full"
-              />
-            </div>
-          ))}
-        </Carousel>
-      </section>
+              {[0, 1, 2, 3].map((index) => (
+                <div
+                  key={index}
+                  className="h-[60vh] bg-white flex justify-center items-center"
+                >
+                  <img
+                    src={`images/carousel/slide${index}.png`}
+                    alt={`Slide ${index}`}
+                    className="object-contain w-full h-full"
+                  />
+                </div>
+              ))}
+            </Carousel>
+          </div>
+        </section>
 
-      {/* Final CTA Section */}
-      <section className="w-full max-w-3xl px-6 text-center mb-16">
-        <Title level={3} className="!text-2xl">
-          Start Exploring Matches
-        </Title>
-        <Paragraph>
-          Use AI to uncover win conditions, item builds, lane matchups and
-          more—all in real time.
-        </Paragraph>
-      </section>
-    </div>
+        {/* AI Smarts Section */}
+        <section className="w-full py-20 px-6 bg-gray-100 text-center text-black">
+          <Title level={2}>Why It’s Smart</Title>
+          <div className="max-w-3xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-6 text-left mt-10">
+            {[
+              {
+                title: "Player Intelligence",
+                desc: "Access in-depth player stats, match history, and real-time performance.",
+              },
+              {
+                title: "Game Context",
+                desc: "Get insights into builds, team comps, and lane matchups—all AI analyzed.",
+              },
+              {
+                title: "Winning Tips",
+                desc: "Get suggestions for item builds, rotations, and team fights tailored to you.",
+              },
+            ].map(({ title, desc }) => (
+              <div key={title} className="p-6 bg-white rounded-xl shadow">
+                <Title level={4}>{title}</Title>
+                <Paragraph>{desc}</Paragraph>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Use Cases Section */}
+        <section className="w-full py-20 px-6 bg-white text-center text-black">
+          <Title level={2}>How Players Use It</Title>
+          <div className="max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-8 mt-10 text-left">
+            <div className="p-6 border-l-4 border-blue-600">
+              <Title level={4}>Midlane Domination</Title>
+              <Paragraph>
+                Learn opponent tendencies, get counter-pick suggestions, and
+                itemize like a pro.
+              </Paragraph>
+            </div>
+            <div className="p-6 border-l-4 border-green-600">
+              <Title level={4}>Jungle Pathing AI</Title>
+              <Paragraph>
+                AI analyzes where and when to gank, and predicts enemy jungle
+                movements.
+              </Paragraph>
+            </div>
+            <div className="p-6 border-l-4 border-red-600">
+              <Title level={4}>Support Vision Coach</Title>
+              <Paragraph>
+                Know optimal ward placements and track the enemy support’s
+                roaming patterns.
+              </Paragraph>
+            </div>
+            <div className="p-6 border-l-4 border-purple-600">
+              <Title level={4}>Climb Smarter</Title>
+              <Paragraph>
+                Post-match analysis shows where you lost tempo, mispositioned,
+                or could’ve snowballed.
+              </Paragraph>
+            </div>
+          </div>
+        </section>
+
+        {/* Final CTA */}
+        <section className="w-full py-20 px-6 bg-blue-100 text-black text-center">
+          <Title className="!text-3xl sm:!text-4xl">Ready to Win More?</Title>
+          <Paragraph className="text-lg max-w-xl mx-auto mb-6">
+            Get AI-powered insights before and during your games. It's like
+            having a coach by your side.
+          </Paragraph>
+          <div className="flex justify-center gap-4">
+            <GlobalSearch />
+            <QuickSearch />
+          </div>
+        </section>
+      </div>
+    </ConfigProvider>
   );
 };
 
