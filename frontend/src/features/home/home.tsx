@@ -41,8 +41,8 @@ const HomePage: React.FC = () => {
             <h1
               style={{
                 fontFamily: '"Goldman", serif',
-                // fontWeight: 400,
-                // fontStyle: "normal",
+                fontWeight: 400,
+                fontStyle: "normal",
                 fontSize: "3rem",
                 color: "#2c2c2c",
                 textShadow: "0 1px 2px rgba(255, 255, 255, 0.7)", // subtle blend
