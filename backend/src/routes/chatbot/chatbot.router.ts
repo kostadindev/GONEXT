@@ -9,5 +9,11 @@ const chatbotRouter = express.Router();
 // Route to send a chat message
 chatbotRouter.post('/api/chatbot/:sessionId/chat', rateLimiter(), chatbotController.sendMessage);
 
+chatbotRouter.post(
+  "/api/chatbot/suggestions",
+  rateLimiter(),
+  chatbotController.getFollowUpSuggestions
+);
+
 
 export default chatbotRouter;

@@ -11,7 +11,7 @@ class ChatBotRepository {
   private baseURL: string;
 
   constructor() {
-    this.baseURL = `${process.env.ML_SERVER_URL}/chatbot`;
+    this.baseURL = `${process.env.ML_SERVER_URL}`;
   }
 
   /**
@@ -26,7 +26,7 @@ class ChatBotRepository {
   async sendMessage(threadId: string, query: string, match?: Record<string, any>, model?: LLMOptions, language?: Languages): Promise<Readable> {
     try {
       const response = await axios.post(
-        `${this.baseURL}/`,
+        `${this.baseURL}/chatbot`,
         {
           thread_id: threadId,
           query,
@@ -45,6 +45,31 @@ class ChatBotRepository {
       throw new Error("Failed to send message to the chatbot.");
     }
   }
+
+  /**
+ * Fetches follow-up suggestions based on conversation context, match, and optional model.
+ */
+  async getFollowUpSuggestions(
+    messages: Array<{ role: string; content: string }>,
+    match?: Record<string, any>,
+    context?: Record<string, any>,
+    model?: LLMOptions
+  ): Promise<string[]> {
+    try {
+      const response = await axios.post(`${this.baseURL}/suggestions`, {
+        messages,
+        match,
+        context,
+        model,
+      });
+
+      return response.data as string[];
+    } catch (error) {
+      handleAxiosError(error as AxiosError);
+      throw new Error("Failed to fetch follow-up suggestions.");
+    }
+  }
+
 }
 
 export default new ChatBotRepository();

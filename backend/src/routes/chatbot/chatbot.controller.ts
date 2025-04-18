@@ -45,6 +45,28 @@ class ChatbotController {
       res.status(500).json({ error: error.message });
     }
   }
+
+  /**
+ * Suggest follow-up questions based on current chat context.
+ */
+  async getFollowUpSuggestions(req: AuthenticatedRequest, res: Response) {
+    const { messages, match, context } = req.body;
+
+    if (!Array.isArray(messages) || messages.length === 0) {
+      return res.status(400).json({ message: "Messages array is required" });
+    }
+
+    const model = req.user?.llm || DEFAULT_LLM;
+
+    try {
+      const suggestions = await chatbotService.getFollowUpSuggestions(messages, match, context, model);
+      return res.status(200).json({ suggestions });
+    } catch (error) {
+      console.error("Error getting follow-up suggestions:", error.message);
+      res.status(500).json({ error: error.message });
+    }
+  }
+
 }
 
 export default new ChatbotController();

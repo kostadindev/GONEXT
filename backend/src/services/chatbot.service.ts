@@ -19,6 +19,24 @@ class ChatbotService {
       throw new Error("Failed to process the chatbot request.");
     }
   }
+
+  /**
+ * Retrieves follow-up question suggestions from the chatbot server.
+ */
+  async getFollowUpSuggestions(
+    messages: Array<{ role: string; content: string }>,
+    match?: Record<string, any>,
+    context?: Record<string, any>,
+    model?: LLMOptions
+  ): Promise<string[]> {
+    try {
+      return await chatbotRepository.getFollowUpSuggestions(messages, match, context, model);
+    } catch (error) {
+      console.error("Error in ChatbotService while getting suggestions:", error.message);
+      throw new Error("Failed to fetch follow-up suggestions.");
+    }
+  }
+
 }
 
 export default new ChatbotService();
