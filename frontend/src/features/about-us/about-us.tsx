@@ -1,5 +1,14 @@
 import React from "react";
-import { Card, Row, Col, Typography, Button, Tooltip } from "antd";
+import {
+  Card,
+  Row,
+  Col,
+  Typography,
+  Button,
+  Tooltip,
+  Space,
+  Divider,
+} from "antd";
 import {
   GithubFilled,
   GithubOutlined,
@@ -8,9 +17,8 @@ import {
   MailFilled,
   MailOutlined,
 } from "@ant-design/icons";
-import { getChampionIconSrc } from "../../libs/league/league-utils";
 
-const { Title, Text, Paragraph } = Typography;
+const { Title, Text, Paragraph, Link } = Typography;
 
 interface TeamMember {
   name: string;
@@ -23,117 +31,105 @@ interface TeamMember {
   website?: string;
 }
 
-const AboutUs: React.FC = () => {
-  const teamMembers: TeamMember[] = [
-    {
-      name: "Kostadin Devedzhiev",
-      title: "Founder | ML | API | UI | ADC",
-      description: `Kostadin has been playing League of Legends since Season 3, achieving a peak rank of Diamond 1. He plays ADC and Jungle. His favorite champion is Wukong.
+const teamMembers: TeamMember[] = [
+  {
+    name: "Kostadin Devedzhiev",
+    title: "Founder | ML | API | UI | ADC",
+    description: `Kostadin has been playing League of Legends since Season 3, achieving a peak rank of Diamond 1. He plays ADC and Jungle. His favorite champion is Wukong.
 
 Kostadin leads engineering and product at GONEXT. Prior to founding GONEXT, Kostadin was a Software Engineer at Stellar Cyber.
 
 He is an incoming student pursuing a Master's in Computer Science, specializing in Natural Language Processing, at Columbia University in New York City.`,
-      image:
-        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/MonkeyKing_5.jpg",
-      github: "https://github.com/kostadindev",
-      linkedin: "https://www.linkedin.com/in/kostadin-dev/",
-      email: "kostadin@gonext.lol",
-      website: "https://kostadindev.github.io/",
-    },
-    {
-      name: "Ivan Nikolov",
-      title: "API | DevOps | Jungle",
-      description:
-        "Ivan specializes in API development and DevOps practices, ensuring robust, scalable, and secure backend services.",
-      image: `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/MasterYi_9.jpg`,
-      github: "https://github.com/nnivan",
-      email: "ivan@gonext.lol",
-    },
-  ];
+    image:
+      "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/MonkeyKing_5.jpg",
+    github: "https://github.com/kostadindev",
+    linkedin: "https://www.linkedin.com/in/kostadin-dev/",
+    email: "kostadin@gonext.lol",
+    website: "https://kostadindev.github.io/",
+  },
+  {
+    name: "Ivan Nikolov",
+    title: "API | DevOps | Jungle",
+    description:
+      "Ivan specializes in API development and DevOps practices, ensuring robust, scalable, and secure backend services.",
+    image:
+      "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/MasterYi_9.jpg",
+    github: "https://github.com/nnivan",
+    email: "ivan@gonext.lol",
+  },
+];
 
-  const emailStyle = { fontSize: "16px", marginTop: "10px" };
-
+const AboutUs: React.FC = () => {
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        minHeight: "calc(100vh - 64px)",
-        padding: "20px",
-      }}
-    >
-      <Title level={2} style={{ marginBottom: "16px" }}>
+    <div style={{ padding: "40px 20px" }}>
+      <Title level={2} style={{ textAlign: "center", marginBottom: "32px" }}>
         About Us
       </Title>
-      <Row gutter={[24, 24]} style={{ flex: 1, maxWidth: "1000px" }}>
-        <Paragraph type="secondary" style={{ fontSize: "16px" }}>
-          <b>GONEXT</b> is a GenAI-powered assistant tailored for League of
-          Legends players, delivering real-time and personalized strategies,
-          matchups, synergies, and builds. By harnessing the Riot API,{" "}
-          <b>GONEXT</b> retrieves live game data—covering both allied and enemy
-          players—and employs large language models to offer context-specific
-          guidance for every match.
-        </Paragraph>
-      </Row>
-      <div style={{ maxWidth: "500px", textAlign: "center" }}>
-        <Title level={2}>Meet the Team</Title>
-      </div>
 
-      <Row gutter={[24, 24]} style={{ flex: 1, maxWidth: "1000px" }}>
+      <Row justify="center">
+        <Col xs={24} md={20} lg={16}>
+          <Paragraph
+            style={{ fontSize: "16px", textAlign: "center", marginBottom: 40 }}
+          >
+            <b>GONEXT</b> is a GenAI-powered assistant tailored for League of
+            Legends players, delivering real-time and personalized strategies,
+            matchups, synergies, and builds. By harnessing the Riot API,{" "}
+            <b>GONEXT</b> retrieves live game data—covering both allied and
+            enemy players—and employs large language models to offer
+            context-specific guidance for every match.
+          </Paragraph>
+        </Col>
+      </Row>
+
+      <Divider orientation="center">Meet the Team</Divider>
+
+      <Row gutter={[24, 32]} justify="center">
         {teamMembers.map((member, index) => (
-          <Col span={24} key={index}>
-            <Card hoverable>
-              <Row gutter={[16, 16]} align="middle">
-                <Col
-                  xs={24}
-                  md={8}
-                  style={{
-                    textAlign: "center",
-                    display: "flex",
-                    justifyContent: "center",
-                  }}
-                >
+          <Col xs={24} md={20} lg={16} key={index}>
+            <Card
+              hoverable
+              style={{
+                borderRadius: 12,
+                boxShadow: "0 4px 20px rgba(0, 0, 0, 0.05)",
+              }}
+            >
+              <Row gutter={[24, 24]} align="middle">
+                <Col xs={24} md={10}>
                   <img
-                    alt={member.name}
                     src={member.image}
+                    alt={member.name}
                     style={{
-                      height: "250px",
-                      width: "400px",
-                      borderRadius: "15%",
+                      width: "100%",
+                      height: "auto",
+                      borderRadius: 12,
                       objectFit: "cover",
+                      maxHeight: 240,
                     }}
                   />
                 </Col>
-                <Col xs={24} md={16}>
-                  <Title level={4}>{member.name}</Title>
-                  <Text type="secondary" style={{ fontSize: "16px" }}>
-                    {member.title}
-                  </Text>
-                  <Paragraph
-                    style={{ marginTop: "10px", whiteSpace: "pre-line" }}
-                  >
+                <Col xs={24} md={14}>
+                  <Title level={4} style={{ marginBottom: 0 }}>
+                    {member.name}
+                  </Title>
+                  <Text type="secondary">{member.title}</Text>
+                  <Paragraph style={{ marginTop: 16, whiteSpace: "pre-line" }}>
                     {member.description}
                   </Paragraph>
                   {member.email && (
-                    <Paragraph style={emailStyle}>
-                      <Typography.Link
-                        href={`mailto:${member.email}`}
-                        target="_blank"
-                      >
+                    <Paragraph style={{ marginBottom: 4 }}>
+                      <Link href={`mailto:${member.email}`}>
                         {member.email}
-                      </Typography.Link>
+                      </Link>
                     </Paragraph>
                   )}
-                  <div style={{ marginTop: "10px" }}>
+                  <Space size="middle" wrap>
                     {member.website && (
                       <Tooltip title="Website">
                         <Button
                           shape="circle"
-                          type="text"
-                          target="_blank"
-                          href={member.website}
                           icon={<GlobalOutlined />}
+                          href={member.website}
+                          target="_blank"
                         />
                       </Tooltip>
                     )}
@@ -141,9 +137,8 @@ He is an incoming student pursuing a Master's in Computer Science, specializing 
                       <Tooltip title="Email">
                         <Button
                           shape="circle"
-                          type="text"
-                          href={`mailto:${member.email}`}
                           icon={<MailFilled />}
+                          href={`mailto:${member.email}`}
                         />
                       </Tooltip>
                     )}
@@ -151,10 +146,9 @@ He is an incoming student pursuing a Master's in Computer Science, specializing 
                       <Tooltip title="LinkedIn">
                         <Button
                           shape="circle"
-                          type="text"
-                          target="_blank"
-                          href={member.linkedin}
                           icon={<LinkedinFilled />}
+                          href={member.linkedin}
+                          target="_blank"
                         />
                       </Tooltip>
                     )}
@@ -162,14 +156,13 @@ He is an incoming student pursuing a Master's in Computer Science, specializing 
                       <Tooltip title="GitHub">
                         <Button
                           shape="circle"
-                          type="text"
-                          target="_blank"
-                          href={member.github}
                           icon={<GithubFilled />}
+                          href={member.github}
+                          target="_blank"
                         />
                       </Tooltip>
                     )}
-                  </div>
+                  </Space>
                 </Col>
               </Row>
             </Card>
@@ -177,55 +170,52 @@ He is an incoming student pursuing a Master's in Computer Science, specializing 
         ))}
       </Row>
 
-      <div
-        style={{
-          textAlign: "center",
-          paddingTop: "20px",
-          maxWidth: "1100px",
-          margin: "0 auto",
-        }}
-      >
-        <Title level={2} style={{ marginBottom: "16px" }}>
-          Making GONEXT better
-        </Title>
-        <Paragraph type="secondary" style={{ fontSize: "16px" }}>
-          Let us know what you want to see in future releases and report bugs.
-          We will listen! Email us at{" "}
-          <Typography.Link href={`mailto:info@gonext.lol`} target="_blank">
-            info@gonext.lol
-          </Typography.Link>
-          .
-        </Paragraph>
-        <Tooltip title="Email us">
-          <Button
-            href="mailto:info@gonext.lol"
-            style={{ margin: "16px 8px" }}
-            icon={<MailOutlined />}
-          >
-            Email
-          </Button>
-        </Tooltip>
-        <Tooltip title="View on GitHub">
-          <Button
-            href="https://github.com/kostadindev/gonext"
-            target="_blank"
-            icon={<GithubOutlined />}
-            style={{ margin: "16px 8px" }}
-          >
-            UI
-          </Button>
-        </Tooltip>
-        <Tooltip title="View on GitHub">
-          <Button
-            href="https://github.com/kostadindev/gonext-ml"
-            target="_blank"
-            icon={<GithubOutlined />}
-            style={{ margin: "16px 8px" }}
-          >
-            ML
-          </Button>
-        </Tooltip>
-      </div>
+      <Divider orientation="center" style={{ marginTop: 64 }}>
+        Making GONEXT Better
+      </Divider>
+
+      <Row justify="center">
+        <Col xs={24} md={20} lg={16} style={{ textAlign: "center" }}>
+          <Paragraph style={{ fontSize: "16px" }}>
+            Let us know what you want to see in future releases and report bugs.
+            We will listen!
+            <br />
+            Email us at{" "}
+            <Link href="mailto:info@gonext.lol">info@gonext.lol</Link>.
+          </Paragraph>
+          <Space size="middle" style={{ marginTop: 16 }} wrap>
+            <Tooltip title="Email us">
+              <Button
+                type="default"
+                icon={<MailOutlined />}
+                href="mailto:info@gonext.lol"
+              >
+                Email
+              </Button>
+            </Tooltip>
+            <Tooltip title="View UI Repo">
+              <Button
+                type="default"
+                icon={<GithubOutlined />}
+                href="https://github.com/kostadindev/gonext"
+                target="_blank"
+              >
+                UI
+              </Button>
+            </Tooltip>
+            <Tooltip title="View ML Repo">
+              <Button
+                type="default"
+                icon={<GithubOutlined />}
+                href="https://github.com/kostadindev/gonext-ml"
+                target="_blank"
+              >
+                ML
+              </Button>
+            </Tooltip>
+          </Space>
+        </Col>
+      </Row>
     </div>
   );
 };

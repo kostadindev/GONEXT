@@ -1,5 +1,14 @@
 import React from "react";
-import { Card, Row, Col, Typography, Button, Tooltip } from "antd";
+import {
+  Card,
+  Row,
+  Col,
+  Typography,
+  Button,
+  Tooltip,
+  Space,
+  Divider,
+} from "antd";
 import {
   GithubFilled,
   GithubOutlined,
@@ -9,7 +18,7 @@ import {
   MailOutlined,
 } from "@ant-design/icons";
 
-const { Title, Text, Paragraph } = Typography;
+const { Title, Text, Paragraph, Link } = Typography;
 
 interface ContactPerson {
   name: string;
@@ -22,109 +31,99 @@ interface ContactPerson {
   website?: string;
 }
 
+const contactPeople: ContactPerson[] = [
+  {
+    name: "Kostadin Devedzhiev",
+    role: "Founder & Technical Lead",
+    description: `For technical inquiries, partnerships, or feedback regarding our product, please get in touch.`,
+    image:
+      "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/MonkeyKing_5.jpg",
+    email: "kostadin@gonext.lol",
+    github: "https://github.com/kostadindev",
+    linkedin: "https://www.linkedin.com/in/kostadin-dev/",
+    website: "https://kostadindev.github.io/",
+  },
+  {
+    name: "Ivan Nikolov",
+    role: "API & DevOps Specialist",
+    description:
+      "For questions about our API services or operational support, feel free to reach out.",
+    image:
+      "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/MasterYi_9.jpg",
+    email: "ivan@gonext.lol",
+    github: "https://github.com/nnivan",
+  },
+];
+
 const Contact: React.FC = () => {
-  const contactPeople: ContactPerson[] = [
-    {
-      name: "Kostadin Devedzhiev",
-      role: "Founder & Technical Lead",
-      description: `For technical inquiries, partnerships, or feedback regarding our product, please get in touch.`,
-      image:
-        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/MonkeyKing_5.jpg",
-      email: "kostadin@gonext.lol",
-      github: "https://github.com/kostadindev",
-      linkedin: "https://www.linkedin.com/in/kostadin-dev/",
-      website: "https://kostadindev.github.io/",
-    },
-    {
-      name: "Ivan Nikolov",
-      role: "API & DevOps Specialist",
-      description:
-        "For questions about our API services or operational support, feel free to reach out.",
-      image:
-        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/MasterYi_9.jpg",
-      email: "ivan@gonext.lol",
-      github: "https://github.com/nnivan",
-    },
-  ];
-
-  const emailStyle = { fontSize: "16px", marginTop: "10px" };
-
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        minHeight: "calc(100vh - 64px)",
-        padding: "20px",
-      }}
-    >
-      <Title level={2} style={{ marginBottom: "16px" }}>
+    <div style={{ padding: "40px 20px" }}>
+      <Title level={2} style={{ textAlign: "center", marginBottom: "32px" }}>
         Contact Us
       </Title>
-      <Row gutter={[24, 24]} style={{ flex: 1, maxWidth: "1000px" }}>
-        <Paragraph type="secondary" style={{ fontSize: "16px" }}>
-          We’re here to help! Whether you have questions about our product, need
-          support, or want to share feedback, please reach out. You can contact
-          any of our team members directly or use our general inquiry channels
-          below.
-        </Paragraph>
+
+      <Row justify="center">
+        <Col xs={24} md={20} lg={16}>
+          <Paragraph
+            style={{ fontSize: "16px", textAlign: "center", marginBottom: 40 }}
+          >
+            We’re here to help! Whether you have questions about our product,
+            need support, or want to share feedback, please reach out. You can
+            contact any of our team members directly or use our general inquiry
+            channels below.
+          </Paragraph>
+        </Col>
       </Row>
 
-      <Row gutter={[24, 24]} style={{ flex: 1, maxWidth: "1000px" }}>
+      <Divider orientation="center">Our Team</Divider>
+
+      <Row gutter={[24, 32]} justify="center">
         {contactPeople.map((person, index) => (
-          <Col span={24} key={index}>
-            <Card hoverable>
-              <Row gutter={[16, 16]} align="middle">
-                <Col
-                  xs={24}
-                  md={8}
-                  style={{
-                    textAlign: "center",
-                    display: "flex",
-                    justifyContent: "center",
-                  }}
-                >
+          <Col xs={24} md={20} lg={16} key={index}>
+            <Card
+              hoverable
+              style={{
+                borderRadius: 12,
+                boxShadow: "0 4px 20px rgba(0, 0, 0, 0.05)",
+              }}
+            >
+              <Row gutter={[24, 24]} align="middle">
+                <Col xs={24} md={10}>
                   <img
                     alt={person.name}
                     src={person.image}
                     style={{
-                      height: "250px",
-                      width: "400px",
-                      borderRadius: "15%",
+                      width: "100%",
+                      height: "auto",
+                      borderRadius: 12,
                       objectFit: "cover",
+                      maxHeight: 240,
                     }}
                   />
                 </Col>
-                <Col xs={24} md={16}>
-                  <Title level={4}>{person.name}</Title>
-                  <Text type="secondary" style={{ fontSize: "16px" }}>
-                    {person.role}
-                  </Text>
-                  <Paragraph
-                    style={{ marginTop: "10px", whiteSpace: "pre-line" }}
-                  >
+                <Col xs={24} md={14}>
+                  <Title level={4} style={{ marginBottom: 0 }}>
+                    {person.name}
+                  </Title>
+                  <Text type="secondary">{person.role}</Text>
+                  <Paragraph style={{ marginTop: 16, whiteSpace: "pre-line" }}>
                     {person.description}
                   </Paragraph>
                   {person.email && (
-                    <Paragraph style={emailStyle}>
-                      <Typography.Link
-                        href={`mailto:${person.email}`}
-                        target="_blank"
-                      >
+                    <Paragraph style={{ marginBottom: 4 }}>
+                      <Link href={`mailto:${person.email}`}>
                         {person.email}
-                      </Typography.Link>
+                      </Link>
                     </Paragraph>
                   )}
-                  <div style={{ marginTop: "10px" }}>
+                  <Space size="middle" wrap>
                     {person.website && (
                       <Tooltip title="Website">
                         <Button
                           shape="circle"
-                          type="text"
-                          target="_blank"
-                          href={person.website}
                           icon={<GlobalOutlined />}
+                          href={person.website}
+                          target="_blank"
                         />
                       </Tooltip>
                     )}
@@ -132,9 +131,8 @@ const Contact: React.FC = () => {
                       <Tooltip title="Email">
                         <Button
                           shape="circle"
-                          type="text"
-                          href={`mailto:${person.email}`}
                           icon={<MailFilled />}
+                          href={`mailto:${person.email}`}
                         />
                       </Tooltip>
                     )}
@@ -142,10 +140,9 @@ const Contact: React.FC = () => {
                       <Tooltip title="LinkedIn">
                         <Button
                           shape="circle"
-                          type="text"
-                          target="_blank"
-                          href={person.linkedin}
                           icon={<LinkedinFilled />}
+                          href={person.linkedin}
+                          target="_blank"
                         />
                       </Tooltip>
                     )}
@@ -153,14 +150,13 @@ const Contact: React.FC = () => {
                       <Tooltip title="GitHub">
                         <Button
                           shape="circle"
-                          type="text"
-                          target="_blank"
-                          href={person.github}
                           icon={<GithubFilled />}
+                          href={person.github}
+                          target="_blank"
                         />
                       </Tooltip>
                     )}
-                  </div>
+                  </Space>
                 </Col>
               </Row>
             </Card>
@@ -168,55 +164,50 @@ const Contact: React.FC = () => {
         ))}
       </Row>
 
-      <div
-        style={{
-          textAlign: "center",
-          paddingTop: "20px",
-          maxWidth: "1100px",
-          margin: "0 auto",
-        }}
-      >
-        <Title level={2} style={{ marginBottom: "16px" }}>
-          General Inquiries
-        </Title>
-        <Paragraph type="secondary" style={{ fontSize: "16px" }}>
-          For general questions, partnership opportunities, or media inquiries,
-          please email us at{" "}
-          <Typography.Link href="mailto:info@gonext.lol" target="_blank">
-            info@gonext.lol
-          </Typography.Link>
-          .
-        </Paragraph>
-        <Tooltip title="Email us">
-          <Button
-            href="mailto:info@gonext.lol"
-            style={{ margin: "16px 8px" }}
-            icon={<MailOutlined />}
-          >
-            Email
-          </Button>
-        </Tooltip>
-        <Tooltip title="View UI on GitHub">
-          <Button
-            href="https://github.com/kostadindev/gonext"
-            target="_blank"
-            icon={<GithubOutlined />}
-            style={{ margin: "16px 8px" }}
-          >
-            UI
-          </Button>
-        </Tooltip>
-        <Tooltip title="View ML on GitHub">
-          <Button
-            href="https://github.com/kostadindev/gonext-ml"
-            target="_blank"
-            icon={<GithubOutlined />}
-            style={{ margin: "16px 8px" }}
-          >
-            ML
-          </Button>
-        </Tooltip>
-      </div>
+      <Divider orientation="center" style={{ marginTop: 64 }}>
+        General Inquiries
+      </Divider>
+
+      <Row justify="center">
+        <Col xs={24} md={20} lg={16} style={{ textAlign: "center" }}>
+          <Paragraph style={{ fontSize: "16px" }}>
+            For general questions, partnership opportunities, or media
+            inquiries, please email us at{" "}
+            <Link href="mailto:info@gonext.lol">info@gonext.lol</Link>.
+          </Paragraph>
+          <Space size="middle" style={{ marginTop: 16 }} wrap>
+            <Tooltip title="Email us">
+              <Button
+                type="default"
+                icon={<MailOutlined />}
+                href="mailto:info@gonext.lol"
+              >
+                Email
+              </Button>
+            </Tooltip>
+            <Tooltip title="View UI Repo">
+              <Button
+                type="default"
+                icon={<GithubOutlined />}
+                href="https://github.com/kostadindev/gonext"
+                target="_blank"
+              >
+                UI
+              </Button>
+            </Tooltip>
+            <Tooltip title="View ML Repo">
+              <Button
+                type="default"
+                icon={<GithubOutlined />}
+                href="https://github.com/kostadindev/gonext-ml"
+                target="_blank"
+              >
+                ML
+              </Button>
+            </Tooltip>
+          </Space>
+        </Col>
+      </Row>
     </div>
   );
 };
