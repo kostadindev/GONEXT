@@ -1,86 +1,79 @@
 import React from "react";
 import { Layout, Typography, Steps, Carousel } from "antd";
-import GlobalSearch from "../global-search/global-search";
-import { QuickSearch } from "../quick-search/quick-search";
 import {
   RobotOutlined,
   SmileOutlined,
   SolutionOutlined,
 } from "@ant-design/icons";
-import { GoogleLogin } from "@react-oauth/google";
-import { handleLoginSuccess } from "../../libs/apis/auth-api";
-import { useUser } from "../../context/user.context";
+import GlobalSearch from "../global-search/global-search";
+import { QuickSearch } from "../quick-search/quick-search";
 
 const { Content } = Layout;
 const { Title, Paragraph } = Typography;
 
 const HomePage: React.FC = () => {
-  const { user, setUser } = useUser();
-
-  const onLoginSuccess = async (credentialResponse: any) => {
-    const token = credentialResponse.credential;
-    const userData = await handleLoginSuccess(token);
-    setUser(userData);
-  };
-
-  const onLoginError = () => {
-    console.error("Login Failed");
-  };
-
   const stepsItems = [
-    {
-      title: "Search Player in Game",
-      status: "process",
-      icon: <SolutionOutlined />,
-    },
-    { title: "Ask AI", status: "wait", icon: <RobotOutlined /> },
-    { title: "Win", status: "wait", icon: <SmileOutlined /> },
+    { title: "Search Player", icon: <SolutionOutlined /> },
+    { title: "Ask AI", icon: <RobotOutlined /> },
+    { title: "Win", icon: <SmileOutlined /> },
   ];
 
   return (
-    <div className="w-full min-h-screen flex flex-col items-center">
-      {/* Main Content */}
-      <div className="flex flex-col items-center justify-start p-4 w-full gap-y-6">
-        {/* Header Section */}
-        <div className="w-full max-w-3xl py-4 text-center">
-          <Steps className="w-full" items={stepsItems as any} />
-        </div>
-
-        {/* AI Chatbot Usage Explanation */}
-        <Paragraph className="text-center max-w-4xl">
-          Search for a player in an active game, then ask anything about the
-          match or players in chat! The AI knows all visible game data—current
-          match, player stats, and histories. Get personalized tips like the
-          best item builds and laning strategies for this game.
+    <div className="min-h-screen w-full bg-gray-50 flex flex-col items-center text-gray-800">
+      {/* Hero Section */}
+      <section className="w-full max-w-5xl px-6 pt-20 pb-10 text-center">
+        <Title level={4} className="!text-4xl sm:!text-4xl !leading-tight mb-4">
+          Dominate Your Game with AI Insights
+        </Title>
+        <Paragraph className="text-lg sm:text-xl max-w-3xl mx-auto">
+          Real-time match intelligence and personalized strategy tips. Instantly
+          analyze players, draft plans, and win more games.
         </Paragraph>
 
-        {/* Conditional rendering: if user exists, show search; otherwise, show sign in */}
-        <Content className="flex flex-col w-full mt-4">
-          <div className="w-full flex flex-col sm:flex-row items-center justify-center gap-6">
-            <GlobalSearch />
-            <span className="hidden sm:block">or</span>
-            <QuickSearch />
-          </div>
-        </Content>
-
-        {/* Image Carousel */}
-        <div className="w-full sm:w-[50vw] mt-8">
-          <Carousel autoplay arrows>
-            {[0, 1, 2, 3].map((index) => (
-              <div
-                key={index}
-                className="w-full sm:w-[50vw] h-[50vh] flex items-center justify-center"
-              >
-                <img
-                  src={`images/carousel/slide${index}.png`}
-                  alt={`Slide ${index}`}
-                  className="object-contain w-full h-full"
-                />
-              </div>
-            ))}
-          </Carousel>
+        {/* Search Tools Always Visible */}
+        <div className="mt-8 flex justify-center flex-wrap gap-6">
+          <GlobalSearch />
+          <QuickSearch />
         </div>
-      </div>
+      </section>
+
+      {/* Steps Section */}
+      <section className="w-full max-w-4xl px-6 mb-10">
+        <Steps current={0} items={stepsItems} responsive />
+      </section>
+
+      {/* Image Carousel */}
+      <section className="w-full max-w-4xl px-6 mb-16">
+        <Carousel
+          autoplay
+          dots
+          className="rounded-xl shadow-lg overflow-hidden"
+        >
+          {[0, 1, 2, 3].map((index) => (
+            <div
+              key={index}
+              className="h-[50vh] bg-black flex justify-center items-center"
+            >
+              <img
+                src={`images/carousel/slide${index}.png`}
+                alt={`Slide ${index}`}
+                className="object-contain w-full h-full"
+              />
+            </div>
+          ))}
+        </Carousel>
+      </section>
+
+      {/* Final CTA Section */}
+      <section className="w-full max-w-3xl px-6 text-center mb-16">
+        <Title level={3} className="!text-2xl">
+          Start Exploring Matches
+        </Title>
+        <Paragraph>
+          Use AI to uncover win conditions, item builds, lane matchups and
+          more—all in real time.
+        </Paragraph>
+      </section>
     </div>
   );
 };
