@@ -34,11 +34,11 @@ const HomePage: React.FC = () => {
     >
       <div className="flex flex-col items-center w-full text-gray-800 bg-white">
         {/* Hero Section */}
-        <section className="w-full h-screen flex flex-col justify-center items-center px-6 bg-gradient-to-b from-blue-100 to-blue-50 text-black text-center">
-          <Title className="!text-5xl sm:!text-6xl font-bold">
+        <section className="w-full h-screen flex flex-col justify-center items-center px-6 bg-gradient-to-b from-[#ffe7ba] to-[#fff] text-black text-center">
+          <Title className="!text-5xl sm:!text-4xl font-bold">
             Your Game Companion Powered by AI
           </Title>
-          <Paragraph className="text-lg sm:text-xl max-w-2xl mt-4">
+          <Paragraph className="text-lg sm:text-xl max-w-1xl mt-4">
             Instantly analyze players, strategies, and match conditions with
             real-time data and personalized insights.
           </Paragraph>
@@ -49,18 +49,45 @@ const HomePage: React.FC = () => {
         </section>
 
         {/* How It Works */}
-        <section className="w-full py-20 px-6 bg-gray-50 text-center text-black">
+        {/* How It Works */}
+        <section className="w-full py-20 px-6 bg-[#f0f2f5] text-center text-black">
           <Title level={2}>How It Works</Title>
-          <Paragraph className="max-w-2xl mx-auto text-lg mb-8">
+          <Paragraph className="max-w-2xl mx-auto text-lg mb-12">
             Get smarter with every match. Here’s what the AI can do:
           </Paragraph>
-          <div className="flex justify-center">
-            <Steps
-              direction="horizontal"
-              size="default"
-              current={0}
-              items={stepsItems}
-            />
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 max-w-5xl mx-auto">
+            {[
+              {
+                title: "Search",
+                icon: <SolutionOutlined />,
+                desc: "Start by entering a player or game name. Instantly access relevant data and historical performance.",
+                color: "bg-orange-100 text-orange-600",
+              },
+              {
+                title: "Ask AI",
+                icon: <RobotOutlined />,
+                desc: "Ask for insights, predictions, or strategy tips. The AI delivers contextual advice on demand.",
+                color: "bg-blue-100 text-blue-600",
+              },
+              {
+                title: "Win",
+                icon: <SmileOutlined />,
+                desc: "Use your new knowledge to outplay opponents. Climb ranks and track your improvement over time.",
+                color: "bg-green-100 text-green-600",
+              },
+            ].map(({ title, icon, desc, color }) => (
+              <div
+                key={title}
+                className="flex flex-col items-center text-center bg-white p-6 rounded-xl shadow hover:shadow-md transition-shadow duration-300"
+              >
+                <div className={`text-4xl p-4 rounded-full mb-4 ${color}`}>
+                  {icon}
+                </div>
+                <h3 className="text-xl font-semibold mb-2">{title}</h3>
+                <p className="text-gray-700">{desc}</p>
+              </div>
+            ))}
           </div>
         </section>
 
@@ -77,7 +104,7 @@ const HomePage: React.FC = () => {
               dots
               className="rounded-lg shadow-md overflow-hidden"
             >
-              {[0, 1, 2, 3].map((index) => (
+              {[0, 1, 2].map((index) => (
                 <div
                   key={index}
                   className="h-[60vh] bg-white flex justify-center items-center"
