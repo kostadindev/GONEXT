@@ -3,32 +3,68 @@
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Goldman:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Goldman:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Basic Meta Tags -->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
+    <meta name="theme-color" content="#e89a3c" />
     <meta
       name="description"
-      content="Web site created using create-react-app"
+      content="GONEXT is your ultimate game companion powered by AI. Instantly analyze players, strategies, and matchups with real-time data and personalized insights."
     />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
+    <meta
+      name="keywords"
+      content="GONEXT, AI gaming assistant, League of Legends, player insights, strategy, esports, game analytics, real-time coaching, match analysis, quick search"
+    />
+    <meta name="author" content="GONEXT Team" />
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-    <title>GONEXT</title>
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="GONEXT - AI-Powered Game Companion" />
+    <meta
+      property="og:description"
+      content="Plan, analyze, and win smarter with GONEXT. From jungle pathing to matchup tips, get intelligent in-game advice tailored to your playstyle."
+    />
+    <meta property="og:image" content="https://gonext.lol/og-image.png" />
+    <meta property="og:url" content="https://gonext.lol" />
+    <meta property="og:site_name" content="GONEXT" />
+
+    <!-- Twitter Card Meta Tags -->
+    <!-- <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="GONEXT - AI-Powered Game Companion" />
+    <meta
+      name="twitter:description"
+      content="Use real-time AI to analyze your matches, counter opponents, and improve your gameplay. GONEXT is the future of strategic gaming."
+    /> -->
+    <!-- <meta name="twitter:image" content="https://gonext.lol/og-image.png" /> -->
+    <!-- <meta name="twitter:site" content="@gonext_lol" /> -->
+    <!-- Update if needed -->
+
+    <!-- App & PWA -->
+    <!-- <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" /> -->
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+
+    <title>GONEXT - AI-Powered Game Companion</title>
   </head>
+  <!-- Google tag (gtag.js) -->
+  <script
+    async
+    src="https://www.googletagmanager.com/gtag/js?id=G-4G481G33GR"
+  ></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+
+    gtag("config", "G-4G481G33GR");
+  </script>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
