@@ -1,39 +1,14 @@
 import React from "react";
-import { Card, Typography, Button, Avatar } from "antd";
-import {
-  InfoCircleOutlined,
-  RobotFilled,
-  RobotOutlined,
-} from "@ant-design/icons";
-import { OpenAIOutlined, OpenAIFilled, SmileOutlined } from "@ant-design/icons";
+import { Typography, Button, Avatar } from "antd";
+import { RobotFilled } from "@ant-design/icons";
 
 const { Title, Text } = Typography;
-
-interface PromptCardProps {
-  description: string;
-  onClick: () => void;
-}
-
-const PromptCard: React.FC<PromptCardProps> = ({ description, onClick }) => (
-  <Card
-    className="rounded-2xl shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center"
-    styles={{
-      body: {
-        padding: "8px",
-      },
-    }}
-    hoverable
-    onClick={onClick}
-  >
-    {description}
-  </Card>
-);
 
 const DEFAULT_PROMPTS = [
   "Give me a game plan",
   "What items should I build?",
   "How do I play my matchup?",
-  "Who is their best and weakest player?",
+  "Who is their weakest player?",
 ];
 
 interface DefaultPromptsProps {
@@ -52,13 +27,17 @@ const DefaultPrompts: React.FC<DefaultPromptsProps> = ({
           icon={<RobotFilled spin />}
         />
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-xl mx-auto w-full">
         {DEFAULT_PROMPTS.map((prompt, index) => (
-          <PromptCard
+          <Button
             key={index}
-            description={prompt}
+            className="rounded-2xl shadow-md hover:shadow-lg text-base h-20 whitespace-normal break-words"
+            type="default"
             onClick={() => handleSendMessage(prompt)}
-          />
+            block
+          >
+            {prompt}
+          </Button>
         ))}
       </div>
     </div>
