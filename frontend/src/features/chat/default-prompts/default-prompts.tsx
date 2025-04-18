@@ -5,10 +5,10 @@ import { RobotFilled } from "@ant-design/icons";
 const { Title, Text } = Typography;
 
 const DEFAULT_PROMPTS = [
-  "Give me a game plan",
-  "What items should I build?",
-  "How do I play my matchup?",
-  "Who is their weakest player?",
+  "Create a game plan tailored to my role",
+  "What items should I prioritize this match?",
+  "Give me tips for winning my lane matchup",
+  "Who's the weakest link on the enemy team?",
 ];
 
 interface DefaultPromptsProps {
@@ -27,17 +27,17 @@ const DefaultPrompts: React.FC<DefaultPromptsProps> = ({
           icon={<RobotFilled spin />}
         />
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-xl mx-auto w-full">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-3xl mx-auto w-full">
         {DEFAULT_PROMPTS.map((prompt, index) => (
-          <Button
-            key={index}
-            className="rounded-2xl shadow-md hover:shadow-lg text-base h-20 whitespace-normal break-words"
-            type="default"
-            onClick={() => handleSendMessage(prompt)}
-            block
-          >
-            {prompt}
-          </Button>
+          <div key={index} className="flex justify-center">
+            <Button
+              className="rounded-2xl shadow-md hover:shadow-lg text-base h-20 whitespace-normal break-words w-[90%] sm:w-[85%]"
+              type="default"
+              onClick={() => handleSendMessage(prompt)}
+            >
+              {prompt}
+            </Button>
+          </div>
         ))}
       </div>
     </div>
