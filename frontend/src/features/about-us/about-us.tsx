@@ -116,7 +116,7 @@ const AboutUs: React.FC = () => {
                     {member.description}
                   </Paragraph>
                   {member.email && (
-                    <Paragraph style={{ marginBottom: 4 }}>
+                    <Paragraph style={{ marginBottom: 10 }}>
                       <Link href={`mailto:${member.email}`}>
                         {member.email}
                       </Link>

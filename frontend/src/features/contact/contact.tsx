@@ -110,7 +110,7 @@ const Contact: React.FC = () => {
                     {person.description}
                   </Paragraph>
                   {person.email && (
-                    <Paragraph style={{ marginBottom: 4 }}>
+                    <Paragraph style={{ marginBottom: 10 }}>
                       <Link href={`mailto:${person.email}`}>
                         {person.email}
                       </Link>
