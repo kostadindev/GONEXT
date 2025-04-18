@@ -9,12 +9,16 @@ import {
   getSessionByGameId,
 } from "../../libs/apis/sessions-api";
 import { useUser } from "../../context/user.context";
-import { sendChatMessageStream } from "../../libs/apis/chatbot-api";
+import {
+  sendChatMessageStream,
+  getFollowUpSuggestions,
+} from "../../libs/apis/chatbot-api";
 import { Game } from "../../libs/league/league-types";
 import MarkdownRenderer from "../markdown-renderer/markdown-renderer";
 import { theme } from "antd";
 
 const { useToken } = theme;
+
 interface Message {
   content: string;
   role: "user" | "system";
@@ -41,6 +45,7 @@ const ChatComponent: React.FC<{
   const [isSending, setIsSending] = useState<boolean>(false);
   const [isUserScrolling, setIsUserScrolling] = useState<boolean>(false);
   const [sessionId, setSessionId] = useState<string | null>(null);
+  const [followUps, setFollowUps] = useState<string[]>([]);
 
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
   const messageContainerRef = React.useRef<HTMLDivElement>(null);
@@ -92,18 +97,18 @@ const ChatComponent: React.FC<{
   }, [game]);
 
   const handleSendMessage = async (message?: string) => {
-    if (isSending) return; // Prevent duplicate sending
+    if (isSending) return;
 
     const textToSend = message || input;
 
     if (textToSend.trim()) {
-      // Add the user message
       setMessages((prevMessages) => [
         ...prevMessages,
         { content: textToSend, role: "user" },
       ]);
       setInput("");
       setIsSending(true);
+      setFollowUps([]);
       console.log("Sending message:", textToSend, sessionId);
 
       try {
@@ -113,10 +118,9 @@ const ChatComponent: React.FC<{
             role: "user",
           });
 
-          // Start streaming response
           let partialResponse = "";
           let systemMessageIndex = -1;
-          // Append a new system message and store its index
+
           setMessages((prevMessages: any) => {
             const updatedMessages = [
               ...prevMessages,
@@ -126,7 +130,6 @@ const ChatComponent: React.FC<{
             return updatedMessages;
           });
 
-          // Stream the response chunks
           await sendChatMessageStream(
             sessionId,
             { query: textToSend, match: game, context },
@@ -134,7 +137,6 @@ const ChatComponent: React.FC<{
               partialResponse += chunk;
               setMessages((prevMessages) => {
                 const updatedMessages = [...prevMessages];
-                // Verify that the message at our tracked index is a system message before updating
                 if (
                   systemMessageIndex >= 0 &&
                   updatedMessages[systemMessageIndex]?.role === "system"
@@ -146,11 +148,25 @@ const ChatComponent: React.FC<{
             }
           );
 
-          // Save the final response to the session
           await addMessageToSession(sessionId, {
             content: partialResponse,
             role: "system",
           });
+
+          try {
+            const suggestions = await getFollowUpSuggestions(sessionId, {
+              messages: [
+                ...messages,
+                { content: textToSend, role: "user" },
+                { content: partialResponse, role: "system" },
+              ],
+              match: game,
+              context,
+            });
+            setFollowUps(suggestions);
+          } catch (err) {
+            console.warn("Failed to load follow-up suggestions:", err);
+          }
         } else {
           console.error("Session ID is missing");
         }
@@ -225,6 +241,15 @@ const ChatComponent: React.FC<{
               )}
             </div>
           ))}
+          {followUps.length > 0 && (
+            <div className="flex flex-wrap gap-2 mt-2">
+              {followUps.map((suggestion, idx) => (
+                <Button key={idx} onClick={() => handleSendMessage(suggestion)}>
+                  {suggestion}
+                </Button>
+              ))}
+            </div>
+          )}
           <div ref={messagesEndRef} />
         </div>
         <div className="flex justify-center pt-2">
