@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Typography,
-  Steps,
-  Carousel,
-  ConfigProvider,
-  theme as antdTheme,
-} from "antd";
+import { Typography, Carousel, ConfigProvider, theme as antdTheme } from "antd";
 import {
   RobotOutlined,
   SmileOutlined,
@@ -16,17 +10,17 @@ import { QuickSearch } from "../quick-search/quick-search";
 
 const { Title, Paragraph } = Typography;
 
-const HomePage: React.FC = () => {
-  const stepsItems = [
-    { title: "Search", icon: <SolutionOutlined /> },
-    { title: "Ask AI", icon: <RobotOutlined /> },
-    { title: "Win", icon: <SmileOutlined /> },
-  ];
+// Goldman font style
+const goldmanTitleStyle = {
+  fontFamily: '"Goldman", sans-serif',
+  fontWeight: 500,
+};
 
+const HomePage: React.FC = () => {
   return (
     <ConfigProvider
       theme={{
-        algorithm: antdTheme.defaultAlgorithm, // Force light mode
+        algorithm: antdTheme.defaultAlgorithm,
         token: {
           colorPrimary: "#e89a3c",
         },
@@ -34,18 +28,16 @@ const HomePage: React.FC = () => {
     >
       <div className="flex flex-col items-center w-full text-gray-800 bg-white">
         {/* Hero Section */}
-        {/* Hero Section */}
-        <section className="w-full h-screen flex flex-col justify-center items-center px-6 text-black text-center bg-[linear-gradient(45deg,_#ffd8bf,_#ffe7ba,_#fff)]">
-          {/* 🐵 Inserted Image Here */}
+        <section className="relative w-full h-screen flex flex-col justify-center items-center px-6 text-center bg-[linear-gradient(45deg,_#ffd8bf,_#ffe7ba,_#fff)] text-black">
+          {/* Logo */}
           <div className="absolute top-1 left-6 flex items-center gap-3">
             <h1
               style={{
                 fontFamily: '"Goldman", serif',
                 fontWeight: 400,
-                fontStyle: "normal",
                 fontSize: "3rem",
                 color: "#2c2c2c",
-                textShadow: "0 1px 2px rgba(255, 255, 255, 0.7)", // subtle blend
+                textShadow: "0 1px 2px rgba(255, 255, 255, 0.7)",
                 cursor: "pointer",
               }}
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
@@ -53,30 +45,44 @@ const HomePage: React.FC = () => {
               GONEXT
             </h1>
           </div>
+
           <img
             src="/images/landing/monkey-poro.png"
             alt="Monkey Poro"
             className="w-[300px] h-auto mb-6"
           />
 
-          <Title className="!text-5xl sm:!text-4xl font-bold">
+          <Title
+            className="!text-5xl sm:!text-5xl tracking-tight text-[#1e1e1e]"
+            style={goldmanTitleStyle}
+          >
             Your Game Companion Powered by AI
           </Title>
-          <Paragraph className="text-lg sm:text-xl max-w-1xl mt-4">
+
+          <Paragraph className="text-xl sm:text-2xl max-w-2xl mt-4 text-gray-700 leading-relaxed">
             Instantly analyze players, strategies, and match conditions with
             real-time data and personalized insights.
           </Paragraph>
-          <div className="mt-10 flex flex-wrap justify-center gap-6">
+
+          <div className="mt-10 flex flex-col items-center gap-4 w-full max-w-lg px-4">
             <GlobalSearch />
+            <span className="text-gray-600 font-medium text-base sm:text-lg mt-1">
+              or try it out for
+            </span>
             <QuickSearch />
           </div>
         </section>
 
         {/* How It Works */}
-        {/* How It Works */}
         <section className="w-full py-20 px-6 bg-[#f0f2f5] text-center text-black">
-          <Title level={2}>How It Works</Title>
-          <Paragraph className="max-w-2xl mx-auto text-lg mb-12">
+          <Title
+            level={2}
+            className="!text-3xl sm:!text-4xl text-[#1e1e1e]"
+            style={goldmanTitleStyle}
+          >
+            How It Works
+          </Title>
+          <Paragraph className="max-w-2xl mx-auto text-lg text-gray-600 mb-12 leading-relaxed">
             Get smarter with every match. Here’s what the AI can do:
           </Paragraph>
 
@@ -108,17 +114,28 @@ const HomePage: React.FC = () => {
                 <div className={`text-4xl p-4 rounded-full mb-4 ${color}`}>
                   {icon}
                 </div>
-                <h3 className="text-xl font-semibold mb-2">{title}</h3>
-                <p className="text-gray-700">{desc}</p>
+                <h3
+                  className="text-xl font-semibold mb-2 text-[#2c2c2c]"
+                  style={goldmanTitleStyle}
+                >
+                  {title}
+                </h3>
+                <p className="text-gray-600 leading-snug text-sm">{desc}</p>
               </div>
             ))}
           </div>
         </section>
 
-        {/* Carousel / Product Demo */}
+        {/* Carousel Preview */}
         <section className="w-full py-20 px-6 bg-white text-center text-black">
-          <Title level={2}>Preview</Title>
-          <Paragraph className="max-w-2xl mx-auto text-lg mb-10">
+          <Title
+            level={2}
+            className="!text-3xl sm:!text-4xl text-[#1e1e1e]"
+            style={goldmanTitleStyle}
+          >
+            Preview
+          </Title>
+          <Paragraph className="max-w-2xl mx-auto text-lg text-gray-600 mb-10">
             Here's what you can expect when using our AI-powered match
             assistant.
           </Paragraph>
@@ -144,9 +161,15 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* AI Smarts Section */}
+        {/* Why It’s Smart */}
         <section className="w-full py-20 px-6 text-center text-black bg-[linear-gradient(120deg,_#fff2e8,_#ffd8bf)]">
-          <Title level={2}>Why It’s Smart</Title>
+          <Title
+            level={2}
+            className="!text-3xl sm:!text-4xl text-[#1e1e1e]"
+            style={goldmanTitleStyle}
+          >
+            Why It’s Smart
+          </Title>
           <div className="max-w-3xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-6 text-left mt-10">
             {[
               {
@@ -163,56 +186,84 @@ const HomePage: React.FC = () => {
               },
             ].map(({ title, desc }) => (
               <div key={title} className="p-6 bg-white rounded-xl shadow">
-                <Title level={4}>{title}</Title>
-                <Paragraph>{desc}</Paragraph>
+                <Title
+                  level={4}
+                  className="text-lg text-[#1e1e1e]"
+                  style={goldmanTitleStyle}
+                >
+                  {title}
+                </Title>
+                <Paragraph className="text-gray-700 leading-snug">
+                  {desc}
+                </Paragraph>
               </div>
             ))}
           </div>
         </section>
 
-        {/* Use Cases Section */}
+        {/* Use Cases */}
         <section className="w-full py-20 px-6 bg-white text-center text-black">
-          <Title level={2}>How Players Use It</Title>
+          <Title
+            level={2}
+            className="!text-3xl sm:!text-4xl text-[#1e1e1e]"
+            style={goldmanTitleStyle}
+          >
+            How Players Use It
+          </Title>
           <div className="max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-8 mt-10 text-left">
-            <div className="p-6 border-l-4 border-blue-600">
-              <Title level={4}>Midlane Domination</Title>
-              <Paragraph>
-                Learn about your opponent, get mathchup tips, and itemize like a
-                pro.
-              </Paragraph>
-            </div>
-            <div className="p-6 border-l-4 border-green-600">
-              <Title level={4}>Jungle Pathing AI</Title>
-              <Paragraph>
-                AI can recommend when and where to gank, predicting enemy jungle
-                movement and capitilzing on ally synergy.
-              </Paragraph>
-            </div>
-            <div className="p-6 border-l-4 border-red-600">
-              <Title level={4}>Support Vision Coach</Title>
-              <Paragraph>
-                Know optimal ward placements for every stage of the game.
-              </Paragraph>
-            </div>
-            <div className="p-6 border-l-4 border-purple-600">
-              <Title level={4}>Ask any question.</Title>
-              <Paragraph>
-                Unlike traditional in-game tools, you can ask the AI anything in
-                natural language and get all the information you need in one
-                place.
-              </Paragraph>
-            </div>
+            {[
+              {
+                title: "Midlane Domination",
+                desc: "Learn about your opponent, get matchup tips, and itemize like a pro.",
+                borderColor: "border-blue-600",
+              },
+              {
+                title: "Jungle Pathing AI",
+                desc: "AI can recommend when and where to gank, predicting enemy jungle movement and capitalizing on ally synergy.",
+                borderColor: "border-green-600",
+              },
+              {
+                title: "Support Vision Coach",
+                desc: "Know optimal ward placements for every stage of the game.",
+                borderColor: "border-red-600",
+              },
+              {
+                title: "Ask any question.",
+                desc: "Unlike traditional in-game tools, you can ask the AI anything in natural language and get all the information you need in one place.",
+                borderColor: "border-purple-600",
+              },
+            ].map(({ title, desc, borderColor }) => (
+              <div key={title} className={`p-6 border-l-4 ${borderColor}`}>
+                <Title
+                  level={4}
+                  className="text-lg text-[#1e1e1e] mb-2"
+                  style={goldmanTitleStyle}
+                >
+                  {title}
+                </Title>
+                <Paragraph className="text-gray-700 text-sm leading-relaxed">
+                  {desc}
+                </Paragraph>
+              </div>
+            ))}
           </div>
         </section>
 
-        <section className="w-full py-20 px-6 text-black text-center bg-[linear-gradient(135deg,_#ffe7ba,_#fff1e6)]  ">
-          <Title className="!text-3xl sm:!text-4xl">Ready to Win More?</Title>
-          <Paragraph className="text-lg max-w-xl mx-auto mb-6">
-            Get AI-powered insights before and during your games. It's like
-            having a coach by your side.
+        {/* Final CTA */}
+        <section className="w-full py-20 px-6 text-black text-center bg-[linear-gradient(135deg,_#ffe7ba,_#fff1e6)]">
+          <Title
+            className="!text-4xl sm:!text-5xl tracking-tight text-[#1e1e1e]"
+            style={goldmanTitleStyle}
+          >
+            Ready to Win More?
+          </Title>
+          <Paragraph className="text-lg max-w-xl mx-auto mb-6 text-gray-700">
+            Get AI-powered insights during your games. It's like having a coach
+            by your side.
           </Paragraph>
-          <div className="flex justify-center gap-4">
+          <div className="flex justify-center gap-4 items-center">
             <GlobalSearch />
+            <span className="text-gray-600 font-medium">or</span>
             <QuickSearch />
           </div>
         </section>
