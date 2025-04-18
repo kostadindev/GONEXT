@@ -85,7 +85,7 @@ const HomePage: React.FC = () => {
               {
                 title: "Search",
                 icon: <SolutionOutlined />,
-                desc: "Start by entering a player or game name. Instantly access relevant data and historical performance.",
+                desc: "Start by entering a player in game. Instantly access relevant data and historical performance.",
                 color: "bg-orange-100 text-orange-600",
               },
               {
@@ -117,7 +117,7 @@ const HomePage: React.FC = () => {
 
         {/* Carousel / Product Demo */}
         <section className="w-full py-20 px-6 bg-white text-center text-black">
-          <Title level={2}>Live Preview</Title>
+          <Title level={2}>Preview</Title>
           <Paragraph className="max-w-2xl mx-auto text-lg mb-10">
             Here's what you can expect when using our AI-powered match
             assistant.
@@ -151,11 +151,11 @@ const HomePage: React.FC = () => {
             {[
               {
                 title: "Player Intelligence",
-                desc: "Access in-depth player stats, match history, and real-time performance.",
+                desc: "Access in-depth player stats, match history, and latest performance.",
               },
               {
                 title: "Game Context",
-                desc: "Get insights into builds, team comps, and lane matchups—all AI analyzed.",
+                desc: "Get insights into team comps and lane matchups—all AI analyzed.",
               },
               {
                 title: "Winning Tips",
@@ -177,29 +177,29 @@ const HomePage: React.FC = () => {
             <div className="p-6 border-l-4 border-blue-600">
               <Title level={4}>Midlane Domination</Title>
               <Paragraph>
-                Learn opponent tendencies, get counter-pick suggestions, and
-                itemize like a pro.
+                Learn about your opponent, get mathchup tips, and itemize like a
+                pro.
               </Paragraph>
             </div>
             <div className="p-6 border-l-4 border-green-600">
               <Title level={4}>Jungle Pathing AI</Title>
               <Paragraph>
-                AI analyzes where and when to gank, and predicts enemy jungle
-                movements.
+                AI can recommend when and where to gank, predicting enemy jungle
+                movement and capitilzing on ally synergy.
               </Paragraph>
             </div>
             <div className="p-6 border-l-4 border-red-600">
               <Title level={4}>Support Vision Coach</Title>
               <Paragraph>
-                Know optimal ward placements and track the enemy support’s
-                roaming patterns.
+                Know optimal ward placements for every stage of the game.
               </Paragraph>
             </div>
             <div className="p-6 border-l-4 border-purple-600">
-              <Title level={4}>Climb Smarter</Title>
+              <Title level={4}>Ask any question.</Title>
               <Paragraph>
-                Post-match analysis shows where you lost tempo, mispositioned,
-                or could’ve snowballed.
+                Unlike traditional in-game tools, you can ask the AI anything in
+                natural language and get all the information you need in one
+                place.
               </Paragraph>
             </div>
           </div>

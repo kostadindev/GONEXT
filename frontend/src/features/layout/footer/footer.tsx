@@ -7,11 +7,13 @@ import {
 } from "@ant-design/icons";
 import { useLocation } from "react-router-dom";
 
+const { Text, Paragraph } = Typography;
+
 export const Footer: React.FC = () => {
   const { pathname } = useLocation();
   const isLanding = pathname === "/";
 
-  // Base footer style, with light-theme overrides on landing
+  // Base footer style
   const footerStyle: React.CSSProperties = {
     textAlign: "center",
     padding: "40px 50px",
@@ -19,23 +21,18 @@ export const Footer: React.FC = () => {
     color: isLanding ? "#000000" : undefined,
   };
 
-  // Heading style override
   const headingStyle: React.CSSProperties = {
     marginBottom: 10,
     color: isLanding ? "#000000" : undefined,
   };
 
-  // Link style override
-  const linkStyle: React.CSSProperties = {
-    color: isLanding ? "#000000" : undefined,
-    textDecoration: "none",
-  };
-
-  // Small-print style
   const smallTextStyle: React.CSSProperties = {
     fontSize: "12px",
     color: isLanding ? "#666666" : "#888888",
   };
+
+  // Tailwind classes for hover‑only primary color
+  const linkClasses = `text-current transition-colors duration-200 hover:text-[#e89a3c]`;
 
   return (
     <Layout.Footer style={footerStyle}>
@@ -44,12 +41,12 @@ export const Footer: React.FC = () => {
         <Col xs={24} sm={12} md={8}>
           <h3 style={headingStyle}>Quick Links</h3>
           <p>
-            <a href="/about-us" style={linkStyle}>
+            <a href="/about-us" className={linkClasses}>
               <InfoCircleOutlined /> About Us
             </a>
           </p>
           <p>
-            <a href="/contact" style={linkStyle}>
+            <a href="/contact" className={linkClasses}>
               <MailOutlined /> Contact
             </a>
           </p>
@@ -57,19 +54,16 @@ export const Footer: React.FC = () => {
 
         {/* Company Info */}
         <Col xs={24} sm={12} md={8} style={{ textAlign: "center" }}>
-          <Typography.Text
-            strong
-            style={{ color: isLanding ? "#000000" : undefined }}
-          >
+          <Text strong style={{ color: isLanding ? "#000000" : undefined }}>
             GONEXT
-          </Typography.Text>
-          <Typography.Paragraph style={smallTextStyle}>
+          </Text>
+          <Paragraph style={smallTextStyle}>
             GONEXT is not endorsed by Riot Games and does not reflect the views
             or opinions of Riot Games or anyone officially involved in producing
             or managing Riot Games properties. Riot Games and all associated
             properties are trademarks or registered trademarks of Riot Games,
             Inc.
-          </Typography.Paragraph>
+          </Paragraph>
         </Col>
 
         {/* Social Media Links */}
@@ -80,7 +74,7 @@ export const Footer: React.FC = () => {
               href="https://github.com/kostadindev/gonext"
               target="_blank"
               rel="noreferrer"
-              style={linkStyle}
+              className={linkClasses}
             >
               <GithubOutlined style={{ fontSize: "18px" }} /> GitHub
             </a>
@@ -101,5 +95,3 @@ export const Footer: React.FC = () => {
     </Layout.Footer>
   );
 };
-
-export default Footer;
