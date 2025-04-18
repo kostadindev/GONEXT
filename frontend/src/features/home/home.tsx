@@ -258,12 +258,12 @@ const HomePage: React.FC = () => {
             Get AI-powered insights during your games. It's like having a coach
             by your side.
           </Paragraph>
-          <div className="flex flex-col sm:flex-row justify-center gap-4 items-center w-full px-4 sm:px-0">
-            <div className="w-full sm:w-auto">
+          <div className="flex flex-col justify-center gap-4 items-center w-full px-4">
+            <div className="w-full">
               <GlobalSearch />
             </div>
             <span className="text-gray-600 font-medium">or try it out for</span>
-            <div className="w-full sm:w-auto">
+            <div className="w-full">
               <QuickSearch />
             </div>
           </div>
