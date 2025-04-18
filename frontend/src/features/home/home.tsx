@@ -34,7 +34,31 @@ const HomePage: React.FC = () => {
     >
       <div className="flex flex-col items-center w-full text-gray-800 bg-white">
         {/* Hero Section */}
+        {/* Hero Section */}
         <section className="w-full h-screen flex flex-col justify-center items-center px-6 text-black text-center bg-[linear-gradient(45deg,_#ffd8bf,_#ffe7ba,_#fff)]">
+          {/* 🐵 Inserted Image Here */}
+          <div className="absolute top-1 left-6 flex items-center gap-3">
+            <h1
+              style={{
+                fontFamily: '"Goldman", serif',
+                // fontWeight: 400,
+                // fontStyle: "normal",
+                fontSize: "3rem",
+                color: "#2c2c2c",
+                textShadow: "0 1px 2px rgba(255, 255, 255, 0.7)", // subtle blend
+                cursor: "pointer",
+              }}
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            >
+              GONEXT
+            </h1>
+          </div>
+          <img
+            src="/images/landing/monkey-poro.png"
+            alt="Monkey Poro"
+            className="w-[300px] h-auto mb-6"
+          />
+
           <Title className="!text-5xl sm:!text-4xl font-bold">
             Your Game Companion Powered by AI
           </Title>
