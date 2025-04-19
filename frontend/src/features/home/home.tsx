@@ -50,10 +50,10 @@ const ParticleBackground = ({ id }: { id: string }) => {
             },
           },
           number: {
-            value: 60,
+            value: 100,
           },
           opacity: {
-            value: 0.5,
+            value: 0.7,
           },
           size: {
             value: { min: 1, max: 5 },

@@ -48,7 +48,7 @@ const ParticleBackground = ({ id }: { id: string }) => {
             },
           },
           number: {
-            value: 200,
+            value: 120,
           },
           opacity: {
             value: 0.8,
