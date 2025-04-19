@@ -43,7 +43,8 @@
 
 ## Screenshots
 
-![Chat Interface](https://github.com/user-attachments/assets/9f172196-fc87-45cf-9657-47167e8bb8f3)
+![Landing Page](https://github.com/user-attachments/assets/c8760878-2359-4612-b492-b0ebe4b2cd17)
+
 *Real-time chat providing AI-driven insights.*
 
 ![Game Overview](https://github.com/user-attachments/assets/03167506-09c2-4c6a-8120-46855c59f69f)
@@ -53,10 +54,12 @@
 *Detailed match history and rank analysis.*
 
 ![Multi-Language Support](https://github.com/user-attachments/assets/52cf0982-39b7-42ec-ab11-fa112b9d1be2)
-*Insights available in multiple languages.*
 
 ![LLM Switching](https://github.com/user-attachments/assets/95431b0e-8c4e-400d-b1ea-4c1b5d47ccb2)
-*Seamless switching between different LLMs.*
+
+![image](https://github.com/user-attachments/assets/9b07a0c6-f35a-47ff-9b7d-111835f315d5)
+![image](https://github.com/user-attachments/assets/08b686f6-a810-41eb-b0b5-4e4b29d3ea3c)
+
 
 ---
 
