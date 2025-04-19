@@ -80,21 +80,21 @@
     ```
 2.  **Install backend dependencies:**
     ```bash
-    # Navigate to the backend directory (adjust path if needed)
-    cd server
+    # Navigate to the backend directory
+    cd backend
     npm install
     ```
 3.  **Install frontend dependencies:**
     ```bash
-    # Navigate to the frontend directory (adjust path if needed)
-    cd ../client
+    # Navigate to the frontend directory
+    cd ../frontend
     npm install
     ```
 4.  **Install ML dependencies:**
     Refer to the [GoNext ML GitHub Repository](https://github.com/kostadindev/gonext-ml) for instructions.
 5.  **Set up environment variables:**
-    - Create `.env` files in the `server`, `client`, and ML project root directories.
-    - Populate them based on the respective `.env.example` files, including API keys (Riot Games, OpenAI, Google AI Studio) and database connection strings.
+    - Create `.env` files in the `backend`, `frontend`, and ML project root directories (or copy from `.env.sample` files).
+    - Populate them with the necessary API keys (Riot Games, OpenAI, Google AI Studio) and database connection strings.
 6.  **Set up databases:**
     - Ensure PostgreSQL, MongoDB, and Redis instances are running.
     - Configure connection details in the backend `.env` file.
@@ -106,12 +106,12 @@
 
 1.  **Start the backend server:**
     ```bash
-    # From the server directory
+    # From the backend directory
     npm start
     ```
 2.  **Start the frontend development server:**
     ```bash
-    # From the client directory
+    # From the frontend directory
     npm run dev
     ```
 3.  **Start the ML server:**
