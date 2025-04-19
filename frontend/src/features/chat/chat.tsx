@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, ChangeEvent } from "react";
-import { Button, Avatar, Spin, Card } from "antd";
+import { Button, Avatar, Spin, Card, Tooltip } from "antd";
 import TextArea from "antd/es/input/TextArea";
-import { RobotOutlined, SendOutlined } from "@ant-design/icons";
+import { RobotOutlined, SendOutlined, ClearOutlined } from "@ant-design/icons";
 import { OpenAIFilled } from "@ant-design/icons";
 import DefaultPrompts from "./default-prompts/default-prompts";
 import {
@@ -202,6 +202,19 @@ const ChatComponent: React.FC<{
     }
   }, [followUps, scrollToBottom, isUserScrolling]);
 
+  const handleClearChat = async () => {
+    if (sessionId) {
+      try {
+        // Clear messages only in the UI
+        setMessages([]);
+        setFollowUps([]);
+        // We could also implement backend clearing if needed by calling an API
+      } catch (error) {
+        console.error("Error clearing chat:", error);
+      }
+    }
+  };
+
   return (
     <div className="flex justify-center pt-5">
       <div
@@ -229,7 +242,7 @@ const ChatComponent: React.FC<{
                   className="inline-block p-2 px-4 rounded-lg break-words text-white"
                   style={{
                     backgroundColor: primaryColor,
-                    maxWidth: showAvatar ? "calc(100% - 40px)" : "100%",
+                    maxWidth: showAvatar ? "calc(80% - 40px)" : "80%",
                   }}
                 >
                   {msg.content}
@@ -270,11 +283,24 @@ const ChatComponent: React.FC<{
               maxLength={256}
               disabled={isSending}
             />
-            <Button
-              icon={<SendOutlined />}
-              onClick={() => handleSendMessage()}
-              disabled={isSending}
-            />
+            <div className="flex gap-2">
+              <Tooltip title="Send message">
+                <Button
+                  icon={<SendOutlined />}
+                  onClick={() => handleSendMessage()}
+                  disabled={isSending}
+                />
+              </Tooltip>
+              {messages.length > 0 && (
+                <Tooltip title="Clear chat history">
+                  <Button
+                    icon={<ClearOutlined />}
+                    onClick={handleClearChat}
+                    disabled={isSending}
+                  />
+                </Tooltip>
+              )}
+            </div>
           </div>
         </div>
       </div>

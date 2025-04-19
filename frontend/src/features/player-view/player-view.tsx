@@ -33,8 +33,10 @@ const PlayerContent: React.FC<PlayerViewProps> = ({ playerPuuid, game }) => {
     : DEFAULT_CARD_WIDTH;
 
   // Calculate responsive heights
-  const matchHistoryHeight = isMobile ? 350 : 470;
-  const chatHeight = isMobile ? 400 : 450;
+  const matchHistoryHeight = isMobile ? 350 : "calc(100vh - 480px)";
+  const chatMaxHeight = isMobile
+    ? "calc(100vh - 400px)"
+    : "calc(100vh - 350px)";
 
   useEffect(() => {
     let isMounted = true;
@@ -97,10 +99,13 @@ const PlayerContent: React.FC<PlayerViewProps> = ({ playerPuuid, game }) => {
           </div>
           <div className="flex flex-col gap-4 flex-grow">
             <SummonerOverview summoner={player} />
-            <div className="flex-grow max-w-[770px]">
+            <div
+              className="flex-grow max-w-[770px] overflow-auto"
+              style={{ maxHeight: chatMaxHeight }}
+            >
               <ChatComponent
                 game={game || null}
-                height={`${chatHeight}px`}
+                height="100%"
                 showAvatar={false}
                 context={{ game }}
               />
