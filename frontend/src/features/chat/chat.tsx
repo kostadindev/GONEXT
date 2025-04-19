@@ -225,7 +225,7 @@ const ChatComponent: React.FC<{
           <DefaultPrompts handleSendMessage={handleSendMessage} />
         )}
         <div
-          className="flex-1 overflow-auto p-4 h-full"
+          className="flex-1 overflow-y-auto p-4"
           ref={messageContainerRef}
           onScroll={handleScroll}
         >

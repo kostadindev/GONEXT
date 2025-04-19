@@ -104,13 +104,10 @@ const PlayerContent: React.FC<PlayerViewProps> = ({
           </div>
           <div className="flex flex-col gap-4 flex-grow">
             <SummonerOverview summoner={player} region={region} />
-            <div
-              className="flex-grow max-w-[770px] overflow-auto"
-              style={{ maxHeight: chatMaxHeight }}
-            >
+            <div className="flex-grow max-w-[770px] overflow-auto">
               <ChatComponent
                 game={game || null}
-                height="100%"
+                height="calc(100vh - 370px)"
                 showAvatar={false}
                 context={{ game }}
               />
