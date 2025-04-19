@@ -45,13 +45,9 @@
 
 ![Landing Page](https://github.com/user-attachments/assets/c8760878-2359-4612-b492-b0ebe4b2cd17)
 
-*Real-time chat providing AI-driven insights.*
-
-![Game Overview](https://github.com/user-attachments/assets/03167506-09c2-4c6a-8120-46855c59f69f)
-*Concise LLM-generated summary of strategic considerations.*
+![image](https://github.com/user-attachments/assets/31e31916-0aac-4565-a7da-3c133be8b6ef)
 
 ![Match History](https://github.com/user-attachments/assets/bfd8bd4e-78b6-4873-9a57-d207fbf54b61)
-*Detailed match history and rank analysis.*
 
 ![Multi-Language Support](https://github.com/user-attachments/assets/52cf0982-39b7-42ec-ab11-fa112b9d1be2)
 
