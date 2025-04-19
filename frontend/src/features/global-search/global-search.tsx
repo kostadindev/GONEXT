@@ -41,24 +41,32 @@ const renderItem = (title: string) => {
 
 const options = [
   {
-    value: "BR1",
-    label: "BR",
-  },
-  {
-    value: "EUN1",
-    label: "EUNE",
+    value: "NA1",
+    label: "NA",
   },
   {
     value: "EUW1",
     label: "EUW",
   },
   {
-    value: "JP1",
-    label: "JP",
-  },
-  {
     value: "KR",
     label: "KR",
+  },
+  {
+    value: "CN",
+    label: "CN",
+  },
+  {
+    value: "EUN1",
+    label: "EUNE",
+  },
+  {
+    value: "BR1",
+    label: "BR",
+  },
+  {
+    value: "JP1",
+    label: "JP",
   },
   {
     value: "LA1",
@@ -67,10 +75,6 @@ const options = [
   {
     value: "LA2",
     label: "LAS",
-  },
-  {
-    value: "NA1",
-    label: "NA",
   },
   {
     value: "OC1",
@@ -195,7 +199,11 @@ export default function GlobalSearch() {
           options={options}
           size="large"
           onChange={onRegionChange}
-          className="w-20"
+          className="w-24"
+          dropdownRender={(menu) => <div className="rounded-lg">{menu}</div>}
+          optionRender={(option) => (
+            <div className="px-4 py-2">{option.label}</div>
+          )}
         />
         <AutoComplete
           value={searchedUser}
