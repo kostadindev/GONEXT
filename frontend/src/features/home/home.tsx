@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Typography, Carousel, ConfigProvider, theme as antdTheme } from "antd";
 import {
   RobotOutlined,
   SmileOutlined,
   SolutionOutlined,
 } from "@ant-design/icons";
+import { Particles, initParticlesEngine } from "@tsparticles/react";
+import { loadSlim } from "@tsparticles/slim";
 import GlobalSearch from "../global-search/global-search";
 import { QuickSearch } from "../quick-search/quick-search";
 
@@ -17,6 +19,29 @@ const goldmanTitleStyle = {
 };
 
 const HomePage: React.FC = () => {
+  const [init, setInit] = useState(false);
+
+  // Initialize tsParticles
+  useEffect(() => {
+    console.log("Initializing particles engine...");
+    initParticlesEngine(async (engine) => {
+      console.log("Loading slim package...");
+      await loadSlim(engine);
+      console.log("Slim package loaded successfully");
+    })
+      .then(() => {
+        setInit(true);
+        console.log("Particles engine initialized successfully");
+      })
+      .catch((error) => {
+        console.error("Error initializing particles engine:", error);
+      });
+  }, []);
+
+  const particlesLoaded = useCallback(async (container: any) => {
+    console.log("Particles container loaded", container);
+  }, []);
+
   return (
     <ConfigProvider
       theme={{
@@ -28,7 +53,65 @@ const HomePage: React.FC = () => {
     >
       <div className="flex flex-col items-center w-full text-gray-800 bg-white">
         {/* Hero Section */}
-        <section className="relative w-full h-screen flex flex-col justify-center items-center px-6 pt-28 sm:pt-0 text-center bg-[linear-gradient(45deg,_#ffd8bf,_#ffe7ba,_#fff)] text-black">
+        <section
+          className="relative w-full  flex flex-col justify-center items-center px-6 pt-28 sm:pt-0 text-center bg-[linear-gradient(45deg,_#ffd8bf,_#ffe7ba,_#fff)] text-black"
+          style={{ minHeight: "100vh" }}
+        >
+          {/* Particle Background */}
+          {init && (
+            <div
+              className="absolute"
+              style={{
+                width: "100%",
+                height: "100%",
+                overflow: "hidden",
+              }}
+            >
+              <Particles
+                id="tsparticles"
+                particlesLoaded={particlesLoaded}
+                options={{
+                  fullScreen: {
+                    enable: false,
+                  },
+                  fpsLimit: 60,
+                  particles: {
+                    color: {
+                      value: "#e89a3c",
+                    },
+                    links: {
+                      color: "#e89a3c",
+                      distance: 150,
+                      enable: true,
+                      opacity: 0.4,
+                      width: 1.5,
+                    },
+                    move: {
+                      enable: true,
+                      speed: 2,
+                      direction: "none",
+                      random: false,
+                      straight: false,
+                      outModes: {
+                        default: "bounce",
+                      },
+                    },
+                    number: {
+                      value: 60,
+                    },
+                    opacity: {
+                      value: 0.5,
+                    },
+                    size: {
+                      value: { min: 1, max: 5 },
+                    },
+                  },
+                  detectRetina: true,
+                }}
+              />
+            </div>
+          )}
+
           {/* Logo */}
           <div className="absolute top-4 left-4 sm:top-1 sm:left-6 flex items-center gap-3 z-10">
             <h1
@@ -48,22 +131,22 @@ const HomePage: React.FC = () => {
           <img
             src="/images/landing/monkey-poro.png"
             alt="Monkey Poro"
-            className="w-[200px] sm:w-[300px] h-auto mb-6 mt-6 sm:mt-0"
+            className="w-[200px] sm:w-[300px] h-auto mb-6 mt-6 sm:mt-0 relative z-10"
           />
 
           <Title
-            className="!text-3xl sm:!text-5xl tracking-tight text-[#1e1e1e]"
+            className="!text-3xl sm:!text-5xl tracking-tight text-[#1e1e1e] relative z-10"
             style={goldmanTitleStyle}
           >
             Your Game Companion Powered by AI
           </Title>
 
-          <Paragraph className="text-lg sm:text-2xl max-w-2xl mt-4 text-gray-700 leading-relaxed">
+          <Paragraph className="text-lg sm:text-2xl max-w-2xl mt-4 text-gray-700 leading-relaxed relative z-10">
             Instantly analyze players, strategies, and match conditions with
             real-time data and personalized insights.
           </Paragraph>
 
-          <div className="mt-10 flex flex-col items-center gap-4 w-full max-w-lg px-4 mb-12 sm:mb-0">
+          <div className="mt-10 flex flex-col items-center gap-4 w-full max-w-lg px-4 mb-12 sm:mb-0 relative z-10">
             <div className="w-full">
               <GlobalSearch />
             </div>
@@ -86,7 +169,7 @@ const HomePage: React.FC = () => {
             How It Works
           </Title>
           <Paragraph className="max-w-2xl mx-auto text-lg text-gray-600 mb-12 leading-relaxed">
-            Get smarter with every match. Here’s what the AI can do:
+            Get smarter with every match. Here's what the AI can do:
           </Paragraph>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 max-w-5xl mx-auto">
@@ -164,14 +247,14 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* Why It’s Smart */}
+        {/* Why It's Smart */}
         <section className="w-full py-20 px-6 text-center text-black bg-[linear-gradient(120deg,_#fff2e8,_#ffd8bf)]">
           <Title
             level={2}
             className="!text-3xl sm:!text-4xl text-[#1e1e1e]"
             style={goldmanTitleStyle}
           >
-            Why It’s Smart
+            Why It's Smart
           </Title>
           <div className="max-w-3xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-6 text-left mt-10">
             {["Player Intelligence", "Game Context", "Winning Tips"].map(
