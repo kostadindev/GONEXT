@@ -125,7 +125,14 @@ export const Header: React.FC = () => {
   };
 
   return (
-    <Layout.Header style={headerStyle}>
+    <Layout.Header
+      style={{
+        ...headerStyle,
+        background: isDarkMode
+          ? undefined
+          : "linear-gradient(135deg, #ffe7ba, #fff1e6)",
+      }}
+    >
       {/* Particle Background */}
       {init && (
         <div
