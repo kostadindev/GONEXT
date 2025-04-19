@@ -22,9 +22,13 @@ const DefaultPrompts: React.FC<DefaultPromptsProps> = ({
     <div className="p-6 h-full flex justify-center flex-col">
       <div className="flex justify-center w-full p-10">
         <Avatar
-          style={{ marginRight: 8 }}
+          style={{
+            marginRight: 8,
+            backgroundColor: "#e89a3c",
+            color: "#fff",
+          }}
           size={60}
-          icon={<RobotFilled spin />}
+          icon={<RobotFilled />}
         />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-3xl mx-auto w-full">
