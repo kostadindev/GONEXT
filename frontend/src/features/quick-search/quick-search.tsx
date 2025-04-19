@@ -14,9 +14,8 @@ export const QuickSearch = () => {
     let isMounted = true;
     setLoading(true);
     setError(null);
-
     try {
-      const summoner = await getFeaturedSummoner();
+      const summoner = await getFeaturedSummoner("NA1");
       if (summoner) {
         const [summonerName, tagLine] = summoner.riotId.split("#");
         if (isMounted) {
@@ -50,7 +49,7 @@ export const QuickSearch = () => {
     if (summoner && tagline) {
       localStorage.setItem("latestSummoner", summoner);
       localStorage.setItem("latestTagline", tagline);
-      navigate(`/${"NA"}/${summoner}/${tagline}/in-game`);
+      navigate(`/${"NA1"}/${summoner}/${tagline}/in-game`);
       fetchFeaturedSummoner();
     }
   };

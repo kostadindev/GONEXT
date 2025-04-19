@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import leagueService from '../../services/league.service';
+import { Platform, PLATFORM_TO_REGION, Region } from '../../repositories/league/league.repository';
 
 class SummonersController {
   async getSummonerStats(req: Request, res: Response) {
@@ -10,7 +11,7 @@ class SummonersController {
     }
 
     try {
-      const stats = await leagueService.getSummonerStats(puuid);
+      const stats = await leagueService.getSummonerStats(puuid, region as Platform);
       if (stats) {
         res.json(stats);
       } else {
@@ -23,14 +24,14 @@ class SummonersController {
   }
 
   async getSummonerByRiotId(req: Request, res: Response) {
-    const { gameName, tagLine } = req.query;
+    const { gameName, tagLine, region } = req.query;
 
-    if (typeof gameName !== 'string' || typeof tagLine !== 'string') {
-      return res.status(400).json({ error: 'Both gameName and tagLine must be provided and should be strings.' });
+    if (typeof gameName !== 'string' || typeof tagLine !== 'string' || typeof region !== 'string') {
+      return res.status(400).json({ error: 'gameName, tagLine, and region must be provided and should be strings.' });
     }
 
     try {
-      const summoner = await leagueService.getSummonerByRiotId(gameName, tagLine);
+      const summoner = await leagueService.getSummonerByRiotId(gameName, tagLine, PLATFORM_TO_REGION[region as Platform]);
       if (summoner) {
         res.json(summoner);
       } else {
@@ -43,20 +44,20 @@ class SummonersController {
   }
 
   async getActiveGame(req: Request, res: Response) {
-    const { gameName, tagLine } = req.query;
+    const { gameName, tagLine, region } = req.query;
 
-    if (typeof gameName !== 'string' || typeof tagLine !== 'string') {
-      return res.status(400).json({ error: 'Both gameName and tagLine must be provided and should be strings.' });
+    if (typeof gameName !== 'string' || typeof tagLine !== 'string' || typeof region !== 'string') {
+      return res.status(400).json({ error: 'gameName, tagLine, and region must be provided and should be strings.' });
     }
 
     try {
-      const summoner = await leagueService.getSummonerByRiotId(gameName, tagLine);
+      const summoner = await leagueService.getSummonerByRiotId(gameName, tagLine, PLATFORM_TO_REGION[region as Platform]);
 
       if (!summoner || !summoner.puuid) {
         return res.status(404).json({ error: 'Summoner not found or missing PUUID.' });
       }
 
-      const game = await leagueService.getActiveGameByPuuid(summoner.puuid);
+      const game = await leagueService.getActiveGameByPuuid(summoner.puuid, region as Platform);
 
       if (game) {
         res.json(game);
@@ -70,8 +71,10 @@ class SummonersController {
   }
 
   async getFeaturedSummoner(req: Request, res: Response) {
+    const { region } = req.query;
+    const platform = (typeof region === 'string' ? region : 'NA1') as Platform;
     try {
-      const featuredSummoner = await leagueService.getFeaturedSummoner();
+      const featuredSummoner = await leagueService.getFeaturedSummoner(platform);
       if (featuredSummoner) {
         res.json(featuredSummoner);
       } else {

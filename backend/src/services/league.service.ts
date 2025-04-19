@@ -1,6 +1,9 @@
 import redis from "../db/redis";
 import leagueRepository from "../repositories/league/league.repository";
 
+type Platform = 'BR1' | 'EUN1' | 'EUW1' | 'JP1' | 'KR' | 'LA1' | 'LA2' | 'NA1' | 'OC1' | 'TR1' | 'RU' | 'PH2' | 'SG2' | 'TH2' | 'TW2' | 'VN2';
+type Region = 'AMERICAS' | 'ASIA' | 'EUROPE' | 'SEA';
+
 class LeagueService {
   private championsDict: Record<string, { name: string, imageId: string }> = {};
   private summonerSpellsDict: Record<string, string | undefined> = {};
@@ -109,12 +112,12 @@ class LeagueService {
     return game;
   }
 
-  async getSummonerIdByPuuid(puuid: string): Promise<string | undefined> {
-    return leagueRepository.getSummonerIdByPuuid(puuid);
+  async getSummonerIdByPuuid(puuid: string, platform: Platform = 'NA1'): Promise<string | undefined> {
+    return leagueRepository.getSummonerIdByPuuid(puuid, platform);
   }
 
-  async getSummonerStats(puuid: string): Promise<{ ranked: any; flex: any } | undefined> {
-    const cacheKey = `summonerStats:${puuid}`;
+  async getSummonerStats(puuid: string, platform: Platform = 'NA1'): Promise<{ ranked: any; flex: any } | undefined> {
+    const cacheKey = `summonerStats:${puuid}:${platform}`;
     if (redis) {
       try {
         const cachedStats = await redis.get(cacheKey);
@@ -126,13 +129,13 @@ class LeagueService {
       }
     }
 
-    const summonerId = await this.getSummonerIdByPuuid(puuid);
+    const summonerId = await this.getSummonerIdByPuuid(puuid, platform);
     if (!summonerId) {
       console.error('Summoner ID could not be retrieved.');
       return undefined;
     }
 
-    const stats = await leagueRepository.getSummonerStats(summonerId);
+    const stats = await leagueRepository.getSummonerStats(summonerId, platform);
     let ranked = null;
     let flex = null;
     stats.forEach((item: any) => {
@@ -155,13 +158,13 @@ class LeagueService {
     return result;
   }
 
-  async getMatchesIds(puuid: string, count: number = 7): Promise<string[] | null> {
-    return leagueRepository.getMatchesIds(puuid, count);
+  async getMatchesIds(puuid: string, count: number = 7, platform: Platform = 'NA1'): Promise<string[] | null> {
+    return leagueRepository.getMatchesIds(puuid, count, platform);
   }
 
-  async getMatches(puuid: string, count: number = 7): Promise<any[] | null> {
-    const matchIds = await this.getMatchesIds(puuid, count);
-    return (await this.getMatchesByIds(matchIds)).map((match: any) => {
+  async getMatches(puuid: string, count: number = 7, platform: Platform = 'NA1'): Promise<any[] | null> {
+    const matchIds = await this.getMatchesIds(puuid, count, platform);
+    return (await this.getMatchesByIds(matchIds, platform)).map((match: any) => {
       const participants = this.getParticipantsFromMatch(match);
       let participant = match?.info?.participants.find((p: any) => p?.puuid === puuid);
       if (participant) {
@@ -185,12 +188,12 @@ class LeagueService {
     });
   }
 
-  async getMatchesByIds(matchIds: string[]): Promise<any[] | null> {
+  async getMatchesByIds(matchIds: string[], platform: Platform = 'NA1'): Promise<any[] | null> {
     const oldMatches = await leagueRepository.getMatchesByIdsSQL(matchIds) || [];
     const existingMatchIds = oldMatches.map(match => match.metadata.matchId);
     const newMatchIds = matchIds.filter(matchId => !existingMatchIds.includes(matchId));
     const newMatches = (await Promise.all(
-      newMatchIds.map((matchId) => leagueRepository.getMatchById(matchId))
+      newMatchIds.map((matchId) => leagueRepository.getMatchById(matchId, platform))
     ));
     if (newMatches.length > 0) {
       leagueRepository.saveMatches(newMatches);
@@ -207,12 +210,12 @@ class LeagueService {
     }));
   }
 
-  async getSummonerByRiotId(gameName: string, tagLine: string): Promise<any | null> {
-    return leagueRepository.getSummonerByRiotId(gameName, tagLine);
+  async getSummonerByRiotId(gameName: string, tagLine: string, region: Region = 'AMERICAS'): Promise<any | null> {
+    return leagueRepository.getSummonerByRiotId(gameName, tagLine, region);
   }
 
-  async getActiveGameByPuuid(puuid: string): Promise<any | null> {
-    const cacheKey = `game:${puuid}`;
+  async getActiveGameByPuuid(puuid: string, platform: Platform = 'NA1'): Promise<any | null> {
+    const cacheKey = `game:${puuid}:${platform}`;
     if (redis) {
       try {
         const cachedGame = await redis.get(cacheKey);
@@ -224,7 +227,7 @@ class LeagueService {
       }
     }
 
-    const game = await leagueRepository.getActiveGameByPuuid(puuid);
+    const game = await leagueRepository.getActiveGameByPuuid(puuid, platform);
     if (!game) {
       return null;
     }
@@ -241,12 +244,12 @@ class LeagueService {
     return enrichedGame;
   }
 
-  async getFeaturedGames(): Promise<any | null> {
-    return leagueRepository.getFeaturedGames();
+  async getFeaturedGames(platform: Platform = 'NA1'): Promise<any | null> {
+    return leagueRepository.getFeaturedGames(platform);
   }
 
-  async getFeaturedSummoner(): Promise<any | null> {
-    const featuredGames = await this.getFeaturedGames();
+  async getFeaturedSummoner(platform: Platform = 'NA1'): Promise<any | null> {
+    const featuredGames = await this.getFeaturedGames(platform);
     if (!featuredGames || featuredGames.gameList.length === 0) {
       return null;
     }

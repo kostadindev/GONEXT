@@ -16,9 +16,14 @@ interface PlayerViewProps {
   summoners?: Summoner[];
   playerPuuid?: string;
   game?: Game;
+  region: string;
 }
 
-const PlayerContent: React.FC<PlayerViewProps> = ({ playerPuuid, game }) => {
+const PlayerContent: React.FC<PlayerViewProps> = ({
+  playerPuuid,
+  game,
+  region,
+}) => {
   const { tagLine, gameName } = useParams<{
     tagLine?: string;
     gameName?: string;
@@ -53,7 +58,7 @@ const PlayerContent: React.FC<PlayerViewProps> = ({ playerPuuid, game }) => {
             setIsLoading(false);
           }
         } else if (gameName && tagLine) {
-          const summoner = await getSummoner(gameName, tagLine);
+          const summoner = await getSummoner(gameName, tagLine, region);
           if (isMounted) {
             setPlayer(summoner);
             setIsLoading(false);
@@ -74,7 +79,7 @@ const PlayerContent: React.FC<PlayerViewProps> = ({ playerPuuid, game }) => {
     return () => {
       isMounted = false;
     };
-  }, [game, playerPuuid, gameName, tagLine]);
+  }, [game, playerPuuid, gameName, tagLine, region]);
 
   if (isLoading) {
     return <PlayerSkeleton />;
@@ -94,11 +99,11 @@ const PlayerContent: React.FC<PlayerViewProps> = ({ playerPuuid, game }) => {
               width={cardWidth}
             />
             <div style={{ height: matchHistoryHeight, width: "100%" }}>
-              <MatchHistory summoner={player} />
+              <MatchHistory summoner={player} region={region} />
             </div>
           </div>
           <div className="flex flex-col gap-4 flex-grow">
-            <SummonerOverview summoner={player} />
+            <SummonerOverview summoner={player} region={region} />
             <div
               className="flex-grow max-w-[770px] overflow-auto"
               style={{ maxHeight: chatMaxHeight }}

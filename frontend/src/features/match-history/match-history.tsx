@@ -1,14 +1,29 @@
-import { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Spin } from "antd";
-import { GameHistory, Summoner } from "../../libs/league/league-types";
 import { getMatchHistory } from "../../libs/apis/league-api";
+import { Summoner } from "../../libs/league/league-types";
 import { HistoryItem } from "./history-item";
+
+interface GameHistory {
+  win: boolean;
+  gameCreation: number;
+  gameDuration: number;
+  gameMode: string;
+  matchId: string;
+  queueName: string;
+  participant: any;
+  participants: any[];
+}
 
 interface MatchHistoryProps {
   summoner: Summoner;
+  region: string;
 }
 
-export const MatchHistory: React.FC<MatchHistoryProps> = ({ summoner }) => {
+export const MatchHistory: React.FC<MatchHistoryProps> = ({
+  summoner,
+  region,
+}) => {
   const [games, setGames] = useState<GameHistory[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -17,7 +32,7 @@ export const MatchHistory: React.FC<MatchHistoryProps> = ({ summoner }) => {
 
     const fetchGames = async () => {
       setIsLoading(true);
-      const history = await getMatchHistory("na1", summoner.puuid);
+      const history = await getMatchHistory(region, summoner.puuid);
       if (isMounted) {
         setGames(history || []);
         setIsLoading(false);
@@ -29,7 +44,7 @@ export const MatchHistory: React.FC<MatchHistoryProps> = ({ summoner }) => {
     return () => {
       isMounted = false;
     };
-  }, [summoner]);
+  }, [summoner, region]);
 
   return (
     <div className="flex flex-col h-full pt-4">

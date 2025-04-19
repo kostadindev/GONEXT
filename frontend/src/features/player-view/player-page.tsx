@@ -15,7 +15,12 @@ export const PlayerPage: React.FC<PlayerPageProps> = ({
 }) => {
   return (
     <div className="container mx-auto px-[10%] pt-8 h-full">
-      <PlayerView summoners={summoners} playerPuuid={playerPuuid} game={game} />
+      {/* <PlayerView
+        summoners={summoners}
+        playerPuuid={playerPuuid}
+        game={game}
+        region={region}
+      /> */}
     </div>
   );
 };

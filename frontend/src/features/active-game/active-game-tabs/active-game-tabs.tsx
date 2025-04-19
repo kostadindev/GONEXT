@@ -8,7 +8,12 @@ import { GameOverview } from "./game-overview.tsx/game-overview";
 import { Allies } from "./allies/allies";
 import { PlayerView } from "../../player-view/player-view";
 
-export const ActiveGameTabs = ({ game }: { game: Game | null }) => {
+interface ActiveGameTabsProps {
+  game: Game | null;
+  region: string;
+}
+
+export const ActiveGameTabs = ({ game, region }: ActiveGameTabsProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { allies, enemies } = getTeams(game);
@@ -70,11 +75,15 @@ export const ActiveGameTabs = ({ game }: { game: Game | null }) => {
       <div className="flex flex-col pt-5">
         {selectedView === "chat" && <GameOverview game={game} />}
         {game && allies?.map((ally) => ally.puuid).includes(selectedView) && (
-          <PlayerView game={game} playerPuuid={selectedView} />
+          <PlayerView game={game} playerPuuid={selectedView} region={region} />
         )}
         {game &&
           enemies?.map((enemy) => enemy.puuid).includes(selectedView) && (
-            <PlayerView game={game} playerPuuid={selectedView} />
+            <PlayerView
+              game={game}
+              playerPuuid={selectedView}
+              region={region}
+            />
           )}
       </div>
     </div>

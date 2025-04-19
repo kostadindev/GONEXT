@@ -2,15 +2,12 @@ import { Game, Summoner } from "../league/league-types";
 import { fetchData } from "./reusable-api";
 
 // Function to get the active game
-export const getActiveGame = async (gameName: string, tagLine: string): Promise<Game | null> => {
-  if (gameName === 'Doublelift') { // use mock data
-    return await fetchData('matches/active');
-  }
-  return await fetchData(`summoners/active-game?gameName=${gameName}&tagLine=${tagLine}`);
+export const getActiveGame = async (gameName: string, tagLine: string, region: string): Promise<Game | null> => {
+  return await fetchData(`summoners/active-game?gameName=${gameName}&tagLine=${tagLine}&region=${region}`);
 };
 
-export const getSummoner = async (gameName: string, tagLine: string): Promise<Summoner> => {
-  return await fetchData(`summoners/by-riot-id?gameName=${gameName}&tagLine=${tagLine}`)
+export const getSummoner = async (gameName: string, tagLine: string, region: string): Promise<Summoner> => {
+  return await fetchData(`summoners/by-riot-id?gameName=${gameName}&tagLine=${tagLine}&region=${region}`)
 }
 
 // Function to get match history
@@ -29,6 +26,6 @@ export const getTips = async (tipsType: string, myChampion: string, otherChampio
 };
 
 // Function to get a featured summoner
-export const getFeaturedSummoner = async () => {
-  return await fetchData('summoners/featured-summoner');
+export const getFeaturedSummoner = async (region: string) => {
+  return await fetchData('summoners/featured-summoner', { region });
 };

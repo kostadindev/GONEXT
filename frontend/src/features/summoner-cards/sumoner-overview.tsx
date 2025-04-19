@@ -19,13 +19,14 @@ interface SummonerStatsData {
 
 interface SummonerOverviewProps {
   summoner: Summoner;
+  region: string;
 }
 
 const CARD_WIDTH = 380;
 const CARD_HEIGHT = 110; // Fixed height for the cards
 
 const defaultStats: GameModeStats = {
-  tier: "",
+  tier: "Unranked",
   rank: "",
   wins: 0,
   losses: 0,
@@ -107,6 +108,7 @@ const RankCard: React.FC<{ title: string; stats: GameModeStats }> = ({
 
 export const SummonerOverview: React.FC<SummonerOverviewProps> = ({
   summoner,
+  region,
 }) => {
   const [summonerStats, setSummonerStats] = useState<SummonerStatsData | null>(
     null
@@ -119,7 +121,7 @@ export const SummonerOverview: React.FC<SummonerOverviewProps> = ({
 
     const fetchStats = async () => {
       try {
-        const stats = await getSummonerStats("NA", summoner.puuid);
+        const stats = await getSummonerStats(region, summoner.puuid);
         console.log("stats: ", stats, summoner);
 
         const processStats = (
@@ -168,7 +170,7 @@ export const SummonerOverview: React.FC<SummonerOverviewProps> = ({
     return () => {
       isMounted = false;
     };
-  }, [summoner]);
+  }, [summoner, region]);
 
   return (
     <div className="flex gap-2" style={{ height: CARD_HEIGHT, width: "100%" }}>

@@ -3,6 +3,7 @@ import leagueService from '../../services/league.service';
 import path from 'path';
 import fs from 'fs';
 import dotenv from 'dotenv';
+import { Platform } from '../../repositories/league/league.repository';
 
 dotenv.config();
 
@@ -29,16 +30,40 @@ async function getMatchHistory(req: Request, res: Response) {
   const { region, puuid } = req.query;
 
   if (typeof region !== 'string' || typeof puuid !== 'string') {
-    return res.status(400).send('Both region and PUUID must be provided.');
+    return res.status(400).json({ error: 'Both region and PUUID must be provided and should be strings.' });
   }
 
   try {
-    const matches = (await leagueService.getMatches(puuid))
-    res.json(matches);
+    const matches = await leagueService.getMatches(puuid, 7, region as Platform);
+    if (matches) {
+      res.json(matches);
+    } else {
+      res.status(404).json({ error: 'Match history not found.' });
+    }
   } catch (error) {
     console.error('Error fetching match history:', error);
-    res.status(500).send('Unknown error');
+    res.status(500).json({ error: 'An internal server error occurred while fetching match history.' });
   }
 }
 
-export { getActiveMatch, getMatchHistory };
+async function getActiveGame(req: Request, res: Response) {
+  const { region, puuid } = req.query;
+
+  if (typeof region !== 'string' || typeof puuid !== 'string') {
+    return res.status(400).json({ error: 'Both region and PUUID must be provided and should be strings.' });
+  }
+
+  try {
+    const game = await leagueService.getActiveGameByPuuid(puuid, region as Platform);
+    if (game) {
+      res.json(game);
+    } else {
+      res.status(204).json({ message: 'No active game found.' });
+    }
+  } catch (error) {
+    console.error('Error fetching active game:', error);
+    res.status(500).json({ error: 'An internal server error occurred while fetching the active game.' });
+  }
+}
+
+export { getActiveMatch, getMatchHistory, getActiveGame };

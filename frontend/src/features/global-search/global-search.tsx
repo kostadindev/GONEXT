@@ -41,8 +41,68 @@ const renderItem = (title: string) => {
 
 const options = [
   {
-    value: "na",
+    value: "BR1",
+    label: "BR",
+  },
+  {
+    value: "EUN1",
+    label: "EUNE",
+  },
+  {
+    value: "EUW1",
+    label: "EUW",
+  },
+  {
+    value: "JP1",
+    label: "JP",
+  },
+  {
+    value: "KR",
+    label: "KR",
+  },
+  {
+    value: "LA1",
+    label: "LAN",
+  },
+  {
+    value: "LA2",
+    label: "LAS",
+  },
+  {
+    value: "NA1",
     label: "NA",
+  },
+  {
+    value: "OC1",
+    label: "OCE",
+  },
+  {
+    value: "TR1",
+    label: "TR",
+  },
+  {
+    value: "RU",
+    label: "RU",
+  },
+  {
+    value: "PH2",
+    label: "PH",
+  },
+  {
+    value: "SG2",
+    label: "SG",
+  },
+  {
+    value: "TH2",
+    label: "TH",
+  },
+  {
+    value: "TW2",
+    label: "TW",
+  },
+  {
+    value: "VN2",
+    label: "VN",
   },
 ];
 
@@ -57,7 +117,7 @@ export default function GlobalSearch() {
     tagline: taglineParam,
   } = useParams<Params>();
 
-  const [region, setRegion] = useState<string>(regionParam || "na");
+  const [region, setRegion] = useState<string>(regionParam || "NA1");
   const [searchedUser, setSearchedUser] = useState<string>(
     summonerParam
       ? `${summonerParam}${taglineParam ? `#${taglineParam}` : ""}`

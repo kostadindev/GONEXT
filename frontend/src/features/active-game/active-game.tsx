@@ -18,7 +18,7 @@ export const ActiveGame = () => {
   const [loading, setLoading] = useState(true);
   const [errorType, setErrorType] = useState<"game" | "player" | null>(null);
 
-  const { tagLine, gameName } = useParams();
+  const { tagLine, gameName, region } = useParams();
   const { allies = [], enemies = [] } = getTeams(game);
 
   useEffect(() => {
@@ -26,7 +26,7 @@ export const ActiveGame = () => {
     setLoading(true);
     setErrorType(null);
 
-    getActiveGame(gameName as string, tagLine as string)
+    getActiveGame(gameName as string, tagLine as string, region as string)
       .then((game) => {
         if (!ignore) {
           if (!game) {
@@ -55,7 +55,7 @@ export const ActiveGame = () => {
     return () => {
       ignore = true;
     };
-  }, [gameName, tagLine]);
+  }, [gameName, tagLine, region]);
 
   if (loading) {
     return (
@@ -137,7 +137,7 @@ export const ActiveGame = () => {
             )
           )}
         </div>
-        <ActiveGameTabs game={game} />
+        <ActiveGameTabs game={game} region={region as string} />
       </div>
     </Content>
   );

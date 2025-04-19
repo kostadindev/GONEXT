@@ -4,10 +4,66 @@ import { handleAxiosError } from '../../utils/axiosErrorHandler';
 import prisma from '../../db/prisma';
 dotenv.config();
 
+export type Platform = 'BR1' | 'EUN1' | 'EUW1' | 'JP1' | 'KR' | 'LA1' | 'LA2' | 'NA1' | 'OC1' | 'TR1' | 'RU' | 'PH2' | 'SG2' | 'TH2' | 'TW2' | 'VN2';
+export type Region = 'AMERICAS' | 'ASIA' | 'EUROPE' | 'SEA';
+
+const PLATFORM_TO_HOST: Record<Platform, string> = {
+  BR1: 'br1.api.riotgames.com',
+  EUN1: 'eun1.api.riotgames.com',
+  EUW1: 'euw1.api.riotgames.com',
+  JP1: 'jp1.api.riotgames.com',
+  KR: 'kr.api.riotgames.com',
+  LA1: 'la1.api.riotgames.com',
+  LA2: 'la2.api.riotgames.com',
+  NA1: 'NA1.api.riotgames.com',
+  OC1: 'oc1.api.riotgames.com',
+  TR1: 'tr1.api.riotgames.com',
+  RU: 'ru.api.riotgames.com',
+  PH2: 'ph2.api.riotgames.com',
+  SG2: 'sg2.api.riotgames.com',
+  TH2: 'th2.api.riotgames.com',
+  TW2: 'tw2.api.riotgames.com',
+  VN2: 'vn2.api.riotgames.com'
+};
+
+const REGION_TO_HOST: Record<Region, string> = {
+  AMERICAS: 'americas.api.riotgames.com',
+  ASIA: 'asia.api.riotgames.com',
+  EUROPE: 'europe.api.riotgames.com',
+  SEA: 'sea.api.riotgames.com'
+};
+
+export const PLATFORM_TO_REGION: Record<Platform, Region> = {
+  BR1: 'AMERICAS',
+  EUN1: 'EUROPE',
+  EUW1: 'EUROPE',
+  JP1: 'ASIA',
+  KR: 'ASIA',
+  LA1: 'AMERICAS',
+  LA2: 'AMERICAS',
+  NA1: 'AMERICAS',
+  OC1: 'SEA',
+  TR1: 'EUROPE',
+  RU: 'EUROPE',
+  PH2: 'SEA',
+  SG2: 'SEA',
+  TH2: 'SEA',
+  TW2: 'SEA',
+  VN2: 'SEA'
+};
+
 class LeagueRepository {
   private headers: Record<string, any> = {
     'X-Riot-Token': process.env.LEAGUE_API_KEY,
   };
+
+  private getPlatformUrl(platform: Platform, endpoint: string): string {
+    return `https://${PLATFORM_TO_HOST[platform]}/${endpoint}`;
+  }
+
+  private getRegionUrl(region: Region, endpoint: string): string {
+    return `https://${REGION_TO_HOST[region]}/${endpoint}`;
+  }
 
   // Helper method to check database connectivity
   private async isDbConnected(): Promise<boolean> {
@@ -76,8 +132,8 @@ class LeagueRepository {
     }
   }
 
-  async getSummonerIdByPuuid(puuid: string): Promise<string | undefined> {
-    const url = `https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/${puuid}`;
+  async getSummonerIdByPuuid(puuid: string, platform: Platform = 'NA1'): Promise<string | undefined> {
+    const url = this.getPlatformUrl(platform, `lol/summoner/v4/summoners/by-puuid/${puuid}`);
     try {
       const response = await axios.get(url, {
         headers: this.headers,
@@ -89,8 +145,8 @@ class LeagueRepository {
     }
   }
 
-  async getSummonerStats(summonerId: string): Promise<any> {
-    const url = `https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/${summonerId}`;
+  async getSummonerStats(summonerId: string, platform: Platform = 'NA1'): Promise<any> {
+    const url = this.getPlatformUrl(platform, `lol/league/v4/entries/by-summoner/${summonerId}`);
     try {
       const response = await axios.get(url, {
         headers: this.headers,
@@ -102,8 +158,9 @@ class LeagueRepository {
     }
   }
 
-  async getMatchesIds(puuid: string, count: number): Promise<string[] | null> {
-    const url = `https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=0&count=${count}`;
+  async getMatchesIds(puuid: string, count: number, platform: Platform = 'NA1'): Promise<string[] | null> {
+    const region = PLATFORM_TO_REGION[platform];
+    const url = this.getRegionUrl(region, `lol/match/v5/matches/by-puuid/${puuid}/ids?start=0&count=${count}`);
     try {
       const response = await axios.get(url, {
         headers: this.headers,
@@ -115,8 +172,9 @@ class LeagueRepository {
     }
   }
 
-  async getMatchById(matchId: string): Promise<any | null> {
-    const url = `https://americas.api.riotgames.com/lol/match/v5/matches/${matchId}`;
+  async getMatchById(matchId: string, platform: Platform = 'NA1'): Promise<any | null> {
+    const region = PLATFORM_TO_REGION[platform];
+    const url = this.getRegionUrl(region, `lol/match/v5/matches/${matchId}`);
     try {
       const response = await axios.get(url, {
         headers: this.headers,
@@ -264,8 +322,8 @@ class LeagueRepository {
     }
   }
 
-  async getSummonerByRiotId(gameName: string, tagLine: string): Promise<any | null> {
-    const url = `https://americas.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${gameName}/${tagLine}`;
+  async getSummonerByRiotId(gameName: string, tagLine: string, region: Region = 'AMERICAS'): Promise<any | null> {
+    const url = this.getRegionUrl(region, `riot/account/v1/accounts/by-riot-id/${gameName}/${tagLine}`);
     try {
       const response = await axios.get(url, {
         headers: this.headers,
@@ -277,8 +335,8 @@ class LeagueRepository {
     }
   }
 
-  async getActiveGameByPuuid(puuid: string): Promise<any | null> {
-    const url = `https://na1.api.riotgames.com/lol/spectator/v5/active-games/by-summoner/${puuid}`;
+  async getActiveGameByPuuid(puuid: string, platform: Platform = 'NA1'): Promise<any | null> {
+    const url = this.getPlatformUrl(platform, `lol/spectator/v5/active-games/by-summoner/${puuid}`);
     try {
       const response = await axios.get(url, {
         headers: this.headers,
@@ -290,8 +348,8 @@ class LeagueRepository {
     }
   }
 
-  async getFeaturedGames(): Promise<any | null> {
-    const url = 'https://na1.api.riotgames.com/lol/spectator/v5/featured-games';
+  async getFeaturedGames(platform: Platform = 'NA1'): Promise<any | null> {
+    const url = this.getPlatformUrl(platform, 'lol/spectator/v5/featured-games');
     try {
       const response = await axios.get(url, {
         headers: this.headers,
