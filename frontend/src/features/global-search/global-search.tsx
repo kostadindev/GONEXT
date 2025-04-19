@@ -6,8 +6,8 @@ import { UserOutlined } from "@ant-design/icons";
 
 interface Params extends Record<string, string | undefined> {
   region?: string;
-  summoner?: string;
-  tagline?: string;
+  gameName?: string;
+  tagLine?: string;
 }
 
 const MAX_RECENT_USERS = 20;
@@ -113,24 +113,23 @@ export default function GlobalSearch() {
   const navigate = useNavigate();
   const {
     region: regionParam,
-    summoner: summonerParam,
-    tagline: taglineParam,
+    gameName: gameNameParam,
+    tagLine: tagLineParam,
   } = useParams<Params>();
 
   const [region, setRegion] = useState<string>(regionParam || "NA1");
-  const [searchedUser, setSearchedUser] = useState<string>(
-    summonerParam
-      ? `${summonerParam}${taglineParam ? `#${taglineParam}` : ""}`
-      : ""
-  );
+  const [searchedUser, setSearchedUser] = useState<string>("");
   const [recentUsers, setRecentUsers] = useState<string[]>([]);
   const [autocompleteOptions, setAutocompleteOptions] = useState<any[]>([]);
 
   useEffect(() => {
     if (regionParam) setRegion(regionParam);
-    if (summonerParam && taglineParam)
-      setSearchedUser(`${summonerParam}#${taglineParam}`);
-  }, [regionParam, summonerParam, taglineParam]);
+    if (gameNameParam && tagLineParam) {
+      const newSearchedUser = `${gameNameParam}#${tagLineParam}`;
+      setSearchedUser(newSearchedUser);
+      updateRecentUsers(newSearchedUser);
+    }
+  }, [regionParam, gameNameParam, tagLineParam]);
 
   useEffect(() => {
     const storedUsers = JSON.parse(localStorage.getItem("recentUsers") || "[]");
@@ -153,10 +152,10 @@ export default function GlobalSearch() {
   };
 
   const onSearch = (searchedUser: string) => {
-    const [summoner, tagline] = searchedUser.split("#");
-    if (summoner && tagline) {
+    const [gameName, tagLine] = searchedUser.split("#");
+    if (gameName && tagLine) {
       updateRecentUsers(searchedUser);
-      navigate(`/${region}/${summoner}/${tagline}/in-game`);
+      navigate(`/${region}/${gameName}/${tagLine}/in-game`);
     } else {
       setError({
         message: "Invalid Summoner Name",
@@ -167,6 +166,12 @@ export default function GlobalSearch() {
 
   const onRegionChange = (value: string) => {
     setRegion(value);
+    if (searchedUser) {
+      const [gameName, tagLine] = searchedUser.split("#");
+      if (gameName && tagLine) {
+        navigate(`/${value}/${gameName}/${tagLine}/in-game`);
+      }
+    }
   };
 
   const onInputChange = (value: string) => {
