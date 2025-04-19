@@ -18,6 +18,53 @@ const goldmanTitleStyle = {
   fontWeight: 500,
 };
 
+// Reusable particles component
+const ParticleBackground = ({ id }: { id: string }) => {
+  return (
+    <Particles
+      id={id}
+      options={{
+        fullScreen: {
+          enable: false,
+        },
+        fpsLimit: 60,
+        particles: {
+          color: {
+            value: "#e89a3c",
+          },
+          links: {
+            color: "#e89a3c",
+            distance: 150,
+            enable: true,
+            opacity: 0.4,
+            width: 1.5,
+          },
+          move: {
+            enable: true,
+            speed: 2,
+            direction: "none",
+            random: false,
+            straight: false,
+            outModes: {
+              default: "bounce",
+            },
+          },
+          number: {
+            value: 60,
+          },
+          opacity: {
+            value: 0.5,
+          },
+          size: {
+            value: { min: 1, max: 5 },
+          },
+        },
+        detectRetina: true,
+      }}
+    />
+  );
+};
+
 const HomePage: React.FC = () => {
   const [init, setInit] = useState(false);
 
@@ -54,7 +101,7 @@ const HomePage: React.FC = () => {
       <div className="flex flex-col items-center w-full text-gray-800 bg-white">
         {/* Hero Section */}
         <section
-          className="relative w-full  flex flex-col justify-center items-center px-6 pt-28 sm:pt-0 text-center bg-[linear-gradient(45deg,_#ffd8bf,_#ffe7ba,_#fff)] text-black"
+          className="relative w-full flex flex-col justify-center items-center px-6 pt-28 sm:pt-0 text-center bg-[linear-gradient(45deg,_#ffd8bf,_#ffe7ba,_#fff)] text-black"
           style={{ minHeight: "100vh" }}
         >
           {/* Particle Background */}
@@ -67,48 +114,7 @@ const HomePage: React.FC = () => {
                 overflow: "hidden",
               }}
             >
-              <Particles
-                id="tsparticles"
-                particlesLoaded={particlesLoaded}
-                options={{
-                  fullScreen: {
-                    enable: false,
-                  },
-                  fpsLimit: 60,
-                  particles: {
-                    color: {
-                      value: "#e89a3c",
-                    },
-                    links: {
-                      color: "#e89a3c",
-                      distance: 150,
-                      enable: true,
-                      opacity: 0.4,
-                      width: 1.5,
-                    },
-                    move: {
-                      enable: true,
-                      speed: 2,
-                      direction: "none",
-                      random: false,
-                      straight: false,
-                      outModes: {
-                        default: "bounce",
-                      },
-                    },
-                    number: {
-                      value: 60,
-                    },
-                    opacity: {
-                      value: 0.5,
-                    },
-                    size: {
-                      value: { min: 1, max: 5 },
-                    },
-                  },
-                  detectRetina: true,
-                }}
-              />
+              <ParticleBackground id="tsparticles-hero" />
             </div>
           )}
 
@@ -248,38 +254,55 @@ const HomePage: React.FC = () => {
         </section>
 
         {/* Why It's Smart */}
-        <section className="w-full py-20 px-6 text-center text-black bg-[linear-gradient(120deg,_#fff2e8,_#ffd8bf)]">
-          <Title
-            level={2}
-            className="!text-3xl sm:!text-4xl text-[#1e1e1e]"
-            style={goldmanTitleStyle}
-          >
-            Why It's Smart
-          </Title>
-          <div className="max-w-3xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-6 text-left mt-10">
-            {["Player Intelligence", "Game Context", "Winning Tips"].map(
-              (title, i) => {
-                const descriptions = [
-                  "Access in-depth player stats, match history, and latest performance.",
-                  "Get insights into team comps and lane matchups—all AI analyzed.",
-                  "Get suggestions for item builds, rotations, and team fights tailored to you.",
-                ];
-                return (
-                  <div key={title} className="p-6 bg-white rounded-xl shadow">
-                    <Title
-                      level={4}
-                      className="text-lg text-[#1e1e1e]"
-                      style={goldmanTitleStyle}
-                    >
-                      {title}
-                    </Title>
-                    <Paragraph className="text-gray-700 leading-snug">
-                      {descriptions[i]}
-                    </Paragraph>
-                  </div>
-                );
-              }
-            )}
+        <section className="relative w-full py-20 px-6 text-center text-black bg-[linear-gradient(120deg,_#fff2e8,_#ffd8bf)]">
+          {/* Particle Background for Why It's Smart */}
+          {init && (
+            <div
+              className="absolute"
+              style={{
+                width: "100%",
+                height: "100%",
+                top: 0,
+                left: 0,
+                overflow: "hidden",
+              }}
+            >
+              <ParticleBackground id="tsparticles-why" />
+            </div>
+          )}
+          <div className="relative z-10">
+            <Title
+              level={2}
+              className="!text-3xl sm:!text-4xl text-[#1e1e1e]"
+              style={goldmanTitleStyle}
+            >
+              Why It's Smart
+            </Title>
+            <div className="max-w-3xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-6 text-left mt-10">
+              {["Player Intelligence", "Game Context", "Winning Tips"].map(
+                (title, i) => {
+                  const descriptions = [
+                    "Access in-depth player stats, match history, and latest performance.",
+                    "Get insights into team comps and lane matchups—all AI analyzed.",
+                    "Get suggestions for item builds, rotations, and team fights tailored to you.",
+                  ];
+                  return (
+                    <div key={title} className="p-6 bg-white rounded-xl shadow">
+                      <Title
+                        level={4}
+                        className="text-lg text-[#1e1e1e]"
+                        style={goldmanTitleStyle}
+                      >
+                        {title}
+                      </Title>
+                      <Paragraph className="text-gray-700 leading-snug">
+                        {descriptions[i]}
+                      </Paragraph>
+                    </div>
+                  );
+                }
+              )}
+            </div>
           </div>
         </section>
 
@@ -330,25 +353,42 @@ const HomePage: React.FC = () => {
         </section>
 
         {/* Final CTA */}
-        <section className="w-full py-20 px-6 text-black text-center bg-[linear-gradient(135deg,_#ffe7ba,_#fff1e6)]">
-          <Title
-            className="!text-4xl sm:!text-5xl tracking-tight text-[#1e1e1e]"
-            style={goldmanTitleStyle}
-          >
-            Ready to Win More?
-          </Title>
-          <Paragraph className="text-lg max-w-xl mx-auto mb-6 text-gray-700">
-            Get AI-powered insights during your games. It's like having a coach
-            by your side.
-          </Paragraph>
-          <div className="flex flex-col justify-center gap-4 items-center w-full px-4">
-            <div className="w-full">
-              <GlobalSearch />
+        <section className="relative w-full py-20 px-6 text-black text-center bg-[linear-gradient(135deg,_#ffe7ba,_#fff1e6)]">
+          {/* Particle Background for CTA */}
+          {init && (
+            <div
+              className="absolute"
+              style={{
+                width: "100%",
+                height: "100%",
+                top: 0,
+                left: 0,
+                overflow: "hidden",
+              }}
+            >
+              <ParticleBackground id="tsparticles-cta" />
             </div>
-            {/* <span className="text-gray-600 font-medium">or try it out for</span>
-            <div className="w-full">
-              <QuickSearch />
-            </div> */}
+          )}
+          <div className="relative z-10">
+            <Title
+              className="!text-4xl sm:!text-5xl tracking-tight text-[#1e1e1e]"
+              style={goldmanTitleStyle}
+            >
+              Ready to Win More?
+            </Title>
+            <Paragraph className="text-lg max-w-xl mx-auto mb-6 text-gray-700">
+              Get AI-powered insights during your games. It's like having a
+              coach by your side.
+            </Paragraph>
+            <div className="flex flex-col justify-center gap-4 items-center w-full px-4">
+              <div className="w-full">
+                <GlobalSearch />
+              </div>
+              {/* <span className="text-gray-600 font-medium">or try it out for</span>
+              <div className="w-full">
+                <QuickSearch />
+              </div> */}
+            </div>
           </div>
         </section>
       </div>
