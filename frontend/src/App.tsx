@@ -43,13 +43,13 @@ const router = createBrowserRouter(
 const ThemedApp = () => {
   // Initialize the theme from localStorage
   const [currentTheme, setCurrentTheme] = useState<string>(
-    localStorage.getItem("theme") || "dark"
+    localStorage.getItem("theme") || "light"
   );
 
   // Listen for the custom "themeChanged" event
   useEffect(() => {
     const handleThemeChange = () => {
-      setCurrentTheme(localStorage.getItem("theme") || "dark");
+      setCurrentTheme(localStorage.getItem("theme") || "light");
     };
 
     window.addEventListener("themeChanged", handleThemeChange);

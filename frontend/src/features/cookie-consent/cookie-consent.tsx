@@ -9,7 +9,7 @@ const COOKIE_CONSENT_KEY = "cookieConsent";
 const CookieConsentBanner = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(
-    localStorage.getItem("theme") !== "light"
+    localStorage.getItem("theme") === "dark"
   );
 
   // Check for cookie consent on mount
@@ -23,7 +23,7 @@ const CookieConsentBanner = () => {
   // Listen for theme changes
   useEffect(() => {
     const handleThemeChange = () => {
-      setIsDarkMode(localStorage.getItem("theme") !== "light");
+      setIsDarkMode(localStorage.getItem("theme") === "dark");
     };
 
     window.addEventListener("themeChanged", handleThemeChange);

@@ -156,12 +156,12 @@ const HomePage: React.FC = () => {
             <div className="w-full">
               <GlobalSearch />
             </div>
-            {/* <span className="hidden sm:inline text-gray-600 font-medium text-base sm:text-lg mt-1">
+            <span className="hidden sm:inline text-gray-600 font-medium text-base sm:text-lg mt-1">
               or try it out for
-            </span> */}
-            {/* <div className="hidden sm:block w-full">
+            </span>
+            <div className="hidden sm:block w-full">
               <QuickSearch />
-            </div> */}
+            </div>
           </div>
         </section>
 
@@ -384,10 +384,12 @@ const HomePage: React.FC = () => {
               <div className="w-full">
                 <GlobalSearch />
               </div>
-              {/* <span className="text-gray-600 font-medium">or try it out for</span>
+              <span className="text-gray-600 font-medium">
+                or try it out for
+              </span>
               <div className="w-full">
                 <QuickSearch />
-              </div> */}
+              </div>
             </div>
           </div>
         </section>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Avatar, Button, Layout, Typography } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import GlobalSearch from "../../global-search/global-search";
@@ -7,13 +7,93 @@ import { GoogleLogin } from "@react-oauth/google";
 import { handleLoginSuccess, handleLogout } from "../../../libs/apis/auth-api";
 import { useUser } from "../../../context/user.context";
 import { DarkModeSwitch } from "react-toggle-dark-mode";
+import { Particles, initParticlesEngine } from "@tsparticles/react";
+import { loadSlim } from "@tsparticles/slim";
 
 const { Text } = Typography;
+
+// Reusable particles component
+const ParticleBackground = ({ id }: { id: string }) => {
+  return (
+    <Particles
+      id={id}
+      options={{
+        fullScreen: {
+          enable: false,
+        },
+        fpsLimit: 60,
+        particles: {
+          color: {
+            value: "#e89a3c",
+          },
+          links: {
+            color: "#e89a3c",
+            distance: 150,
+            enable: true,
+            opacity: 0.6,
+            width: 1.5,
+          },
+          move: {
+            enable: true,
+            speed: 1.5,
+            direction: "none",
+            random: false,
+            straight: false,
+            outModes: {
+              default: "bounce",
+              bottom: "bounce",
+              left: "bounce",
+              right: "bounce",
+              top: "bounce",
+            },
+          },
+          number: {
+            value: 200,
+          },
+          opacity: {
+            value: 0.8,
+          },
+          size: {
+            value: { min: 2, max: 5 },
+          },
+        },
+        detectRetina: true,
+        background: {
+          color: "transparent",
+        },
+        interactivity: {
+          events: {
+            onHover: {
+              enable: false,
+            },
+            onClick: {
+              enable: false,
+            },
+          },
+        },
+      }}
+    />
+  );
+};
 
 export const Header: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, setUser } = useUser();
+  const [init, setInit] = useState(false);
+
+  // Initialize tsParticles
+  useEffect(() => {
+    initParticlesEngine(async (engine) => {
+      await loadSlim(engine);
+    }).then(() => {
+      setInit(true);
+    });
+  }, []);
+
+  const particlesLoaded = useCallback(async (container: any) => {
+    console.log("Particles container loaded", container);
+  }, []);
 
   const onLoginSuccess = async (credentialResponse: any) => {
     const token = credentialResponse.credential;
@@ -34,7 +114,7 @@ export const Header: React.FC = () => {
   };
 
   const [isDarkMode, setIsDarkMode] = useState<boolean>(
-    localStorage.getItem("theme") !== "light"
+    localStorage.getItem("theme") === "dark"
   );
 
   const toggleDarkMode = (checked: boolean) => {
@@ -46,7 +126,25 @@ export const Header: React.FC = () => {
 
   return (
     <Layout.Header style={headerStyle}>
-      <div className="w-full flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+      {/* Particle Background */}
+      {init && (
+        <div
+          className="absolute"
+          style={{
+            width: "100%",
+            height: "100%",
+            top: 0,
+            left: 0,
+            bottom: 0,
+            right: 0,
+            overflow: "hidden",
+            pointerEvents: "none",
+          }}
+        >
+          <ParticleBackground id="tsparticles-header" />
+        </div>
+      )}
+      <div className="relative z-10 w-full flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         {/* Left Section: Logo + Theme Switch on mobile */}
         <div className="flex flex-col w-full sm:flex-row sm:items-center sm:gap-5">
           {/* Mobile: GONEXT + Switch inline */}
@@ -128,6 +226,8 @@ const headerStyle: React.CSSProperties = {
   alignItems: "center",
   boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.1)",
   padding: "10px 20px",
+  position: "relative",
+  overflow: "hidden",
 };
 
 const goldmanStyle: React.CSSProperties = {
