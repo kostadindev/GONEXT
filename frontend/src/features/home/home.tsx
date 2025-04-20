@@ -20,6 +20,30 @@ const goldmanTitleStyle = {
 
 // Reusable particles component
 const ParticleBackground = ({ id }: { id: string }) => {
+  const [windowSize, setWindowSize] = useState({
+    width: typeof window !== "undefined" ? window.innerWidth : 1200,
+    height: typeof window !== "undefined" ? window.innerHeight : 800,
+  });
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Calculate number of particles based on screen size
+  const getParticleCount = () => {
+    if (windowSize.width < 480) return 70; // Mobile
+    if (windowSize.width < 768) return 100; // Tablet
+    return 120; // Desktop
+  };
+
   return (
     <Particles
       id={id}
@@ -41,16 +65,19 @@ const ParticleBackground = ({ id }: { id: string }) => {
           },
           move: {
             enable: true,
-            speed: 2,
+            speed: windowSize.width < 768 ? 1 : 2,
             direction: "none",
-            random: false,
+            random: true,
             straight: false,
             outModes: {
               default: "bounce",
             },
           },
           number: {
-            value: 100,
+            value: getParticleCount(),
+            density: {
+              enable: true,
+            } as any,
           },
           opacity: {
             value: 0.7,
@@ -107,7 +134,7 @@ const HomePage: React.FC = () => {
           {/* Particle Background */}
           {init && (
             <div
-              className="absolute"
+              className="absolute top-0 left-0"
               style={{
                 width: "100%",
                 height: "100%",
@@ -258,12 +285,10 @@ const HomePage: React.FC = () => {
           {/* Particle Background for Why It's Smart */}
           {init && (
             <div
-              className="absolute"
+              className="absolute top-0 left-0"
               style={{
                 width: "100%",
                 height: "100%",
-                top: 0,
-                left: 0,
                 overflow: "hidden",
               }}
             >
@@ -357,12 +382,10 @@ const HomePage: React.FC = () => {
           {/* Particle Background for CTA */}
           {init && (
             <div
-              className="absolute"
+              className="absolute top-0 left-0"
               style={{
                 width: "100%",
                 height: "100%",
-                top: 0,
-                left: 0,
                 overflow: "hidden",
               }}
             >
