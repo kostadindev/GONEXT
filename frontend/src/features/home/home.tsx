@@ -37,12 +37,11 @@ const ParticleBackground = ({ id }: { id: string }) => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Calculate number of particles based on screen size
-  const getParticleCount = () => {
-    if (windowSize.width < 480) return 70; // Mobile
-    if (windowSize.width < 768) return 100; // Tablet
-    return 120; // Desktop
-  };
+  // Simple function to log number of particles to help debug
+  useEffect(() => {
+    console.log("Current window width:", windowSize.width);
+    console.log("Particle count:", windowSize.width < 480 ? 300 : 140);
+  }, [windowSize.width]);
 
   return (
     <Particles
@@ -58,32 +57,32 @@ const ParticleBackground = ({ id }: { id: string }) => {
           },
           links: {
             color: "#e89a3c",
-            distance: 150,
+            distance: windowSize.width < 480 ? 100 : 150,
             enable: true,
-            opacity: 0.4,
-            width: 1.5,
+            opacity: 0.8,
+            width: 2,
           },
           move: {
             enable: true,
-            speed: windowSize.width < 768 ? 1 : 2,
+            speed: 2,
             direction: "none",
-            random: true,
+            random: false,
             straight: false,
             outModes: {
               default: "bounce",
             },
           },
           number: {
-            value: getParticleCount(),
+            value: windowSize.width < 480 ? 24 : 100, // Extremely high number for mobile
             density: {
-              enable: true,
-            } as any,
+              enable: false, // Disable density to use exact count
+            },
           },
           opacity: {
-            value: 0.7,
+            value: 1, // Full opacity for maximum visibility
           },
           size: {
-            value: { min: 1, max: 5 },
+            value: { min: 2, max: 5 }, // Much larger particles
           },
         },
         detectRetina: true,

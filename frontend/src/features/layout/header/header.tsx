@@ -13,7 +13,13 @@ import { loadSlim } from "@tsparticles/slim";
 const { Text } = Typography;
 
 // Reusable particles component
-const ParticleBackground = ({ id }: { id: string }) => {
+const ParticleBackground = ({
+  id,
+  isMobile,
+}: {
+  id: string;
+  isMobile: boolean;
+}) => {
   return (
     <Particles
       id={id}
@@ -48,7 +54,7 @@ const ParticleBackground = ({ id }: { id: string }) => {
             },
           },
           number: {
-            value: 120,
+            value: isMobile ? 15 : 120,
           },
           opacity: {
             value: 0.8,
@@ -81,6 +87,19 @@ export const Header: React.FC = () => {
   const location = useLocation();
   const { user, setUser } = useUser();
   const [init, setInit] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  // Check for mobile screen size
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   // Initialize tsParticles
   useEffect(() => {
@@ -133,7 +152,7 @@ export const Header: React.FC = () => {
           : "linear-gradient(135deg, #ffe7ba, #fff1e6)",
       }}
     >
-      {/* Particle Background */}
+      {/* Particle Background - fewer particles on mobile */}
       {init && (
         <div
           className="absolute"
@@ -148,7 +167,7 @@ export const Header: React.FC = () => {
             pointerEvents: "none",
           }}
         >
-          <ParticleBackground id="tsparticles-header" />
+          <ParticleBackground id="tsparticles-header" isMobile={isMobile} />
         </div>
       )}
       <div className="relative z-10 w-full flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
