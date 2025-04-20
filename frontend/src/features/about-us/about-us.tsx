@@ -37,9 +37,7 @@ const teamMembers: TeamMember[] = [
     title: "Founder | ML | API | UI | ADC",
     description: `Kostadin has been playing League of Legends since Season 3, achieving a peak rank of Diamond 1. He plays ADC and Jungle. His favorite champion is Wukong.
 
-Kostadin leads engineering and product at GONEXT. Prior to founding GONEXT, Kostadin was a Software Engineer at Stellar Cyber.
-
-He is an incoming student pursuing a Master's in Computer Science, specializing in Natural Language Processing, at Columbia University in New York City.`,
+Kostadin leads engineering and product at GONEXT. He is a Software Engineer at Stellar Cyber.`,
     image:
       "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/MonkeyKing_5.jpg",
     github: "https://github.com/kostadindev",
