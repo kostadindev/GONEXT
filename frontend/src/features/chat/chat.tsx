@@ -7,6 +7,7 @@ import DefaultPrompts from "./default-prompts/default-prompts";
 import {
   addMessageToSession,
   getSessionByGameId,
+  clearSessionMessages,
 } from "../../libs/apis/sessions-api";
 import { useUser } from "../../context/user.context";
 import {
@@ -205,10 +206,11 @@ const ChatComponent: React.FC<{
   const handleClearChat = async () => {
     if (sessionId) {
       try {
-        // Clear messages only in the UI
+        // Clear messages in the UI
         setMessages([]);
         setFollowUps([]);
-        // We could also implement backend clearing if needed by calling an API
+        // Clear messages in MongoDB
+        await clearSessionMessages(sessionId);
       } catch (error) {
         console.error("Error clearing chat:", error);
       }

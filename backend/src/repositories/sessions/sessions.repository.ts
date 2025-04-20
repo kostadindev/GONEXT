@@ -96,6 +96,18 @@ class SessionRepository {
       throw new Error(`Error fetching session by game ID: ${error}`);
     }
   }
+
+  async clearMessages(sessionId: string, userId: string): Promise<ISession | null> {
+    try {
+      return await Session.findOneAndUpdate(
+        { _id: sessionId, userId },
+        { messages: [], modifiedAt: new Date() },
+        { new: true } // Return the updated document
+      ).exec();
+    } catch (error) {
+      throw new Error(`Error clearing messages: ${error}`);
+    }
+  }
 }
 
 export default new SessionRepository();

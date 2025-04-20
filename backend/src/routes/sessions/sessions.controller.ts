@@ -168,6 +168,25 @@ class SessionController {
       res.status(500).json({ error: error.message });
     }
   }
+
+  async clearMessages(req: AuthenticatedRequest, res: Response) {
+    const { sessionId } = req.params;
+    try {
+      const userId = req.user?._id || req.ip;
+      if (!userId) {
+        return res.status(401).json({ message: 'User not authenticated' });
+      }
+
+      const updatedSession = await sessionService.clearMessages(sessionId, userId);
+      if (updatedSession) {
+        res.status(200).json({ message: 'Messages cleared successfully' });
+      } else {
+        res.status(404).json({ message: 'Session not found' });
+      }
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
 }
 
 export default new SessionController();

@@ -33,6 +33,10 @@ class SessionService {
   async fetchSessionByGameId(gameId: string, userId: string): Promise<ISession | null> {
     return await sessionRepository.getSessionByGameId(gameId, userId);
   }
+
+  async clearMessages(sessionId: string, userId: string): Promise<ISession | null> {
+    return await sessionRepository.clearMessages(sessionId, userId);
+  }
 }
 
 export default new SessionService();

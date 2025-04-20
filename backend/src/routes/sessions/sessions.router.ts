@@ -30,4 +30,7 @@ sessionRouter.put('/api/sessions/:sessionId/messages/:messageId', sessionsContro
 // Route to get a session by game ID
 sessionRouter.get('/api/sessions/game/:gameId', sessionsController.getSessionByGameId);
 
+// Route to clear all messages in a session
+sessionRouter.delete('/api/sessions/:sessionId/messages', sessionsController.clearMessages);
+
 export default sessionRouter;

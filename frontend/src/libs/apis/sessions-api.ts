@@ -39,3 +39,8 @@ export const updateMessageInSession = async (sessionId: string, messageId: strin
 export const getSessionByGameId = async (gameId: number) => {
   return await fetchData(`sessions/game/${gameId}`);
 };
+
+// Function to clear all messages in a session
+export const clearSessionMessages = async (sessionId: string) => {
+  return await deleteData(`sessions/${sessionId}/messages`);
+};
