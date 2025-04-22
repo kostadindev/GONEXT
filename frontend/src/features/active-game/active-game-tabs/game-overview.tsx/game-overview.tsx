@@ -24,7 +24,9 @@ export const GameOverview: React.FC<{ game: Game | null }> = ({ game }) => {
     const fetchData = async () => {
       if (game) {
         try {
-          const { response } = await fetchGameOverview(game);
+          // Get language from localStorage
+          const language = localStorage.getItem("language") || "en";
+          const { response } = await fetchGameOverview(game, language);
           setEstimatedWinRate(response.estimated_win_rate || 0);
           setLoadingWinRate(false);
           setRecommendedItems(response.recommended_items || []);

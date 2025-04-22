@@ -8,7 +8,12 @@ import { fetchData, postData } from "./reusable-api";
  * @param language - The language for the game overview (e.g., "en").
  * @returns The game overview data or an error if the operation fails.
  */
-export const fetchGameOverview = async (match: Record<string, any>) => {
-  return await postData("game-overview", { match });
+export const fetchGameOverview = async (match: Record<string, any>, language?: string) => {
+  // Get language from localStorage if not provided
+  if (!language) {
+    language = localStorage.getItem("language") || "en";
+  }
+
+  return await postData("game-overview", { match, language });
 };
 
