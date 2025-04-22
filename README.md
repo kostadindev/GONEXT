@@ -140,7 +140,7 @@ Please ensure your code adheres to the project's coding standards and includes t
 
 ## License
 
-This project is licensed under the Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0) license. This means you are free to:
+This project is licensed under the Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0) license with an additional commercial use clause. This means you are free to:
 
 - Share — copy and redistribute the material in any medium or format
 - Adapt — remix, transform, and build upon the material
@@ -148,7 +148,9 @@ This project is licensed under the Creative Commons Attribution-NonCommercial 4.
 Under the following terms:
 
 - Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
-- NonCommercial — You may not use the material for commercial purposes.
+- NonCommercial — You may not use the material for commercial purposes without explicit written permission from the licensor.
+
+For commercial use inquiries, please contact the project maintainer.
 
 For more information, see the [full license text](LICENSE) or visit [Creative Commons](https://creativecommons.org/licenses/by-nc/4.0/).
 
