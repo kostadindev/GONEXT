@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Avatar, Button, Layout, Typography } from "antd";
+import { Avatar, Button, Layout, Typography, Select } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import GlobalSearch from "../../global-search/global-search";
 import { QuickSearch } from "../../quick-search/quick-search";
 import { GoogleLogin } from "@react-oauth/google";
 import { handleLoginSuccess, handleLogout } from "../../../libs/apis/auth-api";
+import { updateUserLanguage } from "../../../libs/apis/users-api";
 import { useUser } from "../../../context/user.context";
 import { DarkModeSwitch } from "react-toggle-dark-mode";
 import { Particles, initParticlesEngine } from "@tsparticles/react";
@@ -82,6 +83,24 @@ const ParticleBackground = ({
   );
 };
 
+// Language options matching backend enum
+const languageOptions = [
+  { value: "en", label: "English" },
+  { value: "es", label: "Español" },
+  { value: "fr", label: "Français" },
+  { value: "de", label: "Deutsch" },
+  { value: "it", label: "Italiano" },
+  { value: "nl", label: "Nederlands" },
+  { value: "pt", label: "Português" },
+  { value: "ru", label: "Русский" },
+  { value: "zh", label: "中文" },
+  { value: "ja", label: "日本語" },
+  { value: "ko", label: "한국어" },
+  { value: "ar", label: "العربية" },
+  { value: "hi", label: "हिन्दी" },
+  { value: "bg", label: "Български" },
+];
+
 export const Header: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -135,12 +154,30 @@ export const Header: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = useState<boolean>(
     localStorage.getItem("theme") === "dark"
   );
+  const [language, setLanguage] = useState<string>(
+    localStorage.getItem("language") || "en"
+  );
 
   const toggleDarkMode = (checked: boolean) => {
     setIsDarkMode(checked);
     const newTheme = checked ? "dark" : "light";
     localStorage.setItem("theme", newTheme);
     window.dispatchEvent(new Event("themeChanged"));
+  };
+
+  const handleLanguageChange = (value: string) => {
+    setLanguage(value);
+    localStorage.setItem("language", value);
+
+    // Call the API to update language preference if user is logged in
+    if (user) {
+      updateUserLanguage(value).catch((error) => {
+        console.error("Failed to update language preference:", error);
+      });
+    }
+
+    // Dispatch language change event for other components to react
+    window.dispatchEvent(new Event("languageChanged"));
   };
 
   return (
@@ -182,11 +219,20 @@ export const Header: React.FC = () => {
             >
               GONEXT
             </div>
-            <DarkModeSwitch
-              checked={isDarkMode}
-              onChange={toggleDarkMode}
-              size={25}
-            />
+            <div className="flex items-center gap-2">
+              <Select
+                defaultValue={language}
+                style={{ width: 80 }}
+                onChange={handleLanguageChange}
+                options={languageOptions}
+                size="small"
+              />
+              <DarkModeSwitch
+                checked={isDarkMode}
+                onChange={toggleDarkMode}
+                size={25}
+              />
+            </div>
           </div>
 
           {/* Desktop: GONEXT only (dark switch is in right section) */}
@@ -216,6 +262,12 @@ export const Header: React.FC = () => {
 
         {/* Right Section: Theme (desktop only) & Auth */}
         <div className="hidden sm:flex items-center gap-3">
+          <Select
+            defaultValue={language}
+            style={{ width: 100 }}
+            onChange={handleLanguageChange}
+            options={languageOptions}
+          />
           <DarkModeSwitch
             checked={isDarkMode}
             onChange={toggleDarkMode}

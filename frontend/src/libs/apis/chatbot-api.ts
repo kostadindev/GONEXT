@@ -5,6 +5,11 @@ export const sendChatMessageStream = async (
   messageData: Record<string, any>,
   onStreamChunk: (chunk: string) => void
 ) => {
+  // Get language from localStorage if not already in messageData
+  if (!messageData.language) {
+    messageData.language = localStorage.getItem("language") || "en";
+  }
+
   const url = `${BASE_URL}/chatbot/${sessionId}/chat`;
 
   try {
@@ -44,6 +49,11 @@ export const getFollowUpSuggestions = async (
   sessionId: string,
   historyContext: Record<string, any>
 ): Promise<string[]> => {
+  // Get language from localStorage if not already in historyContext
+  if (!historyContext.language) {
+    historyContext.language = localStorage.getItem("language") || "en";
+  }
+
   const response = await fetch(`${BASE_URL}/chatbot/suggestions`, {
     method: 'POST',
     headers: {

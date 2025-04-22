@@ -48,6 +48,11 @@ const ChatComponent: React.FC<{
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [followUps, setFollowUps] = useState<string[]>([]);
 
+  // Get current language from localStorage
+  const [currentLanguage, setCurrentLanguage] = useState<string>(
+    localStorage.getItem("language") || "en"
+  );
+
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
   const messageContainerRef = React.useRef<HTMLDivElement>(null);
 
@@ -97,6 +102,18 @@ const ChatComponent: React.FC<{
     };
   }, [game]);
 
+  // Listen for language changes
+  useEffect(() => {
+    const handleLanguageChange = () => {
+      setCurrentLanguage(localStorage.getItem("language") || "en");
+    };
+
+    window.addEventListener("languageChanged", handleLanguageChange);
+    return () => {
+      window.removeEventListener("languageChanged", handleLanguageChange);
+    };
+  }, []);
+
   const handleSendMessage = async (message?: string) => {
     if (isSending) return;
 
@@ -133,7 +150,12 @@ const ChatComponent: React.FC<{
 
           await sendChatMessageStream(
             sessionId,
-            { query: textToSend, match: game, context },
+            {
+              query: textToSend,
+              match: game,
+              context,
+              language: currentLanguage,
+            },
             (chunk) => {
               partialResponse += chunk;
               setMessages((prevMessages) => {
@@ -163,6 +185,7 @@ const ChatComponent: React.FC<{
               ],
               match: game,
               context,
+              language: currentLanguage,
             });
             setFollowUps(suggestions);
           } catch (err) {

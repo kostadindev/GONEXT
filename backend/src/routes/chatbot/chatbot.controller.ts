@@ -10,7 +10,8 @@ class ChatbotController {
    */
   async sendMessage(req: AuthenticatedRequest, res: Response) {
     const { sessionId } = req.params;
-    const { query, match } = req.body;
+    const { query, match, language: requestLanguage } = req.body;
+
     if (!query) {
       return res.status(400).json({ message: "Query is required" });
     }
@@ -20,7 +21,10 @@ class ChatbotController {
     //   return res.status(401).json({ message: "User not authenticated" });
     // }
     const model = req.user?.llm || DEFAULT_LLM;
-    const language = req.user?.language || DEFAULT_LANGUAGE;
+
+    // Priority: 1. Request body language, 2. User profile language, 3. Default language
+    const language = requestLanguage || req.user?.language || DEFAULT_LANGUAGE;
+
     try {
       const stream = await chatbotService.sendMessage(sessionId, query, match, model, language);
 
@@ -47,26 +51,35 @@ class ChatbotController {
   }
 
   /**
- * Suggest follow-up questions based on current chat context.
- */
+   * Suggest follow-up questions based on current chat context.
+   */
   async getFollowUpSuggestions(req: AuthenticatedRequest, res: Response) {
-    const { messages, match, context } = req.body;
+    const { messages, match, context, language: requestLanguage } = req.body;
 
     if (!Array.isArray(messages) || messages.length === 0) {
       return res.status(400).json({ message: "Messages array is required" });
     }
 
+    // Get the model from user or default
     const model = req.user?.llm || DEFAULT_LLM;
 
+    // Priority: 1. Request body language, 2. User profile language, 3. Default language
+    const language = requestLanguage || req.user?.language || DEFAULT_LANGUAGE;
+
     try {
-      const suggestions = await chatbotService.getFollowUpSuggestions(messages, match, context, model);
+      const suggestions = await chatbotService.getFollowUpSuggestions(
+        messages,
+        match,
+        context,
+        model,
+        language
+      );
       return res.status(200).json({ suggestions });
     } catch (error) {
       console.error("Error getting follow-up suggestions:", error.message);
       res.status(500).json({ error: error.message });
     }
   }
-
 }
 
 export default new ChatbotController();

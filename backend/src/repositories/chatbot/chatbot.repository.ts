@@ -25,6 +25,7 @@ class ChatBotRepository {
    */
   async sendMessage(threadId: string, query: string, match?: Record<string, any>, model?: LLMOptions, language?: Languages): Promise<Readable> {
     try {
+      console.log('language', language)
       const response = await axios.post(
         `${this.baseURL}/chatbot`,
         {
@@ -47,13 +48,14 @@ class ChatBotRepository {
   }
 
   /**
- * Fetches follow-up suggestions based on conversation context, match, and optional model.
- */
+   * Fetches follow-up suggestions based on conversation context, match, and optional model.
+   */
   async getFollowUpSuggestions(
     messages: Array<{ role: string; content: string }>,
     match?: Record<string, any>,
     context?: Record<string, any>,
-    model?: LLMOptions
+    model?: LLMOptions,
+    language?: Languages
   ): Promise<string[]> {
     try {
       const response = await axios.post(`${this.baseURL}/suggestions`, {
@@ -61,6 +63,7 @@ class ChatBotRepository {
         match,
         context,
         model,
+        language
       });
 
       return response.data as string[];
