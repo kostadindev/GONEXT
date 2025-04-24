@@ -75,5 +75,13 @@
         "mlRepo": "MLリポジトリを見る"
       }
     }
+  },
+  "chat": {
+    "defaultPrompts": {
+      "createGamePlan": "私の役割に合わせたゲームプランを作成",
+      "prioritizeItems": "この試合で優先すべきアイテムは？",
+      "laneMatchupTips": "レーンマッチアップに勝つためのヒントを教えて",
+      "weakestLink": "敵チームの弱点は誰？"
+    }
   }
 } 

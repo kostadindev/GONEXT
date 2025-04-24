@@ -36,5 +36,13 @@
     "ar": "阿拉伯语",
     "hi": "印地语",
     "bg": "保加利亚语"
+  },
+  "chat": {
+    "defaultPrompts": {
+      "createGamePlan": "为我的角色创建游戏计划",
+      "prioritizeItems": "这场比赛我应该优先考虑哪些装备？",
+      "laneMatchupTips": "给我一些赢得对线的建议",
+      "weakestLink": "敌方队伍中最薄弱的环节是谁？"
+    }
   }
 } 

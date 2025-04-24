@@ -149,5 +149,13 @@
         "mlRepo": "View ML Repo"
       }
     }
+  },
+  "chat": {
+    "defaultPrompts": {
+      "createGamePlan": "Create a game plan tailored to my role",
+      "prioritizeItems": "What items should I prioritize this match?",
+      "laneMatchupTips": "Give me tips for winning my lane matchup",
+      "weakestLink": "Who's the weakest link on the enemy team?"
+    }
   }
 } 

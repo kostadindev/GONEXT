@@ -149,5 +149,13 @@
         "mlRepo": "Ver repositorio ML"
       }
     }
+  },
+  "chat": {
+    "defaultPrompts": {
+      "createGamePlan": "Crear un plan de juego adaptado a mi rol",
+      "prioritizeItems": "¿Qué objetos debo priorizar en esta partida?",
+      "laneMatchupTips": "Dame consejos para ganar mi enfrentamiento en la línea",
+      "weakestLink": "¿Quién es el eslabón más débil en el equipo enemigo?"
+    }
   }
 } 

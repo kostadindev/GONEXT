@@ -149,5 +149,13 @@
         "mlRepo": "Vedi repository ML"
       }
     }
+  },
+  "chat": {
+    "defaultPrompts": {
+      "createGamePlan": "Crea un piano di gioco adatto al mio ruolo",
+      "prioritizeItems": "Quali oggetti dovrei priorizzare in questa partita?",
+      "laneMatchupTips": "Dammi consigli per vincere il mio scontro in lane",
+      "weakestLink": "Chi è l'anello debole nella squadra avversaria?"
+    }
   }
 } 

@@ -149,5 +149,13 @@
         "mlRepo": "Ver repositório ML"
       }
     }
+  },
+  "chat": {
+    "defaultPrompts": {
+      "createGamePlan": "Criar um plano de jogo adaptado ao meu papel",
+      "prioritizeItems": "Quais itens devo priorizar nesta partida?",
+      "laneMatchupTips": "Dê-me dicas para vencer meu confronto na rota",
+      "weakestLink": "Quem é o elo mais fraco no time inimigo?"
+    }
   }
 } 

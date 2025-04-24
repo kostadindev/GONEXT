@@ -75,5 +75,13 @@
         "mlRepo": "ML 저장소 보기"
       }
     }
+  },
+  "chat": {
+    "defaultPrompts": {
+      "createGamePlan": "내 역할에 맞는 게임 플랜 만들기",
+      "prioritizeItems": "이 경기에서 어떤 아이템을 우선시해야 할까요?",
+      "laneMatchupTips": "라인전에서 이기기 위한 팁을 알려주세요",
+      "weakestLink": "적 팀에서 가장 약한 고리는 누구인가요?"
+    }
   }
 } 

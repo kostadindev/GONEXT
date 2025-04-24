@@ -149,5 +149,13 @@
         "mlRepo": "Bekijk ML repository"
       }
     }
+  },
+  "chat": {
+    "defaultPrompts": {
+      "createGamePlan": "Maak een spelplan op maat van mijn rol",
+      "prioritizeItems": "Welke items moet ik prioriteren in deze wedstrijd?",
+      "laneMatchupTips": "Geef me tips voor het winnen van mijn lane matchup",
+      "weakestLink": "Wie is de zwakste schakel in het vijandelijke team?"
+    }
   }
 } 
