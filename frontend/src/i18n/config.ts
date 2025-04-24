@@ -44,6 +44,11 @@ i18n
     debug: process.env.NODE_ENV === 'development',
     interpolation: {
       escapeValue: false,
+      prefix: '{',
+      suffix: '}',
+      format: (value, format, lng) => {
+        return value;
+      }
     },
     detection: {
       order: ['localStorage', 'navigator'],

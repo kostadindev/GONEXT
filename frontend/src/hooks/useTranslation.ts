@@ -9,7 +9,7 @@ export const useTranslation = () => {
   };
 
   return {
-    t: t as (key: string) => string,
+    t: t as (key: string, options?: any) => string,
     i18n,
     changeLanguage,
     currentLanguage: i18n.language,

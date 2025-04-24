@@ -13,7 +13,7 @@ function AppLayout() {
     <Layout className="min-h-screen">
       {/* <Sidebar /> */}
       <Layout>
-        <Header />
+        {!isHomePage ? <Header /> : ""}
         <Body />
         <Footer />
       </Layout>

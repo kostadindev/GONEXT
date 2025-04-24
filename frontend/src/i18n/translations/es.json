@@ -9,17 +9,30 @@
     "theme": {
       "light": "Claro",
       "dark": "Oscuro"
+    },
+    "error": "Error",
+    "success": "Éxito",
+    "actions": {
+      "goHome": "Ir a inicio",
+      "goBack": "Volver"
     }
   },
   "header": {
     "title": "GONEXT",
     "searchPlaceholder": "Buscar...",
-    "quickSearchPlaceholder": "Búsqueda rápida..."
+    "quickSearchPlaceholder": "Búsqueda rápida...",
+    "navigation": {
+      "home": "Inicio",
+      "aboutUs": "Sobre nosotros",
+      "contact": "Contacto"
+    }
   },
   "auth": {
     "loginSuccess": "Inicio de sesión exitoso",
     "loginError": "Error al iniciar sesión",
-    "logoutSuccess": "Sesión cerrada exitosamente"
+    "logoutSuccess": "Sesión cerrada exitosamente",
+    "googleLogin": "Iniciar sesión con Google",
+    "userPreferences": "Preferencias de usuario"
   },
   "languages": {
     "en": "Inglés",
@@ -36,5 +49,105 @@
     "ar": "Árabe",
     "hi": "Hindi",
     "bg": "Búlgaro"
+  },
+  "errors": {
+    "notFound": "Página no encontrada",
+    "generic": "Algo salió mal",
+    "return": "Volver al inicio",
+    "404": {
+      "title": "404 No encontrado",
+      "message": "La página que buscas no existe",
+      "game": {
+        "title": "Partida no encontrada",
+        "message": "El jugador que buscas no está en una partida activa",
+        "messageWithDetails": "El jugador {name}#{tag} no está en una partida actualmente"
+      },
+      "player": {
+        "title": "Jugador no encontrado",
+        "message": "El jugador que buscas no fue encontrado",
+        "messageWithDetails": "El jugador {name}#{tag} no fue encontrado. Por favor, verifica si el nombre y la etiqueta son correctos"
+      }
+    }
+  },
+  "cookieConsent": {
+    "message": "Utilizamos cookies para personalizar el contenido y analizar nuestro tráfico. Al hacer clic en \"Aceptar\", aceptas nuestro uso de cookies.",
+    "accept": "Aceptar",
+    "decline": "Rechazar",
+    "learnMore": "más información",
+    "privacyLink": "política de privacidad",
+    "additionalInfo": "Puedes obtener {learnMore}."
+  },
+  "search": {
+    "noResults": "No se encontraron resultados",
+    "loading": "Cargando...",
+    "placeholder": "Ingresa tu búsqueda"
+  },
+  "contact": {
+    "title": "Contáctanos",
+    "description": "¡Estamos aquí para ayudar! Ya sea que tengas preguntas sobre nuestro producto, necesites soporte o quieras compartir comentarios, contáctanos. Puedes contactar a cualquiera de nuestros miembros del equipo directamente o usar nuestros canales de consulta general.",
+    "team": {
+      "title": "Nuestro Equipo",
+      "roles": {
+        "founder": "Fundador y Líder Técnico",
+        "apiSpecialist": "Especialista en API y DevOps"
+      },
+      "descriptions": {
+        "technical": "Para consultas técnicas, asociaciones o comentarios sobre nuestro producto, contáctanos.",
+        "api": "Para preguntas sobre nuestros servicios de API o soporte operativo, no dudes en contactarnos."
+      }
+    },
+    "generalInquiries": {
+      "title": "Consultas Generales",
+      "description": "Para preguntas generales, oportunidades de asociación o consultas de medios, envíanos un correo a {email}",
+      "buttons": {
+        "email": "Correo",
+        "uiRepo": "UI",
+        "mlRepo": "ML"
+      },
+      "tooltips": {
+        "email": "Envíanos un correo",
+        "uiRepo": "Ver repositorio UI",
+        "mlRepo": "Ver repositorio ML"
+      }
+    },
+    "social": {
+      "website": "Sitio web",
+      "email": "Correo",
+      "linkedin": "LinkedIn",
+      "github": "GitHub"
+    }
+  },
+  "aboutUs": {
+    "title": "Sobre Nosotros",
+    "description": "GONEXT es un asistente impulsado por GenAI diseñado para jugadores de League of Legends, que proporciona estrategias personalizadas en tiempo real, emparejamientos, sinergias y builds. Utilizando la API de Riot, GONEXT obtiene datos de juego en vivo que cubren tanto a los aliados como a los enemigos, y utiliza modelos de lenguaje para proporcionar orientación específica para cada partida.",
+    "team": {
+      "title": "Conoce al Equipo",
+      "members": {
+        "kostadin": {
+          "name": "Kostadin Devedzhiev",
+          "title": "Fundador | ML | API | UI | ADC",
+          "description": "Kostadin ha estado jugando League of Legends desde la Temporada 3, alcanzando Diamond 1 como su rango más alto. Juega ADC y Jungla, y su campeón favorito es Wukong.\n\nKostadin lidera la ingeniería y el producto en GONEXT. Es ingeniero de software en Stellar Cyber."
+        },
+        "ivan": {
+          "name": "Ivan Nikolov",
+          "title": "API | DevOps | Jungla",
+          "description": "Ivan se especializa en desarrollo de API y prácticas DevOps, asegurando servicios backend robustos, escalables y seguros."
+        }
+      }
+    },
+    "improvement": {
+      "title": "Mejorando GONEXT",
+      "description": "¡Cuéntanos qué características te gustaría ver en futuras versiones o reporta errores! ¡Escuchamos tu opinión!\nEnvíanos un correo a {email}",
+      "buttons": {
+        "email": "Correo",
+        "uiRepo": "UI",
+        "mlRepo": "ML"
+      },
+      "tooltips": {
+        "email": "Enviar correo",
+        "uiRepo": "Ver repositorio UI",
+        "mlRepo": "Ver repositorio ML"
+      }
+    }
   }
 } 

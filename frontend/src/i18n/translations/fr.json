@@ -1,25 +1,38 @@
 {
   "common": {
     "or": "ou",
-    "logout": "Se déconnecter",
-    "login": "Se connecter",
+    "logout": "Déconnexion",
+    "login": "Connexion",
     "search": "Rechercher",
     "quickSearch": "Recherche rapide",
     "language": "Langue",
     "theme": {
       "light": "Clair",
       "dark": "Sombre"
+    },
+    "error": "Erreur",
+    "success": "Succès",
+    "actions": {
+      "goHome": "Accueil",
+      "goBack": "Retour"
     }
   },
   "header": {
     "title": "GONEXT",
     "searchPlaceholder": "Rechercher...",
-    "quickSearchPlaceholder": "Recherche rapide..."
+    "quickSearchPlaceholder": "Recherche rapide...",
+    "navigation": {
+      "home": "Accueil",
+      "aboutUs": "À propos",
+      "contact": "Contact"
+    }
   },
   "auth": {
     "loginSuccess": "Connexion réussie",
     "loginError": "Échec de la connexion",
-    "logoutSuccess": "Déconnexion réussie"
+    "logoutSuccess": "Déconnexion réussie",
+    "googleLogin": "Se connecter avec Google",
+    "userPreferences": "Préférences utilisateur"
   },
   "languages": {
     "en": "Anglais",
@@ -36,5 +49,105 @@
     "ar": "Arabe",
     "hi": "Hindi",
     "bg": "Bulgare"
+  },
+  "errors": {
+    "notFound": "Page non trouvée",
+    "generic": "Une erreur est survenue",
+    "return": "Retour à l'accueil",
+    "404": {
+      "title": "404 Non trouvé",
+      "message": "La page que vous recherchez n'existe pas",
+      "game": {
+        "title": "Partie non trouvée",
+        "message": "Le joueur que vous recherchez n'est pas dans une partie active",
+        "messageWithDetails": "Le joueur {name}#{tag} n'est pas actuellement en partie"
+      },
+      "player": {
+        "title": "Joueur non trouvé",
+        "message": "Le joueur que vous recherchez n'a pas été trouvé",
+        "messageWithDetails": "Le joueur {name}#{tag} n'a pas été trouvé. Veuillez vérifier si le nom et le tag sont corrects"
+      }
+    }
+  },
+  "cookieConsent": {
+    "message": "Nous utilisons des cookies pour personnaliser le contenu et analyser notre trafic. En cliquant sur \"Accepter\", vous consentez à notre utilisation des cookies.",
+    "accept": "Accepter",
+    "decline": "Refuser",
+    "learnMore": "en savoir plus",
+    "privacyLink": "politique de confidentialité",
+    "additionalInfo": "Vous pouvez {learnMore}."
+  },
+  "search": {
+    "noResults": "Aucun résultat trouvé",
+    "loading": "Chargement...",
+    "placeholder": "Entrez votre recherche"
+  },
+  "contact": {
+    "title": "Contactez-nous",
+    "description": "Nous sommes là pour vous aider ! Que vous ayez des questions sur notre produit, besoin d'assistance ou souhaitiez partager vos commentaires, contactez-nous. Vous pouvez contacter directement n'importe quel membre de notre équipe ou utiliser nos canaux de contact généraux.",
+    "team": {
+      "title": "Notre Équipe",
+      "roles": {
+        "founder": "Fondateur et Responsable Technique",
+        "apiSpecialist": "Spécialiste API et DevOps"
+      },
+      "descriptions": {
+        "technical": "Pour les questions techniques, les partenariats ou les retours sur notre produit, contactez-nous.",
+        "api": "Pour les questions sur nos services API ou le support opérationnel, n'hésitez pas à nous contacter."
+      }
+    },
+    "generalInquiries": {
+      "title": "Demandes Générales",
+      "description": "Pour les questions générales, les opportunités de partenariat ou les demandes médias, envoyez-nous un email à {email}",
+      "buttons": {
+        "email": "Email",
+        "uiRepo": "UI",
+        "mlRepo": "ML"
+      },
+      "tooltips": {
+        "email": "Envoyez-nous un email",
+        "uiRepo": "Voir le dépôt UI",
+        "mlRepo": "Voir le dépôt ML"
+      }
+    },
+    "social": {
+      "website": "Site web",
+      "email": "Email",
+      "linkedin": "LinkedIn",
+      "github": "GitHub"
+    }
+  },
+  "aboutUs": {
+    "title": "À Propos",
+    "description": "GONEXT est un assistant propulsé par GenAI conçu pour les joueurs de League of Legends, offrant des stratégies personnalisées en temps réel, des matchups, des synergies et des builds. En utilisant l'API Riot, GONEXT récupère les données de jeu en direct, couvrant à la fois les alliés et les ennemis, et utilise des modèles de langage pour offrir des conseils spécifiques pour chaque partie.",
+    "team": {
+      "title": "Rencontrez l'Équipe",
+      "members": {
+        "kostadin": {
+          "name": "Kostadin Devedzhiev",
+          "title": "Fondateur | ML | API | UI | ADC",
+          "description": "Kostadin joue à League of Legends depuis la Saison 3, atteignant un rang maximum de Diamant 1. Il joue ADC et Jungle. Son champion préféré est Wukong.\n\nKostadin dirige l'ingénierie et le produit chez GONEXT. Il est Ingénieur Logiciel chez Stellar Cyber."
+        },
+        "ivan": {
+          "name": "Ivan Nikolov",
+          "title": "API | DevOps | Jungle",
+          "description": "Ivan est spécialisé dans le développement d'API et les pratiques DevOps, assurant des services backend robustes, évolutifs et sécurisés."
+        }
+      }
+    },
+    "improvement": {
+      "title": "Améliorer GONEXT",
+      "description": "Faites-nous savoir ce que vous souhaitez voir dans les futures versions et signalez les bugs. Nous vous écouterons !\nEnvoyez-nous un email à {email}.",
+      "buttons": {
+        "email": "Email",
+        "uiRepo": "UI",
+        "mlRepo": "ML"
+      },
+      "tooltips": {
+        "email": "Envoyez-nous un email",
+        "uiRepo": "Voir le dépôt UI",
+        "mlRepo": "Voir le dépôt ML"
+      }
+    }
   }
 } 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Card,
   Row,
@@ -17,6 +17,7 @@ import {
   MailFilled,
   MailOutlined,
 } from "@ant-design/icons";
+import { useTranslation } from "../../hooks/useTranslation";
 
 const { Title, Text, Paragraph, Link } = Typography;
 
@@ -58,10 +59,19 @@ Kostadin leads engineering and product at GONEXT. He is a Software Engineer at S
 ];
 
 const AboutUs: React.FC = () => {
+  const { t } = useTranslation();
+
+  useEffect(() => {
+    console.log(
+      "Translation result:",
+      t("aboutUs.improvement.description", { email: "info@gonext.lol" })
+    );
+  }, [t]);
+
   return (
     <div style={{ padding: "40px 20px" }}>
       <Title level={2} style={{ textAlign: "center", marginBottom: "32px" }}>
-        About Us
+        {t("aboutUs.title")}
       </Title>
 
       <Row justify="center">
@@ -69,17 +79,12 @@ const AboutUs: React.FC = () => {
           <Paragraph
             style={{ fontSize: "16px", textAlign: "center", marginBottom: 40 }}
           >
-            <b>GONEXT</b> is a GenAI-powered assistant tailored for League of
-            Legends players, delivering real-time and personalized strategies,
-            matchups, synergies, and builds. By harnessing the Riot API,{" "}
-            <b>GONEXT</b> retrieves live game data—covering both allied and
-            enemy players—and employs large language models to offer
-            context-specific guidance for every match.
+            {t("aboutUs.description")}
           </Paragraph>
         </Col>
       </Row>
 
-      <Divider orientation="center">Meet the Team</Divider>
+      <Divider orientation="center">{t("aboutUs.team.title")}</Divider>
 
       <Row gutter={[24, 32]} justify="center">
         {teamMembers.map((member, index) => (
@@ -107,11 +112,25 @@ const AboutUs: React.FC = () => {
                 </Col>
                 <Col xs={24} md={14}>
                   <Title level={4} style={{ marginBottom: 0 }}>
-                    {member.name}
+                    {t(
+                      `aboutUs.team.members.${
+                        member.name.toLowerCase().split(" ")[0]
+                      }.name`
+                    )}
                   </Title>
-                  <Text type="secondary">{member.title}</Text>
+                  <Text type="secondary">
+                    {t(
+                      `aboutUs.team.members.${
+                        member.name.toLowerCase().split(" ")[0]
+                      }.title`
+                    )}
+                  </Text>
                   <Paragraph style={{ marginTop: 16, whiteSpace: "pre-line" }}>
-                    {member.description}
+                    {t(
+                      `aboutUs.team.members.${
+                        member.name.toLowerCase().split(" ")[0]
+                      }.description`
+                    )}
                   </Paragraph>
                   {member.email && (
                     <Paragraph style={{ marginBottom: 10 }}>
@@ -122,7 +141,7 @@ const AboutUs: React.FC = () => {
                   )}
                   <Space size="middle" wrap>
                     {member.website && (
-                      <Tooltip title="Website">
+                      <Tooltip title={t("social.website")}>
                         <Button
                           shape="circle"
                           icon={<GlobalOutlined />}
@@ -132,7 +151,7 @@ const AboutUs: React.FC = () => {
                       </Tooltip>
                     )}
                     {member.email && (
-                      <Tooltip title="Email">
+                      <Tooltip title={t("social.email")}>
                         <Button
                           shape="circle"
                           icon={<MailFilled />}
@@ -141,7 +160,7 @@ const AboutUs: React.FC = () => {
                       </Tooltip>
                     )}
                     {member.linkedin && (
-                      <Tooltip title="LinkedIn">
+                      <Tooltip title={t("social.linkedin")}>
                         <Button
                           shape="circle"
                           icon={<LinkedinFilled />}
@@ -151,7 +170,7 @@ const AboutUs: React.FC = () => {
                       </Tooltip>
                     )}
                     {member.github && (
-                      <Tooltip title="GitHub">
+                      <Tooltip title={t("social.github")}>
                         <Button
                           shape="circle"
                           icon={<GithubFilled />}
@@ -169,46 +188,46 @@ const AboutUs: React.FC = () => {
       </Row>
 
       <Divider orientation="center" style={{ marginTop: 64 }}>
-        Making GONEXT Better
+        {t("aboutUs.improvement.title")}
       </Divider>
 
       <Row justify="center">
         <Col xs={24} md={20} lg={16} style={{ textAlign: "center" }}>
           <Paragraph style={{ fontSize: "16px" }}>
-            Let us know what you want to see in future releases and report bugs.
-            We will listen!
-            <br />
-            Email us at{" "}
-            <Link href="mailto:info@gonext.lol">info@gonext.lol</Link>.
+            {t(
+              "aboutUs.improvement.description",
+              { email: "info@gonext.lol" },
+              { interpolation: { escapeValue: false } }
+            )}
           </Paragraph>
-          <Space size="middle" style={{ marginTop: 16 }} wrap>
-            <Tooltip title="Email us">
+          <Space size="middle" wrap>
+            <Tooltip title={t("aboutUs.improvement.tooltips.email")}>
               <Button
                 type="default"
                 icon={<MailOutlined />}
                 href="mailto:info@gonext.lol"
               >
-                Email
+                {t("aboutUs.improvement.buttons.email")}
               </Button>
             </Tooltip>
-            <Tooltip title="View UI Repo">
+            <Tooltip title={t("aboutUs.improvement.tooltips.uiRepo")}>
               <Button
                 type="default"
                 icon={<GithubOutlined />}
                 href="https://github.com/kostadindev/gonext"
                 target="_blank"
               >
-                UI
+                {t("aboutUs.improvement.buttons.uiRepo")}
               </Button>
             </Tooltip>
-            <Tooltip title="View ML Repo">
+            <Tooltip title={t("aboutUs.improvement.tooltips.mlRepo")}>
               <Button
                 type="default"
                 icon={<GithubOutlined />}
                 href="https://github.com/kostadindev/gonext-ml"
                 target="_blank"
               >
-                ML
+                {t("aboutUs.improvement.buttons.mlRepo")}
               </Button>
             </Tooltip>
           </Space>

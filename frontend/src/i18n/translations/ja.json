@@ -36,5 +36,44 @@
     "ar": "アラビア語",
     "hi": "ヒンディー語",
     "bg": "ブルガリア語"
+  },
+  "social": {
+    "website": "ウェブサイト",
+    "email": "メール",
+    "linkedin": "LinkedIn",
+    "github": "GitHub"
+  },
+  "aboutUs": {
+    "title": "私たちについて",
+    "description": "GONEXTは、League of Legendsプレイヤー向けに設計されたGenAI駆動のアシスタントで、リアルタイムでパーソナライズされた戦略、マッチアップ、シナジー、ビルドを提供します。Riot APIを活用し、GONEXTは味方と敵の両方のプレイヤーをカバーするライブゲームデータを取得し、言語モデルを使用して各試合に特化したガイダンスを提供します。",
+    "team": {
+      "title": "チームの紹介",
+      "members": {
+        "kostadin": {
+          "name": "コスタディン・デヴェジエフ",
+          "title": "創設者 | ML | API | UI | ADC",
+          "description": "コスタディンはシーズン3からLeague of Legendsをプレイしており、最高ランクはダイヤモンド1です。ADCとジャングルをプレイし、お気に入りのチャンピオンはウーコンです。\n\nコスタディンはGONEXTでエンジニアリングとプロダクトを主導しています。Stellar Cybのソフトウェアエンジニアです。"
+        },
+        "ivan": {
+          "name": "イヴァン・ニコロフ",
+          "title": "API | DevOps | ジャングル",
+          "description": "イヴァンはAPI開発とDevOpsプラクティスを専門とし、堅牢でスケーラブルかつ安全なバックエンドサービスを確保しています。"
+        }
+      }
+    },
+    "improvement": {
+      "title": "GONEXTの改善",
+      "description": "将来のリリースで見たい機能やバグを報告してください。私たちはあなたの声に耳を傾けます！\n{email}までメールをお送りください。",
+      "buttons": {
+        "email": "メール",
+        "uiRepo": "UI",
+        "mlRepo": "ML"
+      },
+      "tooltips": {
+        "email": "メールを送る",
+        "uiRepo": "UIリポジトリを見る",
+        "mlRepo": "MLリポジトリを見る"
+      }
+    }
   }
 } 

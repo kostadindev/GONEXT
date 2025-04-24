@@ -4,22 +4,35 @@
     "logout": "Uitloggen",
     "login": "Inloggen",
     "search": "Zoeken",
-    "quickSearch": "Snelle zoekopdracht",
+    "quickSearch": "Snel zoeken",
     "language": "Taal",
     "theme": {
       "light": "Licht",
       "dark": "Donker"
+    },
+    "error": "Fout",
+    "success": "Succes",
+    "actions": {
+      "goHome": "Naar home",
+      "goBack": "Terug"
     }
   },
   "header": {
     "title": "GONEXT",
     "searchPlaceholder": "Zoeken...",
-    "quickSearchPlaceholder": "Snelle zoekopdracht..."
+    "quickSearchPlaceholder": "Snel zoeken...",
+    "navigation": {
+      "home": "Home",
+      "aboutUs": "Over ons",
+      "contact": "Contact"
+    }
   },
   "auth": {
     "loginSuccess": "Succesvol ingelogd",
     "loginError": "Inloggen mislukt",
-    "logoutSuccess": "Succesvol uitgelogd"
+    "logoutSuccess": "Succesvol uitgelogd",
+    "googleLogin": "Inloggen met Google",
+    "userPreferences": "Gebruikersvoorkeuren"
   },
   "languages": {
     "en": "Engels",
@@ -36,5 +49,105 @@
     "ar": "Arabisch",
     "hi": "Hindi",
     "bg": "Bulgaars"
+  },
+  "errors": {
+    "notFound": "Pagina niet gevonden",
+    "generic": "Er is iets misgegaan",
+    "return": "Terug naar home",
+    "404": {
+      "title": "404 Niet gevonden",
+      "message": "De pagina die je zoekt bestaat niet",
+      "game": {
+        "title": "Game niet gevonden",
+        "message": "De speler die je zoekt is niet in een actieve game",
+        "messageWithDetails": "Speler {name}#{tag} is momenteel niet in een game"
+      },
+      "player": {
+        "title": "Speler niet gevonden",
+        "message": "De speler die je zoekt is niet gevonden",
+        "messageWithDetails": "Speler {name}#{tag} is niet gevonden. Controleer of de naam en tag correct zijn"
+      }
+    }
+  },
+  "cookieConsent": {
+    "message": "Wij gebruiken cookies om inhoud te personaliseren en ons verkeer te analyseren. Door op \"Accepteren\" te klikken, stem je in met ons gebruik van cookies.",
+    "accept": "Accepteren",
+    "decline": "Weigeren",
+    "learnMore": "meer informatie",
+    "privacyLink": "privacybeleid",
+    "additionalInfo": "Je kunt {learnMore} vinden."
+  },
+  "search": {
+    "noResults": "Geen resultaten gevonden",
+    "loading": "Laden...",
+    "placeholder": "Voer je zoekopdracht in"
+  },
+  "contact": {
+    "title": "Contact",
+    "description": "We zijn er om te helpen! Of je nu vragen hebt over ons product, ondersteuning nodig hebt of feedback wilt delen, neem contact met ons op. Je kunt direct contact opnemen met een van onze teamleden of gebruik maken van onze algemene contactkanalen.",
+    "team": {
+      "title": "Ons Team",
+      "roles": {
+        "founder": "Oprichter & Technisch Leider",
+        "apiSpecialist": "API & DevOps Specialist"
+      },
+      "descriptions": {
+        "technical": "Voor technische vragen, partnerships of feedback over ons product, neem contact met ons op.",
+        "api": "Voor vragen over onze API-diensten of operationele ondersteuning, neem gerust contact met ons op."
+      }
+    },
+    "generalInquiries": {
+      "title": "Algemene Vragen",
+      "description": "Voor algemene vragen, partnerschapsmogelijkheden of media-aanvragen, stuur ons een e-mail naar {email}",
+      "buttons": {
+        "email": "E-mail",
+        "uiRepo": "UI",
+        "mlRepo": "ML"
+      },
+      "tooltips": {
+        "email": "Stuur ons een e-mail",
+        "uiRepo": "Bekijk UI repository",
+        "mlRepo": "Bekijk ML repository"
+      }
+    },
+    "social": {
+      "website": "Website",
+      "email": "E-mail",
+      "linkedin": "LinkedIn",
+      "github": "GitHub"
+    }
+  },
+  "aboutUs": {
+    "title": "Over Ons",
+    "description": "GONEXT is een door GenAI aangedreven assistent voor League of Legends-spelers, die realtime en gepersonaliseerde strategieën, matchups, synergieën en builds levert. Door gebruik te maken van de Riot API haalt GONEXT live gamedata op van zowel bondgenoten als vijanden en gebruikt taalmodellen om specifieke begeleiding voor elke match te bieden.",
+    "team": {
+      "title": "Ontmoet het Team",
+      "members": {
+        "kostadin": {
+          "name": "Kostadin Devedzhiev",
+          "title": "Oprichter | ML | API | UI | ADC",
+          "description": "Kostadin speelt League of Legends sinds Seizoen 3 en bereikte een hoogste rang van Diamond 1. Hij speelt ADC en Jungle. Zijn favoriete champion is Wukong.\n\nKostadin leidt de engineering en het product bij GONEXT. Hij is Software Engineer bij Stellar Cyber."
+        },
+        "ivan": {
+          "name": "Ivan Nikolov",
+          "title": "API | DevOps | Jungle",
+          "description": "Ivan is gespecialiseerd in API-ontwikkeling en DevOps-praktijken, en zorgt voor robuuste, schaalbare en veilige backend-diensten."
+        }
+      }
+    },
+    "improvement": {
+      "title": "GONEXT Verbeteren",
+      "description": "Laat ons weten wat je in toekomstige releases wilt zien en meld bugs. We luisteren!\nStuur ons een e-mail naar {email}.",
+      "buttons": {
+        "email": "E-mail",
+        "uiRepo": "UI",
+        "mlRepo": "ML"
+      },
+      "tooltips": {
+        "email": "Stuur ons een e-mail",
+        "uiRepo": "Bekijk UI repository",
+        "mlRepo": "Bekijk ML repository"
+      }
+    }
   }
 } 

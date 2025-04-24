@@ -36,5 +36,44 @@
     "ar": "아랍어",
     "hi": "힌디어",
     "bg": "불가리아어"
+  },
+  "social": {
+    "website": "웹사이트",
+    "email": "이메일",
+    "linkedin": "링크드인",
+    "github": "깃허브"
+  },
+  "aboutUs": {
+    "title": "회사 소개",
+    "description": "GONEXT는 리그 오브 레전드 플레이어를 위해 설계된 GenAI 기반 어시스턴트로, 실시간 맞춤형 전략, 매치업, 시너지 및 빌드를 제공합니다. Riot API를 활용하여 GONEXT는 아군과 적군 모두를 포함하는 실시간 게임 데이터를 수집하고, 언어 모델을 사용하여 각 매치에 특화된 가이드를 제공합니다.",
+    "team": {
+      "title": "팀 소개",
+      "members": {
+        "kostadin": {
+          "name": "코스타딘 데베지에프",
+          "title": "창립자 | ML | API | UI | ADC",
+          "description": "코스타딘은 시즌 3부터 리그 오브 레전드를 플레이해왔으며, 다이아몬드 1까지 올랐습니다. ADC와 정글을 플레이하며, 가장 좋아하는 챔피언은 오공입니다.\n\n코스타딘은 GONEXT의 엔지니어링과 제품을 이끌고 있습니다. 그는 Stellar Cyber의 소프트웨어 엔지니어입니다."
+        },
+        "ivan": {
+          "name": "이반 니콜로프",
+          "title": "API | DevOps | 정글",
+          "description": "이반은 API 개발과 DevOps 실무를 전문으로 하며, 안정적이고 확장 가능하며 안전한 백엔드 서비스를 보장합니다."
+        }
+      }
+    },
+    "improvement": {
+      "title": "GONEXT 개선하기",
+      "description": "향후 버전에서 보고 싶은 기능이나 버그를 알려주세요. 여러분의 의견을 경청하겠습니다!\n{email}로 이메일을 보내주세요.",
+      "buttons": {
+        "email": "이메일",
+        "uiRepo": "UI",
+        "mlRepo": "ML"
+      },
+      "tooltips": {
+        "email": "이메일 보내기",
+        "uiRepo": "UI 저장소 보기",
+        "mlRepo": "ML 저장소 보기"
+      }
+    }
   }
 } 
