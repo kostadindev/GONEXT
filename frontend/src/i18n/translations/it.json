@@ -157,5 +157,14 @@
       "laneMatchupTips": "Dammi consigli per vincere il mio scontro in lane",
       "weakestLink": "Chi è l'anello debole nella squadra avversaria?"
     }
+  },
+  "footer": {
+    "quickLinks": "Link rapidi",
+    "aboutUs": "Chi siamo",
+    "contact": "Contatti",
+    "followUs": "Seguici",
+    "github": "GitHub",
+    "madeWithLove": "Creato con ❤️ dal team GONEXT.",
+    "disclaimer": "GONEXT non è approvato da Riot Games e non riflette le opinioni o i punti di vista di Riot Games o di chiunque sia ufficialmente coinvolto nella produzione o gestione delle proprietà di Riot Games. Riot Games e tutte le proprietà associate sono marchi o marchi registrati di Riot Games, Inc."
   }
 } 

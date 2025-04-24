@@ -157,5 +157,14 @@
       "laneMatchupTips": "Dê-me dicas para vencer meu confronto na rota",
       "weakestLink": "Quem é o elo mais fraco no time inimigo?"
     }
+  },
+  "footer": {
+    "quickLinks": "Links rápidos",
+    "aboutUs": "Sobre nós",
+    "contact": "Contato",
+    "followUs": "Siga-nos",
+    "github": "GitHub",
+    "madeWithLove": "Feito com ❤️ pela equipe GONEXT.",
+    "disclaimer": "GONEXT não é endossado pela Riot Games e não reflete as opiniões ou pontos de vista da Riot Games ou de qualquer pessoa oficialmente envolvida na produção ou gestão das propriedades da Riot Games. Riot Games e todas as propriedades associadas são marcas comerciais ou marcas registradas da Riot Games, Inc."
   }
 } 

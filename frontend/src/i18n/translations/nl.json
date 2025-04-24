@@ -157,5 +157,14 @@
       "laneMatchupTips": "Geef me tips voor het winnen van mijn lane matchup",
       "weakestLink": "Wie is de zwakste schakel in het vijandelijke team?"
     }
+  },
+  "footer": {
+    "quickLinks": "Snelle links",
+    "aboutUs": "Over ons",
+    "contact": "Contact",
+    "followUs": "Volg ons",
+    "github": "GitHub",
+    "madeWithLove": "Gemaakt met ❤️ door het GONEXT team.",
+    "disclaimer": "GONEXT wordt niet onderschreven door Riot Games en weerspiegelt niet de standpunten of meningen van Riot Games of iemand die officieel betrokken is bij de productie of het beheer van Riot Games-eigendommen. Riot Games en alle bijbehorende eigendommen zijn handelsmerken of geregistreerde handelsmerken van Riot Games, Inc."
   }
 } 

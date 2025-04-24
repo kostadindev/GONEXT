@@ -157,5 +157,14 @@
       "laneMatchupTips": "Gib mir Tipps für mein Lane-Matchup",
       "weakestLink": "Wer ist das schwächste Glied im gegnerischen Team?"
     }
+  },
+  "footer": {
+    "quickLinks": "Schnelllinks",
+    "aboutUs": "Über uns",
+    "contact": "Kontakt",
+    "followUs": "Folge uns",
+    "github": "GitHub",
+    "madeWithLove": "Gemacht mit ❤️ vom GONEXT Team.",
+    "disclaimer": "GONEXT wird nicht von Riot Games unterstützt und spiegelt nicht die Ansichten oder Meinungen von Riot Games oder Personen wider, die offiziell an der Produktion oder Verwaltung von Riot Games-Eigenschaften beteiligt sind. Riot Games und alle zugehörigen Eigenschaften sind Marken oder eingetragene Marken von Riot Games, Inc."
   }
 } 

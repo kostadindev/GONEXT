@@ -83,5 +83,14 @@
       "laneMatchupTips": "라인전에서 이기기 위한 팁을 알려주세요",
       "weakestLink": "적 팀에서 가장 약한 고리는 누구인가요?"
     }
+  },
+  "footer": {
+    "quickLinks": "빠른 링크",
+    "aboutUs": "회사 소개",
+    "contact": "문의하기",
+    "followUs": "팔로우하기",
+    "github": "GitHub",
+    "madeWithLove": "GONEXT 팀이 ❤️ 으로 만들었습니다.",
+    "disclaimer": "GONEXT는 Riot Games의 승인을 받지 않았으며, Riot Games 자산의 제작 또는 관리에 공식적으로 관여하는 사람들의 견해나 의견을 반영하지 않습니다. Riot Games 및 관련된 모든 자산은 Riot Games, Inc.의 상표 또는 등록 상표입니다."
   }
 } 

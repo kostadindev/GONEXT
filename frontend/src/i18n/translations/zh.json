@@ -44,5 +44,14 @@
       "laneMatchupTips": "给我一些赢得对线的建议",
       "weakestLink": "敌方队伍中最薄弱的环节是谁？"
     }
+  },
+  "footer": {
+    "quickLinks": "快速链接",
+    "aboutUs": "关于我们",
+    "contact": "联系我们",
+    "followUs": "关注我们",
+    "github": "GitHub",
+    "madeWithLove": "由 GONEXT 团队用 ❤️ 打造。",
+    "disclaimer": "GONEXT 不受 Riot Games 认可，也不反映 Riot Games 或任何正式参与制作或管理 Riot Games 资产的人的观点或意见。Riot Games 和所有相关资产均为 Riot Games, Inc. 的商标或注册商标。"
   }
 } 

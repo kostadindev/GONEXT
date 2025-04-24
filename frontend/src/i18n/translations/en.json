@@ -157,5 +157,14 @@
       "laneMatchupTips": "Give me tips for winning my lane matchup",
       "weakestLink": "Who's the weakest link on the enemy team?"
     }
+  },
+  "footer": {
+    "quickLinks": "Quick Links",
+    "aboutUs": "About Us",
+    "contact": "Contact",
+    "followUs": "Follow Us",
+    "github": "GitHub",
+    "madeWithLove": "Made with ❤️ by the GONEXT team.",
+    "disclaimer": "GONEXT is not endorsed by Riot Games and does not reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games and all associated properties are trademarks or registered trademarks of Riot Games, Inc."
   }
 } 

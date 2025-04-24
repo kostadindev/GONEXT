@@ -83,5 +83,14 @@
       "laneMatchupTips": "أعطني نصائح للفوز في مواجهة خطي",
       "weakestLink": "من هو الحلقة الأضعف في الفريق الخصم؟"
     }
+  },
+  "footer": {
+    "quickLinks": "روابط سريعة",
+    "aboutUs": "من نحن",
+    "contact": "اتصل بنا",
+    "followUs": "تابعنا",
+    "github": "GitHub",
+    "madeWithLove": "صنع ب ❤️ بواسطة فريق GONEXT.",
+    "disclaimer": "GONEXT غير مدعوم من قبل Riot Games ولا يعكس وجهات نظر أو آراء Riot Games أو أي شخص مشارك رسميًا في إنتاج أو إدارة ممتلكات Riot Games. Riot Games وجميع الممتلكات المرتبطة بها هي علامات تجارية أو علامات تجارية مسجلة لشركة Riot Games, Inc."
   }
 } 

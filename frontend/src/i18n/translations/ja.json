@@ -83,5 +83,14 @@
       "laneMatchupTips": "レーンマッチアップに勝つためのヒントを教えて",
       "weakestLink": "敵チームの弱点は誰？"
     }
+  },
+  "footer": {
+    "quickLinks": "クイックリンク",
+    "aboutUs": "私たちについて",
+    "contact": "お問い合わせ",
+    "followUs": "フォローする",
+    "github": "GitHub",
+    "madeWithLove": "GONEXTチームが ❤️ で作りました。",
+    "disclaimer": "GONEXTはRiot Gamesの承認を受けておらず、Riot Gamesの資産の制作や管理に正式に関与している人々の見解や意見を反映するものではありません。Riot Gamesおよび関連するすべての資産は、Riot Games, Inc.の商標または登録商標です。"
   }
 } 

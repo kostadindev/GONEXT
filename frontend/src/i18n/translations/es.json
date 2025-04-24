@@ -157,5 +157,14 @@
       "laneMatchupTips": "Dame consejos para ganar mi enfrentamiento en la línea",
       "weakestLink": "¿Quién es el eslabón más débil en el equipo enemigo?"
     }
+  },
+  "footer": {
+    "quickLinks": "Enlaces rápidos",
+    "aboutUs": "Sobre nosotros",
+    "contact": "Contacto",
+    "followUs": "Síguenos",
+    "github": "GitHub",
+    "madeWithLove": "Hecho con ❤️ por el equipo de GONEXT.",
+    "disclaimer": "GONEXT no está respaldado por Riot Games y no refleja las opiniones o puntos de vista de Riot Games ni de nadie oficialmente involucrado en la producción o gestión de las propiedades de Riot Games. Riot Games y todas las propiedades asociadas son marcas comerciales o marcas registradas de Riot Games, Inc."
   }
 } 
