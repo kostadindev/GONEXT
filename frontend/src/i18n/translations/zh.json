@@ -1,0 +1,40 @@
+{
+  "common": {
+    "or": "或",
+    "logout": "退出",
+    "login": "登录",
+    "search": "搜索",
+    "quickSearch": "快速搜索",
+    "language": "语言",
+    "theme": {
+      "light": "浅色",
+      "dark": "深色"
+    }
+  },
+  "header": {
+    "title": "GONEXT",
+    "searchPlaceholder": "搜索...",
+    "quickSearchPlaceholder": "快速搜索..."
+  },
+  "auth": {
+    "loginSuccess": "登录成功",
+    "loginError": "登录失败",
+    "logoutSuccess": "退出成功"
+  },
+  "languages": {
+    "en": "英语",
+    "es": "西班牙语",
+    "fr": "法语",
+    "de": "德语",
+    "it": "意大利语",
+    "nl": "荷兰语",
+    "pt": "葡萄牙语",
+    "ru": "俄语",
+    "zh": "中文",
+    "ja": "日语",
+    "ko": "韩语",
+    "ar": "阿拉伯语",
+    "hi": "印地语",
+    "bg": "保加利亚语"
+  }
+} 

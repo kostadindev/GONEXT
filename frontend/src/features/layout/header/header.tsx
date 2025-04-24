@@ -10,6 +10,7 @@ import { useUser } from "../../../context/user.context";
 import { DarkModeSwitch } from "react-toggle-dark-mode";
 import { Particles, initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
+import { useTranslation } from "../../../hooks/useTranslation";
 
 const { Text } = Typography;
 
@@ -107,6 +108,7 @@ export const Header: React.FC = () => {
   const { user, setUser } = useUser();
   const [init, setInit] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const { t, changeLanguage, currentLanguage } = useTranslation();
 
   // Check for mobile screen size
   useEffect(() => {
@@ -140,7 +142,7 @@ export const Header: React.FC = () => {
   };
 
   const onLoginError = () => {
-    console.error("Login Failed");
+    console.error(t("auth.loginError"));
   };
 
   const onLogout = async () => {
@@ -154,9 +156,6 @@ export const Header: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = useState<boolean>(
     localStorage.getItem("theme") === "dark"
   );
-  const [language, setLanguage] = useState<string>(
-    localStorage.getItem("language") || "en"
-  );
 
   const toggleDarkMode = (checked: boolean) => {
     setIsDarkMode(checked);
@@ -166,8 +165,7 @@ export const Header: React.FC = () => {
   };
 
   const handleLanguageChange = (value: string) => {
-    setLanguage(value);
-    localStorage.setItem("language", value);
+    changeLanguage(value);
 
     // Call the API to update language preference if user is logged in
     if (user) {
@@ -217,11 +215,11 @@ export const Header: React.FC = () => {
               className="cursor-pointer"
               onClick={() => navigate("/")}
             >
-              GONEXT
+              {t("header.title")}
             </div>
             <div className="flex items-center gap-2">
               <Select
-                defaultValue={language}
+                defaultValue={currentLanguage}
                 style={{ width: 80 }}
                 onChange={handleLanguageChange}
                 options={languageOptions}
@@ -241,7 +239,7 @@ export const Header: React.FC = () => {
             style={goldmanStyle}
             onClick={() => navigate("/")}
           >
-            GONEXT
+            {t("header.title")}
           </div>
 
           {/* Global Search and Quick Search */}
@@ -251,7 +249,7 @@ export const Header: React.FC = () => {
                 <GlobalSearch />
               </div>
               <span className="hidden sm:inline-block mx-2 whitespace-nowrap">
-                or
+                {t("common.or")}
               </span>
               <div className="hidden sm:block">
                 <QuickSearch />
@@ -263,7 +261,7 @@ export const Header: React.FC = () => {
         {/* Right Section: Theme (desktop only) & Auth */}
         <div className="hidden sm:flex items-center gap-3">
           <Select
-            defaultValue={language}
+            defaultValue={currentLanguage}
             style={{ width: 100 }}
             onChange={handleLanguageChange}
             options={languageOptions}
@@ -279,7 +277,7 @@ export const Header: React.FC = () => {
             <Button size="large" onClick={onLogout} className="cool-button">
               <div className="flex gap-3 items-center h-full">
                 {user.picture && <Avatar src={user.picture} size={30} />}
-                <span>Log out</span>
+                <span>{t('common.logout')}</span>
               </div>
             </Button>
           ) : (

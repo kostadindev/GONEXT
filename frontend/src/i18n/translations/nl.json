@@ -1,0 +1,40 @@
+{
+  "common": {
+    "or": "of",
+    "logout": "Uitloggen",
+    "login": "Inloggen",
+    "search": "Zoeken",
+    "quickSearch": "Snelle zoekopdracht",
+    "language": "Taal",
+    "theme": {
+      "light": "Licht",
+      "dark": "Donker"
+    }
+  },
+  "header": {
+    "title": "GONEXT",
+    "searchPlaceholder": "Zoeken...",
+    "quickSearchPlaceholder": "Snelle zoekopdracht..."
+  },
+  "auth": {
+    "loginSuccess": "Succesvol ingelogd",
+    "loginError": "Inloggen mislukt",
+    "logoutSuccess": "Succesvol uitgelogd"
+  },
+  "languages": {
+    "en": "Engels",
+    "es": "Spaans",
+    "fr": "Frans",
+    "de": "Duits",
+    "it": "Italiaans",
+    "nl": "Nederlands",
+    "pt": "Portugees",
+    "ru": "Russisch",
+    "zh": "Chinees",
+    "ja": "Japans",
+    "ko": "Koreaans",
+    "ar": "Arabisch",
+    "hi": "Hindi",
+    "bg": "Bulgaars"
+  }
+} 

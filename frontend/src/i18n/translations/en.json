@@ -1,0 +1,40 @@
+{
+  "common": {
+    "or": "or",
+    "logout": "Log out",
+    "login": "Log in",
+    "search": "Search",
+    "quickSearch": "Quick Search",
+    "language": "Language",
+    "theme": {
+      "light": "Light",
+      "dark": "Dark"
+    }
+  },
+  "header": {
+    "title": "GONEXT",
+    "searchPlaceholder": "Search...",
+    "quickSearchPlaceholder": "Quick search..."
+  },
+  "auth": {
+    "loginSuccess": "Login successful",
+    "loginError": "Login failed",
+    "logoutSuccess": "Logged out successfully"
+  },
+  "languages": {
+    "en": "English",
+    "es": "Spanish",
+    "fr": "French",
+    "de": "German",
+    "it": "Italian",
+    "nl": "Dutch",
+    "pt": "Portuguese",
+    "ru": "Russian",
+    "zh": "Chinese",
+    "ja": "Japanese",
+    "ko": "Korean",
+    "ar": "Arabic",
+    "hi": "Hindi",
+    "bg": "Bulgarian"
+  }
+} 

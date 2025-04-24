@@ -18,6 +18,8 @@ import HomePage from "./features/home/home";
 import NotFound from "./features/not-found/not-found";
 import Contact from "./features/contact/contact";
 import CookieConsent from "./features/cookie-consent/cookie-consent";
+import "./i18n/config";
+import "./App.css";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -79,8 +81,10 @@ const ThemedApp = () => {
     >
       <NotificationProvider>
         <Layout>
-          <RouterProvider router={router} />
-          <CookieConsent />
+          <div>
+            <RouterProvider router={router} />
+            <CookieConsent />
+          </div>
         </Layout>
       </NotificationProvider>
     </ConfigProvider>
