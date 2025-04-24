@@ -6,10 +6,12 @@ import {
   InfoCircleOutlined,
 } from "@ant-design/icons";
 import { useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const { Text, Paragraph } = Typography;
 
 export const Footer: React.FC = () => {
+  const { t } = useTranslation();
   const { pathname } = useLocation();
   const isLanding = pathname === "/";
 
@@ -39,15 +41,15 @@ export const Footer: React.FC = () => {
       <Row justify="center" gutter={[32, 16]}>
         {/* Quick Links */}
         <Col xs={24} sm={12} md={8}>
-          <h3 style={headingStyle}>Quick Links</h3>
+          <h3 style={headingStyle}>{t("footer.quickLinks")}</h3>
           <p>
             <a href="/about-us" className={linkClasses}>
-              <InfoCircleOutlined /> About Us
+              <InfoCircleOutlined /> {t("footer.aboutUs")}
             </a>
           </p>
           <p>
             <a href="/contact" className={linkClasses}>
-              <MailOutlined /> Contact
+              <MailOutlined /> {t("footer.contact")}
             </a>
           </p>
         </Col>
@@ -57,18 +59,12 @@ export const Footer: React.FC = () => {
           <Text strong style={{ color: isLanding ? "#000000" : undefined }}>
             GONEXT
           </Text>
-          <Paragraph style={smallTextStyle}>
-            GONEXT is not endorsed by Riot Games and does not reflect the views
-            or opinions of Riot Games or anyone officially involved in producing
-            or managing Riot Games properties. Riot Games and all associated
-            properties are trademarks or registered trademarks of Riot Games,
-            Inc.
-          </Paragraph>
+          <Paragraph style={smallTextStyle}>{t("footer.disclaimer")}</Paragraph>
         </Col>
 
         {/* Social Media Links */}
         <Col xs={24} sm={12} md={8}>
-          <h3 style={headingStyle}>Follow Us</h3>
+          <h3 style={headingStyle}>{t("footer.followUs")}</h3>
           <p>
             <a
               href="https://github.com/kostadindev/gonext"
@@ -76,7 +72,8 @@ export const Footer: React.FC = () => {
               rel="noreferrer"
               className={linkClasses}
             >
-              <GithubOutlined style={{ fontSize: "18px" }} /> GitHub
+              <GithubOutlined style={{ fontSize: "18px" }} />{" "}
+              {t("footer.github")}
             </a>
           </p>
         </Col>
@@ -89,9 +86,7 @@ export const Footer: React.FC = () => {
         }}
       />
 
-      <p style={smallTextStyle}>
-        Made with ❤️ by the <b>GONEXT</b> team.
-      </p>
+      <p style={smallTextStyle}>{t("footer.madeWithLove")}</p>
     </Layout.Footer>
   );
 };
