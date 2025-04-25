@@ -341,10 +341,10 @@ const HomePage: React.FC = () => {
           </Title>
           <div className="max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-8 mt-10 text-left">
             {[
-              "Midlane Domination",
+              "Laning Phase Domination",
               "Jungle Pathing AI",
               "Support Vision Coach",
-              "Ask any question.",
+              "Ask any question",
             ].map((title, i) => {
               const data = [
                 "Learn about your opponent, get matchup tips, and itemize like a pro.",
