@@ -104,6 +104,26 @@
     - Configure connection details in the backend `.env` file.
     - (Optional) Run any necessary database migrations or seeding scripts.
 
+## Backend Environment Variables
+
+The backend requires a `.env` file in the `backend` directory. You can copy `.env.sample` as a starting point:
+
+```
+cp backend/.env.sample backend/.env
+```
+
+### Variable Explanations
+
+- `PORT`: The port on which the backend server will run. Default is `8080`.
+- `LEAGUE_API_KEY`: Your Riot Games API key. Required for accessing live game and player data.
+- `MONGO_URI`: MongoDB connection string. Used for storing general-purpose data.
+- `JWT_SECRET`: Secret key for signing JSON Web Tokens (JWT) for authentication.
+- `DATABASE_URL`: (OPTIONAL) PostgreSQL connection string. Used for structured analytics data.
+- `REDIS_URL`: (OPTIONAL) Redis connection string. Used for caching and session management.
+- `ML_SERVER_URL`: URL of the Machine Learning server. Default is `http://localhost:8000`.
+
+Make sure to fill in all required values, especially API keys and database URLs, before running the backend server.
+
 ---
 
 ## Usage
