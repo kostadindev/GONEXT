@@ -92,5 +92,40 @@
     "github": "GitHub",
     "madeWithLove": "GONEXTチームが ❤️ で作りました。",
     "disclaimer": "GONEXTはRiot Gamesの承認を受けておらず、Riot Gamesの資産の制作や管理に正式に関与している人々の見解や意見を反映するものではありません。Riot Gamesおよび関連するすべての資産は、Riot Games, Inc.の商標または登録商標です。"
+  },
+  "contact": {
+    "title": "お問い合わせ",
+    "description": "私たちはあなたをサポートするためにここにいます！製品についての質問、サポートが必要な場合、またはフィードバックを共有したい場合は、お気軽にお問い合わせください。チームメンバーに直接連絡するか、一般的なお問い合わせチャネルをご利用いただけます。",
+    "team": {
+      "title": "私たちのチーム",
+      "roles": {
+        "founder": "創設者兼技術責任者",
+        "apiSpecialist": "APIとDevOpsスペシャリスト"
+      },
+      "descriptions": {
+        "technical": "技術的な質問、パートナーシップ、または製品に関するフィードバックについては、お気軽にお問い合わせください。",
+        "api": "APIサービスや運用サポートに関する質問については、お気軽にお問い合わせください。"
+      }
+    },
+    "generalInquiries": {
+      "title": "一般的なお問い合わせ",
+      "description": "一般的な質問、パートナーシップの機会、またはメディアの問い合わせについては、{email}までメールをお送りください",
+      "buttons": {
+        "email": "メール",
+        "uiRepo": "UI",
+        "mlRepo": "ML"
+      },
+      "tooltips": {
+        "email": "メールを送る",
+        "uiRepo": "UIリポジトリを見る",
+        "mlRepo": "MLリポジトリを見る"
+      }
+    },
+    "social": {
+      "website": "ウェブサイト",
+      "email": "メール",
+      "linkedin": "LinkedIn",
+      "github": "GitHub"
+    }
   }
 } 

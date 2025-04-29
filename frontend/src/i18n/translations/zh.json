@@ -53,5 +53,40 @@
     "github": "GitHub",
     "madeWithLove": "由 GONEXT 团队用 ❤️ 打造。",
     "disclaimer": "GONEXT 不受 Riot Games 认可，也不反映 Riot Games 或任何正式参与制作或管理 Riot Games 资产的人的观点或意见。Riot Games 和所有相关资产均为 Riot Games, Inc. 的商标或注册商标。"
+  },
+  "contact": {
+    "title": "联系我们",
+    "description": "我们随时为您提供帮助！如果您对我们的产品有任何疑问、需要支持或想分享反馈，请随时联系我们。您可以直接联系我们的任何团队成员或使用我们的通用沟通渠道。",
+    "team": {
+      "title": "我们的团队",
+      "roles": {
+        "founder": "创始人兼技术负责人",
+        "apiSpecialist": "API和DevOps专家"
+      },
+      "descriptions": {
+        "technical": "如有技术问题、合作或产品反馈，请随时联系。",
+        "api": "如有API服务或运营支持问题，请随时联系。"
+      }
+    },
+    "generalInquiries": {
+      "title": "一般咨询",
+      "description": "如有一般问题、合作机会或媒体请求，请发送邮件至 {email}",
+      "buttons": {
+        "email": "邮件",
+        "uiRepo": "UI",
+        "mlRepo": "ML"
+      },
+      "tooltips": {
+        "email": "发送邮件",
+        "uiRepo": "查看UI仓库",
+        "mlRepo": "查看ML仓库"
+      }
+    },
+    "social": {
+      "website": "网站",
+      "email": "邮件",
+      "linkedin": "领英",
+      "github": "GitHub"
+    }
   }
 } 
