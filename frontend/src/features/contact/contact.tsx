@@ -17,6 +17,7 @@ import {
   MailFilled,
   MailOutlined,
 } from "@ant-design/icons";
+import { useTranslation } from "../../hooks/useTranslation";
 
 const { Title, Text, Paragraph, Link } = Typography;
 
@@ -34,8 +35,8 @@ interface ContactPerson {
 const contactPeople: ContactPerson[] = [
   {
     name: "Kostadin Devedzhiev",
-    role: "Founder & Technical Lead",
-    description: `For technical inquiries, partnerships, or feedback regarding our product, please get in touch.`,
+    role: "contact.team.roles.founder",
+    description: "contact.team.descriptions.technical",
     image:
       "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/MonkeyKing_5.jpg",
     email: "kostadin@gonext.lol",
@@ -45,9 +46,8 @@ const contactPeople: ContactPerson[] = [
   },
   {
     name: "Ivan Nikolov",
-    role: "API & DevOps Specialist",
-    description:
-      "For questions about our API services or operational support, feel free to reach out.",
+    role: "contact.team.roles.apiSpecialist",
+    description: "contact.team.descriptions.api",
     image:
       "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/MasterYi_9.jpg",
     email: "ivan@gonext.lol",
@@ -56,10 +56,12 @@ const contactPeople: ContactPerson[] = [
 ];
 
 const Contact: React.FC = () => {
+  const { t } = useTranslation();
+
   return (
     <div style={{ padding: "40px 20px" }}>
       <Title level={2} style={{ textAlign: "center", marginBottom: "32px" }}>
-        Contact Us
+        {t("contact.title")}
       </Title>
 
       <Row justify="center">
@@ -67,15 +69,12 @@ const Contact: React.FC = () => {
           <Paragraph
             style={{ fontSize: "16px", textAlign: "center", marginBottom: 40 }}
           >
-            We’re here to help! Whether you have questions about our product,
-            need support, or want to share feedback, please reach out. You can
-            contact any of our team members directly or use our general inquiry
-            channels below.
+            {t("contact.description")}
           </Paragraph>
         </Col>
       </Row>
 
-      <Divider orientation="center">Our Team</Divider>
+      <Divider orientation="center">{t("contact.team.title")}</Divider>
 
       <Row gutter={[24, 32]} justify="center">
         {contactPeople.map((person, index) => (
@@ -105,9 +104,9 @@ const Contact: React.FC = () => {
                   <Title level={4} style={{ marginBottom: 0 }}>
                     {person.name}
                   </Title>
-                  <Text type="secondary">{person.role}</Text>
+                  <Text type="secondary">{t(person.role)}</Text>
                   <Paragraph style={{ marginTop: 16, whiteSpace: "pre-line" }}>
-                    {person.description}
+                    {t(person.description)}
                   </Paragraph>
                   {person.email && (
                     <Paragraph style={{ marginBottom: 10 }}>
@@ -118,7 +117,7 @@ const Contact: React.FC = () => {
                   )}
                   <Space size="middle" wrap>
                     {person.website && (
-                      <Tooltip title="Website">
+                      <Tooltip title={t("contact.social.website")}>
                         <Button
                           shape="circle"
                           icon={<GlobalOutlined />}
@@ -128,7 +127,7 @@ const Contact: React.FC = () => {
                       </Tooltip>
                     )}
                     {person.email && (
-                      <Tooltip title="Email">
+                      <Tooltip title={t("contact.social.email")}>
                         <Button
                           shape="circle"
                           icon={<MailFilled />}
@@ -137,7 +136,7 @@ const Contact: React.FC = () => {
                       </Tooltip>
                     )}
                     {person.linkedin && (
-                      <Tooltip title="LinkedIn">
+                      <Tooltip title={t("contact.social.linkedin")}>
                         <Button
                           shape="circle"
                           icon={<LinkedinFilled />}
@@ -147,7 +146,7 @@ const Contact: React.FC = () => {
                       </Tooltip>
                     )}
                     {person.github && (
-                      <Tooltip title="GitHub">
+                      <Tooltip title={t("contact.social.github")}>
                         <Button
                           shape="circle"
                           icon={<GithubFilled />}
@@ -165,44 +164,44 @@ const Contact: React.FC = () => {
       </Row>
 
       <Divider orientation="center" style={{ marginTop: 64 }}>
-        General Inquiries
+        {t("contact.generalInquiries.title")}
       </Divider>
 
       <Row justify="center">
         <Col xs={24} md={20} lg={16} style={{ textAlign: "center" }}>
           <Paragraph style={{ fontSize: "16px" }}>
-            For general questions, partnership opportunities, or media
-            inquiries, please email us at{" "}
-            <Link href="mailto:info@gonext.lol">info@gonext.lol</Link>.
+            {t("contact.generalInquiries.description", {
+              email: "info@gonext.lol",
+            })}
           </Paragraph>
           <Space size="middle" style={{ marginTop: 16 }} wrap>
-            <Tooltip title="Email us">
+            <Tooltip title={t("contact.generalInquiries.tooltips.email")}>
               <Button
                 type="default"
                 icon={<MailOutlined />}
                 href="mailto:info@gonext.lol"
               >
-                Email
+                {t("contact.generalInquiries.buttons.email")}
               </Button>
             </Tooltip>
-            <Tooltip title="View UI Repo">
+            <Tooltip title={t("contact.generalInquiries.tooltips.uiRepo")}>
               <Button
                 type="default"
                 icon={<GithubOutlined />}
                 href="https://github.com/kostadindev/gonext"
                 target="_blank"
               >
-                UI
+                {t("contact.generalInquiries.buttons.uiRepo")}
               </Button>
             </Tooltip>
-            <Tooltip title="View ML Repo">
+            <Tooltip title={t("contact.generalInquiries.tooltips.mlRepo")}>
               <Button
                 type="default"
                 icon={<GithubOutlined />}
                 href="https://github.com/kostadindev/gonext-ml"
                 target="_blank"
               >
-                ML
+                {t("contact.generalInquiries.buttons.mlRepo")}
               </Button>
             </Tooltip>
           </Space>
