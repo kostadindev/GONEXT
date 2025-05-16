@@ -8,7 +8,7 @@ dotenv.config();
 
 const RATE_LIMIT = 120; // requests per minute
 const SLEEP_TIME = 60_000 / RATE_LIMIT;
-const BATCH_SIZE = 100;
+const BATCH_SIZE = 100000;
 
 const seenPuuids = new Set<string>();
 const seenMatches = new Set<string>();
@@ -91,10 +91,15 @@ async function ingest(seedPuuid: string, platform: string = 'NA1', maxDepth: num
     const puuid = queue.shift()!;
     if (seenPuuids.has(puuid)) continue;
     seenPuuids.add(puuid);
+    console.log(`Processing summoner PUUID: ${puuid}`);
 
     let matchIds: string[] = [];
     try {
       matchIds = (await leagueService.getMatchesIds(puuid, 10, platform as any)) || [];
+      console.log(`Fetched match IDs for ${puuid}:`, matchIds);
+      if (!matchIds.length) {
+        console.log(`No matches found for PUUID: ${puuid}`);
+      }
     } catch (e) {
       console.error('Error fetching match IDs for', puuid, e);
       await sleep(SLEEP_TIME);
@@ -116,6 +121,7 @@ async function ingest(seedPuuid: string, platform: string = 'NA1', maxDepth: num
             fs.appendFileSync(csvPath, rows.join('\n') + '\n');
             processed++;
             matchesInBatch++;
+            console.log(`Wrote match ${matchId} to ${csvPath}`);
             if (matchesInBatch >= BATCH_SIZE) {
               batchIndex++;
               matchesInBatch = 0;
@@ -134,6 +140,7 @@ async function ingest(seedPuuid: string, platform: string = 'NA1', maxDepth: num
         for (const participant of match.info.participants) {
           if (!seenPuuids.has(participant.puuid)) {
             queue.push(participant.puuid);
+            console.log(`Added participant PUUID to queue: ${participant.puuid}`);
           }
         }
       }
@@ -153,6 +160,20 @@ async function main() {
     return;
   }
 
+  // If no arguments, use a featured player as the seed
+  if (!platform) {
+    const defaultPlatform = 'NA1';
+    console.log('No arguments provided. Fetching a featured player as the seed...');
+    const featured = await leagueService.getFeaturedSummoner(defaultPlatform as any);
+    if (!featured || !featured.puuid) {
+      console.error('Could not fetch a featured player.');
+      process.exit(1);
+    }
+    console.log(`Using featured player: ${featured.summonerName}#${featured.gameName || featured.tagLine || ''} (PUUID: ${featured.puuid}) on platform ${defaultPlatform}`);
+    await ingest(featured.puuid, defaultPlatform);
+    return;
+  }
+
   if (!platform || !gameName || !tagLine) {
     console.error('Usage: ts-node ingest_games.ts <platform> <gameName> <tagLine>');
     process.exit(1);
@@ -162,6 +183,10 @@ async function main() {
   if (!summoner || !summoner.puuid) {
     console.error('Could not find summoner PUUID for', gameName, tagLine, region);
     process.exit(1);
+  }
+  console.log(`Resolved summoner ${gameName}#${tagLine} (${platform}, ${region}) to PUUID: ${summoner.puuid}`);
+  if (summoner.puuid) {
+    console.log(`PUUID found for ${gameName}#${tagLine}: ${summoner.puuid}`);
   }
   await ingest(summoner.puuid, platform);
 }
