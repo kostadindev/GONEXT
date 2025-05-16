@@ -1,11 +1,12 @@
 import leagueService from '../src/services/league.service';
 import leagueRepository from '../src/repositories/league/league.repository';
+import { PLATFORM_TO_REGION } from '../src/repositories/league/league.repository';
 import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
 dotenv.config();
 
-const RATE_LIMIT = 10; // requests per minute
+const RATE_LIMIT = 120; // requests per minute
 const SLEEP_TIME = 60_000 / RATE_LIMIT;
 const BATCH_SIZE = 100;
 
@@ -141,12 +142,30 @@ async function ingest(seedPuuid: string, platform: string = 'NA1', maxDepth: num
   console.log('Ingestion complete. Matches processed:', processed);
 }
 
-if (require.main === module) {
-  const seedPuuid = process.argv[2];
-  if (!seedPuuid) {
-    console.error('Usage: ts-node ingest_games.ts <seed-puuid> [platform]');
+async function main() {
+  const platform = process.argv[2]; // e.g., 'NA1'
+  const gameName = process.argv[3]; // e.g., 'Doublelift'
+  const tagLine = process.argv[4];  // e.g., 'NA1'
+
+  // If the first argument looks like a PUUID (length 78), use it directly
+  if (platform && platform.length > 50) {
+    await ingest(platform, gameName || 'NA1');
+    return;
+  }
+
+  if (!platform || !gameName || !tagLine) {
+    console.error('Usage: ts-node ingest_games.ts <platform> <gameName> <tagLine>');
     process.exit(1);
   }
-  const platform = process.argv[3] || 'NA1';
-  ingest(seedPuuid, platform).catch(console.error);
+  const region = PLATFORM_TO_REGION[platform as keyof typeof PLATFORM_TO_REGION];
+  const summoner = await leagueService.getSummonerByRiotId(gameName, tagLine, region as any);
+  if (!summoner || !summoner.puuid) {
+    console.error('Could not find summoner PUUID for', gameName, tagLine, region);
+    process.exit(1);
+  }
+  await ingest(summoner.puuid, platform);
+}
+
+if (require.main === module) {
+  main().catch(console.error);
 }
