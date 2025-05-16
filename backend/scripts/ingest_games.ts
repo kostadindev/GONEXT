@@ -79,6 +79,18 @@ async function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+async function startWithFeaturedUser() {
+  const defaultPlatform = 'NA1';
+  console.log('Restarting with a new featured player as the seed...');
+  const featured = await leagueService.getFeaturedSummoner(defaultPlatform as any);
+  if (!featured || !featured.puuid) {
+    console.error('Could not fetch a featured player.');
+    process.exit(1);
+  }
+  console.log(`Using featured player: ${featured.summonerName}#${featured.gameName || featured.tagLine || ''} (PUUID: ${featured.puuid}) on platform ${defaultPlatform}`);
+  await ingest(featured.puuid, defaultPlatform);
+}
+
 async function ingest(seedPuuid: string, platform: string = 'NA1', maxDepth: number = 10000) {
   let batchIndex = 0;
   let matchesInBatch = 0;
@@ -88,6 +100,13 @@ async function ingest(seedPuuid: string, platform: string = 'NA1', maxDepth: num
   const queue: string[] = [seedPuuid];
 
   while (queue.length && processed < maxDepth) {
+    if (seenPuuids.size > 10000) {
+      console.log('seenPuuids set too large, restarting with a new featured user...');
+      seenPuuids.clear();
+      seenMatches.clear();
+      await startWithFeaturedUser();
+      return;
+    }
     const puuid = queue.shift()!;
     if (seenPuuids.has(puuid)) continue;
     seenPuuids.add(puuid);
