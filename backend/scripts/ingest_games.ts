@@ -21,8 +21,9 @@ const csvHeader = [
   'win', 'team_id', 'item0', 'item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'summoner_1_id', 'summoner_2_id'
 ].join(',');
 
-function getCsvPath(batchIndex: number) {
-  return path.join(__dirname, `matches_${batchIndex}.csv`);
+function getCsvPath() {
+  const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+  return path.join(__dirname, `matches_${timestamp}.csv`);
 }
 
 function writeCsvHeaderIfNeeded(csvPath: string) {
@@ -92,10 +93,9 @@ async function startWithFeaturedUser() {
 }
 
 async function ingest(seedPuuid: string, platform: string = 'NA1', maxDepth: number = 10000) {
-  let batchIndex = 0;
   let matchesInBatch = 0;
   let processed = 0;
-  let csvPath = getCsvPath(batchIndex);
+  let csvPath = getCsvPath();
   writeCsvHeaderIfNeeded(csvPath);
   const queue: string[] = [seedPuuid];
 
@@ -142,9 +142,8 @@ async function ingest(seedPuuid: string, platform: string = 'NA1', maxDepth: num
             matchesInBatch++;
             console.log(`Wrote match ${matchId} to ${csvPath}`);
             if (matchesInBatch >= BATCH_SIZE) {
-              batchIndex++;
               matchesInBatch = 0;
-              csvPath = getCsvPath(batchIndex);
+              csvPath = getCsvPath();
               writeCsvHeaderIfNeeded(csvPath);
             }
           }
