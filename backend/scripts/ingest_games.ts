@@ -7,11 +7,18 @@ import path from 'path';
 dotenv.config();
 
 const RATE_LIMIT = 120; // requests per minute
-const SLEEP_TIME = 60_000 / RATE_LIMIT;
+const SLEEP_TIME = 20_000_000 / RATE_LIMIT;
 const BATCH_SIZE = 100000;
+
+const REQUESTS_PER_SECOND = 15;
+const REQUESTS_PER_2MIN = 75;
+const WINDOW_1S = 1000;
+const WINDOW_2M = 2 * 60 * 1000;
 
 const seenPuuids = new Set<string>();
 const seenMatches = new Set<string>();
+
+let requestTimestamps: number[] = [];
 
 const csvHeader = [
   'match_id', 'data_version', 'queue_id', 'game_id', 'game_mode', 'game_type', 'game_name', 'game_version',
@@ -23,7 +30,9 @@ const csvHeader = [
 
 function getCsvPath() {
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-  return path.join(__dirname, `matches_${timestamp}.csv`);
+  const filePath = path.join(__dirname, `matches_${timestamp}.csv`);
+  console.log(`Creating new CSV file: ${filePath}`);
+  return filePath;
 }
 
 function writeCsvHeaderIfNeeded(csvPath: string) {
@@ -80,15 +89,37 @@ async function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+async function rateLimit() {
+  const now = Date.now();
+  // Remove old timestamps
+  requestTimestamps = requestTimestamps.filter(ts => now - ts < WINDOW_2M);
+
+  // Count requests in the last second and last 2 minutes
+  let requestsLast1s = requestTimestamps.filter(ts => now - ts < WINDOW_1S).length;
+  let requestsLast2m = requestTimestamps.length;
+
+  // If over either limit, sleep until under
+  while (requestsLast1s >= REQUESTS_PER_SECOND || requestsLast2m >= REQUESTS_PER_2MIN) {
+    const next1s = requestTimestamps.length > 0 ? WINDOW_1S - (now - requestTimestamps[0]) : 0;
+    const next2m = requestTimestamps.length > 0 ? WINDOW_2M - (now - requestTimestamps[0]) : 0;
+    const sleepTime = Math.max(50, Math.min(next1s, next2m));
+    await sleep(sleepTime);
+    const newNow = Date.now();
+    requestTimestamps = requestTimestamps.filter(ts => newNow - ts < WINDOW_2M);
+    requestsLast1s = requestTimestamps.filter(ts => newNow - ts < WINDOW_1S).length;
+    requestsLast2m = requestTimestamps.length;
+    if (requestsLast1s < REQUESTS_PER_SECOND && requestsLast2m < REQUESTS_PER_2MIN) break;
+  }
+  requestTimestamps.push(Date.now());
+}
+
 async function startWithFeaturedUser() {
   const defaultPlatform = 'NA1';
-  console.log('Restarting with a new featured player as the seed...');
   const featured = await leagueService.getFeaturedSummoner(defaultPlatform as any);
   if (!featured || !featured.puuid) {
     console.error('Could not fetch a featured player.');
     process.exit(1);
   }
-  console.log(`Using featured player: ${featured.summonerName}#${featured.gameName || featured.tagLine || ''} (PUUID: ${featured.puuid}) on platform ${defaultPlatform}`);
   await ingest(featured.puuid, defaultPlatform);
 }
 
@@ -101,7 +132,6 @@ async function ingest(seedPuuid: string, platform: string = 'NA1', maxDepth: num
 
   while (queue.length && processed < maxDepth) {
     if (seenPuuids.size > 10000) {
-      console.log('seenPuuids set too large, restarting with a new featured user...');
       seenPuuids.clear();
       seenMatches.clear();
       await startWithFeaturedUser();
@@ -110,21 +140,26 @@ async function ingest(seedPuuid: string, platform: string = 'NA1', maxDepth: num
     const puuid = queue.shift()!;
     if (seenPuuids.has(puuid)) continue;
     seenPuuids.add(puuid);
-    console.log(`Processing summoner PUUID: ${puuid}`);
 
     let matchIds: string[] = [];
     try {
+      await rateLimit();
       matchIds = (await leagueService.getMatchesIds(puuid, 10, platform as any)) || [];
-      console.log(`Fetched match IDs for ${puuid}:`, matchIds);
-      if (!matchIds.length) {
-        console.log(`No matches found for PUUID: ${puuid}`);
+    } catch (e: any) {
+      let code = 'UNKNOWN';
+      let message = '';
+      if (e?.isAxiosError) {
+        code = e.code || (e.response?.status ? `HTTP ${e.response.status}` : 'UNKNOWN');
+        message = e.message;
+      } else if (e?.name && e?.message) {
+        code = e.name;
+        message = e.message;
+      } else {
+        message = e?.toString ? e.toString() : String(e);
       }
-    } catch (e) {
-      console.error('Error fetching match IDs for', puuid, e);
-      await sleep(SLEEP_TIME);
+      console.error(`Error fetching match IDs for puuid=${puuid} on platform=${platform}: [${code}] ${message}`);
       continue;
     }
-    await sleep(SLEEP_TIME);
 
     for (const matchId of matchIds) {
       if (seenMatches.has(matchId)) continue;
@@ -132,6 +167,7 @@ async function ingest(seedPuuid: string, platform: string = 'NA1', maxDepth: num
 
       let match: any;
       try {
+        await rateLimit();
         match = await leagueRepository.getMatchById(matchId, platform as any);
         if (match) {
           // Write to CSV
@@ -140,7 +176,6 @@ async function ingest(seedPuuid: string, platform: string = 'NA1', maxDepth: num
             fs.appendFileSync(csvPath, rows.join('\n') + '\n');
             processed++;
             matchesInBatch++;
-            console.log(`Wrote match ${matchId} to ${csvPath}`);
             if (matchesInBatch >= BATCH_SIZE) {
               matchesInBatch = 0;
               csvPath = getCsvPath();
@@ -148,17 +183,25 @@ async function ingest(seedPuuid: string, platform: string = 'NA1', maxDepth: num
             }
           }
         }
-      } catch (e) {
-        console.error('Error fetching match', matchId, e);
-        await sleep(SLEEP_TIME);
+      } catch (e: any) {
+        let code = 'UNKNOWN';
+        let message = '';
+        if (e?.isAxiosError) {
+          code = e.code || (e.response?.status ? `HTTP ${e.response.status}` : 'UNKNOWN');
+          message = e.message;
+        } else if (e?.name && e?.message) {
+          code = e.name;
+          message = e.message;
+        } else {
+          message = e?.toString ? e.toString() : String(e);
+        }
+        console.error(`Error fetching match by ID matchId=${matchId} for puuid=${puuid} on platform=${platform}: [${code}] ${message}`);
         continue;
       }
-      await sleep(SLEEP_TIME);
       if (match?.info?.participants) {
         for (const participant of match.info.participants) {
           if (!seenPuuids.has(participant.puuid)) {
             queue.push(participant.puuid);
-            console.log(`Added participant PUUID to queue: ${participant.puuid}`);
           }
         }
       }
@@ -181,13 +224,11 @@ async function main() {
   // If no arguments, use a featured player as the seed
   if (!platform) {
     const defaultPlatform = 'NA1';
-    console.log('No arguments provided. Fetching a featured player as the seed...');
     const featured = await leagueService.getFeaturedSummoner(defaultPlatform as any);
     if (!featured || !featured.puuid) {
       console.error('Could not fetch a featured player.');
       process.exit(1);
     }
-    console.log(`Using featured player: ${featured.summonerName}#${featured.gameName || featured.tagLine || ''} (PUUID: ${featured.puuid}) on platform ${defaultPlatform}`);
     await ingest(featured.puuid, defaultPlatform);
     return;
   }
@@ -201,10 +242,6 @@ async function main() {
   if (!summoner || !summoner.puuid) {
     console.error('Could not find summoner PUUID for', gameName, tagLine, region);
     process.exit(1);
-  }
-  console.log(`Resolved summoner ${gameName}#${tagLine} (${platform}, ${region}) to PUUID: ${summoner.puuid}`);
-  if (summoner.puuid) {
-    console.log(`PUUID found for ${gameName}#${tagLine}: ${summoner.puuid}`);
   }
   await ingest(summoner.puuid, platform);
 }
