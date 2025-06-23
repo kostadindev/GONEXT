@@ -27,4 +27,4 @@ mocks/
 
 logs.log
 
-matches_*.json
+matches_*

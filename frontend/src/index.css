@@ -40,7 +40,3 @@ code {
   scrollbar-width: thin;
   scrollbar-color: rgba(100, 100, 100, 0.3) transparent;
 }
-
-* {
-  caret-color: transparent;
-}

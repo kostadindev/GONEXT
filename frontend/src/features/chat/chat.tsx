@@ -250,78 +250,148 @@ const ChatComponent: React.FC<{
           <DefaultPrompts handleSendMessage={handleSendMessage} />
         )}
         <div
-          className="flex-1 overflow-y-auto p-4"
+          className="flex-1 overflow-y-auto p-4 space-y-4"
           ref={messageContainerRef}
           onScroll={handleScroll}
         >
           {messages.map((msg, index) => (
-            <div key={index} className="my-2 flex pb-1">
-              {showAvatar &&
-                (msg.role === "system" ? (
-                  <Avatar style={{ marginRight: 8 }} icon={<RobotOutlined />} />
-                ) : (
-                  <Avatar style={{ marginRight: 8 }} src={user?.picture} />
-                ))}
-              {msg.role === "user" ? (
-                <div
-                  className="inline-block p-2 px-4 rounded-lg break-words text-white"
-                  style={{
-                    backgroundColor: primaryColor,
-                    maxWidth: showAvatar ? "calc(80% - 40px)" : "80%",
-                  }}
-                >
-                  {msg.content}
+            <div key={index} className="flex items-start gap-3 justify-start">
+              {/* Avatar for system messages (left side) */}
+              {showAvatar && msg.role === "system" && (
+                <div className="flex-shrink-0">
+                  <Avatar
+                    size={36}
+                    icon={<RobotOutlined />}
+                    className="shadow-md border-2 border-white"
+                    style={{
+                      backgroundColor: "#f0f2f5",
+                      color: primaryColor,
+                    }}
+                  />
                 </div>
-              ) : (
-                <Card
-                  className="inline-block rounded-lg shadow-md text-black w-full break-words"
-                  hoverable
-                  style={{
-                    maxWidth: showAvatar ? "calc(100% - 40px)" : "100%",
-                  }}
-                >
-                  <MarkdownRenderer content={msg.content} />
-                </Card>
               )}
+
+              {/* Avatar for user messages (left side) */}
+              {showAvatar && msg.role === "user" && (
+                <div className="flex-shrink-0">
+                  <Avatar
+                    size={36}
+                    src={user?.picture}
+                    className="shadow-md border-2 border-white"
+                    style={{ backgroundColor: primaryColor }}
+                  >
+                    {user?.name?.charAt(0)?.toUpperCase()}
+                  </Avatar>
+                </div>
+              )}
+
+              {/* Message content */}
+              <div className="flex flex-col items-start">
+                {msg.role === "user" ? (
+                  <div
+                    className="inline-block p-3 px-4 rounded-2xl break-words text-white shadow-lg transition-all duration-200 hover:shadow-xl"
+                    style={{
+                      background: `linear-gradient(135deg, ${primaryColor} 0%, ${primaryColor}dd 100%)`,
+                      maxWidth: showAvatar ? "calc(70% - 40px)" : "70%",
+                      minWidth: "60px",
+                    }}
+                  >
+                    {msg.content}
+                  </div>
+                ) : (
+                  <Card
+                    className="w-full rounded-2xl shadow-lg border-0 transition-all duration-200 hover:shadow-xl bg-gradient-to-br from-white to-gray-50"
+                    style={{
+                      borderRadius: "16px",
+                    }}
+                    bodyStyle={{
+                      padding: "20px",
+                      borderRadius: "16px",
+                    }}
+                  >
+                    <MarkdownRenderer content={msg.content} />
+                  </Card>
+                )}
+
+                {/* Timestamp could go here */}
+                <div className="text-xs text-gray-400 mt-1 px-2">
+                  {/* Add timestamp if needed */}
+                </div>
+              </div>
             </div>
           ))}
+
+          {/* Follow-up suggestions */}
           {followUps.length > 0 && (
-            <div className="flex flex-wrap gap-2 mt-2">
-              {followUps.map((suggestion, idx) => (
-                <Button key={idx} onClick={() => handleSendMessage(suggestion)}>
-                  {suggestion}
-                </Button>
-              ))}
+            <div className="mt-3 mb-2">
+              <div className="text-sm text-gray-500 mb-3 font-medium">
+                Suggested follow-ups:
+              </div>
+              <div className="flex flex-col gap-2">
+                {followUps.map((suggestion, idx) => (
+                  <div
+                    key={idx}
+                    onClick={() => handleSendMessage(suggestion)}
+                    className="group cursor-pointer p-3 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg transition-all duration-200 hover:shadow-sm"
+                  >
+                    <div className="flex items-center gap-2">
+                      <div
+                        className="w-2 h-2 rounded-full flex-shrink-0"
+                        style={{ backgroundColor: primaryColor }}
+                      />
+                      <span className="text-gray-700 group-hover:text-gray-900 text-sm leading-relaxed">
+                        {suggestion}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
+
           <div ref={messagesEndRef} />
         </div>
-        <div className="flex justify-center pt-2">
-          <div className="p-1 flex gap-3 w-[80%]">
+
+        <div className="flex justify-center pt-2 pb-2">
+          <div className="p-3 flex gap-3 w-[85%] bg-white rounded-2xl shadow-lg border border-gray-100">
             <TextArea
-              autoSize
+              autoSize={{ minRows: 1, maxRows: 4 }}
               value={input}
               onChange={handleInputChange}
               onKeyDown={handleKeyPress}
               placeholder="Type your message here..."
-              style={{ fontSize: "16px" }}
+              className="border-0 resize-none focus:ring-0 focus:border-0"
+              style={{
+                fontSize: "16px",
+                boxShadow: "none",
+                backgroundColor: "transparent",
+              }}
               maxLength={256}
               disabled={isSending}
             />
-            <div className="flex gap-2">
+            <div className="flex gap-2 items-end">
               <Tooltip title="Send message">
                 <Button
+                  type="primary"
+                  shape="circle"
                   icon={<SendOutlined />}
                   onClick={() => handleSendMessage()}
-                  disabled={isSending}
+                  disabled={isSending || !input.trim()}
+                  className="shadow-md hover:shadow-lg transition-all duration-200"
+                  style={{
+                    backgroundColor: input.trim() ? primaryColor : undefined,
+                    borderColor: input.trim() ? primaryColor : undefined,
+                  }}
                 />
               </Tooltip>
               {messages.length > 0 && (
                 <Tooltip title="Clear chat history">
                   <Button
+                    shape="circle"
                     icon={<ClearOutlined />}
                     onClick={handleClearChat}
                     disabled={isSending}
+                    className="shadow-md hover:shadow-lg transition-all duration-200 border-gray-300 text-gray-500 hover:border-red-400 hover:text-red-500"
                   />
                 </Tooltip>
               )}
