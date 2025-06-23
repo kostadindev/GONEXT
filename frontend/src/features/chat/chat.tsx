@@ -47,6 +47,7 @@ const ChatComponent: React.FC<{
   const [isUserScrolling, setIsUserScrolling] = useState<boolean>(false);
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [followUps, setFollowUps] = useState<string[]>([]);
+  const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
 
   // Get current language from localStorage
   const [currentLanguage, setCurrentLanguage] = useState<string>(
@@ -417,10 +418,15 @@ const ChatComponent: React.FC<{
 
         <div className="flex justify-center pt-2 pb-2">
           <div
-            className="p-3 flex gap-3 w-[85%] rounded-2xl shadow-lg"
+            className="p-3 flex gap-3 w-[85%] rounded-2xl shadow-md transition-all duration-200"
             style={{
               backgroundColor: token.colorBgContainer,
-              border: `1px solid ${token.colorBorder}`,
+              border: `1px solid ${
+                isInputFocused ? primaryColor : token.colorBorder
+              }`,
+              boxShadow: isInputFocused
+                ? `0 0 0 2px ${primaryColor}20`
+                : undefined,
             }}
           >
             <TextArea
@@ -428,6 +434,10 @@ const ChatComponent: React.FC<{
               value={input}
               onChange={handleInputChange}
               onKeyDown={handleKeyPress}
+              onFocus={() => setIsInputFocused(true)}
+              onBlur={() => setIsInputFocused(false)}
+              onMouseEnter={() => setIsInputFocused(true)}
+              onMouseLeave={() => setIsInputFocused(false)}
               placeholder="Type your message here..."
               className="border-0 resize-none focus:ring-0 focus:border-0"
               style={{

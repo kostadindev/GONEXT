@@ -55,18 +55,18 @@ const ParticleBackground = ({
         fpsLimit: 60,
         particles: {
           color: {
-            value: token.colorPrimary,
+            value: "#e89a3c",
           },
           links: {
-            color: token.colorPrimary,
-            distance: 150,
+            color: "#e89a3c",
+            distance: isMobile ? 100 : 150,
             enable: true,
-            opacity: 0.3,
-            width: 1,
+            opacity: 0.6,
+            width: 1.5,
           },
           move: {
             enable: true,
-            speed: 1,
+            speed: 1.5,
             direction: "none",
             random: false,
             straight: false,
@@ -79,28 +79,18 @@ const ParticleBackground = ({
             },
           },
           number: {
-            value: isMobile ? 8 : 30,
+            value: isMobile ? 15 : 40,
           },
           opacity: {
-            value: 0.4,
+            value: 0.7,
           },
           size: {
-            value: { min: 1, max: 3 },
+            value: { min: 1.5, max: 3.5 },
           },
         },
         detectRetina: true,
         background: {
           color: "transparent",
-        },
-        interactivity: {
-          events: {
-            onHover: {
-              enable: false,
-            },
-            onClick: {
-              enable: false,
-            },
-          },
         },
       }}
     />
@@ -145,11 +135,22 @@ export const Header: React.FC = () => {
   // Initialize tsParticles only if particles are enabled
   useEffect(() => {
     if (particlesEnabled) {
+      console.log("Initializing particles engine in header...");
       initParticlesEngine(async (engine) => {
+        console.log("Loading slim package for header...");
         await loadSlim(engine);
-      }).then(() => {
-        setInit(true);
-      });
+        console.log("Slim package loaded successfully for header");
+      })
+        .then(() => {
+          setInit(true);
+          console.log("Particles engine initialized successfully for header");
+        })
+        .catch((error) => {
+          console.error(
+            "Error initializing particles engine in header:",
+            error
+          );
+        });
     }
   }, [particlesEnabled]);
 
@@ -260,7 +261,7 @@ export const Header: React.FC = () => {
         boxShadow: token.boxShadowTertiary,
       }}
     >
-      {/* Particle Background - fewer particles on mobile */}
+      {/* Particle Background */}
       {particlesEnabled && init && (
         <div
           style={{
@@ -273,7 +274,8 @@ export const Header: React.FC = () => {
             right: 0,
             overflow: "hidden",
             pointerEvents: "none",
-            opacity: 0.6,
+            opacity: 0.8, // Increased opacity for better visibility
+            zIndex: 1, // Ensure particles are behind content but visible
           }}
         >
           <ParticleBackground id="tsparticles-header" isMobile={isMobile} />
