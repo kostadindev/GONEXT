@@ -110,6 +110,9 @@ export const Header: React.FC = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const { t, changeLanguage, currentLanguage } = useTranslation();
 
+  // Feature flag for particles
+  const particlesEnabled = process.env.REACT_APP_ENABLE_PARTICLES === "true";
+
   // Check for mobile screen size
   useEffect(() => {
     const handleResize = () => {
@@ -122,14 +125,16 @@ export const Header: React.FC = () => {
     };
   }, []);
 
-  // Initialize tsParticles
+  // Initialize tsParticles only if particles are enabled
   useEffect(() => {
-    initParticlesEngine(async (engine) => {
-      await loadSlim(engine);
-    }).then(() => {
-      setInit(true);
-    });
-  }, []);
+    if (particlesEnabled) {
+      initParticlesEngine(async (engine) => {
+        await loadSlim(engine);
+      }).then(() => {
+        setInit(true);
+      });
+    }
+  }, [particlesEnabled]);
 
   const particlesLoaded = useCallback(async (container: any) => {
     console.log("Particles container loaded", container);
@@ -188,7 +193,7 @@ export const Header: React.FC = () => {
       }}
     >
       {/* Particle Background - fewer particles on mobile */}
-      {init && (
+      {particlesEnabled && init && (
         <div
           className="absolute"
           style={{

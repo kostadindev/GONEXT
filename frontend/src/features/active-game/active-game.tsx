@@ -65,8 +65,7 @@ export const ActiveGame = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          flexGrow: 1,
-          height: "100vh", // Ensures it takes full height
+          minHeight: "400px",
         }}
       >
         <Spin size="large" />
@@ -82,8 +81,7 @@ export const ActiveGame = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          flexGrow: 1,
-          height: "100vh", // Ensures full height on error state
+          minHeight: "400px",
         }}
       >
         <NotFound type={errorType} name={gameName} tag={tagLine} />
@@ -95,7 +93,6 @@ export const ActiveGame = () => {
     <Content
       style={{
         margin: "0 16px",
-        height: "100vh", // Ensures it stretches
         display: "flex",
         flexDirection: "column",
       }}
@@ -104,12 +101,12 @@ export const ActiveGame = () => {
       <div
         style={{
           padding: 24,
-          flexGrow: 1, // Allow content to expand
           borderRadius: borderRadiusLG,
           display: "flex",
+          minHeight: 0, // Allow flex children to shrink
         }}
       >
-        <div className="pr-8 mt-[15px]">
+        <div className="pr-8 mt-[15px] flex-shrink-0">
           <Divider orientation="left">
             {game?.searchedSummoner?.teamId === 100 ? "Blue Team" : "Red Team"}
           </Divider>
@@ -137,7 +134,9 @@ export const ActiveGame = () => {
             )
           )}
         </div>
-        <ActiveGameTabs game={game} region={region as string} />
+        <div className="flex-1 min-w-0">
+          <ActiveGameTabs game={game} region={region as string} />
+        </div>
       </div>
     </Content>
   );
