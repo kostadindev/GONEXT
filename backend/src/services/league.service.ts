@@ -95,13 +95,6 @@ class LeagueService {
   }
 
   getEnrichedGame(game: any, puuid?: string): any {
-    if (puuid) {
-      const searchedSummoner = game?.participants.find(p => p?.puuid === puuid);
-      game.searchedSummoner = {
-        teamId: searchedSummoner?.teamId,
-        puuid
-      };
-    }
     game.participants = game.participants.map((participant: any) => {
       participant.championName = this.getChampionName(participant.championId);
       participant.championImageId = this.getChampionImageId(participant.championId);
@@ -209,7 +202,14 @@ class LeagueService {
   }
 
   async getSummonerByRiotId(gameName: string, tagLine: string, region: Region = 'AMERICAS'): Promise<any | null> {
-    return leagueRepository.getSummonerByRiotId(gameName, tagLine, region);
+    const summoner = await leagueRepository.getSummonerByRiotId(gameName, tagLine, region);
+    if (!summoner) {
+      return null;
+    }
+    if (!summoner.riotId) {
+      summoner.riotId = `${gameName}#${tagLine}`;
+    }
+    return summoner;
   }
 
   async getActiveGameByPuuid(puuid: string, platform: Platform = 'NA1'): Promise<any | null> {

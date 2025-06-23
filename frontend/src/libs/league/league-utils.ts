@@ -26,7 +26,7 @@ export const getItemIconSrcById = (itemId: string) => {
 }
 
 export const getTeams = (game: Game | null) => {
-  if (!game) return { allies: null, enemies: null }
+  if (!game?.gameId) return { allies: null, enemies: null }
   const searchedSummonerPuuid = game.searchedSummoner.puuid;
   const searchedSummoner = game.participants.find(p => p.puuid === searchedSummonerPuuid) as Summoner;
   const allies = [searchedSummoner, ...game.participants.filter(p => p.teamId === searchedSummoner?.teamId && p.puuid !== searchedSummonerPuuid)];

@@ -60,9 +60,12 @@ class SummonersController {
       const game = await leagueService.getActiveGameByPuuid(summoner.puuid, region as Platform);
 
       if (game) {
+        game.searchedSummoner = summoner;
         res.json(game);
       } else {
-        res.status(204).json({ message: 'No active game found.' });
+        res.json({
+          searchedSummoner: summoner
+        });
       }
     } catch (error) {
       console.error('Error fetching active game:', error);

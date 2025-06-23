@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Menu, type MenuProps } from "antd";
-import { SyncOutlined } from "@ant-design/icons";
+import { SyncOutlined, UserOutlined } from "@ant-design/icons";
 import { Game, Summoner } from "../../../libs/league/league-types";
 import { getTeams } from "../../../libs/league/league-utils";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -17,7 +17,13 @@ export const ActiveGameTabs = ({ game, region }: ActiveGameTabsProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { allies, enemies } = getTeams(game);
-  const [selectedView, setSelectedView] = useState<string>("chat");
+  const [selectedView, setSelectedView] = useState<string>(
+    game?.gameId ? "chat" : "searched-player"
+  );
+
+  // Extract searched player info from game object
+  const searchedPlayerPuuid = game?.searchedSummoner?.puuid;
+  const searchedPlayerName = game?.searchedSummoner?.riotId;
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -36,32 +42,47 @@ export const ActiveGameTabs = ({ game, region }: ActiveGameTabsProps) => {
   };
 
   const items: MenuProps["items"] = [
-    {
-      label: "Live Match",
-      key: "chat",
-      icon: <SyncOutlined spin />,
-      // disabled: true,
-    },
-    {
-      label: "Enemy Team",
-      key: "enemies",
-      children: enemies?.map((enemy: Summoner) => {
-        return {
-          label: enemy.championName,
-          key: `${enemy.puuid}`, // Ensure keys are unique
-        };
-      }),
-    },
-    {
-      label: "Ally Team",
-      key: "allies",
-      children: allies?.map((ally: Summoner) => {
-        return {
-          label: ally.championName,
-          key: `${ally.puuid}`, // Ensure keys are unique
-        };
-      }),
-    },
+    // Only show game-related tabs if there's a gameId
+    ...(game?.gameId
+      ? [
+          {
+            label: "Live Match",
+            key: "chat",
+            icon: <SyncOutlined spin />,
+            // disabled: true,
+          },
+          {
+            label: "Enemy Team",
+            key: "enemies",
+            children: enemies?.map((enemy: Summoner) => {
+              return {
+                label: enemy.championName,
+                key: `${enemy.puuid}`, // Ensure keys are unique
+              };
+            }),
+          },
+          {
+            label: "Ally Team",
+            key: "allies",
+            children: allies?.map((ally: Summoner) => {
+              return {
+                label: ally.championName,
+                key: `${ally.puuid}`, // Ensure keys are unique
+              };
+            }),
+          },
+        ]
+      : []),
+    // Add searched player tab if we have the player info
+    ...(game?.searchedSummoner
+      ? [
+          {
+            label: searchedPlayerName || "Searched Player",
+            key: "searched-player",
+            icon: <UserOutlined />,
+          },
+        ]
+      : []),
   ];
   return (
     <div className="flex flex-col flex-1">
@@ -73,11 +94,27 @@ export const ActiveGameTabs = ({ game, region }: ActiveGameTabsProps) => {
         style={{ backgroundColor: "transparent" }}
       />
       <div className="flex flex-col pt-5">
-        {selectedView === "chat" && <GameOverview game={game} />}
-        {game && allies?.map((ally) => ally.puuid).includes(selectedView) && (
-          <PlayerView game={game} playerPuuid={selectedView} region={region} />
+        {selectedView === "chat" && game?.gameId && (
+          <GameOverview game={game} />
         )}
-        {game &&
+        {selectedView === "searched-player" && game?.searchedSummoner && (
+          <PlayerView
+            game={game}
+            playerPuuid={searchedPlayerPuuid || game.searchedSummoner.puuid}
+            region={region}
+          />
+        )}
+        {game?.gameId &&
+          game &&
+          allies?.map((ally) => ally.puuid).includes(selectedView) && (
+            <PlayerView
+              game={game}
+              playerPuuid={selectedView}
+              region={region}
+            />
+          )}
+        {game?.gameId &&
+          game &&
           enemies?.map((enemy) => enemy.puuid).includes(selectedView) && (
             <PlayerView
               game={game}

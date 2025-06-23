@@ -49,7 +49,7 @@ const PlayerContent: React.FC<PlayerViewProps> = ({
 
     const fetchPlayerData = async () => {
       try {
-        if (game && playerPuuid) {
+        if (game?.gameId && playerPuuid) {
           const foundPlayer = game.participants?.find(
             (summoner) => summoner.puuid === playerPuuid
           );
@@ -63,8 +63,6 @@ const PlayerContent: React.FC<PlayerViewProps> = ({
             setPlayer(summoner);
             setIsLoading(false);
           }
-        } else {
-          setIsLoading(false);
         }
       } catch (error) {
         console.error("Failed to fetch player data:", error);
