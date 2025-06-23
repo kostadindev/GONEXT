@@ -262,10 +262,11 @@ const ChatComponent: React.FC<{
                   <Avatar
                     size={36}
                     icon={<RobotOutlined />}
-                    className="shadow-md border-2 border-white"
+                    className="shadow-md border-2"
                     style={{
-                      backgroundColor: "#f0f2f5",
+                      backgroundColor: token.colorFillTertiary,
                       color: primaryColor,
+                      borderColor: token.colorBgContainer,
                     }}
                   />
                 </div>
@@ -277,8 +278,11 @@ const ChatComponent: React.FC<{
                   <Avatar
                     size={36}
                     src={user?.picture}
-                    className="shadow-md border-2 border-white"
-                    style={{ backgroundColor: primaryColor }}
+                    className="shadow-md border-2"
+                    style={{
+                      backgroundColor: primaryColor,
+                      borderColor: token.colorBgContainer,
+                    }}
                   >
                     {user?.name?.charAt(0)?.toUpperCase()}
                   </Avatar>
@@ -300,21 +304,62 @@ const ChatComponent: React.FC<{
                   </div>
                 ) : (
                   <Card
-                    className="w-full rounded-2xl shadow-lg border-0 transition-all duration-200 hover:shadow-xl bg-gradient-to-br from-white to-gray-50"
+                    className="w-full rounded-2xl shadow-lg transition-all duration-200 hover:shadow-xl"
                     style={{
                       borderRadius: "16px",
+                      minHeight: msg.content.trim() === "" ? "80px" : "auto",
+                      // background: `linear-gradient(135deg, ${primaryColor}08 0%, ${primaryColor}05 100%)`,
+                      // borderColor: `${primaryColor}20`,
                     }}
                     bodyStyle={{
                       padding: "20px",
                       borderRadius: "16px",
+                      minHeight: msg.content.trim() === "" ? "40px" : "auto",
+                      display: "flex",
+                      alignItems:
+                        msg.content.trim() === "" ? "center" : "flex-start",
                     }}
                   >
-                    <MarkdownRenderer content={msg.content} />
+                    {msg.content.trim() === "" ? (
+                      <div
+                        className="flex items-center gap-2 w-full"
+                        style={{ color: token.colorTextTertiary }}
+                      >
+                        <div className="animate-pulse flex gap-1">
+                          <div
+                            className="w-2 h-2 rounded-full animate-bounce"
+                            style={{
+                              backgroundColor: token.colorTextQuaternary,
+                            }}
+                          ></div>
+                          <div
+                            className="w-2 h-2 rounded-full animate-bounce"
+                            style={{
+                              backgroundColor: token.colorTextQuaternary,
+                              animationDelay: "0.1s",
+                            }}
+                          ></div>
+                          <div
+                            className="w-2 h-2 rounded-full animate-bounce"
+                            style={{
+                              backgroundColor: token.colorTextQuaternary,
+                              animationDelay: "0.2s",
+                            }}
+                          ></div>
+                        </div>
+                        <span className="text-sm">AI is thinking...</span>
+                      </div>
+                    ) : (
+                      <MarkdownRenderer content={msg.content} />
+                    )}
                   </Card>
                 )}
 
                 {/* Timestamp could go here */}
-                <div className="text-xs text-gray-400 mt-1 px-2">
+                <div
+                  className="text-xs mt-1 px-2"
+                  style={{ color: token.colorTextQuaternary }}
+                >
                   {/* Add timestamp if needed */}
                 </div>
               </div>
@@ -324,7 +369,10 @@ const ChatComponent: React.FC<{
           {/* Follow-up suggestions */}
           {followUps.length > 0 && (
             <div className="mt-3 mb-2">
-              <div className="text-sm text-gray-500 mb-3 font-medium">
+              <div
+                className="text-sm mb-3 font-medium"
+                style={{ color: token.colorTextTertiary }}
+              >
                 Suggested follow-ups:
               </div>
               <div className="flex flex-col gap-2">
@@ -332,14 +380,29 @@ const ChatComponent: React.FC<{
                   <div
                     key={idx}
                     onClick={() => handleSendMessage(suggestion)}
-                    className="group cursor-pointer p-3 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg transition-all duration-200 hover:shadow-sm"
+                    className="group cursor-pointer p-3 rounded-lg transition-all duration-200 hover:shadow-sm"
+                    style={{
+                      backgroundColor: token.colorFillTertiary,
+                      border: `1px solid ${token.colorBorder}`,
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor =
+                        token.colorFillSecondary;
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor =
+                        token.colorFillTertiary;
+                    }}
                   >
                     <div className="flex items-center gap-2">
                       <div
                         className="w-2 h-2 rounded-full flex-shrink-0"
                         style={{ backgroundColor: primaryColor }}
                       />
-                      <span className="text-gray-700 group-hover:text-gray-900 text-sm leading-relaxed">
+                      <span
+                        className="text-sm leading-relaxed transition-colors"
+                        style={{ color: token.colorText }}
+                      >
                         {suggestion}
                       </span>
                     </div>
@@ -353,7 +416,13 @@ const ChatComponent: React.FC<{
         </div>
 
         <div className="flex justify-center pt-2 pb-2">
-          <div className="p-3 flex gap-3 w-[85%] bg-white rounded-2xl shadow-lg border border-gray-100">
+          <div
+            className="p-3 flex gap-3 w-[85%] rounded-2xl shadow-lg"
+            style={{
+              backgroundColor: token.colorBgContainer,
+              border: `1px solid ${token.colorBorder}`,
+            }}
+          >
             <TextArea
               autoSize={{ minRows: 1, maxRows: 4 }}
               value={input}
@@ -391,7 +460,11 @@ const ChatComponent: React.FC<{
                     icon={<ClearOutlined />}
                     onClick={handleClearChat}
                     disabled={isSending}
-                    className="shadow-md hover:shadow-lg transition-all duration-200 border-gray-300 text-gray-500 hover:border-red-400 hover:text-red-500"
+                    className="shadow-md hover:shadow-lg transition-all duration-200"
+                    style={{
+                      borderColor: token.colorBorder,
+                      color: token.colorTextTertiary,
+                    }}
                   />
                 </Tooltip>
               )}
