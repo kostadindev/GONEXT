@@ -31,7 +31,14 @@ const renderItem = (title: string) => {
       <div className="flex items-center justify-between">
         <span>
           {name}
-          {tag && <span className="text-gray-500 italic ml-1">{tag}</span>}
+          {tag && (
+            <span
+              className="px-2 py-1 rounded-md text-sm font-medium ml-1"
+              style={{ backgroundColor: "#f5e6d3", color: "#e89a3f" }}
+            >
+              {tag}
+            </span>
+          )}
         </span>
         <UserOutlined className="ml-2" />
       </div>
