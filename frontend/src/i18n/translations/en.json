@@ -12,6 +12,9 @@
     },
     "error": "Error",
     "success": "Success",
+    "save": "Save Changes",
+    "reset": "Reset",
+    "profile": "Profile",
     "actions": {
       "goHome": "Go Home",
       "goBack": "Go Back"
@@ -166,5 +169,17 @@
     "github": "GitHub",
     "madeWithLove": "Made with ❤️ by the GONEXT team.",
     "disclaimer": "GONEXT is not endorsed by Riot Games and does not reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games and all associated properties are trademarks or registered trademarks of Riot Games, Inc."
+  },
+  "settings": {
+    "title": "User Preferences",
+    "description": "Customize your experience with GONEXT",
+    "theme": "Theme",
+    "darkMode": "Dark mode enabled",
+    "lightMode": "Light mode enabled",
+    "language": "Language",
+    "languageDescription": "Choose your preferred language",
+    "aiModel": "AI Model",
+    "aiModelDescription": "Select your preferred AI assistant",
+    "unsavedChanges": "You have unsaved changes"
   }
 } 

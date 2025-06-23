@@ -1,5 +1,26 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Avatar, Button, Layout, Typography, Select } from "antd";
+import {
+  Avatar,
+  Button,
+  Layout,
+  Typography,
+  Select,
+  Space,
+  Dropdown,
+  Switch,
+  theme,
+  Badge,
+  Tooltip,
+} from "antd";
+import {
+  BgColorsOutlined,
+  GlobalOutlined,
+  SettingOutlined,
+  UserOutlined,
+  MenuOutlined,
+  SunOutlined,
+  MoonOutlined,
+} from "@ant-design/icons";
 import { useNavigate, useLocation } from "react-router-dom";
 import GlobalSearch from "../../global-search/global-search";
 import { QuickSearch } from "../../quick-search/quick-search";
@@ -7,12 +28,12 @@ import { GoogleLogin } from "@react-oauth/google";
 import { handleLoginSuccess, handleLogout } from "../../../libs/apis/auth-api";
 import { updateUserLanguage } from "../../../libs/apis/users-api";
 import { useUser } from "../../../context/user.context";
-import { DarkModeSwitch } from "react-toggle-dark-mode";
 import { Particles, initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
 import { useTranslation } from "../../../hooks/useTranslation";
 
 const { Text } = Typography;
+const { useToken } = theme;
 
 // Reusable particles component
 const ParticleBackground = ({
@@ -22,6 +43,8 @@ const ParticleBackground = ({
   id: string;
   isMobile: boolean;
 }) => {
+  const { token } = useToken();
+
   return (
     <Particles
       id={id}
@@ -32,18 +55,18 @@ const ParticleBackground = ({
         fpsLimit: 60,
         particles: {
           color: {
-            value: "#e89a3c",
+            value: token.colorPrimary,
           },
           links: {
-            color: "#e89a3c",
+            color: token.colorPrimary,
             distance: 150,
             enable: true,
-            opacity: 0.6,
-            width: 1.5,
+            opacity: 0.3,
+            width: 1,
           },
           move: {
             enable: true,
-            speed: 1.5,
+            speed: 1,
             direction: "none",
             random: false,
             straight: false,
@@ -56,13 +79,13 @@ const ParticleBackground = ({
             },
           },
           number: {
-            value: isMobile ? 15 : 120,
+            value: isMobile ? 8 : 30,
           },
           opacity: {
-            value: 0.8,
+            value: 0.4,
           },
           size: {
-            value: { min: 2, max: 5 },
+            value: { min: 1, max: 3 },
           },
         },
         detectRetina: true,
@@ -86,20 +109,13 @@ const ParticleBackground = ({
 
 // Language options matching backend enum
 const languageOptions = [
-  { value: "en", label: "English" },
-  { value: "es", label: "Español" },
-  // { value: "fr", label: "Français" },
-  // { value: "de", label: "Deutsch" },
-  // { value: "it", label: "Italiano" },
-  // { value: "nl", label: "Nederlands" },
-  // { value: "pt", label: "Português" },
-  // { value: "ru", label: "Русский" },
-  { value: "zh", label: "中文" },
-  { value: "ja", label: "日本語" },
-  { value: "ko", label: "한국어" },
-  { value: "ar", label: "العربية" },
-  // { value: "hi", label: "हिन्दी" },
-  { value: "bg", label: "Български" },
+  { value: "en", label: "🇺🇸 English" },
+  { value: "es", label: "🇪🇸 Español" },
+  { value: "zh", label: "🇨🇳 中文" },
+  { value: "ja", label: "🇯🇵 日本語" },
+  { value: "ko", label: "🇰🇷 한국어" },
+  { value: "ar", label: "🇸🇦 العربية" },
+  { value: "bg", label: "🇧🇬 Български" },
 ];
 
 export const Header: React.FC = () => {
@@ -109,6 +125,7 @@ export const Header: React.FC = () => {
   const [init, setInit] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const { t, changeLanguage, currentLanguage } = useTranslation();
+  const { token } = useToken();
 
   // Feature flag for particles
   const particlesEnabled = process.env.REACT_APP_ENABLE_PARTICLES === "true";
@@ -183,20 +200,71 @@ export const Header: React.FC = () => {
     window.dispatchEvent(new Event("languageChanged"));
   };
 
+  // Settings dropdown menu items
+  const settingsMenuItems = [
+    {
+      key: "theme",
+      label: (
+        <div onClick={(e) => e.stopPropagation()}>
+          <Space>
+            <Switch
+              checked={isDarkMode}
+              onChange={toggleDarkMode}
+              size="small"
+              checkedChildren={<MoonOutlined />}
+              unCheckedChildren={<SunOutlined />}
+            />
+            <Text>
+              {isDarkMode ? t("common.theme.dark") : t("common.theme.light")}
+            </Text>
+          </Space>
+        </div>
+      ),
+    },
+    {
+      type: "divider" as const,
+    },
+    {
+      key: "language",
+      label: (
+        <Space>
+          <GlobalOutlined />
+          <Select
+            value={currentLanguage}
+            onChange={handleLanguageChange}
+            options={languageOptions}
+            style={{ width: 140 }}
+            size="small"
+            bordered={false}
+            variant="borderless"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </Space>
+      ),
+    },
+  ];
+
   return (
     <Layout.Header
       style={{
-        ...headerStyle,
-        background: isDarkMode
-          ? undefined
-          : "linear-gradient(135deg, #ffe7ba, #fff1e6)",
+        background: token.colorBgContainer,
+        borderBottom: `1px solid ${token.colorBorderSecondary}`,
+        padding: "0 24px",
+        height: "auto",
+        minHeight: 64,
+        display: "flex",
+        alignItems: "center",
+        position: "sticky",
+        top: 0,
+        zIndex: 100,
+        boxShadow: token.boxShadowTertiary,
       }}
     >
       {/* Particle Background - fewer particles on mobile */}
       {particlesEnabled && init && (
         <div
-          className="absolute"
           style={{
+            position: "absolute",
             width: "100%",
             height: "100%",
             top: 0,
@@ -205,110 +273,145 @@ export const Header: React.FC = () => {
             right: 0,
             overflow: "hidden",
             pointerEvents: "none",
+            opacity: 0.6,
           }}
         >
           <ParticleBackground id="tsparticles-header" isMobile={isMobile} />
         </div>
       )}
-      <div className="relative z-10 w-full flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        {/* Left Section: Logo + Theme Switch on mobile */}
-        <div className="flex flex-col w-full sm:flex-row sm:items-center sm:gap-5">
-          {/* Mobile: GONEXT + Switch inline */}
-          <div className="flex justify-between sm:hidden w-full items-center">
-            <div
-              style={goldmanStyle}
-              className="cursor-pointer"
-              onClick={() => navigate("/")}
-            >
-              {t("header.title")}
-            </div>
-            <div className="flex items-center gap-2">
-              <Select
-                defaultValue={currentLanguage}
-                style={{ width: 80 }}
-                onChange={handleLanguageChange}
-                options={languageOptions}
-                size="small"
-              />
-              <DarkModeSwitch
-                checked={isDarkMode}
-                onChange={toggleDarkMode}
-                size={25}
-              />
-            </div>
-          </div>
 
-          {/* Desktop: GONEXT only (dark switch is in right section) */}
+      <div style={{ position: "relative", zIndex: 10, width: "100%" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            width: "100%",
+            gap: 24,
+          }}
+        >
+          {/* Left Section: Brand */}
           <div
-            className="hidden sm:block cursor-pointer"
             style={goldmanStyle}
+            className="cursor-pointer"
             onClick={() => navigate("/")}
           >
             {t("header.title")}
           </div>
 
-          {/* Global Search and Quick Search */}
-          {location.pathname !== "/" && (
-            <div className="flex flex-col sm:flex-row sm:items-center w-full sm:gap-3 mt-2 sm:mt-0">
-              <div className="w-full sm:max-w-[600px]">
+          {/* Search Section - Only show on non-home pages */}
+          {location.pathname !== "/" && !isMobile && (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 16,
+                flex: 2,
+                marginLeft: 40,
+                marginRight: 40,
+              }}
+            >
+              <div style={{ width: 600 }}>
                 <GlobalSearch />
               </div>
-              <span className="hidden sm:inline-block mx-2 whitespace-nowrap">
-                {t("common.or")}
-              </span>
-              <div className="hidden sm:block">
-                <QuickSearch />
-              </div>
+              <Text type="secondary">{t("common.or")}</Text>
+              <QuickSearch />
             </div>
           )}
+
+          {/* Spacer to push right section to the end */}
+          <div style={{ flex: 1 }} />
+
+          {/* Right Section: Actions */}
+          <Space size="middle">
+            {/* Mobile search for non-home pages */}
+            {location.pathname !== "/" && isMobile && (
+              <Button
+                type="text"
+                icon={<MenuOutlined />}
+                onClick={() => {
+                  // Handle mobile search menu
+                }}
+              />
+            )}
+
+            {/* Settings Dropdown */}
+            <Dropdown
+              menu={{ items: settingsMenuItems }}
+              trigger={["click"]}
+              placement="bottomRight"
+            >
+              <Button
+                type="text"
+                icon={<SettingOutlined style={{ fontSize: 18 }} />}
+                style={{
+                  borderRadius: token.borderRadiusLG,
+                }}
+              />
+            </Dropdown>
+
+            {/* User Section - Currently commented out but ready for use */}
+            {/* {user ? (
+              <Dropdown
+                menu={{
+                  items: [
+                    {
+                      key: 'profile',
+                      label: t('common.profile'),
+                      icon: <UserOutlined />,
+                    },
+                    {
+                      type: 'divider',
+                    },
+                    {
+                      key: 'logout',
+                      label: t('common.logout'),
+                      onClick: onLogout,
+                    },
+                  ],
+                }}
+                trigger={['click']}
+              >
+                <Button type="text" style={{ padding: 4 }}>
+                  <Space>
+                    <Avatar 
+                      src={user.picture} 
+                      icon={<UserOutlined />} 
+                      size="small"
+                    />
+                    <Text>{user.name}</Text>
+                  </Space>
+                </Button>
+              </Dropdown>
+            ) : (
+              <GoogleLogin
+                onSuccess={onLoginSuccess}
+                theme="outline"
+                text={undefined}
+                useOneTap
+                shape="circle"
+                onError={onLoginError}
+              />
+            )} */}
+          </Space>
         </div>
 
-        {/* Right Section: Theme (desktop only) & Auth */}
-        <div className="hidden sm:flex items-center gap-3">
-          <Select
-            defaultValue={currentLanguage}
-            style={{ width: 100 }}
-            onChange={handleLanguageChange}
-            options={languageOptions}
-          />
-          <DarkModeSwitch
-            checked={isDarkMode}
-            onChange={toggleDarkMode}
-            size={25}
-          />
-
-          {/* Auth (optional) */}
-          {/* {user ? (
-            <Button size="large" onClick={onLogout} className="cool-button">
-              <div className="flex gap-3 items-center h-full">
-                {user.picture && <Avatar src={user.picture} size={30} />}
-                <span>{t('common.logout')}</span>
+        {/* Mobile search section for non-home pages */}
+        {location.pathname !== "/" && isMobile && (
+          <div style={{ marginTop: 16, paddingBottom: 8 }}>
+            <Space direction="vertical" style={{ width: "100%" }} size="small">
+              <GlobalSearch />
+              <div style={{ textAlign: "center" }}>
+                <Text type="secondary" style={{ fontSize: 12 }}>
+                  {t("common.or")}
+                </Text>
               </div>
-            </Button>
-          ) : (
-            <GoogleLogin
-              onSuccess={onLoginSuccess}
-              theme={"outline"}
-              text={undefined}
-              useOneTap
-              shape="circle"
-              onError={onLoginError}
-            />
-          )} */}
-        </div>
+              <QuickSearch />
+            </Space>
+          </div>
+        )}
       </div>
     </Layout.Header>
   );
-};
-
-const headerStyle: React.CSSProperties = {
-  height: "auto", // allow height to grow
-  display: "flex",
-  alignItems: "center",
-  boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.1)",
-  padding: "10px 20px",
-  position: "relative",
-  overflow: "hidden",
 };
 
 const goldmanStyle: React.CSSProperties = {
