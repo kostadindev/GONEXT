@@ -38,7 +38,9 @@ const PlayerContent: React.FC<PlayerViewProps> = ({
     : DEFAULT_CARD_WIDTH;
 
   // Calculate responsive heights
-  const matchHistoryHeight = isMobile ? 350 : "calc(100vh - 480px)";
+  const matchHistoryHeight = game?.gameId
+    ? "calc(100vh - 480px)"
+    : "calc(100vh - 150px)";
   const chatMaxHeight = isMobile
     ? "calc(100vh - 400px)"
     : "calc(100vh - 350px)";
@@ -90,12 +92,14 @@ const PlayerContent: React.FC<PlayerViewProps> = ({
     >
       {player ? (
         <>
-          <div className="flex flex-col gap-4">
-            <SummonerCard
-              summoner={player}
-              isLoading={false}
-              width={cardWidth}
-            />
+          <div className="flex flex-col gap-4 pb-4">
+            {game?.gameId && (
+              <SummonerCard
+                summoner={player}
+                isLoading={false}
+                width={cardWidth}
+              />
+            )}
             <div style={{ height: matchHistoryHeight, width: "100%" }}>
               <MatchHistory summoner={player} region={region} />
             </div>

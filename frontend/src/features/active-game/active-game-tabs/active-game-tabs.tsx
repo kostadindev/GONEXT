@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { Menu, type MenuProps } from "antd";
-import { SyncOutlined, UserOutlined } from "@ant-design/icons";
+import {
+  SyncOutlined,
+  UserOutlined,
+  PauseCircleOutlined,
+} from "@ant-design/icons";
 import { Game, Summoner } from "../../../libs/league/league-types";
 import { getTeams } from "../../../libs/league/league-utils";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -83,6 +87,16 @@ export const ActiveGameTabs = ({ game, region }: ActiveGameTabsProps) => {
           },
         ]
       : []),
+    // Add "Player not in game" tab when player is not in an active game
+    ...(game?.searchedSummoner && !game?.gameId
+      ? [
+          {
+            label: "Not in Game",
+            key: "not-in-game",
+            icon: <PauseCircleOutlined />,
+          },
+        ]
+      : []),
   ];
   return (
     <div className="flex flex-col flex-1">
@@ -104,6 +118,20 @@ export const ActiveGameTabs = ({ game, region }: ActiveGameTabsProps) => {
             region={region}
           />
         )}
+        {selectedView === "not-in-game" &&
+          game?.searchedSummoner &&
+          !game?.gameId && (
+            <div className="flex flex-col items-center justify-center min-h-96 p-8 text-gray-500">
+              <PauseCircleOutlined
+                style={{ fontSize: "48px", marginBottom: "16px" }}
+              />
+              <h3 className="text-lg font-medium mb-2">Player not in game</h3>
+              <p className="text-center">
+                {searchedPlayerName || "This player"} is currently not in an
+                active game.
+              </p>
+            </div>
+          )}
         {game?.gameId &&
           game &&
           allies?.map((ally) => ally.puuid).includes(selectedView) && (

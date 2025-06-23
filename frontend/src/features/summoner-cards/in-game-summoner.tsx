@@ -20,7 +20,11 @@ export const InGameSummoner = ({
   const { token } = theme.useToken();
 
   const handleCardClick = () => {
-    navigate(`${location.pathname}?view=${summoner.puuid}`);
+    const viewParam =
+      summoner.puuid === game?.searchedSummoner?.puuid
+        ? "searched-player"
+        : summoner.puuid;
+    navigate(`${location.pathname}?view=${viewParam}`);
   };
   const borderColor =
     summoner.puuid === game?.searchedSummoner?.puuid
