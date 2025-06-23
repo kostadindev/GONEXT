@@ -63,9 +63,21 @@ async function startServer() {
     await mongoose.connect(MONGO_URI);
     console.log("Connected to MongoDB successfully");
 
+    // Try to connect to Redis, but don't fail if it's not available
     if (redis) {
-      await redis.connect();
-      console.log("Connected to Redis successfully");
+      try {
+        // Set a reasonable timeout for Redis connection
+        const connectPromise = redis.connect();
+        const timeoutPromise = new Promise((_, reject) =>
+          setTimeout(() => reject(new Error('Redis connection timeout')), 10000)
+        );
+
+        await Promise.race([connectPromise, timeoutPromise]);
+        console.log("Connected to Redis successfully");
+      } catch (redisError) {
+        console.error("Failed to connect to Redis (continuing without Redis):", redisError.message || redisError);
+        // Don't exit the process, just continue without Redis
+      }
     } else {
       console.warn("Redis is not configured. Skipping Redis connection.");
     }

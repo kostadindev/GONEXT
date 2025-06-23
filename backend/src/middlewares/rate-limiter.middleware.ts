@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import redis from '../db/redis';
+import redis, { safeRedisOperation } from '../db/redis';
 import { AuthenticatedRequest } from '../types/misc.types';
 import rateLimitConfig from '../config/rate-limit.config';
 
@@ -23,9 +23,17 @@ export const rateLimiter = () => {
       };
 
       const checkLimit = async (key: string, limit: number, time: number, message: string) => {
-        const requests = await redis.incr(key);
-        if (requests === 1) await redis.expire(key, time);
-        if (requests > limit) {
+        const requests = await safeRedisOperation(async () => {
+          return await redis!.incr(key);
+        }, 0);
+
+        if (requests === 1) {
+          await safeRedisOperation(async () => {
+            return await redis!.expire(key, time);
+          });
+        }
+
+        if (requests && requests > limit) {
           res.status(429).json({ message });
           throw new Error('Rate limit exceeded');
         }

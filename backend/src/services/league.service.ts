@@ -1,4 +1,4 @@
-import redis from "../db/redis";
+import redis, { safeRedisOperation } from "../db/redis";
 import leagueRepository from "../repositories/league/league.repository";
 
 type Platform = 'BR1' | 'EUN1' | 'EUW1' | 'JP1' | 'KR' | 'LA1' | 'LA2' | 'NA1' | 'OC1' | 'TR1' | 'RU' | 'PH2' | 'SG2' | 'TH2' | 'TW2' | 'VN2';
@@ -118,15 +118,15 @@ class LeagueService {
 
   async getSummonerStats(puuid: string, platform: Platform = 'NA1'): Promise<{ ranked: any; flex: any } | undefined> {
     const cacheKey = `summonerStats:${puuid}:${platform}`;
-    if (redis) {
-      try {
-        const cachedStats = await redis.get(cacheKey);
-        if (cachedStats) {
-          return JSON.parse(cachedStats);
-        }
-      } catch (err) {
-        console.warn('Redis unavailable for getSummonerStats cache read:', err.message);
-      }
+
+    // Try to get cached stats
+    const cachedStats = await safeRedisOperation(async () => {
+      const cached = await redis!.get(cacheKey);
+      return cached ? JSON.parse(cached) : null;
+    });
+
+    if (cachedStats) {
+      return cachedStats;
     }
 
     const summonerId = await this.getSummonerIdByPuuid(puuid, platform);
@@ -147,13 +147,11 @@ class LeagueService {
     });
 
     const result = { ranked, flex };
-    if (redis) {
-      try {
-        await redis.set(cacheKey, JSON.stringify(result), { PX: 300000 });
-      } catch (err) {
-        console.warn('Redis unavailable for getSummonerStats cache write:', err.message);
-      }
-    }
+
+    // Try to cache the result
+    await safeRedisOperation(async () => {
+      return await redis!.set(cacheKey, JSON.stringify(result), { PX: 300000 });
+    });
 
     return result;
   }
@@ -216,15 +214,15 @@ class LeagueService {
 
   async getActiveGameByPuuid(puuid: string, platform: Platform = 'NA1'): Promise<any | null> {
     const cacheKey = `game:${puuid}:${platform}`;
-    if (redis) {
-      try {
-        const cachedGame = await redis.get(cacheKey);
-        if (cachedGame) {
-          return JSON.parse(cachedGame);
-        }
-      } catch (err) {
-        console.warn('Redis unavailable for getActiveGameByPuuid cache read:', err.message);
-      }
+
+    // Try to get cached game
+    const cachedGame = await safeRedisOperation(async () => {
+      const cached = await redis!.get(cacheKey);
+      return cached ? JSON.parse(cached) : null;
+    });
+
+    if (cachedGame) {
+      return cachedGame;
     }
 
     const game = await leagueRepository.getActiveGameByPuuid(puuid, platform);
@@ -233,13 +231,10 @@ class LeagueService {
     }
     const enrichedGame = this.getEnrichedGame(game, puuid);
 
-    if (redis) {
-      try {
-        await redis.set(cacheKey, JSON.stringify(enrichedGame), { PX: 180000 });
-      } catch (err) {
-        console.warn('Redis unavailable for getActiveGameByPuuid cache write:', err.message);
-      }
-    }
+    // Try to cache the result
+    await safeRedisOperation(async () => {
+      return await redis!.set(cacheKey, JSON.stringify(enrichedGame), { PX: 180000 });
+    });
 
     return enrichedGame;
   }

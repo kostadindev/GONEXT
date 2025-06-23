@@ -26,3 +26,5 @@ yarn-error.log*
 mocks/
 
 logs.log
+
+matches_*.json
