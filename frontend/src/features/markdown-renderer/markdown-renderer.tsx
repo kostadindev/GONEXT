@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import Markdown from "markdown-to-jsx";
 import { theme } from "antd";
 import {
   CodeOutlined,
   CheckCircleOutlined,
   ExclamationCircleOutlined,
+  DownOutlined,
+  UpOutlined,
 } from "@ant-design/icons";
 
 // Modern minimal tool call component
@@ -15,8 +17,31 @@ const SimpleToolCall: React.FC<{
 }> = ({ toolName, parameters, type }) => {
   const { useToken } = theme;
   const { token } = useToken();
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const primaryColor = "#e89a3c";
+
+  const formatParameters = (params: string) => {
+    try {
+      const parsed = JSON.parse(params);
+      return JSON.stringify(parsed, null, 2);
+    } catch {
+      return params;
+    }
+  };
+
+  const formattedParams = formatParameters(parameters);
+  const isLongContent =
+    formattedParams.length > 100 || formattedParams.includes("\n");
+  const shouldShowExpandButton = isLongContent;
+
+  const getTruncatedParams = (params: string) => {
+    if (!isLongContent) return params;
+    if (params.includes("\n")) {
+      return params.split("\n")[0] + "...";
+    }
+    return params.length > 100 ? params.substring(0, 100) + "..." : params;
+  };
 
   const getStyles = () => {
     const baseStyle = {
@@ -76,53 +101,103 @@ const SimpleToolCall: React.FC<{
     return `Using tool`;
   };
 
-  const formatParameters = (params: string) => {
-    try {
-      const parsed = JSON.parse(params);
-      return JSON.stringify(parsed);
-    } catch {
-      return params;
-    }
-  };
-
   return (
     <div style={getStyles()}>
-      <span
+      <div
         style={{
           fontWeight: 500,
           color: token.colorText,
         }}
       >
-        {getIcon()}
-        {getText()}{" "}
-        <code
+        <div
           style={{
-            backgroundColor: token.colorBgLayout,
-            padding: "1px 4px",
-            borderRadius: "4px",
-            fontSize: "13px",
-            fontFamily: "ui-monospace, SFMono-Regular, Consolas, monospace",
-            color: token.colorTextSecondary,
+            display: "flex",
+            alignItems: "flex-start",
+            justifyContent: "space-between",
+            width: "100%",
+            gap: "8px",
           }}
         >
-          {toolName}
-        </code>{" "}
-        with{" "}
-        <code
-          style={{
-            backgroundColor: token.colorBgLayout,
-            padding: "2px 6px",
-            borderRadius: "4px",
-            fontSize: "12px",
-            fontFamily: "ui-monospace, SFMono-Regular, Consolas, monospace",
-            color: token.colorTextSecondary,
-            border: `1px solid ${token.colorBorderSecondary}`,
-            wordBreak: "break-all",
-          }}
-        >
-          {formatParameters(parameters)}
-        </code>
-      </span>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            {getIcon()}
+            {getText()}{" "}
+            <code
+              style={{
+                backgroundColor: token.colorBgLayout,
+                padding: "1px 4px",
+                borderRadius: "4px",
+                fontSize: "13px",
+                fontFamily: "ui-monospace, SFMono-Regular, Consolas, monospace",
+                color: token.colorTextSecondary,
+              }}
+            >
+              {toolName}
+            </code>{" "}
+            with{" "}
+            {!shouldShowExpandButton && (
+              <code
+                style={{
+                  backgroundColor: token.colorBgLayout,
+                  padding: "2px 6px",
+                  borderRadius: "4px",
+                  fontSize: "12px",
+                  fontFamily:
+                    "ui-monospace, SFMono-Regular, Consolas, monospace",
+                  color: token.colorTextSecondary,
+                  border: `1px solid ${token.colorBorderSecondary}`,
+                }}
+              >
+                {formattedParams}
+              </code>
+            )}
+          </div>
+          {shouldShowExpandButton && (
+            <button
+              onClick={() => setIsExpanded(!isExpanded)}
+              style={{
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                padding: "4px",
+                color: token.colorTextSecondary,
+                fontSize: "12px",
+                display: "flex",
+                alignItems: "center",
+                borderRadius: "4px",
+                flexShrink: 0,
+              }}
+              title={isExpanded ? "Collapse" : "Expand"}
+            >
+              {isExpanded ? <UpOutlined /> : <DownOutlined />}
+            </button>
+          )}
+        </div>
+        {shouldShowExpandButton && (
+          <div style={{ marginTop: "4px", width: "100%" }}>
+            <code
+              style={{
+                backgroundColor: token.colorBgLayout,
+                padding: "4px 6px",
+                borderRadius: "4px",
+                fontSize: "12px",
+                fontFamily: "ui-monospace, SFMono-Regular, Consolas, monospace",
+                color: token.colorTextSecondary,
+                border: `1px solid ${token.colorBorderSecondary}`,
+                whiteSpace: isExpanded ? "pre-wrap" : "nowrap",
+                overflow: isExpanded ? "visible" : "hidden",
+                textOverflow: isExpanded ? "initial" : "ellipsis",
+                display: "block",
+                width: "100%",
+                boxSizing: "border-box",
+              }}
+            >
+              {isExpanded
+                ? formattedParams
+                : getTruncatedParams(formattedParams)}
+            </code>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
@@ -139,11 +214,7 @@ const processContent = (content: string): React.ReactNode[] => {
     if (match.index > lastIndex) {
       const textBefore = content.slice(lastIndex, match.index);
       if (textBefore.trim()) {
-        parts.push(
-          <Markdown key={`text-${lastIndex}`} options={{ overrides: {} }}>
-            {textBefore}
-          </Markdown>
-        );
+        parts.push(<Markdown key={`text-${lastIndex}`}>{textBefore}</Markdown>);
       }
     }
 
@@ -177,9 +248,7 @@ const processContent = (content: string): React.ReactNode[] => {
     const remainingText = content.slice(lastIndex);
     if (remainingText.trim()) {
       parts.push(
-        <Markdown key={`text-${lastIndex}`} options={{ overrides: {} }}>
-          {remainingText}
-        </Markdown>
+        <Markdown key={`text-${lastIndex}`}>{remainingText}</Markdown>
       );
     }
   }
@@ -195,7 +264,7 @@ const MarkdownRenderer: React.FC<{ content: string }> = ({ content }) => {
   if (!content.includes("@tool[")) {
     return (
       <div style={{ color: token.colorText }}>
-        <Markdown options={{ overrides: {} }}>{content}</Markdown>
+        <Markdown>{content}</Markdown>
       </div>
     );
   }
