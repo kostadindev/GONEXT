@@ -50,13 +50,13 @@ export const MatchHistory: React.FC<MatchHistoryProps> = ({
     <div className="h-full overflow-hidden">
       <div className="h-full overflow-y-auto">
         {isLoading && (
-          <div className="absolute inset-0 flex items-center justify-center z-10 bg-white bg-opacity-50">
+          <div className="h-full flex items-center justify-center z-10">
             <Spin />
           </div>
         )}
         <div
           className={`transition-opacity duration-300 ${
-            isLoading ? "opacity-30" : "opacity-100"
+            isLoading ? "opacity-0 pointer-events-none" : "opacity-100"
           }`}
         >
           {games &&
