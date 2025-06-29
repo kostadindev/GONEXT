@@ -15,7 +15,7 @@ const PLATFORM_TO_HOST: Record<Platform, string> = {
   KR: 'kr.api.riotgames.com',
   LA1: 'la1.api.riotgames.com',
   LA2: 'la2.api.riotgames.com',
-  NA1: 'NA1.api.riotgames.com',
+  NA1: 'na1.api.riotgames.com',
   OC1: 'oc1.api.riotgames.com',
   TR1: 'tr1.api.riotgames.com',
   RU: 'ru.api.riotgames.com',
@@ -54,8 +54,14 @@ export const PLATFORM_TO_REGION: Record<Platform, Region> = {
 
 class LeagueRepository {
   private headers: Record<string, any> = {
-    'X-Riot-Token': process.env.LEAGUE_API_KEY,
+    'X-Riot-Token': process.env.LEAGUE_API_KEY || '',
   };
+
+  constructor() {
+    if (!process.env.LEAGUE_API_KEY) {
+      console.error('WARNING: LEAGUE_API_KEY environment variable is not set. Riot API calls will fail.');
+    }
+  }
 
   private getPlatformUrl(platform: Platform, endpoint: string): string {
     return `https://${PLATFORM_TO_HOST[platform]}/${endpoint}`;
@@ -351,12 +357,14 @@ class LeagueRepository {
   async getFeaturedGames(platform: Platform = 'NA1'): Promise<any | null> {
     const url = this.getPlatformUrl(platform, 'lol/spectator/v5/featured-games');
     try {
+      console.log(url);
       const response = await axios.get(url, {
         headers: this.headers,
       });
       return response.data;
     } catch (error) {
       console.error('Failed to fetch featured games', error);
+      console.log(error);
       return null;
     }
   }
