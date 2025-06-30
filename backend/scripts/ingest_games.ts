@@ -14,11 +14,14 @@ const REQUESTS_PER_SECOND = 15;
 const REQUESTS_PER_2MIN = 75;
 const WINDOW_1S = 1000;
 const WINDOW_2M = 2 * 60 * 1000;
+const MIN_REQUEST_GAP = 10000; // 10 seconds minimum between requests
 
 const seenPuuids = new Set<string>();
 const seenMatches = new Set<string>();
 
 let requestTimestamps: number[] = [];
+let requestCounter = 0;
+let lastRequestTime = 0;
 
 const csvHeader = [
   'match_id', 'data_version', 'queue_id', 'game_id', 'game_mode', 'game_type', 'game_name', 'game_version',
@@ -91,6 +94,13 @@ async function sleep(ms: number) {
 
 async function rateLimit() {
   const now = Date.now();
+
+  // Ensure minimum gap between requests (10 seconds)
+  const timeSinceLastRequest = now - lastRequestTime;
+  if (timeSinceLastRequest < MIN_REQUEST_GAP) {
+    await sleep(MIN_REQUEST_GAP - timeSinceLastRequest);
+  }
+
   // Remove old timestamps
   requestTimestamps = requestTimestamps.filter(ts => now - ts < WINDOW_2M);
 
@@ -110,7 +120,17 @@ async function rateLimit() {
     requestsLast2m = requestTimestamps.length;
     if (requestsLast1s < REQUESTS_PER_SECOND && requestsLast2m < REQUESTS_PER_2MIN) break;
   }
-  requestTimestamps.push(Date.now());
+
+  // Record this request
+  const currentTime = Date.now();
+  requestTimestamps.push(currentTime);
+  lastRequestTime = currentTime;
+  requestCounter++;
+
+  // Log progress every 100 requests
+  if (requestCounter % 100 === 0) {
+    console.log(`Processed ${requestCounter} API requests so far`);
+  }
 }
 
 async function startWithFeaturedUser() {
@@ -146,18 +166,20 @@ async function ingest(seedPuuid: string, platform: string = 'NA1', maxDepth: num
       await rateLimit();
       matchIds = (await leagueService.getMatchesIds(puuid, 10, platform as any)) || [];
     } catch (e: any) {
-      let code = 'UNKNOWN';
-      let message = '';
-      if (e?.isAxiosError) {
-        code = e.code || (e.response?.status ? `HTTP ${e.response.status}` : 'UNKNOWN');
-        message = e.message;
-      } else if (e?.name && e?.message) {
-        code = e.name;
-        message = e.message;
+      // Minimal error logging - only status code and message
+      const status = e?.response?.status || e?.code || 'ERROR';
+      const message = e?.response?.statusText || e?.message?.split('\n')[0] || 'Unknown error';
+
+      // Special handling for rate limit errors
+      if (e?.response?.status === 429) {
+        const retryAfter = e?.response?.headers?.['retry-after'] || '60';
+        const waitTime = parseInt(retryAfter, 10) * 1000;
+        console.error(`Rate limited: HTTP 429. Waiting ${retryAfter}s before retry.`);
+        await sleep(waitTime);
       } else {
-        message = e?.toString ? e.toString() : String(e);
+        console.error(`API Error: [${status}] ${message}`);
+        await sleep(300000); // 5 minutes for other errors
       }
-      console.error(`Error fetching match IDs for puuid=${puuid} on platform=${platform}: [${code}] ${message}`);
       continue;
     }
 
@@ -184,18 +206,20 @@ async function ingest(seedPuuid: string, platform: string = 'NA1', maxDepth: num
           }
         }
       } catch (e: any) {
-        let code = 'UNKNOWN';
-        let message = '';
-        if (e?.isAxiosError) {
-          code = e.code || (e.response?.status ? `HTTP ${e.response.status}` : 'UNKNOWN');
-          message = e.message;
-        } else if (e?.name && e?.message) {
-          code = e.name;
-          message = e.message;
+        // Minimal error logging - only status code and message
+        const status = e?.response?.status || e?.code || 'ERROR';
+        const message = e?.response?.statusText || e?.message?.split('\n')[0] || 'Unknown error';
+
+        // Special handling for rate limit errors
+        if (e?.response?.status === 429) {
+          const retryAfter = e?.response?.headers?.['retry-after'] || '60';
+          const waitTime = parseInt(retryAfter, 10) * 1000;
+          console.error(`Rate limited: HTTP 429. Waiting ${retryAfter}s before retry.`);
+          await sleep(waitTime);
         } else {
-          message = e?.toString ? e.toString() : String(e);
+          console.error(`API Error: [${status}] ${message}`);
+          await sleep(300000); // 5 minutes for other errors
         }
-        console.error(`Error fetching match by ID matchId=${matchId} for puuid=${puuid} on platform=${platform}: [${code}] ${message}`);
         continue;
       }
       if (match?.info?.participants) {
@@ -247,5 +271,10 @@ async function main() {
 }
 
 if (require.main === module) {
-  main().catch(console.error);
+  main().catch((e) => {
+    const status = e?.response?.status || e?.code || 'ERROR';
+    const message = e?.response?.statusText || e?.message?.split('\n')[0] || 'Unknown error';
+    console.error(`Uncaught error in main: [${status}] ${message}`);
+    process.exit(1);
+  });
 }
