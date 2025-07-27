@@ -155,8 +155,8 @@ const HeroSection = () => {
           </div>
 
           <div className="w-full">
-            <h1
-              className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight opacity-0 animate-fade-in mb-4 sm:mb-6"
+            <h2
+              className="lg:text-5xl font-bold leading-tight opacity-0 animate-fade-in mb-4 sm:mb-6"
               style={{
                 ...goldmanTitleStyle,
                 animationDelay: "0.4s",
@@ -164,15 +164,15 @@ const HeroSection = () => {
               }}
             >
               AI for League of Legends Matches
-            </h1>
+            </h2>
 
             <p
               style={{ animationDelay: "0.6s" }}
               className="text-base sm:text-lg lg:text-xl text-gray-700 mt-3 sm:mt-6 mb-6 sm:mb-8 leading-relaxed opacity-0 animate-fade-in font-normal max-w-2xl mx-auto"
             >
-              GONEXT is an AI-powered companion that instantly analyzes players,
-              strategies, and match conditions with real-time data and
-              personalized insights.
+              Your ultimate companion that instantly breaks down game specific
+              analytics and recommendations with real-time analysis and
+              personalized insights. <br /> All in One — Powered by AI.
             </p>
           </div>
 
