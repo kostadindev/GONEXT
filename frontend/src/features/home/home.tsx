@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { Typography, Carousel, ConfigProvider, theme as antdTheme } from "antd";
+import { Typography, ConfigProvider, theme as antdTheme } from "antd";
 import {
   RobotOutlined,
   SmileOutlined,
@@ -266,16 +266,28 @@ const HowItWorksSection = () => {
 // Preview Section Component
 const PreviewSection = () => {
   const sectionRef = React.useRef<HTMLDivElement>(null);
+  const cardsContainerRef = React.useRef<HTMLDivElement>(null);
+  const [activeCardIndex, setActiveCardIndex] = React.useState(0);
+  const [isIntersecting, setIsIntersecting] = React.useState(false);
+  const ticking = React.useRef(false);
+  const lastScrollY = React.useRef(0);
+
+  // Card styling with smooth transitions
+  const cardStyle = {
+    height: "70vh",
+    maxHeight: "700px",
+    borderRadius: "20px",
+    transition:
+      "transform 0.5s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.5s cubic-bezier(0.19, 1, 0.22, 1)",
+    willChange: "transform, opacity",
+  };
 
   React.useEffect(() => {
+    // Create intersection observer to detect when section is in view
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("animate-fade-in");
-            observer.unobserve(entry.target);
-          }
-        });
+        const [entry] = entries;
+        setIsIntersecting(entry.isIntersecting);
       },
       { threshold: 0.1 }
     );
@@ -284,48 +296,194 @@ const PreviewSection = () => {
       observer.observe(sectionRef.current);
     }
 
+    // Optimized scroll handler using requestAnimationFrame
+    const handleScroll = () => {
+      if (!ticking.current) {
+        lastScrollY.current = window.scrollY;
+
+        window.requestAnimationFrame(() => {
+          if (!sectionRef.current) return;
+
+          const sectionRect = sectionRef.current.getBoundingClientRect();
+          const viewportHeight = window.innerHeight;
+          const totalScrollDistance = viewportHeight * 2;
+
+          // Calculate the scroll progress
+          let progress = 0;
+          if (sectionRect.top <= 0) {
+            progress = Math.min(
+              1,
+              Math.max(0, Math.abs(sectionRect.top) / totalScrollDistance)
+            );
+          }
+
+          // Determine which card should be visible based on progress
+          if (progress >= 0.66) {
+            setActiveCardIndex(2);
+          } else if (progress >= 0.33) {
+            setActiveCardIndex(1);
+          } else {
+            setActiveCardIndex(0);
+          }
+
+          ticking.current = false;
+        });
+
+        ticking.current = true;
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll(); // Initial calculation
+
     return () => {
+      window.removeEventListener("scroll", handleScroll);
       if (sectionRef.current) {
         observer.unobserve(sectionRef.current);
       }
     };
   }, []);
 
+  // Card visibility based on active index
+  const isFirstCardVisible = isIntersecting;
+  const isSecondCardVisible = activeCardIndex >= 1;
+  const isThirdCardVisible = activeCardIndex >= 2;
+
+  const slides = [
+    {
+      title: "Live Match Analysis",
+      description:
+        "Get real-time insights about your teammates and enemies during champion select and loading screen.",
+      image: "images/carousel/slide0.png",
+    },
+    {
+      title: "AI-Powered Chat Assistant",
+      description:
+        "Ask strategic questions and get personalized advice based on current match conditions.",
+      image: "images/carousel/slide1.png",
+    },
+    {
+      title: "Performance Dashboard",
+      description:
+        "Track your improvement with detailed analytics and AI recommendations for your gameplay.",
+      image: "images/carousel/slide2.png",
+    },
+  ];
+
   return (
-    <section
-      className="w-full py-20 px-6 bg-white text-center text-black"
-      ref={sectionRef}
-    >
-      <div className="opacity-0">
-        <Title
-          level={2}
-          className="!text-3xl sm:!text-4xl text-[#1e1e1e]"
-          style={goldmanTitleStyle}
-        >
-          Preview
-        </Title>
-        <Paragraph className="max-w-2xl mx-auto text-lg text-gray-600 mb-10">
-          Here's what you can expect when using our AI-powered match assistant.
-        </Paragraph>
-      </div>
-      <div className="w-full max-w-7xl mx-auto">
-        <Carousel
-          autoplay
-          dots
-          className="rounded-xl shadow-lg overflow-hidden"
-        >
-          {[0, 1, 2].map((index) => (
-            <div key={index} className="flex justify-center items-center">
-              <img
-                src={`images/carousel/slide${index}.png`}
-                alt={`Slide ${index}`}
-                className="object-contain w-full h-full"
-              />
+    <div ref={sectionRef} className="relative" style={{ height: "300vh" }}>
+      <section
+        className="w-full h-screen py-10 md:py-16 sticky top-0 overflow-hidden bg-white"
+        id="preview"
+      >
+        <div className="container px-6 lg:px-8 mx-auto h-full flex flex-col">
+          <div className="mb-2 md:mb-3">
+            <div className="flex items-center gap-4 mb-2 md:mb-2 pt-8 sm:pt-6 md:pt-4">
+              <div
+                className="pulse-chip opacity-0 animate-fade-in"
+                style={{
+                  animationDelay: "0.1s",
+                }}
+              >
+                <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-[#e89a3c] text-white mr-2">
+                  03
+                </span>
+                <span>Preview</span>
+              </div>
             </div>
-          ))}
-        </Carousel>
-      </div>
-    </section>
+
+            <h2
+              className="section-title text-3xl sm:text-4xl md:text-5xl font-bold mb-1 md:mb-2"
+              style={goldmanTitleStyle}
+            >
+              Experience GONEXT
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl">
+              Here's what you can expect when using our AI-powered match
+              assistant.
+            </p>
+          </div>
+
+          <div
+            ref={cardsContainerRef}
+            className="relative flex-1 perspective-1000"
+          >
+            {slides.map((slide, index) => {
+              const isVisible =
+                index === 0
+                  ? isFirstCardVisible
+                  : index === 1
+                  ? isSecondCardVisible
+                  : isThirdCardVisible;
+              const zIndex = 10 + index * 10;
+              const scale = index === 0 ? 0.9 : index === 1 ? 0.95 : 1;
+              const translateY = isVisible
+                ? index === 0
+                  ? "90px"
+                  : index === 1
+                  ? activeCardIndex === 1
+                    ? "55px"
+                    : "45px"
+                  : activeCardIndex === 2
+                  ? "15px"
+                  : "0"
+                : "200px";
+
+              return (
+                <div
+                  key={index}
+                  className={`absolute inset-0 overflow-hidden shadow-elegant ${
+                    isVisible ? "animate-card-enter" : ""
+                  }`}
+                  style={{
+                    ...cardStyle,
+                    zIndex,
+                    transform: `translateY(${translateY}) scale(${
+                      isVisible ? scale : 0.9
+                    })`,
+                    opacity: isVisible ? (index === 0 ? 0.9 : 1) : 0,
+                    pointerEvents: isVisible ? "auto" : "none",
+                  }}
+                >
+                  <div className="relative h-full bg-white rounded-xl border border-gray-200 overflow-hidden">
+                    <div className="absolute top-4 right-4 z-20">
+                      <div className="inline-flex items-center justify-center px-4 py-2 rounded-full bg-[#e89a3c]/10 backdrop-blur-sm text-[#e89a3c] border border-[#e89a3c]/20">
+                        <span className="text-sm font-medium">
+                          Step {index + 1}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 lg:grid-cols-2 h-full">
+                      <div className="p-6 sm:p-8 md:p-10 flex flex-col justify-center">
+                        <h3
+                          className="text-2xl sm:text-3xl md:text-4xl font-bold leading-tight mb-4 text-[#1e1e1e]"
+                          style={goldmanTitleStyle}
+                        >
+                          {slide.title}
+                        </h3>
+                        <p className="text-gray-600 text-base sm:text-lg leading-relaxed">
+                          {slide.description}
+                        </p>
+                      </div>
+
+                      <div className="relative h-full min-h-[300px]">
+                        <img
+                          src={slide.image}
+                          alt={slide.title}
+                          className="absolute inset-0 w-full h-full object-cover rounded-r-xl"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-r-xl"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+    </div>
   );
 };
 
