@@ -99,13 +99,13 @@ const ParticleBackground = ({
 
 // Language options matching backend enum
 const languageOptions = [
-  { value: "en", label: "🇺🇸 English" },
-  { value: "es", label: "🇪🇸 Español" },
-  { value: "zh", label: "🇨🇳 中文" },
-  { value: "ja", label: "🇯🇵 日本語" },
-  { value: "ko", label: "🇰🇷 한국어" },
-  { value: "ar", label: "🇸🇦 العربية" },
-  { value: "bg", label: "🇧🇬 Български" },
+  { value: "en", label: "English" },
+  { value: "es", label: "Español" },
+  { value: "zh", label: "中文" },
+  { value: "ja", label: "日本語" },
+  { value: "ko", label: "한국어" },
+  { value: "ar", label: "العربية" },
+  { value: "bg", label: "Български" },
 ];
 
 export const Header: React.FC = () => {
@@ -116,6 +116,12 @@ export const Header: React.FC = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const { t, changeLanguage, currentLanguage } = useTranslation();
   const { token } = useToken();
+
+  // Get the display label for the current language
+  const getCurrentLanguageLabel = () => {
+    const option = languageOptions.find((opt) => opt.value === currentLanguage);
+    return option ? option.label : "English";
+  };
 
   // Feature flag for particles
   const particlesEnabled = process.env.REACT_APP_ENABLE_PARTICLES === "true";
@@ -356,6 +362,9 @@ export const Header: React.FC = () => {
               }}
               dropdownMatchSelectWidth={false}
               placement="bottomRight"
+              labelInValue={false}
+              fieldNames={{ label: "label", value: "value" }}
+              optionLabelProp="label"
             />
 
             {/* User Section - Currently commented out but ready for use */}
