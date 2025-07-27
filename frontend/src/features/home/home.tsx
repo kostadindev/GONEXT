@@ -130,52 +130,11 @@ const HeroSection = () => {
       <div className="absolute top-[40%] right-[20%] w-48 h-48 bg-gradient-to-br from-[#ff7043]/15 to-transparent opacity-20 blur-2xl rounded-full transform rotate-90"></div>
 
       <div className="container px-4 sm:px-6 lg:px-8 w-full" ref={containerRef}>
-        <div className="flex flex-col lg:flex-row gap-6 lg:gap-12 items-center max-w-7xl mx-auto">
-          <div className="w-full lg:w-3/5">
-            <h1
-              className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight opacity-0 animate-fade-in mb-4 sm:mb-6"
-              style={{
-                ...goldmanTitleStyle,
-                animationDelay: "0.3s",
-                color: "#1e1e1e",
-              }}
-            >
-              AI for League of Legends Matches
-            </h1>
-
-            <p
-              style={{ animationDelay: "0.5s" }}
-              className="text-base sm:text-lg lg:text-xl text-gray-700 mt-3 sm:mt-6 mb-6 sm:mb-8 leading-relaxed opacity-0 animate-fade-in font-normal max-w-2xl"
-            >
-              GONEXT is an AI-powered companion that instantly analyzes players,
-              strategies, and match conditions with real-time data and
-              personalized insights.
-            </p>
-
-            <div
-              className="opacity-0 animate-fade-in mb-8"
-              style={{ animationDelay: "0.7s" }}
-            >
-              <div className="space-y-4 max-w-lg">
-                <div>
-                  <GlobalSearch />
-                </div>
-                <div className="text-center">
-                  <span className="text-gray-600 font-medium text-sm">
-                    or try it out for
-                  </span>
-                </div>
-                <div className="w-full flex justify-center">
-                  <QuickSearch />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="w-full lg:w-2/5 relative mt-6 lg:mt-0">
+        <div className="flex flex-col items-center max-w-4xl mx-auto text-center">
+          <div className="w-full max-w-xs relative mb-6">
             <div
               className="relative z-10 animate-fade-in"
-              style={{ animationDelay: "0.9s" }}
+              style={{ animationDelay: "0.2s" }}
             >
               <div className="relative transition-all duration-500 ease-out">
                 <img
@@ -185,12 +144,53 @@ const HeroSection = () => {
                   className="w-full h-auto object-contain transition-transform duration-500 ease-out"
                   style={{
                     transformStyle: "preserve-3d",
-                    maxWidth: "500px",
+                    maxWidth: "300px",
                     margin: "0 auto",
                     display: "block",
-                    filter: "drop-shadow(0 10px 25px rgba(0, 0, 0, 0.1))",
+                    filter: "drop-shadow(0 5px 15px rgba(0, 0, 0, 0.1))",
                   }}
                 />
+              </div>
+            </div>
+          </div>
+
+          <div className="w-full">
+            <h1
+              className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight opacity-0 animate-fade-in mb-4 sm:mb-6"
+              style={{
+                ...goldmanTitleStyle,
+                animationDelay: "0.4s",
+                color: "#1e1e1e",
+              }}
+            >
+              AI for League of Legends Matches
+            </h1>
+
+            <p
+              style={{ animationDelay: "0.6s" }}
+              className="text-base sm:text-lg lg:text-xl text-gray-700 mt-3 sm:mt-6 mb-6 sm:mb-8 leading-relaxed opacity-0 animate-fade-in font-normal max-w-2xl mx-auto"
+            >
+              GONEXT is an AI-powered companion that instantly analyzes players,
+              strategies, and match conditions with real-time data and
+              personalized insights.
+            </p>
+          </div>
+
+          <div
+            className="opacity-0 animate-fade-in w-full"
+            style={{ animationDelay: "0.8s" }}
+          >
+            <div className="space-y-4 max-w-lg mx-auto">
+              <div>
+                <GlobalSearch />
+              </div>
+              <div className="text-center">
+                <span className="text-gray-600 font-medium text-sm">
+                  or try it out for
+                </span>
+              </div>
+              <div className="w-full flex justify-center">
+                <QuickSearch />
               </div>
             </div>
           </div>
