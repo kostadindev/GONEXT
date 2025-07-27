@@ -94,8 +94,8 @@ const HeroSection = () => {
       className="overflow-hidden relative bg-cover min-h-screen flex items-center"
       id="hero"
       style={{
-        backgroundImage:
-          "linear-gradient(135deg, #ffd8bf 0%, #ffe7ba 50%, #fff 100%)",
+        background:
+          "linear-gradient(135deg, #fff5f0 0%, #ffe7ba 30%, #ffd8bf 70%, #fff 100%)",
         padding: isMobile ? "100px 12px 40px" : "120px 20px 60px",
       }}
     >
@@ -115,12 +115,19 @@ const HeroSection = () => {
         </h1>
       </div>
 
-      {/* Background gradient overlays */}
-      <div className="absolute -top-[10%] -right-[5%] w-1/2 h-[70%] bg-gradient-to-br from-[#e89a3c]/20 to-transparent opacity-30 blur-3xl rounded-full"></div>
+      {/* Organic background gradient overlays */}
+      <div className="absolute -top-[15%] -right-[10%] w-[60%] h-[80%] bg-gradient-to-br from-[#e89a3c]/15 via-[#ff6b35]/10 to-transparent opacity-40 blur-3xl rounded-full transform rotate-12"></div>
+      <div className="absolute top-[20%] -left-[5%] w-[40%] h-[60%] bg-gradient-to-tr from-[#ffa726]/20 to-transparent opacity-25 blur-3xl rounded-full transform -rotate-45"></div>
+      <div className="absolute bottom-[-10%] right-[10%] w-[50%] h-[50%] bg-gradient-to-tl from-[#e89a3c]/12 via-transparent to-[#ff8a65]/8 opacity-30 blur-3xl rounded-full transform rotate-45"></div>
       <div
-        className="absolute bottom-0 left-1/4 w-64 h-64 bg-[#e89a3c]/10 rounded-full blur-3xl -z-10 parallax"
+        className="absolute bottom-[10%] left-[15%] w-72 h-72 rounded-full blur-3xl -z-10 parallax"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(232, 154, 60, 0.08) 0%, transparent 70%)",
+        }}
         data-speed="0.05"
       ></div>
+      <div className="absolute top-[40%] right-[20%] w-48 h-48 bg-gradient-to-br from-[#ff7043]/15 to-transparent opacity-20 blur-2xl rounded-full transform rotate-90"></div>
 
       <div className="container px-4 sm:px-6 lg:px-8 w-full" ref={containerRef}>
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-12 items-center max-w-7xl mx-auto">
