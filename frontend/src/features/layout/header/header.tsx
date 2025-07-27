@@ -201,50 +201,6 @@ export const Header: React.FC = () => {
     window.dispatchEvent(new Event("languageChanged"));
   };
 
-  // Settings dropdown menu items
-  const settingsMenuItems = [
-    {
-      key: "theme",
-      label: (
-        <div onClick={(e) => e.stopPropagation()}>
-          <Space>
-            <Switch
-              checked={isDarkMode}
-              onChange={toggleDarkMode}
-              size="small"
-              checkedChildren={<MoonOutlined />}
-              unCheckedChildren={<SunOutlined />}
-            />
-            <Text>
-              {isDarkMode ? t("common.theme.dark") : t("common.theme.light")}
-            </Text>
-          </Space>
-        </div>
-      ),
-    },
-    {
-      type: "divider" as const,
-    },
-    {
-      key: "language",
-      label: (
-        <Space>
-          <GlobalOutlined />
-          <Select
-            value={currentLanguage}
-            onChange={handleLanguageChange}
-            options={languageOptions}
-            style={{ width: 140 }}
-            size="small"
-            bordered={false}
-            variant="borderless"
-            onClick={(e) => e.stopPropagation()}
-          />
-        </Space>
-      ),
-    },
-  ];
-
   return (
     <Layout.Header
       style={{
@@ -336,20 +292,70 @@ export const Header: React.FC = () => {
               />
             )}
 
-            {/* Settings Dropdown */}
-            <Dropdown
-              menu={{ items: settingsMenuItems }}
-              trigger={["click"]}
-              placement="bottomRight"
+            {/* Theme Toggle */}
+            <Tooltip
+              title={
+                isDarkMode ? t("common.theme.light") : t("common.theme.dark")
+              }
             >
               <Button
                 type="text"
-                icon={<SettingOutlined style={{ fontSize: 18 }} />}
+                icon={isDarkMode ? <SunOutlined /> : <MoonOutlined />}
+                onClick={() => toggleDarkMode(!isDarkMode)}
                 style={{
                   borderRadius: token.borderRadiusLG,
+                  border: `1px solid ${token.colorBorderSecondary}`,
+                  backgroundColor: isDarkMode
+                    ? token.colorBgElevated
+                    : token.colorBgContainer,
+                  color: isDarkMode
+                    ? token.colorText
+                    : token.colorTextSecondary,
+                  transition: "all 0.3s ease",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  minWidth: 40,
+                  height: 36,
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = isDarkMode
+                    ? token.colorBgContainer
+                    : token.colorBgElevated;
+                  e.currentTarget.style.borderColor = token.colorPrimary;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = isDarkMode
+                    ? token.colorBgElevated
+                    : token.colorBgContainer;
+                  e.currentTarget.style.borderColor =
+                    token.colorBorderSecondary;
                 }}
               />
-            </Dropdown>
+            </Tooltip>
+
+            {/* Language Selector */}
+            <Select
+              value={currentLanguage}
+              onChange={handleLanguageChange}
+              options={languageOptions}
+              style={{
+                width: 140,
+                borderRadius: token.borderRadiusLG,
+              }}
+              size="middle"
+              bordered={true}
+              variant="outlined"
+              suffixIcon={
+                <GlobalOutlined style={{ color: token.colorTextSecondary }} />
+              }
+              dropdownStyle={{
+                borderRadius: token.borderRadiusLG,
+                boxShadow: token.boxShadowSecondary,
+              }}
+              dropdownMatchSelectWidth={false}
+              placement="bottomRight"
+            />
 
             {/* User Section - Currently commented out but ready for use */}
             {/* {user ? (
