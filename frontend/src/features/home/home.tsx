@@ -5,8 +5,6 @@ import {
   SmileOutlined,
   SolutionOutlined,
 } from "@ant-design/icons";
-import { Particles, initParticlesEngine } from "@tsparticles/react";
-import { loadSlim } from "@tsparticles/slim";
 import GlobalSearch from "../global-search/global-search";
 import { QuickSearch } from "../quick-search/quick-search";
 
@@ -18,96 +16,91 @@ const goldmanTitleStyle = {
   fontWeight: 500,
 };
 
-// Reusable particles component
-const ParticleBackground = ({ id }: { id: string }) => {
-  const [windowSize, setWindowSize] = useState({
-    width: typeof window !== "undefined" ? window.innerWidth : 1200,
-    height: typeof window !== "undefined" ? window.innerHeight : 800,
-  });
+// Hero Section Component
+const HeroSection = () => {
+  const containerRef = React.useRef<HTMLDivElement>(null);
+  const imageRef = React.useRef<HTMLImageElement>(null);
+  const [isMobile, setIsMobile] = React.useState(false);
 
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowSize({
-        width: window.innerWidth,
-        height: window.innerHeight,
+  React.useEffect(() => {
+    // Check if mobile on mount and when window resizes
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  React.useEffect(() => {
+    // Skip effect on mobile
+    if (isMobile) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!containerRef.current || !imageRef.current) return;
+
+      const { left, top, width, height } =
+        containerRef.current.getBoundingClientRect();
+      const x = (e.clientX - left) / width - 0.5;
+      const y = (e.clientY - top) / height - 0.5;
+
+      imageRef.current.style.transform = `perspective(1000px) rotateY(${
+        x * 2.5
+      }deg) rotateX(${-y * 2.5}deg) scale3d(1.02, 1.02, 1.02)`;
+    };
+
+    const handleMouseLeave = (): void => {
+      if (!imageRef.current) return;
+      imageRef.current.style.transform = `perspective(1000px) rotateY(0deg) rotateX(0deg) scale3d(1, 1, 1)`;
+    };
+
+    const container = containerRef.current;
+    if (container) {
+      container.addEventListener("mousemove", handleMouseMove);
+      container.addEventListener("mouseleave", handleMouseLeave);
+    }
+
+    return () => {
+      if (container) {
+        container.removeEventListener("mousemove", handleMouseMove);
+        container.removeEventListener("mouseleave", handleMouseLeave);
+      }
+    };
+  }, [isMobile]);
+
+  React.useEffect(() => {
+    // Skip parallax on mobile
+    if (isMobile) return;
+
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const elements = document.querySelectorAll(".parallax");
+      elements.forEach((el) => {
+        const element = el as HTMLElement;
+        const speed = parseFloat(element.dataset.speed || "0.1");
+        const yPos = -scrollY * speed;
+        element.style.setProperty("--parallax-y", `${yPos}px`);
       });
     };
 
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [isMobile]);
 
-  return (
-    <Particles
-      id={id}
-      options={{
-        fullScreen: {
-          enable: false,
-        },
-        fpsLimit: 60,
-        particles: {
-          color: {
-            value: "#e89a3c",
-          },
-          links: {
-            color: "#e89a3c",
-            distance: windowSize.width < 480 ? 100 : 150,
-            enable: true,
-            opacity: 0.8,
-            width: 2,
-          },
-          move: {
-            enable: true,
-            speed: 2,
-            direction: "none",
-            random: false,
-            straight: false,
-            outModes: {
-              default: "bounce",
-            },
-          },
-          number: {
-            value: windowSize.width < 480 ? 24 : 100,
-            density: {
-              enable: false,
-            },
-          },
-          opacity: {
-            value: 1,
-          },
-          size: {
-            value: { min: 2, max: 5 },
-          },
-        },
-        detectRetina: true,
-      }}
-    />
-  );
-};
-
-// Hero Section Component
-const HeroSection = ({ init }: { init: boolean }) => {
   return (
     <section
-      className="relative w-full flex flex-col justify-center items-center px-6 pt-28 sm:pt-0 text-center bg-[linear-gradient(45deg,_#ffd8bf,_#ffe7ba,_#fff)] text-black"
-      style={{ minHeight: "100vh" }}
+      className="overflow-hidden relative bg-cover min-h-screen flex items-center"
+      id="hero"
+      style={{
+        backgroundImage:
+          "linear-gradient(135deg, #ffd8bf 0%, #ffe7ba 50%, #fff 100%)",
+        padding: isMobile ? "100px 12px 40px" : "120px 20px 60px",
+      }}
     >
-      {/* Particle Background */}
-      {init && (
-        <div
-          className="absolute top-0 left-0"
-          style={{
-            width: "100%",
-            height: "100%",
-            overflow: "hidden",
-          }}
-        >
-          <ParticleBackground id="tsparticles-hero" />
-        </div>
-      )}
-
       {/* Logo */}
-      <div className="absolute top-4 left-4 sm:top-1 sm:left-6 flex items-center gap-3 z-10">
+      <div className="absolute top-4 left-4 sm:top-6 sm:left-6 flex items-center gap-3 z-20">
         <h1
           className="text-3xl sm:text-5xl cursor-pointer"
           style={{
@@ -122,44 +115,80 @@ const HeroSection = ({ init }: { init: boolean }) => {
         </h1>
       </div>
 
+      {/* Background gradient overlays */}
+      <div className="absolute -top-[10%] -right-[5%] w-1/2 h-[70%] bg-gradient-to-br from-[#e89a3c]/20 to-transparent opacity-30 blur-3xl rounded-full"></div>
       <div
-        className="animate-fade-in opacity-0"
-        style={{ animationDelay: "0.1s" }}
-      >
-        <img
-          src="/images/landing/monkey-poro.png"
-          alt="Monkey Poro"
-          className="w-[200px] sm:w-[300px] h-auto mb-6 mt-6 sm:mt-0 relative z-10"
-        />
-      </div>
+        className="absolute bottom-0 left-1/4 w-64 h-64 bg-[#e89a3c]/10 rounded-full blur-3xl -z-10 parallax"
+        data-speed="0.05"
+      ></div>
 
-      <Title
-        className="!text-3xl sm:!text-5xl tracking-tight text-[#1e1e1e] relative z-10 animate-fade-in opacity-0"
-        style={{ ...goldmanTitleStyle, animationDelay: "0.3s" }}
-      >
-        Your Game Companion Powered by AI
-      </Title>
+      <div className="container px-4 sm:px-6 lg:px-8 w-full" ref={containerRef}>
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-12 items-center max-w-7xl mx-auto">
+          <div className="w-full lg:w-1/2">
+            <h1
+              className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight opacity-0 animate-fade-in mb-4 sm:mb-6"
+              style={{
+                ...goldmanTitleStyle,
+                animationDelay: "0.3s",
+                color: "#1e1e1e",
+              }}
+            >
+              GONEXT: Where Strategy
+              <br className="hidden sm:inline" />
+              Meets Intelligence
+            </h1>
 
-      <Paragraph
-        className="text-lg sm:text-2xl max-w-2xl mt-4 text-gray-700 leading-relaxed relative z-10 animate-fade-in opacity-0"
-        style={{ animationDelay: "0.5s" }}
-      >
-        Instantly analyze players, strategies, and match conditions with
-        real-time data and personalized insights.
-      </Paragraph>
+            <p
+              style={{ animationDelay: "0.5s" }}
+              className="text-base sm:text-lg lg:text-xl text-gray-700 mt-3 sm:mt-6 mb-6 sm:mb-8 leading-relaxed opacity-0 animate-fade-in font-normal max-w-2xl"
+            >
+              Your AI-powered companion that instantly analyzes players,
+              strategies, and match conditions with real-time data and
+              personalized insights.
+            </p>
 
-      <div
-        className="mt-10 flex flex-col items-center gap-4 w-full max-w-lg px-4 mb-12 sm:mb-0 relative z-10 animate-fade-in opacity-0"
-        style={{ animationDelay: "0.7s" }}
-      >
-        <div className="w-full">
-          <GlobalSearch />
-        </div>
-        <span className="hidden sm:inline text-gray-600 font-medium text-base sm:text-lg mt-1">
-          or try it out for
-        </span>
-        <div className="hidden sm:block w-full">
-          <QuickSearch />
+            <div
+              className="opacity-0 animate-fade-in mb-8"
+              style={{ animationDelay: "0.7s" }}
+            >
+              <div className="space-y-4 max-w-lg">
+                <div>
+                  <GlobalSearch />
+                </div>
+                <div className="text-center">
+                  <span className="text-gray-600 font-medium text-sm">
+                    or try it out for
+                  </span>
+                </div>
+                <div>
+                  <QuickSearch />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="w-full lg:w-1/2 relative mt-6 lg:mt-0">
+            <div
+              className="relative z-10 animate-fade-in"
+              style={{ animationDelay: "0.9s" }}
+            >
+              <div className="relative transition-all duration-500 ease-out">
+                <img
+                  ref={imageRef}
+                  src="/images/landing/monkey-poro.png"
+                  alt="GONEXT Gaming Assistant"
+                  className="w-full h-auto object-contain transition-transform duration-500 ease-out"
+                  style={{
+                    transformStyle: "preserve-3d",
+                    maxWidth: "500px",
+                    margin: "0 auto",
+                    display: "block",
+                    filter: "drop-shadow(0 10px 25px rgba(0, 0, 0, 0.1))",
+                  }}
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -377,23 +406,9 @@ const PreviewSection = () => {
         id="preview"
       >
         <div className="container px-6 lg:px-8 mx-auto h-full flex flex-col">
-          <div className="mb-2 md:mb-3">
-            <div className="flex items-center gap-4 mb-2 md:mb-2 pt-8 sm:pt-6 md:pt-4">
-              <div
-                className="pulse-chip opacity-0 animate-fade-in"
-                style={{
-                  animationDelay: "0.1s",
-                }}
-              >
-                <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-[#e89a3c] text-white mr-2">
-                  03
-                </span>
-                <span>Preview</span>
-              </div>
-            </div>
-
+          <div className="mb-8 md:mb-12">
             <h2
-              className="section-title text-3xl sm:text-4xl md:text-5xl font-bold mb-1 md:mb-2"
+              className="section-title text-3xl sm:text-4xl md:text-5xl font-bold mb-4 md:mb-6"
               style={goldmanTitleStyle}
             >
               Experience GONEXT
@@ -446,34 +461,28 @@ const PreviewSection = () => {
                   }}
                 >
                   <div className="relative h-full bg-white rounded-xl border border-gray-200 overflow-hidden">
-                    <div className="absolute top-4 right-4 z-20">
-                      <div className="inline-flex items-center justify-center px-4 py-2 rounded-full bg-[#e89a3c]/10 backdrop-blur-sm text-[#e89a3c] border border-[#e89a3c]/20">
-                        <span className="text-sm font-medium">
-                          Step {index + 1}
-                        </span>
-                      </div>
-                    </div>
+                    {/* Full width image background */}
+                    <div className="relative h-full w-full">
+                      <img
+                        src={slide.image}
+                        alt={slide.title}
+                        className="absolute inset-0 w-full h-full object-contain rounded-xl"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent rounded-xl"></div>
 
-                    <div className="grid grid-cols-1 lg:grid-cols-2 h-full">
-                      <div className="p-6 sm:p-8 md:p-10 flex flex-col justify-center">
-                        <h3
-                          className="text-2xl sm:text-3xl md:text-4xl font-bold leading-tight mb-4 text-[#1e1e1e]"
-                          style={goldmanTitleStyle}
-                        >
-                          {slide.title}
-                        </h3>
-                        <p className="text-gray-600 text-base sm:text-lg leading-relaxed">
-                          {slide.description}
-                        </p>
-                      </div>
-
-                      <div className="relative h-full min-h-[300px]">
-                        <img
-                          src={slide.image}
-                          alt={slide.title}
-                          className="absolute inset-0 w-full h-full object-cover rounded-r-xl"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-r-xl"></div>
+                      {/* Glass overlay text */}
+                      <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8">
+                        <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 shadow-2xl">
+                          <h3
+                            className="text-xl sm:text-2xl font-bold leading-tight mb-3 text-white"
+                            style={goldmanTitleStyle}
+                          >
+                            {slide.title}
+                          </h3>
+                          <p className="text-white/90 text-sm sm:text-base leading-relaxed">
+                            {slide.description}
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -488,7 +497,7 @@ const PreviewSection = () => {
 };
 
 // Why It's Smart Section Component
-const WhySmartSection = ({ init }: { init: boolean }) => {
+const WhySmartSection = () => {
   const sectionRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
@@ -522,27 +531,18 @@ const WhySmartSection = ({ init }: { init: boolean }) => {
 
   return (
     <section
-      className="relative w-full py-20 px-6 text-center text-black bg-[linear-gradient(120deg,_#fff2e8,_#ffd8bf)]"
+      className="relative w-full py-20 px-6 text-center text-black bg-gradient-to-br from-[#fff2e8] via-[#ffd8bf] to-[#ffe7ba]"
       ref={sectionRef}
     >
-      {/* Particle Background for Why It's Smart */}
-      {init && (
-        <div
-          className="absolute top-0 left-0"
-          style={{
-            width: "100%",
-            height: "100%",
-            overflow: "hidden",
-          }}
-        >
-          <ParticleBackground id="tsparticles-why" />
-        </div>
-      )}
-      <div className="relative z-10">
+      {/* Background decorative elements */}
+      <div className="absolute -top-20 right-0 w-72 h-72 bg-[#e89a3c]/10 rounded-full opacity-60 blur-3xl -z-10"></div>
+      <div className="absolute bottom-0 left-10 w-64 h-64 bg-[#e89a3c]/5 rounded-full opacity-70 blur-3xl -z-10"></div>
+
+      <div className="relative z-10 max-w-7xl mx-auto">
         <div className="fade-in-element opacity-0">
           <Title
             level={2}
-            className="!text-3xl sm:!text-4xl text-[#1e1e1e]"
+            className="!text-3xl sm:!text-4xl text-[#1e1e1e] mb-4"
             style={goldmanTitleStyle}
           >
             Why It's Smart
@@ -671,7 +671,7 @@ const UseCasesSection = () => {
 };
 
 // Final CTA Section Component
-const CTASection = ({ init }: { init: boolean }) => {
+const CTASection = () => {
   const sectionRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
@@ -699,31 +699,22 @@ const CTASection = ({ init }: { init: boolean }) => {
   }, []);
 
   return (
-    <section
-      className="relative w-full py-20 px-6 text-black text-center bg-[linear-gradient(135deg,_#ffe7ba,_#fff1e6)]"
-      ref={sectionRef}
-    >
-      {/* Particle Background for CTA */}
-      {init && (
-        <div
-          className="absolute top-0 left-0"
-          style={{
-            width: "100%",
-            height: "100%",
-            overflow: "hidden",
-          }}
-        >
-          <ParticleBackground id="tsparticles-cta" />
-        </div>
-      )}
-      <div className="relative z-10 opacity-0">
+    <section className="relative w-full py-20 px-6 text-black text-center bg-gradient-to-br from-[#ffe7ba] via-[#fff1e6] to-[#fff]">
+      {/* Background decorative elements */}
+      <div className="absolute -top-10 -left-10 w-72 h-72 bg-[#e89a3c]/10 rounded-full opacity-40 blur-3xl -z-10"></div>
+      <div className="absolute bottom-0 right-0 w-64 h-64 bg-[#e89a3c]/5 rounded-full opacity-50 blur-3xl -z-10"></div>
+
+      <div
+        ref={sectionRef}
+        className="relative z-10 max-w-4xl mx-auto opacity-0"
+      >
         <Title
-          className="!text-4xl sm:!text-5xl tracking-tight text-[#1e1e1e]"
+          className="!text-4xl sm:!text-5xl tracking-tight text-[#1e1e1e] mb-6"
           style={goldmanTitleStyle}
         >
           Ready to Win More?
         </Title>
-        <Paragraph className="text-lg max-w-xl mx-auto mb-6 text-gray-700">
+        <Paragraph className="text-lg max-w-xl mx-auto mb-8 text-gray-700">
           Get AI-powered insights during your games. It's like having a coach by
           your side.
         </Paragraph>
@@ -742,25 +733,6 @@ const CTASection = ({ init }: { init: boolean }) => {
 };
 
 const HomePage: React.FC = () => {
-  const [init, setInit] = useState(false);
-
-  // Initialize tsParticles
-  useEffect(() => {
-    console.log("Initializing particles engine...");
-    initParticlesEngine(async (engine) => {
-      console.log("Loading slim package...");
-      await loadSlim(engine);
-      console.log("Slim package loaded successfully");
-    })
-      .then(() => {
-        setInit(true);
-        console.log("Particles engine initialized successfully");
-      })
-      .catch((error) => {
-        console.error("Error initializing particles engine:", error);
-      });
-  }, []);
-
   // Initialize intersection observer for animations
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -793,12 +765,12 @@ const HomePage: React.FC = () => {
       }}
     >
       <div className="w-full text-gray-800 bg-white">
-        <HeroSection init={init} />
+        <HeroSection />
         <HowItWorksSection />
         <PreviewSection />
-        <WhySmartSection init={init} />
+        <WhySmartSection />
         <UseCasesSection />
-        <CTASection init={init} />
+        <CTASection />
       </div>
     </ConfigProvider>
   );

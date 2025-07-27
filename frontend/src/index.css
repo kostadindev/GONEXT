@@ -244,3 +244,23 @@ code {
     transform: none;
   }
 }
+
+/* Parallax effect for background elements */
+.parallax {
+  transform: translateY(var(--parallax-y, 0));
+  transition: transform 0.1s ease-out;
+}
+
+/* Background gradient utilities */
+.bg-pulse-gradient {
+  background: linear-gradient(135deg, #e89a3c 0%, #d68929 50%, #c47820 100%);
+}
+
+.bg-dark-900 {
+  background-color: #1a1a1a;
+}
+
+/* Enhanced 3D transform for interactive elements */
+.transform-style-preserve-3d {
+  transform-style: preserve-3d;
+}
