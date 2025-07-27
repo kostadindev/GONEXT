@@ -124,7 +124,7 @@ const HeroSection = () => {
 
       <div className="container px-4 sm:px-6 lg:px-8 w-full" ref={containerRef}>
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-12 items-center max-w-7xl mx-auto">
-          <div className="w-full lg:w-1/2">
+          <div className="w-full lg:w-3/5">
             <h1
               className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight opacity-0 animate-fade-in mb-4 sm:mb-6"
               style={{
@@ -133,16 +133,14 @@ const HeroSection = () => {
                 color: "#1e1e1e",
               }}
             >
-              GONEXT: Where Strategy
-              <br className="hidden sm:inline" />
-              Meets Intelligence
+              AI for League of Legends Matches
             </h1>
 
             <p
               style={{ animationDelay: "0.5s" }}
               className="text-base sm:text-lg lg:text-xl text-gray-700 mt-3 sm:mt-6 mb-6 sm:mb-8 leading-relaxed opacity-0 animate-fade-in font-normal max-w-2xl"
             >
-              Your AI-powered companion that instantly analyzes players,
+              GONEXT is an AI-powered companion that instantly analyzes players,
               strategies, and match conditions with real-time data and
               personalized insights.
             </p>
@@ -160,14 +158,14 @@ const HeroSection = () => {
                     or try it out for
                   </span>
                 </div>
-                <div>
+                <div className="w-full flex justify-center">
                   <QuickSearch />
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="w-full lg:w-1/2 relative mt-6 lg:mt-0">
+          <div className="w-full lg:w-2/5 relative mt-6 lg:mt-0">
             <div
               className="relative z-10 animate-fade-in"
               style={{ animationDelay: "0.9s" }}
