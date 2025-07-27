@@ -342,8 +342,9 @@ export const Header: React.FC = () => {
               style={{
                 width: 140,
                 borderRadius: token.borderRadiusLG,
+                height: 36,
               }}
-              size="middle"
+              size="small"
               bordered={true}
               variant="outlined"
               suffixIcon={
