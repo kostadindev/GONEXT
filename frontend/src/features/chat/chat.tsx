@@ -56,6 +56,7 @@ const ChatComponent: React.FC<{
 
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
   const messageContainerRef = React.useRef<HTMLDivElement>(null);
+  const textAreaRef = React.useRef<any>(null);
 
   const scrollToBottom = useCallback(() => {
     if (messageContainerRef.current) {
@@ -242,126 +243,124 @@ const ChatComponent: React.FC<{
   };
 
   return (
-    <div className="flex justify-center pt-5">
+    <div className="flex justify-center pt-6">
       <div
-        className="flex flex-col w-[100%] min-w-[500px]"
+        className="flex flex-col w-[100%] min-w-[500px] max-w-[900px]"
         style={{ height: height }}
       >
         {messages.length === 0 && !loadingSession && (
           <DefaultPrompts handleSendMessage={handleSendMessage} />
         )}
         <div
-          className="flex-1 overflow-y-auto p-4 space-y-4"
+          className="flex-1 overflow-y-auto px-6 py-4 space-y-6 relative"
           ref={messageContainerRef}
           onScroll={handleScroll}
+          style={{
+            background: `radial-gradient(circle at 50% 0%, ${token.colorPrimary}02 0%, transparent 50%)`,
+          }}
         >
           {messages.map((msg, index) => (
-            <div key={index} className="flex items-start gap-3 justify-start">
-              {/* Avatar for system messages (left side) */}
-              {showAvatar && msg.role === "system" && (
-                <div className="flex-shrink-0">
-                  <Avatar
-                    size={36}
-                    icon={<RobotOutlined />}
-                    className="shadow-md border-2"
-                    style={{
-                      backgroundColor: token.colorFillTertiary,
-                      color: primaryColor,
-                      borderColor: token.colorBgContainer,
-                    }}
-                  />
-                </div>
-              )}
-
-              {/* Avatar for user messages (left side) */}
-              {showAvatar && msg.role === "user" && (
-                <div className="flex-shrink-0">
-                  <Avatar
-                    size={36}
-                    src={user?.picture}
-                    className="shadow-md border-2"
-                    style={{
-                      backgroundColor: primaryColor,
-                      borderColor: token.colorBgContainer,
-                    }}
-                  >
-                    {user?.name?.charAt(0)?.toUpperCase()}
-                  </Avatar>
-                </div>
-              )}
-
-              {/* Message content */}
-              <div className="flex flex-col items-start">
-                {msg.role === "user" ? (
-                  <div
-                    className="inline-block p-3 px-4 rounded-2xl break-words text-white shadow-lg transition-all duration-200 hover:shadow-xl"
-                    style={{
-                      background: `linear-gradient(135deg, ${primaryColor} 0%, ${primaryColor}dd 100%)`,
-                      maxWidth: showAvatar ? "calc(70% - 40px)" : "70%",
-                      minWidth: "60px",
-                    }}
-                  >
-                    {msg.content}
+            <div key={index} className="group relative">
+              <div className="flex items-start gap-4 justify-start py-2">
+                {/* Avatar for system messages (left side) */}
+                {showAvatar && msg.role === "system" && (
+                  <div className="flex-shrink-0 mt-1">
+                    <Avatar
+                      size={32}
+                      icon={<RobotOutlined />}
+                      className="shadow-sm transition-all duration-200 group-hover:shadow-md"
+                      style={{
+                        backgroundColor: token.colorFillTertiary,
+                        color: primaryColor,
+                        border: `1px solid ${token.colorBorder}`,
+                      }}
+                    />
                   </div>
-                ) : (
-                  <Card
-                    className="w-full rounded-2xl shadow-lg transition-all duration-200 hover:shadow-xl"
-                    style={{
-                      borderRadius: "16px",
-                      minHeight: msg.content.trim() === "" ? "80px" : "auto",
-                      // background: `linear-gradient(135deg, ${primaryColor}08 0%, ${primaryColor}05 100%)`,
-                      // borderColor: `${primaryColor}20`,
-                    }}
-                    bodyStyle={{
-                      padding: "20px",
-                      borderRadius: "16px",
-                      minHeight: msg.content.trim() === "" ? "40px" : "auto",
-                      display: "flex",
-                      alignItems:
-                        msg.content.trim() === "" ? "center" : "flex-start",
-                    }}
-                  >
-                    {msg.content.trim() === "" ? (
-                      <div
-                        className="flex items-center gap-2 w-full"
-                        style={{ color: token.colorTextTertiary }}
-                      >
-                        <div className="animate-pulse flex gap-1">
-                          <div
-                            className="w-2 h-2 rounded-full animate-bounce"
-                            style={{
-                              backgroundColor: token.colorTextQuaternary,
-                            }}
-                          ></div>
-                          <div
-                            className="w-2 h-2 rounded-full animate-bounce"
-                            style={{
-                              backgroundColor: token.colorTextQuaternary,
-                              animationDelay: "0.1s",
-                            }}
-                          ></div>
-                          <div
-                            className="w-2 h-2 rounded-full animate-bounce"
-                            style={{
-                              backgroundColor: token.colorTextQuaternary,
-                              animationDelay: "0.2s",
-                            }}
-                          ></div>
-                        </div>
-                        <span className="text-sm">AI is thinking...</span>
-                      </div>
-                    ) : (
-                      <MarkdownRenderer content={msg.content} />
-                    )}
-                  </Card>
                 )}
 
-                {/* Timestamp could go here */}
-                <div
-                  className="text-xs mt-1 px-2"
-                  style={{ color: token.colorTextQuaternary }}
-                >
-                  {/* Add timestamp if needed */}
+                {/* Avatar for user messages (left side) */}
+                {showAvatar && msg.role === "user" && (
+                  <div className="flex-shrink-0 mt-1">
+                    <Avatar
+                      size={32}
+                      src={user?.picture}
+                      className="shadow-sm transition-all duration-200 group-hover:shadow-md"
+                      style={{
+                        backgroundColor: primaryColor,
+                        border: `1px solid ${token.colorBorder}`,
+                      }}
+                    >
+                      {user?.name?.charAt(0)?.toUpperCase()}
+                    </Avatar>
+                  </div>
+                )}
+
+                {/* Message content */}
+                <div className="flex flex-col flex-1 min-w-0">
+                  {msg.role === "user" ? (
+                    <div
+                      className="inline-block py-3 px-4 rounded-2xl break-words text-white shadow-sm transition-all duration-200 hover:shadow-md self-end max-w-[80%]"
+                      style={{
+                        background: `linear-gradient(135deg, ${primaryColor} 0%, ${primaryColor}dd 100%)`,
+                        fontSize: "14px",
+                        lineHeight: "1.5",
+                      }}
+                    >
+                      {msg.content}
+                    </div>
+                  ) : (
+                    <div className="w-full">
+                      {msg.content.trim() === "" ? (
+                        <div
+                          className="flex items-center gap-3 py-3"
+                          style={{ color: token.colorTextTertiary }}
+                        >
+                          <div className="flex gap-1">
+                            <div
+                              className="w-2 h-2 rounded-full animate-bounce"
+                              style={{
+                                backgroundColor: primaryColor,
+                                opacity: 0.6,
+                              }}
+                            ></div>
+                            <div
+                              className="w-2 h-2 rounded-full animate-bounce"
+                              style={{
+                                backgroundColor: primaryColor,
+                                opacity: 0.6,
+                                animationDelay: "0.15s",
+                              }}
+                            ></div>
+                            <div
+                              className="w-2 h-2 rounded-full animate-bounce"
+                              style={{
+                                backgroundColor: primaryColor,
+                                opacity: 0.6,
+                                animationDelay: "0.3s",
+                              }}
+                            ></div>
+                          </div>
+                          <span
+                            className="text-sm font-medium"
+                            style={{ color: token.colorTextSecondary }}
+                          >
+                            Thinking...
+                          </span>
+                        </div>
+                      ) : (
+                        <div
+                          className="py-2 prose prose-sm max-w-none"
+                          style={{
+                            fontSize: "14px",
+                            lineHeight: "1.6",
+                            color: token.colorText,
+                          }}
+                        >
+                          <MarkdownRenderer content={msg.content} />
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -416,69 +415,106 @@ const ChatComponent: React.FC<{
           <div ref={messagesEndRef} />
         </div>
 
-        <div className="flex justify-center pt-2 pb-2">
-          <div
-            className="p-3 flex gap-3 w-[85%] rounded-2xl shadow-md transition-all duration-200"
-            style={{
-              backgroundColor: token.colorBgContainer,
-              border: `1px solid ${
-                isInputFocused ? primaryColor : token.colorBorder
-              }`,
-              boxShadow: isInputFocused
-                ? `0 0 0 2px ${primaryColor}20`
-                : undefined,
-            }}
-          >
-            <TextArea
-              autoSize={{ minRows: 1, maxRows: 4 }}
-              value={input}
-              onChange={handleInputChange}
-              onKeyDown={handleKeyPress}
-              onFocus={() => setIsInputFocused(true)}
-              onBlur={() => setIsInputFocused(false)}
-              onMouseEnter={() => setIsInputFocused(true)}
-              onMouseLeave={() => setIsInputFocused(false)}
-              placeholder="Type your message here..."
-              className="border-0 resize-none focus:ring-0 focus:border-0"
+        <div className="flex justify-center px-6 pt-4 pb-6">
+          <div className="w-full max-w-[700px] relative">
+            <div
+              className="flex gap-3 p-4 rounded-2xl shadow-sm transition-all duration-300 backdrop-blur-sm cursor-text"
               style={{
-                fontSize: "16px",
-                boxShadow: "none",
-                backgroundColor: "transparent",
+                backgroundColor: token.colorBgElevated,
+                border: `1px solid ${
+                  isInputFocused
+                    ? primaryColor + "60"
+                    : token.colorBorderSecondary
+                }`,
+                boxShadow: isInputFocused
+                  ? `0 8px 25px -8px ${primaryColor}30, 0 0 0 1px ${primaryColor}20`
+                  : "0 2px 8px rgba(0,0,0,0.06)",
               }}
-              maxLength={256}
-              disabled={isSending}
-            />
-            <div className="flex gap-2 items-end">
-              <Tooltip title="Send message">
-                <Button
-                  type="primary"
-                  shape="circle"
-                  icon={<SendOutlined />}
-                  onClick={() => handleSendMessage()}
-                  disabled={isSending || !input.trim()}
-                  className="shadow-md hover:shadow-lg transition-all duration-200"
-                  style={{
-                    backgroundColor: input.trim() ? primaryColor : undefined,
-                    borderColor: input.trim() ? primaryColor : undefined,
-                  }}
-                />
-              </Tooltip>
-              {messages.length > 0 && (
-                <Tooltip title="Clear chat history">
+              onClick={() => {
+                if (textAreaRef.current && !isSending) {
+                  textAreaRef.current.focus();
+                }
+              }}
+            >
+              <TextArea
+                ref={textAreaRef}
+                autoSize={{ minRows: 1, maxRows: 4 }}
+                value={input}
+                onChange={handleInputChange}
+                onKeyDown={handleKeyPress}
+                onFocus={() => setIsInputFocused(true)}
+                onBlur={() => setIsInputFocused(false)}
+                placeholder="Ask me anything about this match..."
+                className="border-0 resize-none focus:ring-0 focus:border-0 placeholder:font-normal"
+                style={{
+                  fontSize: "15px",
+                  lineHeight: "1.5",
+                  boxShadow: "none",
+                  backgroundColor: "transparent",
+                  color: token.colorText,
+                }}
+                maxLength={512}
+                disabled={isSending}
+              />
+              <div className="flex gap-2 items-end">
+                <Tooltip title="Send message" placement="top">
                   <Button
+                    type="primary"
                     shape="circle"
-                    icon={<ClearOutlined />}
-                    onClick={handleClearChat}
-                    disabled={isSending}
-                    className="shadow-md hover:shadow-lg transition-all duration-200"
+                    icon={<SendOutlined />}
+                    onClick={() => handleSendMessage()}
+                    disabled={isSending || !input.trim()}
+                    size="large"
+                    className="shadow-sm hover:shadow-md transition-all duration-200 hover:scale-105"
                     style={{
-                      borderColor: token.colorBorder,
-                      color: token.colorTextTertiary,
+                      backgroundColor: input.trim()
+                        ? primaryColor
+                        : token.colorFillTertiary,
+                      borderColor: input.trim()
+                        ? primaryColor
+                        : token.colorBorder,
+                      color: input.trim() ? "white" : token.colorTextQuaternary,
+                      width: "44px",
+                      height: "44px",
                     }}
                   />
                 </Tooltip>
-              )}
+                {messages.length > 0 && (
+                  <Tooltip title="Clear conversation" placement="top">
+                    <Button
+                      shape="circle"
+                      icon={<ClearOutlined />}
+                      onClick={handleClearChat}
+                      disabled={isSending}
+                      size="large"
+                      className="shadow-sm hover:shadow-md transition-all duration-200 hover:scale-105"
+                      style={{
+                        borderColor: token.colorBorderSecondary,
+                        color: token.colorTextTertiary,
+                        backgroundColor: token.colorFillQuaternary,
+                        width: "44px",
+                        height: "44px",
+                      }}
+                    />
+                  </Tooltip>
+                )}
+              </div>
             </div>
+
+            {/* Character count indicator */}
+            {input.length > 400 && (
+              <div
+                className="absolute -bottom-5 right-2 text-xs transition-opacity duration-200"
+                style={{
+                  color:
+                    input.length > 480
+                      ? token.colorError
+                      : token.colorTextTertiary,
+                }}
+              >
+                {input.length}/512
+              </div>
+            )}
           </div>
         </div>
       </div>
