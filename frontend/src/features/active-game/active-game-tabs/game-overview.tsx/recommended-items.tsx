@@ -90,17 +90,9 @@ export const RecommendedItems: React.FC<RecommendedItemsProps> = ({
         title={
           <div className="flex items-center justify-between w-full">
             <div className="flex items-center">
-              <div
-                className="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center mr-4"
-                style={{
-                  background: "linear-gradient(135deg, #e89a3c, #d4861f)",
-                }}
-              >
-                <ShoppingCartOutlined className="text-white text-lg" />
-              </div>
               <div>
                 <Title level={4} className="mb-0 text-gray-800">
-                  Item Build Guide
+                  Full Build Guide
                 </Title>
               </div>
             </div>
@@ -135,9 +127,11 @@ export const RecommendedItems: React.FC<RecommendedItemsProps> = ({
                   background: "linear-gradient(180deg, #e89a3c, #d4861f)",
                 }}
               ></div>
-              <Title level={5} className="mb-0 text-gray-800 font-semibold">
-                Final
-              </Title>
+              <div className="flex items-center">
+                <Title level={5} className="mb-0 text-gray-800 font-semibold">
+                  Final
+                </Title>
+              </div>
             </div>
 
             <div className="bg-gradient-to-r from-gray-50 to-slate-50 rounded-lg p-4 border border-gray-100">
@@ -168,13 +162,6 @@ export const RecommendedItems: React.FC<RecommendedItemsProps> = ({
 
           {/* Build Sequence Section */}
           <div>
-            <div className="flex items-center mb-4">
-              <div className="w-1 h-6 bg-gradient-to-b from-gray-500 to-gray-600 rounded-full mr-3"></div>
-              <Title level={5} className="mb-0 text-gray-800 font-semibold">
-                Path
-              </Title>
-            </div>
-
             <div className="bg-white rounded-lg border border-gray-100 p-4">
               <div className="max-h-64 overflow-y-auto">
                 <div className="flex flex-wrap items-center gap-3 justify-center">
@@ -218,13 +205,6 @@ export const RecommendedItems: React.FC<RecommendedItemsProps> = ({
 
           {/* Explanation Section */}
           <div className="mt-4">
-            <div className="flex items-center mb-3">
-              <div className="w-1 h-5 bg-gradient-to-b from-blue-500 to-blue-600 rounded-full mr-3"></div>
-              <Title level={5} className="mb-0 text-gray-800 font-semibold">
-                Explanation
-              </Title>
-            </div>
-
             <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-3 border border-blue-100">
               <div className="flex items-start">
                 <InfoCircleOutlined className="text-blue-500 mt-0.5 mr-3 text-sm" />
