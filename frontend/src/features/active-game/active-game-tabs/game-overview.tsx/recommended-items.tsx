@@ -4,7 +4,6 @@ import {
   InfoCircleOutlined,
   ExpandAltOutlined,
   ShoppingCartOutlined,
-  CloseOutlined,
   ArrowRightOutlined,
 } from "@ant-design/icons";
 import { getItemIconSrcById } from "../../../../libs/league/league-utils";
@@ -59,16 +58,16 @@ export const RecommendedItems: React.FC<RecommendedItemsProps> = ({
   };
 
   const renderFinalItems = () => (
-    <div className="grid grid-cols-3 sm:grid-cols-6 gap-1 sm:gap-2 justify-items-center">
+    <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 sm:gap-3 justify-items-center">
       {finalItems.map(({ itemId, itemName }, index) => (
         <Tooltip key={index} title={itemName} placement="top">
-          <div className="cursor-pointer transition-all duration-300 hover:scale-105">
+          <div className="cursor-pointer transition-all duration-300 hover:scale-105 group">
             <Avatar
               src={getItemIconSrcById(itemId)}
               alt={`Item ${itemName}`}
-              size={36}
+              size={40}
               shape="square"
-              className="rounded"
+              className="rounded-lg shadow-sm hover:shadow-md transition-all duration-300 border border-gray-200 group-hover:border-gray-300"
             />
           </div>
         </Tooltip>
@@ -89,97 +88,130 @@ export const RecommendedItems: React.FC<RecommendedItemsProps> = ({
     return (
       <Modal
         title={
-          <div className="flex items-center">
-            <ShoppingCartOutlined className="mr-3 text-lg" />
-            <Title level={4} className="mb-0">
-              Detailed Build Order
-            </Title>
+          <div className="flex items-center justify-between w-full">
+            <div className="flex items-center">
+              <div
+                className="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center mr-4"
+                style={{
+                  background: "linear-gradient(135deg, #e89a3c, #d4861f)",
+                }}
+              >
+                <ShoppingCartOutlined className="text-white text-lg" />
+              </div>
+              <div>
+                <Title level={4} className="mb-0 text-gray-800">
+                  Item Build Guide
+                </Title>
+              </div>
+            </div>
           </div>
         }
         open={isModalOpen}
         onCancel={closeModal}
         footer={null}
-        width={900}
+        width={950}
         centered
         styles={{
           body: {
-            maxHeight: "80vh",
+            maxHeight: "85vh",
             overflowY: "auto",
-            padding: "16px",
+            padding: 0,
+          },
+          header: {
+            padding: "24px 24px 16px 24px",
+            borderBottom: "1px solid #f0f0f0",
+            marginBottom: 0,
           },
         }}
+        className="build-guide-modal"
       >
-        <div>
+        <div className="px-6 py-4">
           {/* Final Build Section */}
-          <div className="mb-6">
-            <Title level={5} className="mb-3">
-              Final Build
-            </Title>
-            <div className="grid grid-cols-6 gap-2">
-              {finalItems.map(({ itemId, itemName }, index) => (
-                <Tooltip key={index} title={itemName} placement="top">
-                  <div className="flex flex-col items-center">
-                    <Avatar
-                      src={getItemIconSrcById(itemId)}
-                      alt={`Item ${itemName}`}
-                      size={48}
-                      shape="square"
-                      className="rounded hover:scale-105 transition-transform cursor-pointer"
-                    />
-                    <Text
-                      className="text-xs text-center mt-1 leading-tight"
-                      style={{ maxWidth: "54px" }}
-                      ellipsis={{ tooltip: itemName }}
-                    >
-                      {itemName}
-                    </Text>
-                  </div>
-                </Tooltip>
-              ))}
+          <div className="mb-8">
+            <div className="flex items-center mb-4">
+              <div
+                className="w-1 h-6 bg-gradient-to-b rounded-full mr-3"
+                style={{
+                  background: "linear-gradient(180deg, #e89a3c, #d4861f)",
+                }}
+              ></div>
+              <Title level={5} className="mb-0 text-gray-800 font-semibold">
+                Final Build
+              </Title>
+            </div>
+
+            <div className="bg-gradient-to-r from-gray-50 to-slate-50 rounded-xl p-6 border border-gray-100">
+              <div className="grid grid-cols-6 gap-4 justify-items-center">
+                {finalItems.map(({ itemId, itemName }, index) => (
+                  <Tooltip key={index} title={itemName} placement="top">
+                    <div className="flex flex-col items-center group">
+                      <Avatar
+                        src={getItemIconSrcById(itemId)}
+                        alt={`Item ${itemName}`}
+                        size={56}
+                        shape="square"
+                        className="rounded-lg shadow-md hover:shadow-lg transition-all duration-300 group-hover:scale-105 border-2 border-white"
+                      />
+                      <Text
+                        className="text-xs text-center mt-2 font-medium text-gray-700 leading-tight"
+                        style={{ maxWidth: "60px" }}
+                        ellipsis={{ tooltip: itemName }}
+                      >
+                        {itemName}
+                      </Text>
+                    </div>
+                  </Tooltip>
+                ))}
+              </div>
             </div>
           </div>
 
           {/* Build Sequence Section */}
           <div>
-            <Title level={5} className="mb-4 flex items-center">
-              <ShoppingCartOutlined className="mr-2" />
-              Build Path
-            </Title>
+            <div className="flex items-center mb-4">
+              <div className="w-1 h-6 bg-gradient-to-b from-gray-500 to-gray-600 rounded-full mr-3"></div>
+              <Title level={5} className="mb-0 text-gray-800 font-semibold">
+                Build Path
+              </Title>
+            </div>
 
-            <div className="max-h-64 overflow-y-auto">
-              <div className="flex flex-wrap items-center gap-3">
-                {Object.entries(stepGroups)
-                  .sort(([a], [b]) => Number(a) - Number(b))
-                  .map(([step, items], stepIndex, array) => (
-                    <React.Fragment key={step}>
-                      <div className="flex flex-col items-center">
-                        <div className="bg-gray-200 text-gray-700 text-xs font-medium px-2 py-1 rounded-full mb-2">
-                          Step {step}
+            <div className="bg-white rounded-xl border border-gray-100 p-6">
+              <div className="max-h-80 overflow-y-auto">
+                <div className="flex flex-wrap items-center gap-4 justify-center">
+                  {Object.entries(stepGroups)
+                    .sort(([a], [b]) => Number(a) - Number(b))
+                    .map(([step, items], stepIndex, array) => (
+                      <React.Fragment key={step}>
+                        <div className="flex flex-col items-center mb-2">
+                          <div className="bg-gradient-to-br from-gray-50 to-slate-50 rounded-xl p-4 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300">
+                            <div className="flex gap-2">
+                              {items.map(({ itemId, itemName }, index) => (
+                                <Tooltip
+                                  key={index}
+                                  title={itemName}
+                                  placement="top"
+                                >
+                                  <div className="relative group">
+                                    <Avatar
+                                      src={getItemIconSrcById(itemId)}
+                                      alt={`Item ${itemName}`}
+                                      size={36}
+                                      shape="square"
+                                      className="rounded-lg hover:scale-110 transition-all duration-300 cursor-pointer border border-white shadow-sm"
+                                    />
+                                  </div>
+                                </Tooltip>
+                              ))}
+                            </div>
+                          </div>
                         </div>
-                        <div className="flex gap-1 p-2 rounded border border-gray-200">
-                          {items.map(({ itemId, itemName }, index) => (
-                            <Tooltip
-                              key={index}
-                              title={itemName}
-                              placement="top"
-                            >
-                              <Avatar
-                                src={getItemIconSrcById(itemId)}
-                                alt={`Item ${itemName}`}
-                                size={28}
-                                shape="square"
-                                className="rounded hover:scale-105 transition-transform cursor-pointer"
-                              />
-                            </Tooltip>
-                          ))}
-                        </div>
-                      </div>
 
-                      {stepIndex < array.length - 1 && (
-                        <ArrowRightOutlined className="text-lg self-center text-gray-400" />
-                      )}
-                    </React.Fragment>
-                  ))}
+                        {stepIndex < array.length - 1 && (
+                          <ArrowRightOutlined className="text-xl text-gray-400" />
+                        )}
+                      </React.Fragment>
+                    ))}
+                </div>
               </div>
             </div>
           </div>
@@ -191,49 +223,65 @@ export const RecommendedItems: React.FC<RecommendedItemsProps> = ({
   return (
     <>
       <Card
-        className="rounded-lg shadow-md"
+        className="rounded-xl shadow-lg border-0 bg-gradient-to-br from-white to-gray-50"
         hoverable
         styles={{
           body: {
-            padding: "12px",
+            padding: "16px",
           },
         }}
       >
-        <div className="flex items-center justify-between mb-3">
-          <Title level={5} className="text-sm mb-0">
-            Recommended Items
-            <Tooltip title="AI-recommended items for this match.">
-              <InfoCircleOutlined className="text-sm ml-1" />
-            </Tooltip>
-          </Title>
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <Title
+              level={5}
+              className="text-sm mb-0 font-semibold text-gray-800"
+            >
+              Items
+            </Title>
+            <div className="flex items-center mt-1"></div>
+          </div>
           {hasBuildSequence && (
             <div
-              className="flex items-center px-2 py-1 rounded cursor-pointer transition-colors duration-300 border hover:bg-gray-50"
+              className="flex items-center px-3 py-2 rounded-lg cursor-pointer transition-all duration-300 bg-orange-50 hover:bg-orange-100 border border-orange-200 hover:border-orange-300"
               onClick={openModal}
+              style={{
+                backgroundColor: "#fef7ed",
+                borderColor: "#fed7aa",
+              }}
             >
-              <Text className="text-xs mr-1 hidden sm:inline">Build</Text>
-              <ExpandAltOutlined style={{ fontSize: "12px" }} />
+              <Text
+                className="text-xs mr-2 hidden sm:inline font-medium"
+                style={{ color: "#ea580c" }}
+              >
+                More Details
+              </Text>
+              <ExpandAltOutlined
+                style={{ fontSize: "12px", color: "#e89a3c" }}
+              />
             </div>
           )}
         </div>
 
         {loadingItems ? (
-          <div className="grid grid-cols-3 sm:grid-cols-6 gap-1 sm:gap-2">
+          <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 sm:gap-3">
             {[1, 2, 3, 4, 5, 6].map((num) => (
               <div
                 key={num}
-                className="p-1 rounded animate-pulse justify-self-center"
+                className="p-1 rounded-lg animate-pulse justify-self-center"
               >
                 <Skeleton.Avatar
                   active
-                  style={{ width: 36, height: 36 }}
+                  style={{ width: 40, height: 40 }}
                   shape="square"
                 />
               </div>
             ))}
           </div>
         ) : (
-          renderFinalItems()
+          <div className="bg-gradient-to-r from-gray-50 to-slate-50 rounded-lg p-3 border border-gray-100">
+            {renderFinalItems()}
+          </div>
         )}
       </Card>
 
