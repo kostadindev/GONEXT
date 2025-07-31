@@ -113,21 +113,21 @@ export const RecommendedItems: React.FC<RecommendedItemsProps> = ({
         centered
         styles={{
           body: {
-            maxHeight: "85vh",
+            maxHeight: "80vh",
             overflowY: "auto",
             padding: 0,
           },
           header: {
-            padding: "24px 24px 16px 24px",
+            padding: "16px 16px 12px 16px",
             borderBottom: "1px solid #f0f0f0",
             marginBottom: 0,
           },
         }}
         className="build-guide-modal"
       >
-        <div className="px-6 py-4">
+        <div className="px-4 py-3">
           {/* Final Build Section */}
-          <div className="mb-8">
+          <div className="mb-5">
             <div className="flex items-center mb-4">
               <div
                 className="w-1 h-6 bg-gradient-to-b rounded-full mr-3"
@@ -136,25 +136,25 @@ export const RecommendedItems: React.FC<RecommendedItemsProps> = ({
                 }}
               ></div>
               <Title level={5} className="mb-0 text-gray-800 font-semibold">
-                Final Build
+                Final
               </Title>
             </div>
 
-            <div className="bg-gradient-to-r from-gray-50 to-slate-50 rounded-xl p-6 border border-gray-100">
-              <div className="grid grid-cols-6 gap-4 justify-items-center">
+            <div className="bg-gradient-to-r from-gray-50 to-slate-50 rounded-lg p-4 border border-gray-100">
+              <div className="grid grid-cols-6 gap-3 justify-items-center">
                 {finalItems.map(({ itemId, itemName }, index) => (
                   <Tooltip key={index} title={itemName} placement="top">
                     <div className="flex flex-col items-center group">
                       <Avatar
                         src={getItemIconSrcById(itemId)}
                         alt={`Item ${itemName}`}
-                        size={56}
+                        size={44}
                         shape="square"
                         className="rounded-lg shadow-md hover:shadow-lg transition-all duration-300 group-hover:scale-105 border-2 border-white"
                       />
                       <Text
-                        className="text-xs text-center mt-2 font-medium text-gray-700 leading-tight"
-                        style={{ maxWidth: "60px" }}
+                        className="text-xs text-center mt-1 font-medium text-gray-700 leading-tight"
+                        style={{ maxWidth: "50px" }}
                         ellipsis={{ tooltip: itemName }}
                       >
                         {itemName}
@@ -171,20 +171,20 @@ export const RecommendedItems: React.FC<RecommendedItemsProps> = ({
             <div className="flex items-center mb-4">
               <div className="w-1 h-6 bg-gradient-to-b from-gray-500 to-gray-600 rounded-full mr-3"></div>
               <Title level={5} className="mb-0 text-gray-800 font-semibold">
-                Build Path
+                Path
               </Title>
             </div>
 
-            <div className="bg-white rounded-xl border border-gray-100 p-6">
-              <div className="max-h-80 overflow-y-auto">
-                <div className="flex flex-wrap items-center gap-4 justify-center">
+            <div className="bg-white rounded-lg border border-gray-100 p-4">
+              <div className="max-h-64 overflow-y-auto">
+                <div className="flex flex-wrap items-center gap-3 justify-center">
                   {Object.entries(stepGroups)
                     .sort(([a], [b]) => Number(a) - Number(b))
                     .map(([step, items], stepIndex, array) => (
                       <React.Fragment key={step}>
-                        <div className="flex flex-col items-center mb-2">
-                          <div className="bg-gradient-to-br from-gray-50 to-slate-50 rounded-xl p-4 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300">
-                            <div className="flex gap-2">
+                        <div className="flex flex-col items-center mb-1">
+                          <div className="bg-gradient-to-br from-gray-50 to-slate-50 rounded-lg p-3 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300">
+                            <div className="flex gap-1">
                               {items.map(({ itemId, itemName }, index) => (
                                 <Tooltip
                                   key={index}
@@ -195,7 +195,7 @@ export const RecommendedItems: React.FC<RecommendedItemsProps> = ({
                                     <Avatar
                                       src={getItemIconSrcById(itemId)}
                                       alt={`Item ${itemName}`}
-                                      size={36}
+                                      size={32}
                                       shape="square"
                                       className="rounded-lg hover:scale-110 transition-all duration-300 cursor-pointer border border-white shadow-sm"
                                     />
@@ -207,11 +207,33 @@ export const RecommendedItems: React.FC<RecommendedItemsProps> = ({
                         </div>
 
                         {stepIndex < array.length - 1 && (
-                          <ArrowRightOutlined className="text-xl text-gray-400" />
+                          <ArrowRightOutlined className="text-lg text-gray-400 mx-1" />
                         )}
                       </React.Fragment>
                     ))}
                 </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Explanation Section */}
+          <div className="mt-4">
+            <div className="flex items-center mb-3">
+              <div className="w-1 h-5 bg-gradient-to-b from-blue-500 to-blue-600 rounded-full mr-3"></div>
+              <Title level={5} className="mb-0 text-gray-800 font-semibold">
+                Explanation
+              </Title>
+            </div>
+
+            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-3 border border-blue-100">
+              <div className="flex items-start">
+                <InfoCircleOutlined className="text-blue-500 mt-0.5 mr-3 text-sm" />
+                <Text className="text-sm text-gray-700 leading-relaxed">
+                  Build items from left to right in the final build for optimal
+                  power progression. Follow the step-by-step sequence to
+                  efficiently reach power spikes while adapting to enemy team
+                  composition and game state as needed.
+                </Text>
               </div>
             </div>
           </div>
