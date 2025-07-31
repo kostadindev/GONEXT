@@ -101,7 +101,7 @@ export const RecommendedItems: React.FC<RecommendedItemsProps> = ({
         open={isModalOpen}
         onCancel={closeModal}
         footer={null}
-        width={950}
+        width={850}
         centered
         styles={{
           body: {
@@ -120,42 +120,41 @@ export const RecommendedItems: React.FC<RecommendedItemsProps> = ({
         <div className="px-4 py-3">
           {/* Final Build Section */}
           <div className="mb-5">
-            <div className="flex items-center mb-4">
-              <div
-                className="w-1 h-6 bg-gradient-to-b rounded-full mr-3"
-                style={{
-                  background: "linear-gradient(180deg, #e89a3c, #d4861f)",
-                }}
-              ></div>
-              <div className="flex items-center">
-                <Title level={5} className="mb-0 text-gray-800 font-semibold">
-                  Final
-                </Title>
-              </div>
-            </div>
-
             <div className="bg-gradient-to-r from-gray-50 to-slate-50 rounded-lg p-4 border border-gray-100">
-              <div className="grid grid-cols-6 gap-3 justify-items-center">
-                {finalItems.map(({ itemId, itemName }, index) => (
-                  <Tooltip key={index} title={itemName} placement="top">
-                    <div className="flex flex-col items-center group">
-                      <Avatar
-                        src={getItemIconSrcById(itemId)}
-                        alt={`Item ${itemName}`}
-                        size={44}
-                        shape="square"
-                        className="rounded-lg shadow-md hover:shadow-lg transition-all duration-300 group-hover:scale-105 border-2 border-white"
-                      />
-                      <Text
-                        className="text-xs text-center mt-1 font-medium text-gray-700 leading-tight"
-                        style={{ maxWidth: "50px" }}
-                        ellipsis={{ tooltip: itemName }}
-                      >
-                        {itemName}
-                      </Text>
-                    </div>
-                  </Tooltip>
-                ))}
+              <div className="flex items-center gap-4">
+                <div className="flex items-center flex-shrink-0">
+                  <div
+                    className="w-1 h-6 bg-gradient-to-b rounded-full mr-3"
+                    style={{
+                      background: "linear-gradient(180deg, #e89a3c, #d4861f)",
+                    }}
+                  ></div>
+                  <Title level={5} className="mb-0 text-gray-800 font-semibold">
+                    Final Build
+                  </Title>
+                </div>
+                <div className="grid grid-cols-6 justify-items-center flex-1">
+                  {finalItems.map(({ itemId, itemName }, index) => (
+                    <Tooltip key={index} title={itemName} placement="top">
+                      <div className="flex flex-col items-center group">
+                        <Avatar
+                          src={getItemIconSrcById(itemId)}
+                          alt={`Item ${itemName}`}
+                          size={44}
+                          shape="square"
+                          className="rounded-lg shadow-md hover:shadow-lg transition-all duration-300 group-hover:scale-105 border-2 border-white"
+                        />
+                        <Text
+                          className="text-xs text-center mt-1 font-medium text-gray-700 leading-tight"
+                          style={{ maxWidth: "50px" }}
+                          ellipsis={{ tooltip: itemName }}
+                        >
+                          {itemName}
+                        </Text>
+                      </div>
+                    </Tooltip>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
