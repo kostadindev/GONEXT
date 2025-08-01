@@ -242,14 +242,14 @@ export const RecommendedItems: React.FC<RecommendedItemsProps> = ({
             <div
               className="rounded-lg p-3"
               style={{
-                backgroundColor: token.colorInfoBg,
-                border: `1px solid ${token.colorInfoBorder}`,
+                backgroundColor: token.colorPrimaryBg,
+                border: `1px solid ${token.colorPrimaryBorder}`,
               }}
             >
               <div className="flex items-start">
                 <InfoCircleOutlined
                   style={{
-                    color: token.colorInfo,
+                    color: token.colorPrimary,
                     marginTop: "2px",
                     marginRight: "12px",
                     fontSize: "14px",
