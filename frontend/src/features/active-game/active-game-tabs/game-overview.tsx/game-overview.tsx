@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { Card, Tooltip, Typography, Avatar, Skeleton, Statistic } from "antd";
+import { Card, Tooltip, Typography, Skeleton, Statistic } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import { Game } from "../../../../libs/league/league-types";
 import ChatComponent from "../../../chat/chat";
-import { getItemIconSrcById } from "../../../../libs/league/league-utils";
 import { fetchGameOverview } from "../../../../libs/apis/game-overview-api";
+import { RecommendedItems } from "./recommended-items";
 
 const { Title, Text } = Typography;
+
+interface ItemBuild {
+  finalBuild: { itemId: string; itemName: string }[];
+  buildSequence: { itemId: string; itemName: string; step: number }[];
+}
 
 export const GameOverview: React.FC<{ game: Game | null }> = ({ game }) => {
   const [estimatedWinRate, setEstimatedWinRate] = useState<number | null>(null);
   const [recommendedItems, setRecommendedItems] = useState<
-    { itemId: string; itemName: string }[]
+    ItemBuild | { itemId: string; itemName: string }[]
   >([]);
   const [gameSummary, setGameSummary] = useState<string>(
     "No summary available."
@@ -54,7 +59,7 @@ export const GameOverview: React.FC<{ game: Game | null }> = ({ game }) => {
           context={{ game: game as Game }}
         ></ChatComponent>
       </div>
-      <div className="w-1/5 min-w-[250px] pl-4 flex flex-col space-y-4">
+      <div className="w-[350px] min-w-[250px] pl-4 flex flex-col space-y-4">
         {/* <Card
           className="rounded-lg shadow-md"
           hoverable
@@ -94,43 +99,10 @@ export const GameOverview: React.FC<{ game: Game | null }> = ({ game }) => {
             />
           )}
         </Card> */}
-        {/* <Card
-          className="rounded-lg shadow-md"
-          hoverable
-          styles={{
-            body: {
-              padding: "12px",
-            },
-          }}
-        >
-          <Title level={5} className="text-sm text-center">
-            Recommended Items
-            <Tooltip title="AI-recommended items for this match.">
-              <InfoCircleOutlined className="text-primary text-sm ml-1" />
-            </Tooltip>
-          </Title>
-
-          <div className="flex justify-between">
-            {loadingItems
-              ? [1, 2, 3, 4, 5, 6].map((num) => (
-                  <Skeleton.Avatar
-                    active
-                    style={{ width: 34, height: 34 }}
-                    shape="square"
-                  ></Skeleton.Avatar>
-                ))
-              : recommendedItems.map(({ itemId, itemName }, index) => (
-                  <Tooltip key={index} title={itemName}>
-                    <Avatar
-                      src={getItemIconSrcById(itemId)}
-                      alt={`Item ${itemName}`}
-                      size={35}
-                      shape="square"
-                    />
-                  </Tooltip>
-                ))}
-          </div>
-        </Card> */}
+        <RecommendedItems
+          loadingItems={loadingItems}
+          recommendedItems={recommendedItems}
+        />
         <Card
           className="rounded-lg shadow-md"
           hoverable
