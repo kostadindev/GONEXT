@@ -9,6 +9,326 @@ import {
   UpOutlined,
 } from "@ant-design/icons";
 
+// Custom styled components for markdown elements
+const StyledHeading = ({ level, children, ...props }: any) => {
+  const { useToken } = theme;
+  const { token } = useToken();
+
+  const styles = {
+    1: {
+      fontSize: "28px",
+      fontWeight: 600,
+      marginTop: "24px",
+      marginBottom: "16px",
+      lineHeight: 1.25,
+    },
+    2: {
+      fontSize: "24px",
+      fontWeight: 600,
+      marginTop: "20px",
+      marginBottom: "12px",
+      lineHeight: 1.3,
+    },
+    3: {
+      fontSize: "20px",
+      fontWeight: 600,
+      marginTop: "16px",
+      marginBottom: "8px",
+      lineHeight: 1.35,
+    },
+    4: {
+      fontSize: "18px",
+      fontWeight: 600,
+      marginTop: "12px",
+      marginBottom: "6px",
+      lineHeight: 1.4,
+    },
+    5: {
+      fontSize: "16px",
+      fontWeight: 600,
+      marginTop: "10px",
+      marginBottom: "4px",
+      lineHeight: 1.45,
+    },
+    6: {
+      fontSize: "14px",
+      fontWeight: 600,
+      marginTop: "8px",
+      marginBottom: "4px",
+      lineHeight: 1.5,
+    },
+  };
+
+  const Tag = `h${level}` as keyof JSX.IntrinsicElements;
+
+  return (
+    <Tag
+      style={{
+        ...styles[level as keyof typeof styles],
+        color: token.colorText,
+        borderBottom:
+          level <= 2 ? `1px solid ${token.colorBorderSecondary}` : "none",
+        paddingBottom: level <= 2 ? "8px" : "0",
+      }}
+      {...props}
+    >
+      {children}
+    </Tag>
+  );
+};
+
+const StyledParagraph = ({ children, ...props }: any) => {
+  const { useToken } = theme;
+  const { token } = useToken();
+
+  return (
+    <p
+      style={{
+        margin: "16px 0",
+        lineHeight: 1.6,
+        color: token.colorText,
+        fontSize: "15px",
+      }}
+      {...props}
+    >
+      {children}
+    </p>
+  );
+};
+
+const StyledCodeBlock = ({ children, className, ...props }: any) => {
+  const { useToken } = theme;
+  const { token } = useToken();
+
+  const language = className?.replace("lang-", "") || "";
+
+  return (
+    <div
+      style={{
+        margin: "16px 0",
+        borderRadius: "8px",
+        backgroundColor: token.colorFillQuaternary,
+        border: `1px solid ${token.colorBorder}`,
+        overflow: "hidden",
+      }}
+    >
+      {language && (
+        <div
+          style={{
+            padding: "8px 16px",
+            backgroundColor: token.colorFillTertiary,
+            borderBottom: `1px solid ${token.colorBorder}`,
+            fontSize: "12px",
+            color: token.colorTextSecondary,
+            fontFamily:
+              'ui-monospace, SFMono-Regular, "SF Mono", Monaco, Menlo, Consolas, monospace',
+          }}
+        >
+          {language}
+        </div>
+      )}
+      <pre
+        style={{
+          margin: 0,
+          padding: "16px",
+          overflow: "auto",
+          fontSize: "14px",
+          lineHeight: 1.5,
+          fontFamily:
+            'ui-monospace, SFMono-Regular, "SF Mono", Monaco, Menlo, Consolas, monospace',
+          color: token.colorText,
+          backgroundColor: "transparent",
+        }}
+        {...props}
+      >
+        <code>{children}</code>
+      </pre>
+    </div>
+  );
+};
+
+const StyledInlineCode = ({ children, ...props }: any) => {
+  const { useToken } = theme;
+  const { token } = useToken();
+
+  return (
+    <code
+      style={{
+        backgroundColor: token.colorFillSecondary,
+        color: token.colorTextSecondary,
+        padding: "2px 6px",
+        borderRadius: "4px",
+        fontSize: "13px",
+        fontFamily:
+          'ui-monospace, SFMono-Regular, "SF Mono", Monaco, Menlo, Consolas, monospace',
+        border: `1px solid ${token.colorBorderSecondary}`,
+      }}
+      {...props}
+    >
+      {children}
+    </code>
+  );
+};
+
+const StyledBlockquote = ({ children, ...props }: any) => {
+  const { useToken } = theme;
+  const { token } = useToken();
+
+  return (
+    <blockquote
+      style={{
+        margin: "16px 0",
+        padding: "12px 16px",
+        borderLeft: `4px solid ${token.colorPrimary}`,
+        backgroundColor: token.colorFillAlter,
+        borderRadius: "0 8px 8px 0",
+        color: token.colorTextSecondary,
+        fontStyle: "italic",
+      }}
+      {...props}
+    >
+      {children}
+    </blockquote>
+  );
+};
+
+const StyledList = ({ ordered, children, ...props }: any) => {
+  const { useToken } = theme;
+  const { token } = useToken();
+
+  const Tag = ordered ? "ol" : "ul";
+
+  return (
+    <Tag
+      style={{
+        margin: "12px 0",
+        paddingLeft: "24px",
+        color: token.colorText,
+        lineHeight: 1.6,
+      }}
+      {...props}
+    >
+      {children}
+    </Tag>
+  );
+};
+
+const StyledListItem = ({ children, ...props }: any) => {
+  return (
+    <li
+      style={{
+        margin: "6px 0",
+        fontSize: "15px",
+      }}
+      {...props}
+    >
+      {children}
+    </li>
+  );
+};
+
+const StyledLink = ({ children, ...props }: any) => {
+  const { useToken } = theme;
+  const { token } = useToken();
+
+  return (
+    <a
+      style={{
+        color: token.colorPrimary,
+        textDecoration: "none",
+        borderBottom: `1px solid transparent`,
+        transition: "border-color 0.2s ease",
+      }}
+      onMouseEnter={(e) => {
+        e.target.style.borderBottomColor = token.colorPrimary;
+      }}
+      onMouseLeave={(e) => {
+        e.target.style.borderBottomColor = "transparent";
+      }}
+      {...props}
+    >
+      {children}
+    </a>
+  );
+};
+
+const StyledTable = ({ children, ...props }: any) => {
+  const { useToken } = theme;
+  const { token } = useToken();
+
+  return (
+    <div style={{ overflow: "auto", margin: "16px 0" }}>
+      <table
+        style={{
+          width: "100%",
+          borderCollapse: "collapse",
+          border: `1px solid ${token.colorBorder}`,
+          borderRadius: "8px",
+          overflow: "hidden",
+        }}
+        {...props}
+      >
+        {children}
+      </table>
+    </div>
+  );
+};
+
+const StyledTableHead = ({ children, ...props }: any) => {
+  const { useToken } = theme;
+  const { token } = useToken();
+
+  return (
+    <thead
+      style={{
+        backgroundColor: token.colorFillSecondary,
+      }}
+      {...props}
+    >
+      {children}
+    </thead>
+  );
+};
+
+const StyledTableCell = ({ children, isHeader, ...props }: any) => {
+  const { useToken } = theme;
+  const { token } = useToken();
+
+  const Tag = isHeader ? "th" : "td";
+
+  return (
+    <Tag
+      style={{
+        padding: "12px 16px",
+        border: `1px solid ${token.colorBorder}`,
+        color: token.colorText,
+        fontSize: "14px",
+        textAlign: "left",
+        fontWeight: isHeader ? 600 : 400,
+      }}
+      {...props}
+    >
+      {children}
+    </Tag>
+  );
+};
+
+const StyledHr = ({ ...props }: any) => {
+  const { useToken } = theme;
+  const { token } = useToken();
+
+  return (
+    <hr
+      style={{
+        margin: "24px 0",
+        border: "none",
+        borderTop: `1px solid ${token.colorBorderSecondary}`,
+      }}
+      {...props}
+    />
+  );
+};
+
 // Modern minimal tool call component
 const SimpleToolCall: React.FC<{
   toolName: string;
@@ -214,7 +534,11 @@ const processContent = (content: string): React.ReactNode[] => {
     if (match.index > lastIndex) {
       const textBefore = content.slice(lastIndex, match.index);
       if (textBefore.trim()) {
-        parts.push(<Markdown key={`text-${lastIndex}`}>{textBefore}</Markdown>);
+        parts.push(
+          <Markdown key={`text-${lastIndex}`} options={markdownOptions}>
+            {textBefore}
+          </Markdown>
+        );
       }
     }
 
@@ -248,12 +572,39 @@ const processContent = (content: string): React.ReactNode[] => {
     const remainingText = content.slice(lastIndex);
     if (remainingText.trim()) {
       parts.push(
-        <Markdown key={`text-${lastIndex}`}>{remainingText}</Markdown>
+        <Markdown key={`text-${lastIndex}`} options={markdownOptions}>
+          {remainingText}
+        </Markdown>
       );
     }
   }
 
   return parts;
+};
+
+// Markdown options with custom components
+const markdownOptions = {
+  overrides: {
+    h1: { component: StyledHeading, props: { level: 1 } },
+    h2: { component: StyledHeading, props: { level: 2 } },
+    h3: { component: StyledHeading, props: { level: 3 } },
+    h4: { component: StyledHeading, props: { level: 4 } },
+    h5: { component: StyledHeading, props: { level: 5 } },
+    h6: { component: StyledHeading, props: { level: 6 } },
+    p: { component: StyledParagraph },
+    pre: { component: StyledCodeBlock },
+    code: { component: StyledInlineCode },
+    blockquote: { component: StyledBlockquote },
+    ul: { component: StyledList, props: { ordered: false } },
+    ol: { component: StyledList, props: { ordered: true } },
+    li: { component: StyledListItem },
+    a: { component: StyledLink },
+    table: { component: StyledTable },
+    thead: { component: StyledTableHead },
+    th: { component: StyledTableCell, props: { isHeader: true } },
+    td: { component: StyledTableCell, props: { isHeader: false } },
+    hr: { component: StyledHr },
+  },
 };
 
 const MarkdownRenderer: React.FC<{ content: string }> = ({ content }) => {
@@ -264,7 +615,7 @@ const MarkdownRenderer: React.FC<{ content: string }> = ({ content }) => {
   if (!content.includes("@tool[")) {
     return (
       <div style={{ color: token.colorText }}>
-        <Markdown>{content}</Markdown>
+        <Markdown options={markdownOptions}>{content}</Markdown>
       </div>
     );
   }
