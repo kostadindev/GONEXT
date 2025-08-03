@@ -11,15 +11,30 @@ export const DEFAULT_LLM = LLMOptions.GEMINI_FLASH;
 export interface GameOverviewMLResponse {
   response: {
     estimated_win_rate: number;
-    recommended_items: string[];
+    recommended_items: string[] | {
+      finalBuild: string[];
+      buildSequence: { itemName: string; step: number }[];
+    };
     game_summary: string;
   }
+}
+
+export interface ItemBuild {
+  finalBuild: {
+    itemId: string;
+    itemName: string;
+  }[];
+  buildSequence: {
+    itemId: string;
+    itemName: string;
+    step: number;
+  }[];
 }
 
 export interface GameOverviewResponse {
   response: {
     estimated_win_rate: number;
-    recommended_items: {
+    recommended_items: ItemBuild | {
       itemId: string;
       itemName: string;
     }[];
