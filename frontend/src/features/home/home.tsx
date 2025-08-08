@@ -122,9 +122,7 @@ const HeroSection = () => {
         >
           GONEXT
         </h1>
-        <span className="hidden sm:inline-flex pulse-chip" aria-hidden="true">
-          AI Gaming Assistant
-        </span>
+        {/* Removed AI Gaming Assistant chip for a cleaner header */}
       </div>
 
       {/* Organic background gradient overlays */}
@@ -181,7 +179,7 @@ const HeroSection = () => {
 
             <p
               style={{ animationDelay: "0.6s" }}
-              className="text-base sm:text-lg lg:text-xl text-gray-700 mt-3 sm:mt-6 mb-6 sm:mb-8 leading-relaxed opacity-0 animate-fade-in font-normal max-w-2xl mx-auto"
+              className="text-base sm:text-lg lg:text-xl text-gray-800 mt-3 sm:mt-6 mb-6 sm:mb-8 leading-relaxed opacity-0 animate-fade-in font-normal max-w-2xl mx-auto"
             >
               Your ultimate companion that instantly breaks down game specific
               analytics and recommendations with real-time analysis and
@@ -198,13 +196,13 @@ const HeroSection = () => {
                 <GlobalSearch />
               </div>
               <div className="text-center">
-                <span className="text-gray-600 font-medium text-sm">
+                <span className="text-gray-700 font-medium text-sm">
                   or try it out for
                 </span>
               </div>
               <div className="w-full flex flex-col items-center gap-3">
                 <QuickSearch />
-                <div className="text-xs text-gray-500">No login required</div>
+                {/* Removed 'No login required' text to declutter */}
               </div>
             </div>
           </div>
@@ -260,7 +258,7 @@ const HowItWorksSection = () => {
         >
           How It Works
         </Title>
-        <Paragraph className="max-w-2xl mx-auto text-lg text-gray-600 mb-12 leading-relaxed">
+        <Paragraph className="max-w-2xl mx-auto text-lg text-gray-700 mb-12 leading-relaxed">
           Get smarter with every match. Here's what the AI can do:
         </Paragraph>
       </div>
@@ -300,7 +298,7 @@ const HowItWorksSection = () => {
               >
                 {title}
               </h3>
-              <p className="text-gray-600 leading-snug text-sm">
+              <p className="text-gray-700 leading-snug text-sm">
                 {data[i].desc}
               </p>
             </div>
@@ -429,7 +427,7 @@ const PreviewSection = () => {
             <h2 className="section-title text-3xl sm:text-4xl md:text-5xl font-bold mb-4 md:mb-6">
               <span className="gradient-text-animated">Experience GONEXT</span>
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl">
+            <p className="text-lg text-gray-700 max-w-2xl">
               Here's what you can expect when using our AI-powered match
               assistant.
             </p>
@@ -586,7 +584,7 @@ const WhySmartSection = () => {
                   >
                     {title}
                   </Title>
-                  <Paragraph className="text-gray-700 leading-snug">
+                  <Paragraph className="text-gray-800 leading-snug">
                     {descriptions[i]}
                   </Paragraph>
                 </div>
@@ -677,7 +675,7 @@ const UseCasesSection = () => {
               >
                 {title}
               </Title>
-              <Paragraph className="text-gray-700 text-sm leading-relaxed">
+              <Paragraph className="text-gray-800 text-sm leading-relaxed">
                 {data[i]}
               </Paragraph>
             </div>
@@ -732,7 +730,7 @@ const CTASection = () => {
         >
           Ready to Win More?
         </Title>
-        <Paragraph className="text-lg max-w-xl mx-auto mb-8 text-gray-700">
+        <Paragraph className="text-lg max-w-xl mx-auto mb-8 text-gray-800">
           Get AI-powered insights during your games. It's like having a coach by
           your side.
         </Paragraph>
@@ -740,16 +738,11 @@ const CTASection = () => {
           <div className="w-full">
             <GlobalSearch />
           </div>
-          <span className="text-gray-600 font-medium">or try it out for</span>
+          <span className="text-gray-700 font-medium">or try it out for</span>
           <div className="w-full">
             <QuickSearch />
           </div>
-          <button
-            className="button-primary btn-shine mt-2"
-            aria-label="Learn more about GONEXT"
-          >
-            Learn more
-          </button>
+          {/* Removed Learn more button to reduce clutter */}
         </div>
       </div>
     </section>
