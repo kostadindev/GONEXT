@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect } from "react";
 import { Typography, ConfigProvider, theme as antdTheme } from "antd";
 import {
   RobotOutlined,
@@ -91,34 +91,46 @@ const HeroSection = () => {
 
   return (
     <section
-      className="overflow-hidden relative bg-cover min-h-screen flex items-center"
+      className="overflow-hidden relative bg-cover min-h-screen flex items-center dot-grid"
       id="hero"
       style={{
         background:
-          "linear-gradient(135deg, #fff5f0 0%, #ffe7ba 30%, #ffd8bf 70%, #fff 100%)",
+          "linear-gradient(135deg, #fffaf5 0%, #fff1e6 30%, #ffe2c6 70%, #fff 100%)",
         padding: isMobile ? "100px 12px 40px" : "120px 20px 60px",
       }}
     >
+      {/* Floating orbs */}
+      <div
+        className="orb orb--primary w-80 h-80 -top-10 -right-10"
+        aria-hidden="true"
+      />
+      <div
+        className="orb orb--accent w-64 h-64 bottom-10 left-10"
+        aria-hidden="true"
+      />
+
       {/* Logo */}
       <div className="absolute top-4 left-4 sm:top-6 sm:left-6 flex items-center gap-3 z-20">
         <h1
-          className="text-3xl sm:text-5xl cursor-pointer"
+          className="text-3xl sm:text-5xl cursor-pointer gradient-text-animated"
           style={{
             fontFamily: '"Goldman", serif',
             fontWeight: 400,
-            color: "#2c2c2c",
-            textShadow: "0 1px 2px rgba(255, 255, 255, 0.7)",
+            textShadow: "0 1px 2px rgba(255, 255, 255, 0.4)",
           }}
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         >
           GONEXT
         </h1>
+        <span className="hidden sm:inline-flex pulse-chip" aria-hidden="true">
+          AI Gaming Assistant
+        </span>
       </div>
 
       {/* Organic background gradient overlays */}
-      <div className="absolute -top-[15%] -right-[10%] w-[60%] h-[80%] bg-gradient-to-br from-[#e89a3c]/15 via-[#ff6b35]/10 to-transparent opacity-40 blur-3xl rounded-full transform rotate-12"></div>
-      <div className="absolute top-[20%] -left-[5%] w-[40%] h-[60%] bg-gradient-to-tr from-[#ffa726]/20 to-transparent opacity-25 blur-3xl rounded-full transform -rotate-45"></div>
-      <div className="absolute bottom-[-10%] right-[10%] w-[50%] h-[50%] bg-gradient-to-tl from-[#e89a3c]/12 via-transparent to-[#ff8a65]/8 opacity-30 blur-3xl rounded-full transform rotate-45"></div>
+      <div className="absolute -top-[15%] -right-[10%] w-[60%] h-[80%] bg-gradient-to-br from-[#e89a3c]/15 via-[#ff6b35]/10 to-transparent opacity-40 blur-3xl rounded-full transform rotate-12" />
+      <div className="absolute top-[20%] -left-[5%] w-[40%] h-[60%] bg-gradient-to-tr from-[#ffa726]/20 to-transparent opacity-25 blur-3xl rounded-full transform -rotate-45" />
+      <div className="absolute bottom-[-10%] right-[10%] w-[50%] h-[50%] bg-gradient-to-tl from-[#e89a3c]/12 via-transparent to-[#ff8a65]/8 opacity-30 blur-3xl rounded-full transform rotate-45" />
       <div
         className="absolute bottom-[10%] left-[15%] w-72 h-72 rounded-full blur-3xl -z-10 parallax"
         style={{
@@ -126,8 +138,8 @@ const HeroSection = () => {
             "radial-gradient(circle, rgba(232, 154, 60, 0.08) 0%, transparent 70%)",
         }}
         data-speed="0.05"
-      ></div>
-      <div className="absolute top-[40%] right-[20%] w-48 h-48 bg-gradient-to-br from-[#ff7043]/15 to-transparent opacity-20 blur-2xl rounded-full transform rotate-90"></div>
+      />
+      <div className="absolute top-[40%] right-[20%] w-48 h-48 bg-gradient-to-br from-[#ff7043]/15 to-transparent opacity-20 blur-2xl rounded-full transform rotate-90" />
 
       <div className="container px-4 sm:px-6 lg:px-8 w-full" ref={containerRef}>
         <div className="flex flex-col items-center max-w-4xl mx-auto text-center">
@@ -140,11 +152,13 @@ const HeroSection = () => {
                 <img
                   ref={imageRef}
                   src="/images/landing/monkey-poro.png"
-                  alt="GONEXT Gaming Assistant"
+                  alt="GONEXT Gaming Assistant mascot"
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-auto object-contain transition-transform duration-500 ease-out"
                   style={{
                     transformStyle: "preserve-3d",
-                    maxWidth: "300px",
+                    maxWidth: "320px",
                     margin: "0 auto",
                     display: "block",
                     filter: "drop-shadow(0 5px 15px rgba(0, 0, 0, 0.1))",
@@ -156,11 +170,10 @@ const HeroSection = () => {
 
           <div className="w-full">
             <h2
-              className="lg:text-5xl font-bold leading-tight opacity-0 animate-fade-in mb-4 sm:mb-6"
+              className="lg:text-5xl font-bold leading-tight opacity-0 animate-fade-in mb-4 sm:mb-6 gradient-text"
               style={{
                 ...goldmanTitleStyle,
                 animationDelay: "0.4s",
-                color: "#1e1e1e",
               }}
             >
               AI for League of Legends Matches
@@ -189,8 +202,9 @@ const HeroSection = () => {
                   or try it out for
                 </span>
               </div>
-              <div className="w-full flex justify-center">
+              <div className="w-full flex flex-col items-center gap-3">
                 <QuickSearch />
+                <div className="text-xs text-gray-500">No login required</div>
               </div>
             </div>
           </div>
@@ -235,7 +249,7 @@ const HowItWorksSection = () => {
 
   return (
     <section
-      className="w-full py-20 px-6 bg-[#f0f2f5] text-center text-black"
+      className="w-full py-20 px-6 bg-[#f8fafc] text-center text-black"
       ref={sectionRef}
     >
       <div className="fade-in-element opacity-0">
@@ -273,7 +287,7 @@ const HowItWorksSection = () => {
           return (
             <div
               key={title}
-              className="flex flex-col items-center text-center bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 backdrop-blur-sm fade-in-element opacity-0"
+              className="flex flex-col items-center text-center bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 backdrop-blur-sm fade-in-element opacity-0 feature-card"
             >
               <div
                 className={`text-4xl p-4 rounded-full mb-4 ${data[i].color}`}
@@ -314,7 +328,7 @@ const PreviewSection = () => {
     transition:
       "transform 0.5s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.5s cubic-bezier(0.19, 1, 0.22, 1)",
     willChange: "transform, opacity",
-  };
+  } as React.CSSProperties;
 
   React.useEffect(() => {
     // Create intersection observer to detect when section is in view
@@ -412,11 +426,8 @@ const PreviewSection = () => {
       >
         <div className="container px-6 lg:px-8 mx-auto h-full flex flex-col">
           <div className="mb-8 md:mb-12">
-            <h2
-              className="section-title text-3xl sm:text-4xl md:text-5xl font-bold mb-4 md:mb-6"
-              style={goldmanTitleStyle}
-            >
-              Experience GONEXT
+            <h2 className="section-title text-3xl sm:text-4xl md:text-5xl font-bold mb-4 md:mb-6">
+              <span className="gradient-text-animated">Experience GONEXT</span>
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl">
               Here's what you can expect when using our AI-powered match
@@ -471,9 +482,11 @@ const PreviewSection = () => {
                       <img
                         src={slide.image}
                         alt={slide.title}
+                        loading="lazy"
+                        decoding="async"
                         className="absolute inset-0 w-full h-full object-contain rounded-xl"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent rounded-xl"></div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent rounded-xl" />
 
                       {/* Glass overlay text */}
                       <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8">
@@ -540,8 +553,8 @@ const WhySmartSection = () => {
       ref={sectionRef}
     >
       {/* Background decorative elements */}
-      <div className="absolute -top-20 right-0 w-72 h-72 bg-[#e89a3c]/10 rounded-full opacity-60 blur-3xl -z-10"></div>
-      <div className="absolute bottom-0 left-10 w-64 h-64 bg-[#e89a3c]/5 rounded-full opacity-70 blur-3xl -z-10"></div>
+      <div className="absolute -top-20 right-0 w-72 h-72 bg-[#e89a3c]/10 rounded-full opacity-60 blur-3xl -z-10" />
+      <div className="absolute bottom-0 left-10 w-64 h-64 bg-[#e89a3c]/5 rounded-full opacity-70 blur-3xl -z-10" />
 
       <div className="relative z-10 max-w-7xl mx-auto">
         <div className="fade-in-element opacity-0">
@@ -706,8 +719,8 @@ const CTASection = () => {
   return (
     <section className="relative w-full py-20 px-6 text-black text-center bg-gradient-to-br from-[#ffe7ba] via-[#fff1e6] to-[#fff]">
       {/* Background decorative elements */}
-      <div className="absolute -top-10 -left-10 w-72 h-72 bg-[#e89a3c]/10 rounded-full opacity-40 blur-3xl -z-10"></div>
-      <div className="absolute bottom-0 right-0 w-64 h-64 bg-[#e89a3c]/5 rounded-full opacity-50 blur-3xl -z-10"></div>
+      <div className="absolute -top-10 -left-10 w-72 h-72 bg-[#e89a3c]/10 rounded-full opacity-40 blur-3xl -z-10" />
+      <div className="absolute bottom-0 right-0 w-64 h-64 bg-[#e89a3c]/5 rounded-full opacity-50 blur-3xl -z-10" />
 
       <div
         ref={sectionRef}
@@ -731,6 +744,12 @@ const CTASection = () => {
           <div className="w-full">
             <QuickSearch />
           </div>
+          <button
+            className="button-primary btn-shine mt-2"
+            aria-label="Learn more about GONEXT"
+          >
+            Learn more
+          </button>
         </div>
       </div>
     </section>

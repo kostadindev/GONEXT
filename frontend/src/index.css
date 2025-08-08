@@ -264,3 +264,81 @@ code {
 .transform-style-preserve-3d {
   transform-style: preserve-3d;
 }
+
+/* Modern AI-style additions */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.gradient-text {
+  background: linear-gradient(90deg, #111 0%, #e89a3c 50%, #111 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-text-animated {
+  background: linear-gradient(90deg, #111 0%, #e89a3c 20%, #ffb74d 50%, #e89a3c 80%, #111 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientShift 6s ease infinite;
+}
+
+/* Subtle dot grid background */
+.dot-grid {
+  background-image: radial-gradient(rgba(0,0,0,0.08) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* Floating orb visuals */
+@keyframes floatOrb {
+  0% { transform: translateY(0) translateX(0) scale(1); }
+  50% { transform: translateY(-12px) translateX(6px) scale(1.02); }
+  100% { transform: translateY(0) translateX(0) scale(1); }
+}
+
+.orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(30px);
+  opacity: 0.35;
+  animation: floatOrb 8s ease-in-out infinite;
+}
+
+.orb--primary {
+  background: radial-gradient(circle at 30% 30%, rgba(232,154,60,0.35), transparent 60%);
+}
+
+.orb--accent {
+  background: radial-gradient(circle at 70% 70%, rgba(255,138,101,0.25), transparent 60%);
+}
+
+/* Shine effect for buttons */
+@keyframes shine {
+  0% { transform: translateX(-150%); }
+  100% { transform: translateX(150%); }
+}
+
+.btn-shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-shine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.35) 50%, transparent 70%);
+  transform: translateX(-150%);
+  animation: shine 3s ease-in-out infinite;
+}
