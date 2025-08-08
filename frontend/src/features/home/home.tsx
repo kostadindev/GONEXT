@@ -95,7 +95,8 @@ const HeroSection = () => {
       id="hero"
       style={{
         background:
-          "linear-gradient(135deg, #fffaf5 0%, #fff1e6 30%, #ffe2c6 70%, #fff 100%)",
+          // Lighter center radial overlay + warm linear gradient base
+          "radial-gradient(ellipse at 50% 48%, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.75) 22%, rgba(255,255,255,0.35) 46%, rgba(255,255,255,0.0) 60%), linear-gradient(135deg, #fffaf5 0%, #fff1e6 30%, #ffe2c6 70%, #fff 100%)",
         padding: isMobile ? "100px 12px 40px" : "120px 20px 60px",
       }}
     >
@@ -461,7 +462,7 @@ const PreviewSection = () => {
               return (
                 <div
                   key={index}
-                  className={`absolute inset-0 overflow-hidden shadow-elegant ${
+                  className={`absolute inset-0 overflow-hidden ${
                     isVisible ? "animate-card-enter" : ""
                   }`}
                   style={{
@@ -474,7 +475,7 @@ const PreviewSection = () => {
                     pointerEvents: isVisible ? "auto" : "none",
                   }}
                 >
-                  <div className="relative h-full bg-white rounded-xl border border-gray-200 overflow-hidden">
+                  <div className="relative h-full rounded-xl border border-gray-200 overflow-hidden bg-gradient-to-br from-white to-gray-50 shadow-elegant">
                     {/* Full width image background */}
                     <div className="relative h-full w-full">
                       <img
@@ -484,11 +485,11 @@ const PreviewSection = () => {
                         decoding="async"
                         className="absolute inset-0 w-full h-full object-contain rounded-xl"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent rounded-xl" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/15 to-transparent rounded-xl" />
 
                       {/* Glass overlay text */}
                       <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8">
-                        <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 shadow-2xl">
+                        <div className="bg-white/20 backdrop-blur-md rounded-2xl p-6 border border-white/30 shadow-2xl">
                           <h3
                             className="text-xl sm:text-2xl font-bold leading-tight mb-3 text-white"
                             style={goldmanTitleStyle}
@@ -505,6 +506,21 @@ const PreviewSection = () => {
                 </div>
               );
             })}
+
+            {/* Pagination dots */}
+            <div className="absolute bottom-4 left-0 right-0 flex items-center justify-center gap-2">
+              {[0, 1, 2].map((i) => (
+                <span
+                  key={i}
+                  className={`inline-block rounded-full transition-all duration-300 ${
+                    activeCardIndex >= i
+                      ? "bg-[#e89a3c] scale-100"
+                      : "bg-gray-300 scale-75"
+                  }`}
+                  style={{ width: 10, height: 10 }}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </section>
