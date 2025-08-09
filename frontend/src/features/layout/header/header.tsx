@@ -210,7 +210,9 @@ export const Header: React.FC = () => {
   return (
     <Layout.Header
       style={{
-        background: token.colorBgContainer,
+        background: "rgba(255,255,255,0.65)",
+        backdropFilter: "saturate(180%) blur(12px)",
+        WebkitBackdropFilter: "saturate(180%) blur(12px)",
         borderBottom: `1px solid ${token.colorBorderSecondary}`,
         padding: "0 24px",
         height: "auto",
@@ -255,11 +257,15 @@ export const Header: React.FC = () => {
         >
           {/* Left Section: Brand */}
           <div
-            style={goldmanStyle}
-            className="cursor-pointer"
+            style={{
+              ...goldmanStyle,
+              textShadow: "0 1px 2px rgba(255, 255, 255, 0.4)",
+            }}
+            className="cursor-pointer gradient-text-animated"
             onClick={() => navigate("/")}
+            aria-label="Go to home"
           >
-            {t("header.title")}
+            GONEXT
           </div>
 
           {/* Search Section - Only show on non-home pages */}
@@ -436,7 +442,7 @@ const goldmanStyle: React.CSSProperties = {
   fontFamily: '"Goldman", serif',
   fontWeight: 400,
   fontStyle: "normal",
-  fontSize: "3rem",
+  fontSize: "clamp(1.75rem, 3vw, 3rem)",
 };
 
 export default Header;
