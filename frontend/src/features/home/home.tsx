@@ -427,9 +427,13 @@ const PreviewSection = () => {
       >
         <div className="container px-6 lg:px-8 mx-auto h-full flex flex-col">
           <div className="mb-8 md:mb-12">
-            <h2 className="section-title text-3xl sm:text-4xl md:text-5xl font-bold mb-4 md:mb-6">
-              <span className="gradient-text-animated">Experience GONEXT</span>
-            </h2>
+            <Title
+              level={2}
+              className="!text-3xl sm:!text-4xl text-[#1e1e1e] mb-4 md:mb-6"
+              style={goldmanTitleStyle}
+            >
+              Experience GONEXT
+            </Title>
             <p className="text-lg text-gray-700 max-w-2xl">
               Here's what you can expect when using our AI-powered match
               assistant.
