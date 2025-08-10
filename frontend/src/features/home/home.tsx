@@ -169,13 +169,15 @@ const HeroSection = () => {
 
           <div className="w-full">
             <h2
-              className="lg:text-5xl font-bold leading-tight opacity-0 animate-fade-in mb-4 sm:mb-6 gradient-text"
+              className="lg:text-5xl leading-tight mb-4 sm:mb-6 gradient-text-animated"
               style={{
                 ...goldmanTitleStyle,
-                animationDelay: "0.4s",
+                fontFamily: '"Goldman", serif',
+                fontWeight: 400,
+                textShadow: "0 1px 2px rgba(255, 255, 255, 0.4)",
               }}
             >
-              AI for League of Legends Matches
+              Intelligence for League of Legends
             </h2>
 
             <p
