@@ -61,7 +61,7 @@ const CookieConsentBanner = () => {
           <Text style={{ color: isDarkMode ? "#fff" : "#000" }}>
             We use cookies to personalize content and analyze our traffic. By
             clicking "Accept", you consent to our use of cookies. You can{" "}
-            <Link href="/privacy-policy" style={{ color: "#e89a3c" }}>
+            <Link href="/privacy-policy" style={{ color: "#ffb74d" }}>
               learn more
             </Link>
             .

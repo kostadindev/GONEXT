@@ -144,12 +144,12 @@ code {
   display: inline-flex;
   align-items: center;
   padding: 8px 16px;
-  background: rgba(232, 154, 60, 0.1);
-  border: 1px solid rgba(232, 154, 60, 0.2);
+  background: rgba(255, 183, 77, 0.1);
+  border: 1px solid rgba(255, 183, 77, 0.2);
   border-radius: 50px;
   font-size: 14px;
   font-weight: 500;
-  color: #e89a3c;
+  color: #ffb74d;
 }
 
 /* Section styling */
@@ -188,7 +188,7 @@ code {
   align-items: center;
   justify-content: center;
   padding: 16px 32px;
-  background: #e89a3c;
+  background: #ffb74d;
   color: white;
   border-radius: 50px;
   font-weight: 500;
@@ -199,9 +199,9 @@ code {
 }
 
 .button-primary:hover {
-  background: #d68929;
+  background: #ffa726;
   transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(232, 154, 60, 0.3);
+  box-shadow: 0 10px 25px rgba(255, 183, 77, 0.3);
 }
 
 .button-secondary {
@@ -210,8 +210,8 @@ code {
   justify-content: center;
   padding: 16px 32px;
   background: transparent;
-  color: #e89a3c;
-  border: 2px solid #e89a3c;
+  color: #ffb74d;
+  border: 2px solid #ffb74d;
   border-radius: 50px;
   font-weight: 500;
   text-decoration: none;
@@ -220,7 +220,7 @@ code {
 }
 
 .button-secondary:hover {
-  background: #e89a3c;
+  background: #ffb74d;
   color: white;
   transform: translateY(-2px);
 }
@@ -253,7 +253,7 @@ code {
 
 /* Background gradient utilities */
 .bg-pulse-gradient {
-  background: linear-gradient(135deg, #e89a3c 0%, #d68929 50%, #c47820 100%);
+  background: linear-gradient(135deg, #ffb74d 0%, #ffa726 50%, #ff9800 100%);
 }
 
 .bg-dark-900 {
@@ -279,14 +279,14 @@ code {
 }
 
 .gradient-text {
-  background: linear-gradient(90deg, #111 0%, #e89a3c 50%, #111 100%);
+  background: linear-gradient(90deg, #111 0%, #ffb74d 50%, #111 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .gradient-text-animated {
-  background: linear-gradient(90deg, #111 0%, #e89a3c 20%, #ffb74d 50%, #e89a3c 80%, #111 100%);
+  background: linear-gradient(90deg, #111 0%, #ff9800 15%, #ffb74d 50%, #ffa726 85%, #111 100%);
   background-size: 200% 200%;
   -webkit-background-clip: text;
   background-clip: text;
@@ -316,7 +316,7 @@ code {
 }
 
 .orb--primary {
-  background: radial-gradient(circle at 30% 30%, rgba(232,154,60,0.35), transparent 60%);
+  background: radial-gradient(circle at 30% 30%, rgba(255,183,77,0.35), transparent 60%);
 }
 
 .orb--accent {

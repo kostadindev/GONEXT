@@ -34,7 +34,7 @@ export const Footer: React.FC = () => {
   };
 
   // Tailwind classes for hover‑only primary color
-  const linkClasses = `text-current transition-colors duration-200 hover:text-[#e89a3c]`;
+  const linkClasses = `text-current transition-colors duration-200 hover:text-[#ffb74d]`;
 
   return (
     <Layout.Footer style={footerStyle}>

@@ -27,7 +27,7 @@ const DefaultPrompts: React.FC<DefaultPromptsProps> = ({
         <Avatar
           style={{
             marginRight: 8,
-            backgroundColor: "#e89a3c",
+            backgroundColor: "#ffb74d",
             color: "#fff",
           }}
           size={60}

@@ -55,10 +55,10 @@ const ParticleBackground = ({
         fpsLimit: 60,
         particles: {
           color: {
-            value: "#e89a3c",
+            value: "#ffb74d",
           },
           links: {
-            color: "#e89a3c",
+            color: "#ffb74d",
             distance: isMobile ? 100 : 150,
             enable: true,
             opacity: 0.6,

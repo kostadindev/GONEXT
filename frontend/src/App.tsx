@@ -66,7 +66,7 @@ const ThemedApp = () => {
             ? theme.defaultAlgorithm
             : theme.darkAlgorithm,
         token: {
-          colorPrimary: "#e89a3c",
+          colorPrimary: "#ffb74d",
           borderRadius: 4,
         },
         components: {

@@ -28,7 +28,7 @@ export const InGameSummoner = ({
   };
   const borderColor =
     summoner.puuid === game?.searchedSummoner?.puuid
-      ? "#e89a3c"
+      ? token.colorPrimary
       : summoner.teamId === 100
       ? "#65a9f3"
       : "#e84749";

@@ -127,9 +127,9 @@ const HeroSection = () => {
       </div>
 
       {/* Organic background gradient overlays */}
-      <div className="absolute -top-[15%] -right-[10%] w-[60%] h-[80%] bg-gradient-to-br from-[#e89a3c]/15 via-[#ff6b35]/10 to-transparent opacity-40 blur-3xl rounded-full transform rotate-12" />
+      <div className="absolute -top-[15%] -right-[10%] w-[60%] h-[80%] bg-gradient-to-br from-[#ffb74d]/15 via-[#ffa726]/10 to-transparent opacity-40 blur-3xl rounded-full transform rotate-12" />
       <div className="absolute top-[20%] -left-[5%] w-[40%] h-[60%] bg-gradient-to-tr from-[#ffa726]/20 to-transparent opacity-25 blur-3xl rounded-full transform -rotate-45" />
-      <div className="absolute bottom-[-10%] right-[10%] w-[50%] h-[50%] bg-gradient-to-tl from-[#e89a3c]/12 via-transparent to-[#ff8a65]/8 opacity-30 blur-3xl rounded-full transform rotate-45" />
+      <div className="absolute bottom-[-10%] right-[10%] w-[50%] h-[50%] bg-gradient-to-tl from-[#ffb74d]/12 via-transparent to-[#ffa726]/8 opacity-30 blur-3xl rounded-full transform rotate-45" />
       <div
         className="absolute bottom-[10%] left-[15%] w-72 h-72 rounded-full blur-3xl -z-10 parallax"
         style={{
@@ -520,7 +520,7 @@ const PreviewSection = () => {
                   key={i}
                   className={`inline-block rounded-full transition-all duration-300 ${
                     activeCardIndex >= i
-                      ? "bg-[#e89a3c] scale-100"
+                      ? "bg-[#ffb74d] scale-100"
                       : "bg-gray-300 scale-75"
                   }`}
                   style={{ width: 10, height: 10 }}
@@ -573,8 +573,8 @@ const WhySmartSection = () => {
       ref={sectionRef}
     >
       {/* Background decorative elements */}
-      <div className="absolute -top-20 right-0 w-72 h-72 bg-[#e89a3c]/10 rounded-full opacity-60 blur-3xl -z-10" />
-      <div className="absolute bottom-0 left-10 w-64 h-64 bg-[#e89a3c]/5 rounded-full opacity-70 blur-3xl -z-10" />
+      <div className="absolute -top-20 right-0 w-72 h-72 bg-[#ffb74d]/10 rounded-full opacity-60 blur-3xl -z-10" />
+      <div className="absolute bottom-0 left-10 w-64 h-64 bg-[#ffb74d]/5 rounded-full opacity-70 blur-3xl -z-10" />
 
       <div className="relative z-10 max-w-7xl mx-auto">
         <div className="fade-in-element opacity-0">
@@ -739,8 +739,8 @@ const CTASection = () => {
   return (
     <section className="relative w-full py-20 px-6 text-black text-center bg-gradient-to-br from-[#ffe7ba] via-[#fff1e6] to-[#fff]">
       {/* Background decorative elements */}
-      <div className="absolute -top-10 -left-10 w-72 h-72 bg-[#e89a3c]/10 rounded-full opacity-40 blur-3xl -z-10" />
-      <div className="absolute bottom-0 right-0 w-64 h-64 bg-[#e89a3c]/5 rounded-full opacity-50 blur-3xl -z-10" />
+      <div className="absolute -top-10 -left-10 w-72 h-72 bg-[#ffb74d]/10 rounded-full opacity-40 blur-3xl -z-10" />
+      <div className="absolute bottom-0 right-0 w-64 h-64 bg-[#ffb74d]/5 rounded-full opacity-50 blur-3xl -z-10" />
 
       <div
         ref={sectionRef}
@@ -799,7 +799,7 @@ const HomePage: React.FC = () => {
       theme={{
         algorithm: antdTheme.defaultAlgorithm,
         token: {
-          colorPrimary: "#e89a3c",
+          colorPrimary: "#ffb74d",
         },
       }}
     >

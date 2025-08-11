@@ -339,7 +339,7 @@ const SimpleToolCall: React.FC<{
   const { token } = useToken();
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const primaryColor = "#e89a3c";
+  const primaryColor = token.colorPrimary;
 
   const formatParameters = (params: string) => {
     try {
