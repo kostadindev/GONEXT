@@ -53,7 +53,6 @@ export const ActiveGameTabs = ({ game, region }: ActiveGameTabsProps) => {
             label: "Live Match",
             key: "chat",
             icon: <SyncOutlined spin />,
-            // disabled: true,
           },
           {
             label: "Enemy Team",
@@ -61,7 +60,7 @@ export const ActiveGameTabs = ({ game, region }: ActiveGameTabsProps) => {
             children: enemies?.map((enemy: Summoner) => {
               return {
                 label: enemy.championName,
-                key: `${enemy.puuid}`, // Ensure keys are unique
+                key: `${enemy.puuid}`,
               };
             }),
           },
@@ -71,7 +70,7 @@ export const ActiveGameTabs = ({ game, region }: ActiveGameTabsProps) => {
             children: allies?.map((ally: Summoner) => {
               return {
                 label: ally.championName,
-                key: `${ally.puuid}`, // Ensure keys are unique
+                key: `${ally.puuid}`,
               };
             }),
           },
@@ -98,16 +97,20 @@ export const ActiveGameTabs = ({ game, region }: ActiveGameTabsProps) => {
         ]
       : []),
   ];
+
   return (
-    <div className="flex flex-col flex-1">
+    <div className="flex flex-col flex-1 w-full">
       <Menu
         onClick={handleChangeView}
         selectedKeys={[selectedView]}
         mode="horizontal"
         items={items}
-        style={{ backgroundColor: "transparent" }}
+        style={{ background: "transparent", width: "100%" }}
       />
-      <div className="flex flex-col pt-5">
+      <div
+        className="flex flex-col pt-5 w-full"
+        style={{ background: "transparent" }}
+      >
         {selectedView === "chat" && game?.gameId && (
           <GameOverview game={game} />
         )}
@@ -121,7 +124,7 @@ export const ActiveGameTabs = ({ game, region }: ActiveGameTabsProps) => {
         {selectedView === "not-in-game" &&
           game?.searchedSummoner &&
           !game?.gameId && (
-            <div className="flex flex-col items-center justify-center min-h-96 p-8 text-gray-500">
+            <div className="flex flex-col items-center justify-center min-h-96 p-8 text-gray-500 w-full">
               <PauseCircleOutlined
                 style={{ fontSize: "48px", marginBottom: "16px" }}
               />
