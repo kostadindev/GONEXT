@@ -68,7 +68,8 @@ export const ActiveGame = () => {
   }, []);
 
   const lightBg =
-    "radial-gradient(ellipse at 50% 48%, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.75) 22%, rgba(255,255,255,0.35) 46%, rgba(255,255,255,0.0) 60%), linear-gradient(135deg, #fffaf5 0%, #fff1e6 30%, #ffe2c6 70%, #fff 100%)";
+    // Keep warm tint but push it to the edges and keep center clean
+    "radial-gradient(ellipse at 50% 50%, rgba(255,167,38,0) 62%, rgba(255,167,38,0.05) 80%, rgba(255,167,38,0.08) 100%), linear-gradient(135deg, #ffffff 0%, #fffaf5 45%, #fff5e8 100%)";
   const darkBg =
     "radial-gradient(ellipse at 50% 48%, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.45) 22%, rgba(0,0,0,0.35) 46%, rgba(0,0,0,0.0) 60%), linear-gradient(135deg, #0f0f0f 0%, #141414 30%, #1a1a1a 70%, #000 100%)";
 
@@ -80,7 +81,7 @@ export const ActiveGame = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          minHeight: "400px",
+          minHeight: "calc(100vh - 64px)",
           background: isDarkMode ? darkBg : lightBg,
         }}
       >
@@ -97,7 +98,7 @@ export const ActiveGame = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          minHeight: "400px",
+          minHeight: "calc(100vh - 64px)",
           background: isDarkMode ? darkBg : lightBg,
         }}
       >
@@ -109,11 +110,23 @@ export const ActiveGame = () => {
   return (
     <div
       className="relative overflow-hidden dot-grid"
-      style={{ background: isDarkMode ? darkBg : lightBg }}
+      style={{
+        background: isDarkMode ? darkBg : lightBg,
+        minHeight: "calc(100vh - 64px)",
+      }}
     >
-      {/* Decorative gradient overlays */}
-      <div className="absolute -top-[15%] -right-[10%] w-[60%] h-[80%] bg-gradient-to-br from-[#ffb74d]/15 via-[#ffa726]/10 to-transparent opacity-40 blur-3xl rounded-full rotate-12" />
-      <div className="absolute top-[20%] -left-[5%] w-[40%] h-[60%] bg-gradient-to-tr from-[#ffa726]/20 to-transparent opacity-25 blur-3xl rounded-full -rotate-45" />
+      {/* Decorative gradient overlays — strong in dark, very subtle in light */}
+      {isDarkMode ? (
+        <>
+          <div className="absolute -top-[15%] -right-[10%] w-[60%] h-[80%] bg-gradient-to-br from-[#ffb74d]/15 via-[#ffa726]/10 to-transparent opacity-40 blur-3xl rounded-full rotate-12" />
+          <div className="absolute top-[20%] -left-[5%] w-[40%] h-[60%] bg-gradient-to-tr from-[#ffa726]/20 to-transparent opacity-25 blur-3xl rounded-full -rotate-45" />
+        </>
+      ) : (
+        <>
+          <div className="absolute -top-[15%] -right-[10%] w-[60%] h-[80%] bg-gradient-to-br from-[#ffb74d]/6 via-[#ffa726]/4 to-transparent opacity-15 blur-3xl rounded-full rotate-12" />
+          <div className="absolute top-[20%] -left-[5%] w-[40%] h-[60%] bg-gradient-to-tr from-[#ffa726]/8 to-transparent opacity-10 blur-3xl rounded-full -rotate-45" />
+        </>
+      )}
 
       <Content
         style={{
@@ -121,6 +134,7 @@ export const ActiveGame = () => {
           display: "flex",
           flexDirection: "column",
           background: "transparent",
+          minHeight: "calc(100vh - 64px)",
         }}
       >
         <div
