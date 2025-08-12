@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   Row,
@@ -7,7 +7,6 @@ import {
   Button,
   Tooltip,
   Space,
-  Divider,
   ConfigProvider,
   theme as antdTheme,
 } from "antd";
@@ -67,11 +66,13 @@ Kostadin leads engineering and product at GONEXT. He is a Software Engineer at S
 ];
 
 // Hero Section to mirror homepage aesthetics
-const HeroSection: React.FC<{ title: string; description: string }> = ({
-  title,
-  description,
-}) => {
+const HeroSection: React.FC<{
+  title: string;
+  description: string;
+  isDarkMode: boolean;
+}> = ({ title, description, isDarkMode }) => {
   const sectionRef = React.useRef<HTMLDivElement>(null);
+  const { token } = antdTheme.useToken();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -92,13 +93,17 @@ const HeroSection: React.FC<{ title: string; description: string }> = ({
     };
   }, []);
 
+  const lightBg =
+    "radial-gradient(ellipse at 50% 48%, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.75) 22%, rgba(255,255,255,0.35) 46%, rgba(255,255,255,0.0) 60%), linear-gradient(135deg, #fffaf5 0%, #fff1e6 30%, #ffe2c6 70%, #fff 100%)";
+  const darkBg =
+    "radial-gradient(ellipse at 50% 48%, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.45) 22%, rgba(0,0,0,0.35) 46%, rgba(0,0,0,0.0) 60%), linear-gradient(135deg, #0f0f0f 0%, #141414 30%, #1a1a1a 70%, #000 100%)";
+
   return (
     <section
       className="overflow-hidden relative bg-cover min-h-[70vh] flex items-center dot-grid"
       ref={sectionRef}
       style={{
-        background:
-          "radial-gradient(ellipse at 50% 48%, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.75) 22%, rgba(255,255,255,0.35) 46%, rgba(255,255,255,0.0) 60%), linear-gradient(135deg, #fffaf5 0%, #fff1e6 30%, #ffe2c6 70%, #fff 100%)",
+        background: isDarkMode ? darkBg : lightBg,
         padding: "100px 20px 60px",
       }}
     >
@@ -128,7 +133,10 @@ const HeroSection: React.FC<{ title: string; description: string }> = ({
           >
             {title}
           </h1>
-          <p className="text-base sm:text-lg lg:text-xl text-gray-800 leading-relaxed max-w-2xl mx-auto">
+          <p
+            className="text-base sm:text-lg lg:text-xl leading-relaxed max-w-2xl mx-auto"
+            style={{ color: token.colorText }}
+          >
             {description}
           </p>
         </div>
@@ -139,6 +147,7 @@ const HeroSection: React.FC<{ title: string; description: string }> = ({
 
 const TeamSection: React.FC = () => {
   const sectionRef = React.useRef<HTMLDivElement>(null);
+  const { token } = antdTheme.useToken();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -167,12 +176,16 @@ const TeamSection: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <section className="w-full py-16 px-6 bg-white text-black" ref={sectionRef}>
+    <section
+      className="w-full py-16 px-6"
+      ref={sectionRef}
+      style={{ backgroundColor: token.colorBgLayout }}
+    >
       <div className="fade-in-element opacity-0 text-center mb-10">
         <Title
           level={2}
-          className="!text-3xl sm:!text-4xl text-[#1e1e1e]"
-          style={goldmanTitleStyle}
+          className="!text-3xl sm:!text-4xl"
+          style={{ ...goldmanTitleStyle, color: token.colorTextHeading }}
         >
           {t("aboutUs.team.title")}
         </Title>
@@ -184,12 +197,21 @@ const TeamSection: React.FC = () => {
             <div className="fade-in-element opacity-0">
               <Card
                 hoverable
-                className="rounded-2xl border border-gray-100 bg-white/80 backdrop-blur-md shadow-elegant transition-all duration-300 hover:shadow-xl"
+                className="rounded-2xl backdrop-blur-md shadow-elegant transition-all duration-300 hover:shadow-xl"
+                style={{
+                  backgroundColor: token.colorBgContainer,
+                  border: `1px solid ${token.colorBorderSecondary}`,
+                }}
                 bodyStyle={{ padding: 20 }}
               >
                 <Row gutter={[24, 24]} align="middle">
                   <Col xs={24} md={10}>
-                    <div className="relative overflow-hidden rounded-xl border border-gray-200">
+                    <div
+                      className="relative overflow-hidden rounded-xl"
+                      style={{
+                        border: `1px solid ${token.colorBorderSecondary}`,
+                      }}
+                    >
                       <img
                         src={member.image}
                         alt={member.name}
@@ -285,9 +307,12 @@ const TeamSection: React.FC = () => {
   );
 };
 
-const ImprovementSection: React.FC = () => {
+const ImprovementSection: React.FC<{ isDarkMode: boolean }> = ({
+  isDarkMode,
+}) => {
   const sectionRef = React.useRef<HTMLDivElement>(null);
   const { t } = useTranslation();
+  const { token } = antdTheme.useToken();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -308,10 +333,19 @@ const ImprovementSection: React.FC = () => {
     };
   }, []);
 
+  const lightGradient =
+    "linear-gradient(to bottom right, #ffe7ba, #fff1e6, #fff)";
+  const darkGradient =
+    "linear-gradient(to bottom right, #1f1f1f, #141414, #0d0d0d)";
+
   return (
     <section
       ref={sectionRef}
-      className="relative w-full py-20 px-6 text-black text-center bg-gradient-to-br from-[#ffe7ba] via-[#fff1e6] to-[#fff] opacity-0"
+      className="relative w-full py-20 px-6 text-center opacity-0"
+      style={{
+        background: isDarkMode ? darkGradient : lightGradient,
+        color: token.colorText,
+      }}
     >
       {/* Background decorative elements */}
       <div className="absolute -top-10 -left-10 w-72 h-72 bg-[#ffb74d]/10 rounded-full opacity-40 blur-3xl -z-10" />
@@ -319,12 +353,15 @@ const ImprovementSection: React.FC = () => {
 
       <div className="relative z-10 max-w-4xl mx-auto">
         <Title
-          className="!text-3xl sm:!text-4xl tracking-tight text-[#1e1e1e] mb-6"
-          style={goldmanTitleStyle}
+          className="!text-3xl sm:!text-4xl tracking-tight mb-6"
+          style={{ ...goldmanTitleStyle, color: token.colorTextHeading }}
         >
           {t("aboutUs.improvement.title")}
         </Title>
-        <Paragraph className="text-lg max-w-2xl mx-auto mb-8 text-gray-800">
+        <Paragraph
+          className="text-lg max-w-2xl mx-auto mb-8"
+          style={{ color: token.colorText }}
+        >
           {t("aboutUs.improvement.description", {
             email: "info@gonext.lol",
             interpolation: { escapeValue: false },
@@ -368,6 +405,10 @@ const ImprovementSection: React.FC = () => {
 
 const AboutUs: React.FC = () => {
   const { t } = useTranslation();
+  const { token } = antdTheme.useToken();
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(
+    localStorage.getItem("theme") === "dark"
+  );
 
   // Animate elements on scroll similar to homepage
   useEffect(() => {
@@ -389,21 +430,35 @@ const AboutUs: React.FC = () => {
       elements.forEach((el) => observer.unobserve(el));
     };
   }, []);
+  // Listen for theme changes from global app
+  useEffect(() => {
+    const handleThemeChange = () => {
+      setIsDarkMode(localStorage.getItem("theme") === "dark");
+    };
+    window.addEventListener("themeChanged", handleThemeChange);
+    return () => window.removeEventListener("themeChanged", handleThemeChange);
+  }, []);
 
   return (
     <ConfigProvider
       theme={{
-        algorithm: antdTheme.defaultAlgorithm,
+        algorithm: isDarkMode
+          ? antdTheme.darkAlgorithm
+          : antdTheme.defaultAlgorithm,
         token: { colorPrimary: "#ffb74d" },
       }}
     >
-      <div className="w-full text-gray-800 bg-white">
+      <div
+        className="w-full"
+        style={{ color: token.colorText, backgroundColor: token.colorBgLayout }}
+      >
         <HeroSection
           title={t("aboutUs.title")}
           description={t("aboutUs.description")}
+          isDarkMode={isDarkMode}
         />
         <TeamSection />
-        <ImprovementSection />
+        <ImprovementSection isDarkMode={isDarkMode} />
       </div>
     </ConfigProvider>
   );
