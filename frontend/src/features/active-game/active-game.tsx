@@ -68,8 +68,8 @@ export const ActiveGame = () => {
   }, []);
 
   const lightBg =
-    // Keep warm tint but push it to the edges and keep center clean
-    "radial-gradient(ellipse at 50% 50%, rgba(255,167,38,0) 62%, rgba(255,167,38,0.05) 80%, rgba(255,167,38,0.08) 100%), linear-gradient(135deg, #ffffff 0%, #fffaf5 45%, #fff5e8 100%)";
+    // Whiter center with warm tint only near the edges
+    "radial-gradient(ellipse at 50% 50%, rgba(255,167,38,0) 72%, rgba(255,167,38,0.035) 86%, rgba(255,167,38,0.07) 100%), linear-gradient(135deg, #ffffff 10%, #ffffff 70%, #fff7ec 100%)";
   const darkBg =
     "radial-gradient(ellipse at 50% 48%, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.45) 22%, rgba(0,0,0,0.35) 46%, rgba(0,0,0,0.0) 60%), linear-gradient(135deg, #0f0f0f 0%, #141414 30%, #1a1a1a 70%, #000 100%)";
 
