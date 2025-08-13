@@ -210,7 +210,9 @@ export const Header: React.FC = () => {
   return (
     <Layout.Header
       style={{
-        background: "rgba(255,255,255,0.65)",
+        background: isDarkMode
+          ? "rgba(18,18,18,0.65)"
+          : "rgba(255,255,255,0.65)",
         backdropFilter: "saturate(180%) blur(12px)",
         WebkitBackdropFilter: "saturate(180%) blur(12px)",
         borderBottom: `1px solid ${token.colorBorderSecondary}`,
@@ -223,6 +225,7 @@ export const Header: React.FC = () => {
         top: 0,
         zIndex: 100,
         boxShadow: token.boxShadowTertiary,
+        color: token.colorText,
       }}
     >
       {/* Particle Background */}
@@ -260,6 +263,7 @@ export const Header: React.FC = () => {
             style={{
               ...goldmanStyle,
               textShadow: "0 1px 2px rgba(255, 255, 255, 0.4)",
+              color: token.colorText,
             }}
             className="cursor-pointer gradient-text-animated"
             onClick={() => navigate("/")}
