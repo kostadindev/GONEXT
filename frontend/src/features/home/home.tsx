@@ -513,20 +513,7 @@ const PreviewSection = () => {
               );
             })}
 
-            {/* Pagination dots */}
-            <div className="absolute bottom-4 left-0 right-0 flex items-center justify-center gap-2">
-              {[0, 1, 2].map((i) => (
-                <span
-                  key={i}
-                  className={`inline-block rounded-full transition-all duration-300 ${
-                    activeCardIndex >= i
-                      ? "bg-[#ffb74d] scale-100"
-                      : "bg-gray-300 scale-75"
-                  }`}
-                  style={{ width: 10, height: 10 }}
-                />
-              ))}
-            </div>
+            {/* Pagination dots removed */}
           </div>
         </div>
       </section>
