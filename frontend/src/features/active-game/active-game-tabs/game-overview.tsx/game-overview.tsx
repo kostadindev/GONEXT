@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Card, Tooltip, Typography, Skeleton, Statistic } from "antd";
+import { Card, Tooltip, Typography, Skeleton, Statistic, theme } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import { Game } from "../../../../libs/league/league-types";
 import ChatComponent from "../../../chat/chat";
@@ -25,6 +25,8 @@ export const GameOverview: React.FC<{ game: Game | null }> = ({ game }) => {
   const [loadingItems, setLoadingItems] = useState<boolean>(true);
   const [loadingSummary, setLoadingSummary] = useState<boolean>(true);
 
+  const { token } = theme.useToken();
+
   useEffect(() => {
     const fetchData = async () => {
       if (game) {
@@ -49,79 +51,64 @@ export const GameOverview: React.FC<{ game: Game | null }> = ({ game }) => {
     fetchData();
   }, [game]);
 
+  // Responsive heights matching the page layout
+  const chatHeight = "calc(100vh - 64px - 120px)"; // header + some breathing space
+
   return (
-    <div className="flex">
-      <div className="w-4/5">
+    <div className="flex w-full">
+      <div className="flex-1 min-w-0">
         <ChatComponent
           game={game}
-          height={"75vh"}
+          height={chatHeight}
           showAvatar={false}
           context={{ game: game as Game }}
-        ></ChatComponent>
+        />
       </div>
-      <div className="w-[350px] min-w-[250px] pl-4 flex flex-col space-y-4">
-        {/* <Card
-          className="rounded-lg shadow-md"
-          hoverable
-          styles={{
-            body: {
-              padding: "12px",
-              display: "flex",
-              justifyContent: "center",
-              flexDirection: "column",
-              alignItems: "center",
-            },
-          }}
-        >
-          <Title level={5} className="text-sm text-center">
-            Win Chance
-            <Tooltip title="This is calculated using AI based on player performance, team composition, and other factors.">
-              <InfoCircleOutlined className="text-primary text-sm ml-1" />
-            </Tooltip>
-          </Title>
-          {loadingWinRate ? (
-            <Skeleton.Avatar
-              active
-              style={{ width: 50, height: 30 }}
-              shape="square"
-            />
-          ) : (
-            <Statistic
-              value={estimatedWinRate as number}
-              precision={2}
-              valueStyle={{
-                color:
-                  estimatedWinRate && estimatedWinRate > 50
-                    ? "#3f8600"
-                    : "#cf1322",
-              }}
-              suffix="%"
-            />
-          )}
-        </Card> */}
+      <div className="w-[350px] min-w-[280px] pl-4 flex flex-col space-y-4">
         <RecommendedItems
           loadingItems={loadingItems}
           recommendedItems={recommendedItems}
         />
+
         <Card
-          className="rounded-lg shadow-md"
+          className="rounded-xl shadow-lg border-0"
           hoverable
           styles={{
             body: {
-              padding: "12px",
+              padding: "16px",
             },
           }}
         >
-          <Title level={5} className="text-sm text-center">
-            Game Overview
-            <Tooltip title="This is a summary generated using AI based on the match events.">
-              <InfoCircleOutlined className="text-primary text-sm ml-1" />
-            </Tooltip>
-          </Title>
+          <div className="flex items-center justify-between mb-3">
+            <Title level={5} className="text-sm mb-0 font-semibold">
+              Game Overview
+              <Tooltip title="AI-generated summary based on teams and player tendencies">
+                <InfoCircleOutlined className="ml-2 text-xs" />
+              </Tooltip>
+            </Title>
+            {!loadingWinRate && estimatedWinRate !== null && (
+              <div
+                className="px-2 py-1 rounded-md text-xs font-medium"
+                style={{
+                  backgroundColor: token.colorPrimaryBg,
+                  border: `1px solid ${token.colorPrimaryBorder}`,
+                  color: token.colorPrimary,
+                }}
+              >
+                {estimatedWinRate.toFixed(1)}% win chance
+              </div>
+            )}
+          </div>
+
           {loadingSummary ? (
             <Skeleton active paragraph={{ rows: 3 }} />
           ) : (
-            <Text className="text-sm">{gameSummary}</Text>
+            <Text
+              className="text-sm leading-relaxed"
+              style={{ color: token.colorText }}
+            >
+              {gameSummary}
+            </Text>
           )}
         </Card>
       </div>
