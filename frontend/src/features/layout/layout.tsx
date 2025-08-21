@@ -15,7 +15,7 @@ function AppLayout() {
       <Layout>
         {!isHomePage ? <Header /> : ""}
         <Body />
-        {isHomePage ? <Footer /> : ""}
+        <Footer />
       </Layout>
     </Layout>
   );
