@@ -36,7 +36,7 @@ const WinRateWidget: React.FC<{
         },
       }}
     >
-      <div className="mb-3">
+      <div className="mb-3 text-center">
         <Title level={5} className="text-sm mb-0 font-semibold">
           Win Probability
           <Tooltip title="AI-estimated win probability based on team composition and player performance">
@@ -138,7 +138,7 @@ export const GameOverview: React.FC<{ game: Game | null }> = ({ game }) => {
             },
           }}
         >
-          <div className="mb-3">
+          <div className="mb-3 text-center">
             <Title level={5} className="text-sm mb-0 font-semibold">
               Game Overview
               <Tooltip title="AI-generated summary based on teams and player tendencies">

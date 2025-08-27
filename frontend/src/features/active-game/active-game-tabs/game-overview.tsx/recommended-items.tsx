@@ -289,7 +289,7 @@ export const RecommendedItems: React.FC<RecommendedItemsProps> = ({
         }}
       >
         <div className="flex items-center justify-between mb-4">
-          <div>
+          <div className="flex-1 text-center">
             <Title
               level={5}
               className="text-sm mb-0 font-semibold"
@@ -301,7 +301,7 @@ export const RecommendedItems: React.FC<RecommendedItemsProps> = ({
           </div>
           {hasBuildSequence && (
             <div
-              className="flex items-center px-3 py-2 rounded-lg cursor-pointer transition-all duration-300"
+              className="flex items-center px-3 py-2 rounded-lg cursor-pointer transition-all duration-300 absolute right-4"
               onClick={openModal}
               style={{
                 backgroundColor: token.colorPrimaryBg,
