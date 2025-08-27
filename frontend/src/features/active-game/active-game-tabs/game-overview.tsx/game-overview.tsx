@@ -13,6 +13,60 @@ interface ItemBuild {
   buildSequence: { itemId: string; itemName: string; step: number }[];
 }
 
+// Simple Win Rate Widget Component
+const WinRateWidget: React.FC<{
+  estimatedWinRate: number | null;
+  loadingWinRate: boolean;
+}> = ({ estimatedWinRate, loadingWinRate }) => {
+  const { token } = theme.useToken();
+
+  const getWinRateColor = (rate: number) => {
+    if (rate >= 60) return token.colorSuccess;
+    if (rate >= 40) return token.colorWarning;
+    return token.colorError;
+  };
+
+  return (
+    <Card
+      className="rounded-xl shadow-lg border-0"
+      hoverable
+      styles={{
+        body: {
+          padding: "16px",
+        },
+      }}
+    >
+      <div className="mb-3">
+        <Title level={5} className="text-sm mb-0 font-semibold">
+          Win Probability
+          <Tooltip title="AI-estimated win probability based on team composition and player performance">
+            <InfoCircleOutlined className="ml-2 text-xs" />
+          </Tooltip>
+        </Title>
+      </div>
+
+      {loadingWinRate ? (
+        <Skeleton active paragraph={{ rows: 2 }} />
+      ) : (
+        <>
+          {estimatedWinRate !== null && (
+            <div className="text-center">
+              <div className="mb-2">
+                <span
+                  className="text-3xl font-bold"
+                  style={{ color: getWinRateColor(estimatedWinRate) }}
+                >
+                  {estimatedWinRate.toFixed(0)}%
+                </span>
+              </div>
+            </div>
+          )}
+        </>
+      )}
+    </Card>
+  );
+};
+
 export const GameOverview: React.FC<{ game: Game | null }> = ({ game }) => {
   const [estimatedWinRate, setEstimatedWinRate] = useState<number | null>(null);
   const [recommendedItems, setRecommendedItems] = useState<
@@ -65,6 +119,11 @@ export const GameOverview: React.FC<{ game: Game | null }> = ({ game }) => {
         />
       </div>
       <div className="w-[350px] min-w-[280px] pl-4 flex flex-col space-y-4">
+        <WinRateWidget
+          estimatedWinRate={estimatedWinRate}
+          loadingWinRate={loadingWinRate}
+        />
+
         <RecommendedItems
           loadingItems={loadingItems}
           recommendedItems={recommendedItems}
@@ -79,25 +138,13 @@ export const GameOverview: React.FC<{ game: Game | null }> = ({ game }) => {
             },
           }}
         >
-          <div className="flex items-center justify-between mb-3">
+          <div className="mb-3">
             <Title level={5} className="text-sm mb-0 font-semibold">
               Game Overview
               <Tooltip title="AI-generated summary based on teams and player tendencies">
                 <InfoCircleOutlined className="ml-2 text-xs" />
               </Tooltip>
             </Title>
-            {!loadingWinRate && estimatedWinRate !== null && (
-              <div
-                className="px-2 py-1 rounded-md text-xs font-medium"
-                style={{
-                  backgroundColor: token.colorPrimaryBg,
-                  border: `1px solid ${token.colorPrimaryBorder}`,
-                  color: token.colorPrimary,
-                }}
-              >
-                {estimatedWinRate.toFixed(1)}% win chance
-              </div>
-            )}
           </div>
 
           {loadingSummary ? (
