@@ -287,7 +287,14 @@ export const Header: React.FC = () => {
               <div style={{ width: 600 }}>
                 <GlobalSearch />
               </div>
-              <Text type="secondary">{t("common.or")}</Text>
+              <div
+                style={{
+                  width: 1,
+                  height: 24,
+                  backgroundColor: token.colorBorderSecondary,
+                  margin: "0 8px",
+                }}
+              />
               <QuickSearch />
             </div>
           )}
