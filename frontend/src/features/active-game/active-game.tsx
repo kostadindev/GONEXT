@@ -14,24 +14,26 @@ export const ActiveGame = () => {
 
   const [game, setGame] = useState<Game | null>(null);
   const [loading, setLoading] = useState(true);
-  const [errorType, setErrorType] = useState<"game" | "player" | null>(null);
+  const [errorType, setErrorType] = useState<"player" | null>(null);
+  const [noActiveGame, setNoActiveGame] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState<boolean>(
     localStorage.getItem("theme") === "dark"
   );
 
   const { tagLine, gameName, region } = useParams();
-  const { allies = [], enemies = [] } = getTeams(game);
+  const { allies = [], enemies = [] } = getTeams(noActiveGame ? null : game);
 
   useEffect(() => {
     let ignore = false;
     setLoading(true);
     setErrorType(null);
+    setNoActiveGame(false);
 
     getActiveGame(gameName as string, tagLine as string, region as string)
       .then((game) => {
         if (!ignore) {
           if (!game) {
-            setErrorType("game");
+            setNoActiveGame(true);
           } else {
             setGame(game);
           }
@@ -42,8 +44,7 @@ export const ActiveGame = () => {
           if (err.response?.status === 404) {
             setErrorType("player");
           } else {
-            console.log("HellO", err);
-            setErrorType("game");
+            setNoActiveGame(true);
           }
         }
       })
@@ -90,7 +91,7 @@ export const ActiveGame = () => {
     );
   }
 
-  if (errorType) {
+  if (errorType === "player") {
     return (
       <Content
         style={{
@@ -151,35 +152,46 @@ export const ActiveGame = () => {
             }}
           >
             <div className="pr-8 mt-[15px] flex-shrink-0">
-              <Divider orientation="left">
-                {game?.searchedSummoner?.teamId === 100
-                  ? "Blue Team"
-                  : "Red Team"}
-              </Divider>
-              {(loading ? Array.from({ length: 5 }) : allies)?.map(
-                (summoner, index) => (
-                  <InGameSummoner
-                    key={`ally-${index}`}
-                    summoner={summoner || {}}
-                    game={game}
-                    loading={loading}
-                  />
-                )
-              )}
-              <Divider orientation="left">
-                {game?.searchedSummoner?.teamId !== 100
-                  ? "Blue Team"
-                  : "Red Team"}
-              </Divider>
-              {(loading ? Array.from({ length: 5 }) : enemies)?.map(
-                (summoner, index) => (
-                  <InGameSummoner
-                    key={`enemy-${index}`}
-                    summoner={summoner || {}}
-                    game={game}
-                    loading={loading}
-                  />
-                )
+              {noActiveGame ||
+              (!loading &&
+                (!game ||
+                  !game.participants ||
+                  game.participants.length === 0)) ? (
+                // Empty sidebar - just maintain the space
+                <div style={{ width: 300 }}></div>
+              ) : (
+                <>
+                  <Divider orientation="left">
+                    {game?.searchedSummoner?.teamId === 100
+                      ? "Blue Team"
+                      : "Red Team"}
+                  </Divider>
+                  {(loading ? Array.from({ length: 5 }) : allies)?.map(
+                    (summoner, index) => (
+                      <InGameSummoner
+                        key={`ally-${index}`}
+                        summoner={summoner || {}}
+                        game={game}
+                        loading={loading}
+                      />
+                    )
+                  )}
+                  <Divider orientation="left">
+                    {game?.searchedSummoner?.teamId !== 100
+                      ? "Blue Team"
+                      : "Red Team"}
+                  </Divider>
+                  {(loading ? Array.from({ length: 5 }) : enemies)?.map(
+                    (summoner, index) => (
+                      <InGameSummoner
+                        key={`enemy-${index}`}
+                        summoner={summoner || {}}
+                        game={game}
+                        loading={loading}
+                      />
+                    )
+                  )}
+                </>
               )}
             </div>
             <div className="flex-1 min-w-0 w-full">
