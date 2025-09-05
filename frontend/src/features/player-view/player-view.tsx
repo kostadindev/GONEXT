@@ -82,7 +82,7 @@ const PlayerContent: React.FC<PlayerViewProps> = ({
   }, [game, playerPuuid, gameName, tagLine, region]);
 
   if (isLoading) {
-    return <PlayerSkeleton />;
+    return <PlayerSkeleton hasGame={!!game?.gameId} />;
   }
 
   return (
