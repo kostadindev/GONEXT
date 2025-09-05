@@ -51,14 +51,12 @@ const WinRateWidget: React.FC<{
         <>
           {estimatedWinRate !== null && (
             <div className="text-center">
-              <div className="mb-2">
-                <span
-                  className="text-3xl font-bold"
-                  style={{ color: getWinRateColor(estimatedWinRate) }}
-                >
-                  {estimatedWinRate.toFixed(0)}%
-                </span>
-              </div>
+              <span
+                className="text-3xl font-bold"
+                style={{ color: getWinRateColor(estimatedWinRate) }}
+              >
+                {estimatedWinRate.toFixed(0)}%
+              </span>
             </div>
           )}
         </>
