@@ -15,6 +15,11 @@ export const InGameSummoner = ({
   game: any;
   loading?: boolean;
 }) => {
+  // Check if summoner has any meaningful data
+  const hasData =
+    summoner &&
+    Object.keys(summoner).length > 0 &&
+    (summoner.championName || summoner.summonerName || summoner.riotId);
   const navigate = useNavigate();
   const location = useLocation();
   const { token } = theme.useToken();
@@ -60,7 +65,7 @@ export const InGameSummoner = ({
             />
           </div>
         </div>
-      ) : (
+      ) : hasData ? (
         <div className="h-full flex items-center gap-2">
           <Tooltip title={`${summoner.championName}`}>
             <Avatar
@@ -102,6 +107,10 @@ export const InGameSummoner = ({
               <span className="text-gray-500"> {summoner.championName}</span>
             </Tooltip>
           </div>
+        </div>
+      ) : (
+        <div className="h-full flex items-center gap-2">
+          {/* Empty content - just maintain the space */}
         </div>
       )}
     </Card>
