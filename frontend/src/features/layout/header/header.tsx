@@ -434,13 +434,13 @@ export const Header: React.FC = () => {
         {location.pathname !== "/" && isMobile && (
           <div style={{ marginTop: 16, paddingBottom: 8 }}>
             <Space direction="vertical" style={{ width: "100%" }} size="small">
-              <GlobalSearch />
+              {/* <GlobalSearch />
               <div style={{ textAlign: "center" }}>
                 <Text type="secondary" style={{ fontSize: 12 }}>
                   {t("common.or")}
                 </Text>
-              </div>
-              <QuickSearch />
+              </div> */}
+              {/* <QuickSearch /> */}
             </Space>
           </div>
         )}

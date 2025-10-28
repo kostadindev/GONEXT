@@ -198,15 +198,14 @@ const HeroSection = () => {
               <div>
                 <GlobalSearch />
               </div>
-              <div className="text-center">
+              {/* <div className="text-center">
                 <span className="text-gray-700 font-medium text-sm">
                   or try it out for
                 </span>
               </div>
               <div className="w-full flex flex-col items-center gap-3">
                 <QuickSearch />
-                {/* Removed 'No login required' text to declutter */}
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -747,11 +746,10 @@ const CTASection = () => {
           <div className="w-full">
             <GlobalSearch />
           </div>
-          <span className="text-gray-700 font-medium">or try it out for</span>
+          {/* <span className="text-gray-700 font-medium">or try it out for</span>
           <div className="w-full">
             <QuickSearch />
-          </div>
-          {/* Removed Learn more button to reduce clutter */}
+          </div> */}
         </div>
       </div>
     </section>
