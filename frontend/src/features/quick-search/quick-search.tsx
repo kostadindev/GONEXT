@@ -25,7 +25,7 @@ export const QuickSearch = () => {
         if (isMounted) setError("No featured summoner available.");
       }
     } catch (error) {
-      if (isMounted) setError("Failed to fetch featured summoner.");
+      if (isMounted) setError("");
     } finally {
       if (isMounted) setLoading(false);
     }
